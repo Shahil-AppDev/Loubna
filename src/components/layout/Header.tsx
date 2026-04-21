@@ -1,10 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { cn } from "@/lib/utils";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import Image from "next/image";
-import { cn } from "@/lib/utils";
+import { useEffect, useState } from "react";
 
 const NAV_LINKS = [
   { href: "/", label: "Accueil" },
@@ -14,7 +14,7 @@ const NAV_LINKS = [
 ];
 
 export default function Header() {
-  const [scrolled, setScrolled]   = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const pathname = usePathname();
 

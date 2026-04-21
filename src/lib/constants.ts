@@ -5,100 +5,76 @@
 
 export const SITE_CONFIG = {
   name: "Loubna Abouz Manta",
-  title: "Juriste en Droit du Travail",
-  url: "https://loubna-abouz-manta.fr", // ← Remplacez par votre URL
-  email: "contact@loubna-abouz-manta.fr", // ← Votre email
-  phone: "+33 6 00 00 00 00",             // ← Votre téléphone
-  address: "Paris, France",               // ← Votre ville / adresse
-  hours: "Lundi – Vendredi : 9h00 – 18h00", // ← Vos horaires
-  linkedin: "https://linkedin.com/in/loubna-abouz-manta", // ← LinkedIn
+  title: "Juriste en droit du travail et en responsabilité sociale des entreprises",
+  url: "https://loubna-abouz-manta.fr",
+  email: "louamjuristeconseil@gmail.com",
+  phone: "06 59 11 11 08",
+  address: "France",
+  hours: "Du lundi au jeudi : 10h–12h et 14h–18h · Vendredi : 10h–12h30",
+  siret: "984 609 255 00018",
+  linkedin: "https://www.linkedin.com/in/loubna-abouz-manta-27a5032b7/",
+  instagram: "https://www.instagram.com/louaamm/",
+  tiktok: "https://www.tiktok.com/@loubna.am25",
   description:
-    "Juriste spécialisée en droit du travail. Conseil et accompagnement pour salariés et employeurs : licenciement, rupture conventionnelle, harcèlement, contrats de travail.",
+    "Juriste spécialisée en droit du travail et en responsabilité sociale des entreprises. Conseil juridique pour salariés et employeurs : contrat de travail, licenciement, rupture conventionnelle, sanctions disciplinaires, recrutement de salariés étrangers.",
 };
 
 export const SERVICES = [
-  // ─── POUR LES SALARIÉS ──────────────────────────────────
   {
-    icon: "⚖️",
-    title: "Conseil en droit du travail",
+    icon: "📄",
+    title: "Contrat de travail",
     description:
-      "Analyse de votre situation, orientation juridique précise et conseil personnalisé pour toute question relative au droit du travail. Une réponse claire, adaptée à votre contexte.",
-    category: "salarie",
-    slug: "conseil-droit-travail",
+      "Rédaction, révision et sécurisation de vos contrats de travail (CDI, CDD, temps partiel). Analyse des clauses, conformité juridique et adaptation à votre situation professionnelle.",
+    category: "all",
+    slug: "contrat-travail",
   },
   {
-    icon: "🛡️",
-    title: "Accompagnement salariés",
+    icon: "⚡",
+    title: "Sanctions disciplinaires",
     description:
-      "Face à votre employeur — licenciement, harcèlement, discrimination — je défends vos droits avec rigueur et méthode. Vous n'êtes pas seul(e).",
+      "Accompagnement face aux procédures disciplinaires : avertissement, mise à pied, convocation à un entretien préalable. Défense de vos droits et préparation de votre réponse.",
     category: "salarie",
-    slug: "accompagnement-salaries",
+    slug: "sanctions-disciplinaires",
+  },
+  {
+    icon: "🌍",
+    title: "Recrutement de salariés étrangers",
+    description:
+      "Conseil et accompagnement pour le recrutement de salariés étrangers : démarches administratives, autorisations de travail, conformité réglementaire et sécurisation juridique.",
+    category: "employeur",
+    slug: "recrutement-salaries-etrangers",
   },
   {
     icon: "🚫",
     title: "Licenciement",
     description:
-      "Licenciement abusif, sans cause réelle et sérieuse, économique ou personnel. J'analyse votre dossier et vous oriente vers la meilleure stratégie juridique.",
+      "Analyse de votre situation de licenciement (économique, personnel, faute). Vérification de la procédure, calcul des indemnités et orientation vers la meilleure stratégie juridique.",
     category: "salarie",
     slug: "licenciement",
   },
   {
     icon: "🤝",
+    title: "Négociation",
+    description:
+      "Négociation amiable de vos conditions de départ, indemnités transactionnelles, protocoles d'accord. Recherche de solutions équilibrées avant tout contentieux.",
+    category: "all",
+    slug: "negociation",
+  },
+  {
+    icon: "✍️",
     title: "Rupture conventionnelle",
     description:
-      "Négociation des conditions, calcul des indemnités, protection de vos droits au chômage. Un accompagnement de A à Z pour une sortie dans les meilleures conditions.",
-    category: "salarie",
+      "Accompagnement complet dans votre rupture conventionnelle : négociation des conditions, calcul des indemnités, rédaction de la convention et sécurisation de vos droits au chômage.",
+    category: "all",
     slug: "rupture-conventionnelle",
   },
   {
-    icon: "🔴",
-    title: "Harcèlement & conflits au travail",
+    icon: "�️",
+    title: "Sensibilisation prévention",
     description:
-      "Harcèlement moral, discrimination, violence au travail — documentation, signalement, protection. Une réaction rapide et structurée pour défendre vos droits.",
-    category: "salarie",
-    slug: "harcelement-conflits",
-  },
-  {
-    icon: "⚡",
-    title: "Procédures disciplinaires",
-    description:
-      "Convocation à un entretien préalable, avertissement, mise à pied. Je vous explique vos droits et vous prépare à chaque étape de la procédure.",
-    category: "salarie",
-    slug: "procedures-disciplinaires-salarie",
-  },
-  // ─── POUR LES EMPLOYEURS ────────────────────────────────
-  {
-    icon: "🏢",
-    title: "Accompagnement employeurs",
-    description:
-      "Sécurisez vos décisions RH, anticipez les risques juridiques et gérez vos relations de travail en pleine conformité. Un partenaire juridique de confiance.",
+      "Formation et sensibilisation de vos équipes aux risques juridiques en droit du travail : harcèlement, discrimination, obligations de l'employeur. Prévention des contentieux.",
     category: "employeur",
-    slug: "accompagnement-employeurs",
-  },
-  {
-    icon: "📄",
-    title: "Contrats de travail",
-    description:
-      "Rédaction, révision et sécurisation de tout contrat de travail (CDI, CDD, temps partiel, clauses spécifiques), adapté à votre secteur et votre situation.",
-    category: "employeur",
-    slug: "contrats-travail",
-  },
-  // ─── COMMUN ─────────────────────────────────────────────
-  {
-    icon: "🔍",
-    title: "Relecture de documents",
-    description:
-      "Avant de signer quoi que ce soit, faites relire votre document. Je détecte les clauses risquées et protège vos intérêts — contrat, accord de rupture, protocole.",
-    category: "all",
-    slug: "relecture-documents",
-  },
-  {
-    icon: "🔮",
-    title: "Assistance précontentieuse",
-    description:
-      "Négociation amiable, médiation, protocole transactionnel — explorons d'abord les solutions sans recours judiciaire. Souvent plus rapides et moins coûteuses.",
-    category: "all",
-    slug: "assistance-precontentieuse",
+    slug: "sensibilisation-prevention",
   },
 ];
 
@@ -176,13 +152,13 @@ export const TESTIMONIALS = [
 ];
 
 export const DEMAND_TYPES = [
+  { value: "contrat-travail", label: "Contrat de travail" },
+  { value: "sanctions-disciplinaires", label: "Sanctions disciplinaires" },
+  { value: "recrutement-etrangers", label: "Recrutement de salariés étrangers" },
   { value: "licenciement", label: "Licenciement" },
+  { value: "negociation", label: "Négociation" },
   { value: "rupture-conventionnelle", label: "Rupture conventionnelle" },
-  { value: "harcelement", label: "Harcèlement / Conflit" },
-  { value: "contrat", label: "Contrat de travail" },
-  { value: "procedure-disciplinaire", label: "Procédure disciplinaire" },
-  { value: "conseil-rh", label: "Conseil RH (employeur)" },
-  { value: "relecture", label: "Relecture de document" },
+  { value: "sensibilisation-prevention", label: "Sensibilisation prévention" },
   { value: "autre", label: "Autre demande" },
 ];
 

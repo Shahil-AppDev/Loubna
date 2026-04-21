@@ -1,6 +1,6 @@
+import { SITE_CONFIG, TESTIMONIALS } from "@/lib/constants";
 import type { Metadata } from "next";
 import Link from "next/link";
-import { SITE_CONFIG, TESTIMONIALS } from "@/lib/constants";
 
 export const metadata: Metadata = {
   title: `${SITE_CONFIG.name} – ${SITE_CONFIG.title} | Conseil & Accompagnement`,
@@ -41,7 +41,7 @@ export default function HomePage() {
           <div className="flex items-center gap-4 mb-7">
             <span className="block w-8 h-px bg-or-500 opacity-60" />
             <span className="text-[0.7rem] font-bold tracking-[0.22em] uppercase text-or-500">
-              Juriste spécialisée · Droit du travail
+              Juriste · Droit du travail & RSE
             </span>
             <span className="block w-8 h-px bg-or-500 opacity-60" />
           </div>

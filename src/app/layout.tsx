@@ -1,8 +1,8 @@
-import type { Metadata, Viewport } from "next";
-import { Playfair_Display, DM_Sans } from "next/font/google";
-import { SITE_CONFIG } from "@/lib/constants";
-import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import Header from "@/components/layout/Header";
+import { SITE_CONFIG } from "@/lib/constants";
+import type { Metadata, Viewport } from "next";
+import { DM_Sans, Playfair_Display } from "next/font/google";
 import "./globals.css";
 
 const playfair = Playfair_Display({
@@ -45,6 +45,10 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: SITE_CONFIG.name }],
   creator: SITE_CONFIG.name,
+  icons: {
+    icon: "/logo.png",
+    apple: "/logo.png",
+  },
   openGraph: {
     type: "website",
     locale: "fr_FR",
@@ -80,12 +84,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="fr" className={`${playfair.variable} ${dmSans.variable}`}>
-      <head>
-        <link rel="icon" type="image/png" href="/logo.png" />
-        <link rel="apple-touch-icon" href="/logo.png" />
-      </head>
-      <body className="font-sans bg-encre-50 text-encre-950 antialiased">
+    <html lang="fr" className={`${playfair.variable} ${dmSans.variable}`} suppressHydrationWarning>
+      <body className="font-sans bg-encre-50 text-encre-950 antialiased" suppressHydrationWarning>
         <Header />
         <main>{children}</main>
         <Footer />

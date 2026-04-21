@@ -1,6 +1,6 @@
-import Link from "next/link";
-import Image from "next/image";
 import { SITE_CONFIG } from "@/lib/constants";
+import Image from "next/image";
+import Link from "next/link";
 
 const NAV_LINKS = [
   { href: "/", label: "Accueil" },
@@ -11,11 +11,11 @@ const NAV_LINKS = [
 ];
 
 const SERVICE_LINKS = [
+  { href: "/services", label: "Contrat de travail" },
+  { href: "/services", label: "Sanctions disciplinaires" },
   { href: "/services", label: "Licenciement" },
   { href: "/services", label: "Rupture conventionnelle" },
-  { href: "/services", label: "Harcèlement" },
-  { href: "/services", label: "Contrats de travail" },
-  { href: "/services", label: "Conseil RH" },
+  { href: "/services", label: "Négociation" },
 ];
 
 export default function Footer() {
@@ -50,15 +50,35 @@ export default function Footer() {
               <br />
               Conseil, rigueur et accompagnement.
             </p>
-            <a
-              href={SITE_CONFIG.linkedin}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="LinkedIn"
-              className="inline-flex w-9 h-9 border border-white/15 rounded-full items-center justify-center text-white/50 text-xs font-bold hover:border-or-500 hover:text-or-500 transition-colors"
-            >
-              in
-            </a>
+            <div className="flex items-center gap-3">
+              <a
+                href={SITE_CONFIG.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="LinkedIn"
+                className="inline-flex w-9 h-9 border border-white/15 rounded-full items-center justify-center text-white/50 text-xs font-bold hover:border-or-500 hover:text-or-500 transition-colors"
+              >
+                in
+              </a>
+              <a
+                href={SITE_CONFIG.instagram}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Instagram"
+                className="inline-flex w-9 h-9 border border-white/15 rounded-full items-center justify-center text-white/50 text-base hover:border-or-500 hover:text-or-500 transition-colors"
+              >
+                📷
+              </a>
+              <a
+                href={SITE_CONFIG.tiktok}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="TikTok"
+                className="inline-flex w-9 h-9 border border-white/15 rounded-full items-center justify-center text-white/50 text-base hover:border-or-500 hover:text-or-500 transition-colors"
+              >
+                🎵
+              </a>
+            </div>
           </div>
 
           {/* Navigation */}

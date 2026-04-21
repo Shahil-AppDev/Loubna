@@ -1,6 +1,6 @@
+import { SITE_CONFIG } from "@/lib/constants";
 import type { Metadata } from "next";
 import Link from "next/link";
-import { SITE_CONFIG } from "@/lib/constants";
 
 export const metadata: Metadata = {
   title: "Mentions légales",
@@ -39,10 +39,10 @@ export default function MentionsLegalesPage() {
             <ul>
               <li><strong>Nom :</strong> {SITE_CONFIG.name}</li>
               <li><strong>Qualité :</strong> {SITE_CONFIG.title}</li>
-              <li><strong>Adresse :</strong> {SITE_CONFIG.address} — <em>À compléter</em></li>
+              <li><strong>Adresse :</strong> {SITE_CONFIG.address}</li>
               <li><strong>Email :</strong> <a href={`mailto:${SITE_CONFIG.email}`}>{SITE_CONFIG.email}</a></li>
               <li><strong>Téléphone :</strong> {SITE_CONFIG.phone}</li>
-              <li><strong>SIRET :</strong> <!-- VOTRE SIRET --></li>
+              <li><strong>SIRET :</strong> {SITE_CONFIG.siret}</li>
             </ul>
 
             <h2>2. Hébergeur</h2>
