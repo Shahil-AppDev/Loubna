@@ -6,7 +6,7 @@
 export const SITE_CONFIG = {
   name: "Loubna Abouz Manta",
   title: "Juriste conseil en droit du travail",
-  url: "https://bymantajuriste.com",
+  url: "https://www.abouzmanta-loubna-conseiljuridique.com",
   email: "louamjuristeconseil@gmail.com",
   phone: "06 59 11 11 08",
   address: "45 rue des Mines, 25400 Audincourt",
