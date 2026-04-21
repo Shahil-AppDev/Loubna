@@ -78,10 +78,25 @@ export default function ContactForm() {
 
     setStatus("loading");
 
-    // Intégration formulaire : remplacez ce bloc par EmailJS, Formspree, Resend, etc.
-    // Exemple Formspree : fetch("https://formspree.io/f/VOTRE_ID", { method: "POST", body: JSON.stringify(formData) })
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+      // API Route Next.js — prête à connecter à Resend, Nodemailer, etc.
+      // Pour Formspree : remplacez l'URL par "https://formspree.io/f/VOTRE_ID"
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          nom: formData.nom,
+          prenom: formData.prenom,
+          email: formData.email,
+          telephone: formData.telephone,
+          typedemande: formData.typedemande,
+          statut: formData.statut,
+          sujet: formData.sujet,
+          message: formData.message,
+        }),
+      });
+
+      if (!res.ok) throw new Error();
       setStatus("success");
       setFormData(initialData);
     } catch {
