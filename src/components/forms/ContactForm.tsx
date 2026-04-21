@@ -1,14 +1,16 @@
 "use client";
 
-import { useState, FormEvent } from "react";
+import { useState } from "react";
+import { DEMAND_TYPES, STATUTS } from "@/lib/constants";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
 
 interface FormData {
   nom: string;
   prenom: string;
   email: string;
-  telephone: string;
-  typedemande: string;
+  tel: string;
+  typeDemande: string;
   statut: string;
   sujet: string;
   message: string;
@@ -19,371 +21,346 @@ interface FormErrors {
   [key: string]: string;
 }
 
-const initialData: FormData = {
+const INITIAL_DATA: FormData = {
   nom: "",
   prenom: "",
   email: "",
-  telephone: "",
-  typedemande: "",
+  tel: "",
+  typeDemande: "",
   statut: "",
   sujet: "",
   message: "",
   rgpd: false,
 };
 
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const TEL_REGEX   = /^[\d\s+\-().]{8,20}$/;
+
 export default function ContactForm() {
-  const [formData, setFormData] = useState<FormData>(initialData);
+  const [form, setForm]     = useState<FormData>(INITIAL_DATA);
   const [errors, setErrors] = useState<FormErrors>({});
-  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [success, setSuccess] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const validate = (): boolean => {
-    const newErrors: FormErrors = {};
-
-    if (!formData.nom.trim()) newErrors.nom = "Le nom est requis.";
-    if (!formData.prenom.trim()) newErrors.prenom = "Le prénom est requis.";
-    if (!formData.email.trim()) {
-      newErrors.email = "L'adresse email est requise.";
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = "L'adresse email n'est pas valide.";
+  // ─── Validation ──────────────────────────────────────────
+  const validateField = (name: string, value: string | boolean): string => {
+    switch (name) {
+      case "nom":
+        return !(value as string).trim() ? "Le nom est obligatoire." : "";
+      case "prenom":
+        return !(value as string).trim() ? "Le prénom est obligatoire." : "";
+      case "email":
+        if (!(value as string).trim()) return "L'adresse email est obligatoire.";
+        if (!EMAIL_REGEX.test(value as string)) return "Veuillez saisir une adresse email valide.";
+        return "";
+      case "tel":
+        if ((value as string) && !TEL_REGEX.test(value as string)) return "Numéro de téléphone invalide.";
+        return "";
+      case "sujet":
+        return !(value as string).trim() ? "Le sujet est obligatoire." : "";
+      case "message":
+        if (!(value as string).trim()) return "Le message est obligatoire.";
+        if ((value as string).trim().length < 20) return "Le message doit contenir au moins 20 caractères.";
+        return "";
+      case "rgpd":
+        return !value ? "Vous devez accepter la politique de confidentialité." : "";
+      default:
+        return "";
     }
-    if (!formData.typedemande) newErrors.typedemande = "Veuillez choisir un type de demande.";
-    if (!formData.statut) newErrors.statut = "Veuillez préciser votre statut.";
-    if (!formData.sujet.trim()) newErrors.sujet = "Le sujet est requis.";
-    if (!formData.message.trim()) {
-      newErrors.message = "Le message est requis.";
-    } else if (formData.message.trim().length < 20) {
-      newErrors.message = "Votre message doit contenir au moins 20 caractères.";
-    }
-    if (!formData.rgpd) newErrors.rgpd = "Vous devez accepter la politique de confidentialité.";
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
   };
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
-  ) => {
-    const { name, value, type } = e.target;
-    const newValue = type === "checkbox" ? (e.target as HTMLInputElement).checked : value;
+  const validateAll = (): FormErrors => {
+    const fields: (keyof FormData)[] = ["nom", "prenom", "email", "tel", "sujet", "message", "rgpd"];
+    const errs: FormErrors = {};
+    fields.forEach((field) => {
+      const err = validateField(field, form[field]);
+      if (err) errs[field] = err;
+    });
+    return errs;
+  };
 
-    setFormData((prev) => ({ ...prev, [name]: newValue }));
+  // ─── Handlers ────────────────────────────────────────────
+  const handleChange = (name: keyof FormData, value: string | boolean) => {
+    setForm((prev) => ({ ...prev, [name]: value }));
     if (errors[name]) {
-      setErrors((prev) => ({ ...prev, [name]: "" }));
+      const err = validateField(name, value);
+      setErrors((prev) => ({ ...prev, [name]: err }));
     }
   };
 
-  const handleSubmit = async (e: FormEvent) => {
+  const handleBlur = (name: keyof FormData) => {
+    const err = validateField(name, form[name]);
+    setErrors((prev) => ({ ...prev, [name]: err }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!validate()) return;
+    const errs = validateAll();
+    setErrors(errs);
+    if (Object.keys(errs).filter((k) => errs[k]).length > 0) {
+      const firstErrEl = document.querySelector(".form-control.error, .form-error-field");
+      if (firstErrEl) (firstErrEl as HTMLElement).scrollIntoView({ behavior: "smooth", block: "center" });
+      return;
+    }
 
-    setStatus("loading");
-
+    setLoading(true);
     try {
-      // API Route Next.js — prête à connecter à Resend, Nodemailer, etc.
-      // Pour Formspree : remplacez l'URL par "https://formspree.io/f/VOTRE_ID"
-      const res = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          nom: formData.nom,
-          prenom: formData.prenom,
-          email: formData.email,
-          telephone: formData.telephone,
-          typedemande: formData.typedemande,
-          statut: formData.statut,
-          sujet: formData.sujet,
-          message: formData.message,
-        }),
-      });
+      // ─────────────────────────────────────────────────────
+      // CONNECTEZ VOTRE SERVICE ICI
+      //
+      // Option 1 — Formspree :
+      // const res = await fetch("https://formspree.io/f/VOTRE_ID", {
+      //   method: "POST",
+      //   headers: { "Content-Type": "application/json" },
+      //   body: JSON.stringify(form),
+      // });
+      // if (!res.ok) throw new Error();
+      //
+      // Option 2 — EmailJS :
+      // import emailjs from "@emailjs/browser";
+      // await emailjs.send("SERVICE_ID", "TEMPLATE_ID", form, "PUBLIC_KEY");
+      //
+      // Option 3 — API Route Next.js :
+      // const res = await fetch("/api/contact", {
+      //   method: "POST",
+      //   headers: { "Content-Type": "application/json" },
+      //   body: JSON.stringify(form),
+      // });
+      // if (!res.ok) throw new Error();
+      // ─────────────────────────────────────────────────────
 
-      if (!res.ok) throw new Error();
-      setStatus("success");
-      setFormData(initialData);
+      // Simulation (à retirer en production)
+      await new Promise((r) => setTimeout(r, 1400));
+
+      setSuccess(true);
+      setForm(INITIAL_DATA);
     } catch {
-      setStatus("error");
+      setErrors({ global: "Une erreur est survenue. Veuillez réessayer ou nous contacter directement." });
+    } finally {
+      setLoading(false);
     }
   };
 
-  if (status === "success") {
+  // ─── Success state ────────────────────────────────────────
+  if (success) {
     return (
-      <div className="bg-white border border-encre-100 rounded-sm p-12 text-center">
-        <div className="w-16 h-16 rounded-full bg-rouge-50 border-2 border-rouge-800 flex items-center justify-center mx-auto mb-6">
-          <svg
-            className="w-8 h-8 text-rouge-800"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-          </svg>
-        </div>
-        <h3 className="font-serif text-2xl text-encre-950 mb-3">
-          Message envoyé avec succès
-        </h3>
-        <p className="text-encre-500 text-sm leading-relaxed max-w-sm mx-auto mb-8">
-          Merci pour votre message. Je prends connaissance de votre demande et
-          vous contacte dans les meilleurs délais, généralement sous 24 à 48h ouvrées.
+      <div className="text-center py-16">
+        <div className="text-5xl mb-6">✅</div>
+        <h3 className="font-serif text-3xl text-encre-950 mb-3">Message envoyé !</h3>
+        <p className="text-encre-500 text-[0.95rem] leading-7 mb-8">
+          Merci pour votre message. Je vous réponds personnellement
+          <br />
+          sous <strong className="text-encre-900">48h ouvrées</strong>.
         </p>
         <button
-          onClick={() => setStatus("idle")}
-          className="btn-secondary text-xs"
+          onClick={() => setSuccess(false)}
+          className="btn btn-ghost-dark text-sm"
         >
-          Envoyer un nouveau message
+          Envoyer un autre message
         </button>
       </div>
     );
   }
 
   return (
-    <form onSubmit={handleSubmit} noValidate className="space-y-6">
-      {/* Nom / Prénom */}
+    <form onSubmit={handleSubmit} noValidate>
+      <h3 className="font-serif text-2xl text-encre-950 mb-1.5">Votre demande</h3>
+      <p className="text-xs text-encre-400 mb-9">
+        Les champs marqués <span className="text-rouge-800">*</span> sont obligatoires.
+      </p>
+
+      {/* Global error */}
+      {errors.global && (
+        <div className="bg-red-50 border border-red-200 text-red-700 text-sm px-5 py-4 rounded-sm mb-6">
+          {errors.global}
+        </div>
+      )}
+
+      {/* ─── NOM / PRÉNOM ─── */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-        <div>
-          <label htmlFor="nom" className="label-premium">
-            Nom <span className="text-rouge-700">*</span>
-          </label>
+        <FormGroup label="Nom" required error={errors.nom}>
           <input
             type="text"
             id="nom"
-            name="nom"
-            value={formData.nom}
-            onChange={handleChange}
-            placeholder="Dupont"
-            className={cn("input-premium", errors.nom && "border-rouge-600 focus:border-rouge-600")}
             autoComplete="family-name"
+            placeholder="Votre nom"
+            value={form.nom}
+            onChange={(e) => handleChange("nom", e.target.value)}
+            onBlur={() => handleBlur("nom")}
+            className={cn("form-control", errors.nom && "error")}
           />
-          {errors.nom && <p className="mt-1.5 text-rouge-600 text-xs">{errors.nom}</p>}
-        </div>
-        <div>
-          <label htmlFor="prenom" className="label-premium">
-            Prénom <span className="text-rouge-700">*</span>
-          </label>
+        </FormGroup>
+        <FormGroup label="Prénom" required error={errors.prenom}>
           <input
             type="text"
             id="prenom"
-            name="prenom"
-            value={formData.prenom}
-            onChange={handleChange}
-            placeholder="Marie"
-            className={cn("input-premium", errors.prenom && "border-rouge-600 focus:border-rouge-600")}
             autoComplete="given-name"
+            placeholder="Votre prénom"
+            value={form.prenom}
+            onChange={(e) => handleChange("prenom", e.target.value)}
+            onBlur={() => handleBlur("prenom")}
+            className={cn("form-control", errors.prenom && "error")}
           />
-          {errors.prenom && <p className="mt-1.5 text-rouge-600 text-xs">{errors.prenom}</p>}
-        </div>
+        </FormGroup>
       </div>
 
-      {/* Email / Téléphone */}
+      {/* ─── EMAIL / TEL ─── */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-        <div>
-          <label htmlFor="email" className="label-premium">
-            Email <span className="text-rouge-700">*</span>
-          </label>
+        <FormGroup label="Email" required error={errors.email}>
           <input
             type="email"
             id="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            placeholder="marie@exemple.fr"
-            className={cn("input-premium", errors.email && "border-rouge-600 focus:border-rouge-600")}
             autoComplete="email"
+            placeholder="votre@email.fr"
+            value={form.email}
+            onChange={(e) => handleChange("email", e.target.value)}
+            onBlur={() => handleBlur("email")}
+            className={cn("form-control", errors.email && "error")}
           />
-          {errors.email && <p className="mt-1.5 text-rouge-600 text-xs">{errors.email}</p>}
-        </div>
-        <div>
-          <label htmlFor="telephone" className="label-premium">
-            Téléphone
-          </label>
+        </FormGroup>
+        <FormGroup label="Téléphone" error={errors.tel}>
           <input
             type="tel"
-            id="telephone"
-            name="telephone"
-            value={formData.telephone}
-            onChange={handleChange}
-            placeholder="06 XX XX XX XX"
-            className="input-premium"
+            id="tel"
             autoComplete="tel"
+            placeholder="+33 6 00 00 00 00"
+            value={form.tel}
+            onChange={(e) => handleChange("tel", e.target.value)}
+            onBlur={() => handleBlur("tel")}
+            className={cn("form-control", errors.tel && "error")}
           />
-        </div>
+        </FormGroup>
       </div>
 
-      {/* Type de demande / Statut */}
+      {/* ─── TYPE / STATUT ─── */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-        <div>
-          <label htmlFor="typedemande" className="label-premium">
-            Type de demande <span className="text-rouge-700">*</span>
-          </label>
+        <FormGroup label="Type de demande" error={errors.typeDemande}>
           <select
-            id="typedemande"
-            name="typedemande"
-            value={formData.typedemande}
-            onChange={handleChange}
-            className={cn(
-              "input-premium appearance-none cursor-pointer",
-              errors.typedemande && "border-rouge-600",
-              !formData.typedemande && "text-encre-400"
-            )}
+            id="typeDemande"
+            value={form.typeDemande}
+            onChange={(e) => handleChange("typeDemande", e.target.value)}
+            className={cn("form-control appearance-none", !form.typeDemande && "text-encre-400")}
+            style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236B6B6B' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E\")", backgroundRepeat: "no-repeat", backgroundPosition: "right 14px center", paddingRight: "40px" }}
           >
-            <option value="" disabled>Sélectionner...</option>
-            <option value="conseil">Conseil juridique</option>
-            <option value="contrat">Contrat de travail</option>
-            <option value="licenciement">Licenciement</option>
-            <option value="rupture">Rupture conventionnelle</option>
-            <option value="harcelement">Harcèlement / Conflit</option>
-            <option value="disciplinaire">Procédure disciplinaire</option>
-            <option value="relecture">Relecture de document</option>
-            <option value="autre">Autre</option>
+            <option value="">Choisissez…</option>
+            {DEMAND_TYPES.map((d) => (
+              <option key={d.value} value={d.value}>{d.label}</option>
+            ))}
           </select>
-          {errors.typedemande && <p className="mt-1.5 text-rouge-600 text-xs">{errors.typedemande}</p>}
-        </div>
-        <div>
-          <label htmlFor="statut" className="label-premium">
-            Vous êtes <span className="text-rouge-700">*</span>
-          </label>
+        </FormGroup>
+        <FormGroup label="Vous êtes" error={errors.statut}>
           <select
             id="statut"
-            name="statut"
-            value={formData.statut}
-            onChange={handleChange}
-            className={cn(
-              "input-premium appearance-none cursor-pointer",
-              errors.statut && "border-rouge-600",
-              !formData.statut && "text-encre-400"
-            )}
+            value={form.statut}
+            onChange={(e) => handleChange("statut", e.target.value)}
+            className={cn("form-control appearance-none", !form.statut && "text-encre-400")}
+            style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236B6B6B' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E\")", backgroundRepeat: "no-repeat", backgroundPosition: "right 14px center", paddingRight: "40px" }}
           >
-            <option value="" disabled>Sélectionner...</option>
-            <option value="salarie">Salarié(e)</option>
-            <option value="employeur">Employeur / DRH</option>
-            <option value="autre">Autre</option>
+            <option value="">Votre statut…</option>
+            {STATUTS.map((s) => (
+              <option key={s.value} value={s.value}>{s.label}</option>
+            ))}
           </select>
-          {errors.statut && <p className="mt-1.5 text-rouge-600 text-xs">{errors.statut}</p>}
-        </div>
+        </FormGroup>
       </div>
 
-      {/* Sujet */}
-      <div>
-        <label htmlFor="sujet" className="label-premium">
-          Sujet <span className="text-rouge-700">*</span>
-        </label>
+      {/* ─── SUJET ─── */}
+      <FormGroup label="Sujet de votre demande" required error={errors.sujet}>
         <input
           type="text"
           id="sujet"
-          name="sujet"
-          value={formData.sujet}
-          onChange={handleChange}
-          placeholder="Objet de votre demande en quelques mots"
-          className={cn("input-premium", errors.sujet && "border-rouge-600 focus:border-rouge-600")}
+          placeholder="Résumez votre demande en quelques mots"
+          value={form.sujet}
+          onChange={(e) => handleChange("sujet", e.target.value)}
+          onBlur={() => handleBlur("sujet")}
+          className={cn("form-control", errors.sujet && "error")}
         />
-        {errors.sujet && <p className="mt-1.5 text-rouge-600 text-xs">{errors.sujet}</p>}
-      </div>
+      </FormGroup>
 
-      {/* Message */}
-      <div>
-        <label htmlFor="message" className="label-premium">
-          Message <span className="text-rouge-700">*</span>
-        </label>
+      {/* ─── MESSAGE ─── */}
+      <FormGroup label="Votre message" required error={errors.message}>
         <textarea
           id="message"
-          name="message"
-          value={formData.message}
-          onChange={handleChange}
           rows={6}
-          placeholder="Décrivez votre situation, le contexte et ce sur quoi vous souhaitez être accompagné(e)..."
-          className={cn(
-            "input-premium resize-none",
-            errors.message && "border-rouge-600 focus:border-rouge-600"
-          )}
+          placeholder="Décrivez votre situation en détail. Plus vous m'apportez d'informations, plus ma réponse sera précise et adaptée à votre situation…"
+          value={form.message}
+          onChange={(e) => handleChange("message", e.target.value)}
+          onBlur={() => handleBlur("message")}
+          className={cn("form-control resize-y min-h-[140px]", errors.message && "error")}
         />
-        <div className="flex justify-between items-center mt-1.5">
-          {errors.message ? (
-            <p className="text-rouge-600 text-xs">{errors.message}</p>
-          ) : (
-            <span />
+      </FormGroup>
+
+      {/* ─── RGPD ─── */}
+      <div className="flex gap-3 items-start mb-7 mt-1">
+        <input
+          type="checkbox"
+          id="rgpd"
+          checked={form.rgpd}
+          onChange={(e) => handleChange("rgpd", e.target.checked)}
+          className="w-[17px] h-[17px] flex-shrink-0 mt-0.5 accent-rouge-800 cursor-pointer"
+        />
+        <div>
+          <label htmlFor="rgpd" className="text-[0.83rem] text-encre-500 leading-relaxed cursor-pointer">
+            J'accepte que mes données personnelles soient utilisées pour traiter ma demande,
+            conformément à la{" "}
+            <Link href="/politique-de-confidentialite" className="text-rouge-800 underline" target="_blank">
+              politique de confidentialité
+            </Link>.
+            Mes informations ne seront jamais transmises à des tiers.{" "}
+            <span className="text-rouge-800">*</span>
+          </label>
+          {errors.rgpd && (
+            <p className="text-[0.75rem] text-red-500 mt-1.5">⚠ {errors.rgpd}</p>
           )}
-          <p className="text-encre-400 text-xs">{formData.message.length} caractères</p>
         </div>
       </div>
 
-      {/* RGPD */}
-      <div>
-        <label className="flex items-start gap-3 cursor-pointer group">
-          <div className="relative mt-0.5 flex-shrink-0">
-            <input
-              type="checkbox"
-              name="rgpd"
-              checked={formData.rgpd}
-              onChange={handleChange}
-              className="sr-only"
-            />
-            <div
-              className={cn(
-                "w-5 h-5 border-2 rounded-sm transition-all duration-200 flex items-center justify-center",
-                formData.rgpd
-                  ? "bg-rouge-800 border-rouge-800"
-                  : errors.rgpd
-                  ? "border-rouge-600 bg-rouge-50"
-                  : "border-encre-300 bg-white group-hover:border-rouge-700"
-              )}
-            >
-              {formData.rgpd && (
-                <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-                </svg>
-              )}
-            </div>
-          </div>
-          <span className="text-encre-600 text-xs leading-relaxed">
-            J&apos;accepte que mes données personnelles soient collectées et traitées
-            dans le cadre de ma demande, conformément à la{" "}
-            <a
-              href="/politique-de-confidentialite"
-              className="text-rouge-700 hover:underline"
-              target="_blank"
-            >
-              politique de confidentialité
-            </a>
-            . <span className="text-rouge-700">*</span>
-          </span>
-        </label>
-        {errors.rgpd && <p className="mt-1.5 ml-8 text-rouge-600 text-xs">{errors.rgpd}</p>}
-      </div>
-
-      {/* Submit */}
-      <div className="pt-2">
-        <button
-          type="submit"
-          disabled={status === "loading"}
-          className={cn(
-            "btn-primary w-full justify-center text-sm py-4",
-            status === "loading" && "opacity-70 cursor-not-allowed"
-          )}
-        >
-          {status === "loading" ? (
-            <>
-              <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
-                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-              </svg>
-              Envoi en cours...
-            </>
-          ) : (
-            <>
-              Envoyer ma demande
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-              </svg>
-            </>
-          )}
-        </button>
-        {status === "error" && (
-          <p className="mt-3 text-rouge-600 text-xs text-center">
-            Une erreur est survenue. Veuillez réessayer ou me contacter directement par email.
-          </p>
+      {/* ─── SUBMIT ─── */}
+      <button
+        type="submit"
+        disabled={loading}
+        className={cn(
+          "w-full py-4 font-sans text-[0.85rem] font-bold tracking-[0.12em] uppercase",
+          "bg-rouge-800 text-white border-2 border-rouge-800 rounded-sm",
+          "shadow-rouge-md transition-all duration-300",
+          "hover:bg-rouge-900 hover:border-rouge-900 hover:shadow-rouge-lg hover:-translate-y-0.5",
+          loading && "opacity-70 cursor-not-allowed hover:translate-y-0"
         )}
-        <p className="mt-4 text-encre-400 text-xs text-center">
-          Réponse garantie sous 24–48h ouvrées · Confidentialité assurée
-        </p>
-      </div>
+      >
+        {loading ? "Envoi en cours…" : "Envoyer ma demande"}
+      </button>
+
+      <p className="text-center text-[0.72rem] text-encre-400 mt-4 leading-relaxed">
+        🔒 Vos données sont traitées de manière strictement confidentielle et sécurisée.
+      </p>
     </form>
+  );
+}
+
+// ─── Helper ───────────────────────────────────────────────
+function FormGroup({
+  label,
+  required,
+  error,
+  children,
+}: {
+  label: string;
+  required?: boolean;
+  error?: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="mb-5">
+      <label className="form-label">
+        {label}
+        {required && <span className="text-rouge-800 ml-1">*</span>}
+      </label>
+      {children}
+      {error && (
+        <p className="form-error-msg">
+          <span>⚠</span> {error}
+        </p>
+      )}
+    </div>
   );
 }

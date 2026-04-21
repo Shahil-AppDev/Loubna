@@ -1,158 +1,168 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import Image from "next/image";
-import SectionLabel from "@/components/ui/SectionLabel";
+import { SITE_CONFIG } from "@/lib/constants";
 
 export const metadata: Metadata = {
-  title: "À propos — Juriste en Droit du Travail",
+  title: "À propos",
   description:
-    "Découvrez le parcours et les valeurs de Loubna Abouz Manta, juriste spécialisée en droit du travail. Rigueur, écoute, confidentialité et pédagogie au service de vos droits.",
+    "Découvrez le parcours et les valeurs de Loubna Abouz Manta, juriste spécialisée en droit du travail. Écoute, rigueur, confidentialité et clarté au service de vos droits.",
+  openGraph: {
+    title: `À propos – ${SITE_CONFIG.name}`,
+    description:
+      "Parcours, valeurs et engagement d'une juriste spécialisée en droit du travail.",
+  },
 };
 
 const VALUES = [
   {
-    icon: "⚖️",
+    icon: "🎯",
     title: "Rigueur",
-    desc: "Chaque dossier est traité avec une analyse précise de la situation légale, de la jurisprudence applicable et des options disponibles.",
+    desc: "Chaque dossier est traité avec la même exigence analytique, quelle que soit sa complexité apparente.",
   },
   {
     icon: "👂",
     title: "Écoute",
-    desc: "Avant tout conseil, j'écoute. Comprendre votre situation dans sa globalité est la condition d'un accompagnement vraiment adapté.",
+    desc: "Comprendre votre situation dans sa globalité est la première étape d'un conseil juridique pertinent.",
   },
   {
     icon: "🔒",
     title: "Confidentialité",
-    desc: "Tout ce que vous me confiez reste entre nous. La discrétion absolue est un engagement non négociable dans mon exercice.",
+    desc: "Vos informations restent strictement confidentielles. La discrétion est un engagement non négociable.",
   },
   {
     icon: "💡",
     title: "Clarté",
-    desc: "Je m'engage à traduire le droit en langage clair. Vous comprenez votre situation, vos options et les conséquences de vos choix.",
+    desc: "Je traduis le droit en langage clair et concret, pour que vous preniez des décisions éclairées.",
+  },
+];
+
+const FORMATION = [
+  {
+    icon: "🎓",
+    title: "Master II Droit Social — Droit du Travail & Protection Sociale",
+    desc: "Formation approfondie en droit individuel et collectif du travail, droit de la sécurité sociale, contentieux prud'homal et relations professionnelles.",
   },
   {
-    icon: "🤝",
-    title: "Engagement",
-    desc: "Je m'implique pleinement dans chaque dossier. Votre problème devient le mien le temps de votre accompagnement.",
+    icon: "🏢",
+    title: "Expérience en cabinet juridique spécialisé",
+    desc: "Traitement de dossiers en droit du travail pour une clientèle de salariés et d'entreprises : licenciements, négociations, procédures disciplinaires, contentieux.",
   },
   {
-    icon: "🎯",
-    title: "Pragmatisme",
-    desc: "Mon objectif n'est pas de vous noyer dans le jargon juridique, mais de vous offrir des solutions concrètes et applicables.",
+    icon: "📋",
+    title: "Conseil RH en entreprise",
+    desc: "Accompagnement de directions RH dans la sécurisation de leurs pratiques, la rédaction de documents contractuels et la prévention des risques sociaux.",
   },
 ];
 
 export default function AProposPage() {
   return (
     <>
-      {/* Header */}
-      <section className="bg-encre-950 pt-32 pb-20 relative overflow-hidden">
-        <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-or-500 to-transparent" />
-        <div className="absolute inset-0 opacity-5" style={{ backgroundImage: "radial-gradient(circle at 30% 50%, rgba(201,168,76,0.5) 0%, transparent 60%)" }} />
-        <div className="container-site relative z-10 text-center">
-          <SectionLabel light>À propos</SectionLabel>
-          <h1 className="font-serif text-4xl lg:text-5xl text-white font-bold mt-2">
-            Qui suis-je ?
+      {/* ─── PAGE HERO ─────────────────────────────────── */}
+      <section className="page-hero">
+        <div className="hero-grid-bg" />
+        <div
+          className="absolute -bottom-40 -right-40 w-[500px] h-[500px] rounded-full pointer-events-none"
+          style={{ background: "radial-gradient(circle, rgba(139,0,0,.22) 0%, transparent 70%)" }}
+        />
+        <div className="container-main relative z-10 pt-20 pb-12">
+          <nav className="text-[0.72rem] tracking-[0.14em] uppercase text-white/30 mb-5 flex gap-2">
+            <Link href="/" className="hover:text-white/60 transition-colors">Accueil</Link>
+            <span>›</span>
+            <span className="text-or-500">À propos</span>
+          </nav>
+          <h1 className="font-serif text-[clamp(2.4rem,5vw,3.8rem)] font-semibold text-white leading-[1.12] max-w-2xl">
+            Une juriste engagée,
+            <br />
+            <em className="text-or-500 font-light" style={{ fontStyle: "italic" }}>
+              à votre côté.
+            </em>
           </h1>
-          <div className="w-16 h-0.5 bg-gradient-to-r from-or-500 to-or-300 my-6 mx-auto" />
-          <p className="text-encre-300 text-base leading-relaxed max-w-xl mx-auto">
-            Juriste spécialisée en droit du travail, engagée pour défendre les droits de
-            salariés et accompagner les employeurs dans leurs obligations légales.
+          <p className="text-white/50 text-[1rem] max-w-[500px] mt-5 leading-[1.8]">
+            Le droit du travail est un domaine complexe, en perpétuelle évolution.
+            Mon rôle : vous aider à le comprendre, le défendre et l'utiliser à votre avantage.
           </p>
         </div>
       </section>
 
-      {/* Présentation */}
-      <section className="py-20 lg:py-28 bg-encre-50">
-        <div className="container-site">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
-            {/* Photo / Logo */}
-            <div className="lg:col-span-4 flex justify-center lg:justify-start">
+      {/* ─── ABOUT MAIN ────────────────────────────────── */}
+      <section className="section-pad bg-encre-50">
+        <div className="container-main">
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.7fr] gap-20 items-start">
+
+            {/* Portrait */}
+            <div className="lg:sticky lg:top-24">
               <div className="relative">
-                <div className="absolute -top-4 -left-4 w-full h-full border border-or-300/30 rounded-sm" />
-                <div className="relative bg-encre-950 rounded-sm p-10 flex items-center justify-center">
-                  <div className="relative w-48 h-48">
-                    <Image
-                      src="/logo.png"
-                      alt="Loubna Abouz Manta"
-                      fill
-                      className="object-contain"
-                    />
-                  </div>
+                {/* Portrait placeholder */}
+                <div
+                  className="aspect-[3/4] rounded-sm border border-or-500/20 flex flex-col items-center justify-center gap-4 text-white/25 max-w-sm"
+                  style={{ background: "linear-gradient(135deg, #1a1a1a, #2a2a2a)" }}
+                >
+                  <span className="text-5xl">⚖️</span>
+                  <span className="text-[0.75rem] tracking-[0.1em] uppercase">Photo professionnelle</span>
+                  <span className="text-[0.65rem] tracking-[0.08em] opacity-60">
+                    À remplacer dans /public/
+                  </span>
                 </div>
-                <div className="mt-4 bg-white border border-encre-100 rounded-sm p-5">
-                  <p className="font-serif text-lg text-encre-950 font-semibold">Loubna Abouz Manta</p>
-                  <p className="text-or-500 text-xs tracking-[0.15em] uppercase font-medium mt-0.5">
-                    Juriste · Droit du Travail
-                  </p>
-                  <div className="w-12 h-0.5 bg-or-400 my-4" />
-                  <div className="space-y-1.5">
-                    <p className="text-encre-500 text-xs flex items-center gap-2">
-                      <span className="text-or-500">📍</span>
-                      Paris, France {/* À MODIFIER */}
-                    </p>
-                    <p className="text-encre-500 text-xs flex items-center gap-2">
-                      <span className="text-or-500">🎓</span>
-                      Master en Droit du Travail {/* À MODIFIER */}
-                    </p>
-                    <p className="text-encre-500 text-xs flex items-center gap-2">
-                      <span className="text-or-500">⏱</span>
-                      10+ années d&apos;expertise {/* À MODIFIER */}
-                    </p>
-                  </div>
+                {/* Badge */}
+                <div className="absolute -bottom-5 -right-5 bg-rouge-800 text-white p-5 rounded-sm shadow-rouge-lg text-center">
+                  <strong className="block font-serif text-[1.9rem] leading-none">+10</strong>
+                  <span className="text-[0.65rem] opacity-80 leading-tight block mt-1">
+                    ans d'expertise
+                    <br />droit du travail
+                  </span>
                 </div>
               </div>
             </div>
 
-            {/* Texte */}
-            <div className="lg:col-span-8">
-              <SectionLabel>Mon histoire</SectionLabel>
-              <h2 className="font-serif text-3xl lg:text-4xl text-encre-950 font-bold mt-2 mb-6">
-                Une expertise née d&apos;une conviction profonde
-              </h2>
-              <div className="space-y-5 text-encre-600 text-sm leading-relaxed">
-                <p>
-                  Le droit du travail est un domaine où les enjeux sont profondément humains.
-                  Derrière chaque dossier, il y a une personne — un salarié qui se bat pour
-                  ses droits, un employeur qui cherche à agir correctement, une situation qui
-                  peut avoir des conséquences majeures sur une vie professionnelle et personnelle.
+            {/* Content */}
+            <div className="pt-2">
+              <span className="section-label">Mon parcours</span>
+
+              <blockquote className="font-serif text-[1.3rem] italic text-encre-950 leading-[1.65] mb-7 border-l-[3px] border-rouge-800 pl-5">
+                « Le droit du travail protège des droits fondamentaux. Chaque dossier que je
+                traite mérite la même rigueur et la même attention. »
+              </blockquote>
+
+              <div className="space-y-5 mb-12">
+                <p className="text-[0.95rem] text-encre-600 leading-[1.88]">
+                  Juriste spécialisée en droit du travail, j'accompagne salariés et employeurs
+                  depuis plus de dix ans dans l'ensemble des problématiques liées à la relation
+                  de travail. Diplômée en droit privé et titulaire d'un master spécialisé en
+                  droit social, j'ai construit mon expertise au contact des réalités du terrain,
+                  aussi bien au sein de cabinets juridiques que d'entreprises.
                 </p>
-                <p>
-                  C&apos;est cette conviction qui m&apos;a amenée à me spécialiser dans ce domaine.
-                  Après un parcours académique solide en droit — avec un Master en droit social
-                  et du travail — j&apos;ai développé une expertise de terrain en accompagnant aussi
-                  bien des salariés que des entreprises de toutes tailles.
+                <p className="text-[0.95rem] text-encre-600 leading-[1.88]">
+                  Mon exercice repose sur une conviction profonde : un conseil juridique de
+                  qualité doit être accessible, compréhensible et pleinement adapté à la
+                  situation de chaque client. Ni jargon inutile, ni réponse générique — chaque
+                  situation est unique et mérite une analyse sur mesure.
                 </p>
-                <p>
-                  Mon approche est claire : je refuse de traiter les dossiers comme de simples
-                  procédures. Chaque situation est unique, chaque client mérite une attention
-                  individualisée et des conseils adaptés à sa réalité. Je m&apos;engage à être
-                  disponible, transparente et efficace — sans jargon inutile.
-                </p>
-                <p>
-                  Que vous soyez salarié confronté à une situation difficile ou employeur
-                  cherchant à sécuriser vos pratiques, je suis là pour vous offrir un
-                  accompagnement de qualité, rigoureux et bienveillant.
+                <p className="text-[0.95rem] text-encre-600 leading-[1.88]">
+                  Qu'il s'agisse d'un licenciement contestable, d'une rupture conventionnelle
+                  à négocier, d'un contrat à sécuriser ou d'un conflit à résoudre, j'apporte
+                  une réponse juridique précise, stratégique et humaine.
                 </p>
               </div>
 
-              <div className="mt-10 p-6 bg-white border-l-2 border-or-500 rounded-sm">
-                <p className="font-serif text-base text-encre-800 italic leading-relaxed">
-                  &ldquo;Je crois profondément que l&apos;accès à un conseil juridique de qualité
-                  ne devrait pas être un privilège. Mon rôle est de vous donner les clés
-                  pour comprendre votre situation et agir en connaissance de cause.&rdquo;
-                </p>
-                <p className="mt-3 text-or-500 text-xs font-semibold tracking-wide uppercase">
-                  — Loubna Abouz Manta
-                </p>
+              {/* Values */}
+              <span className="section-label">Mes valeurs</span>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-2">
+                {VALUES.map((v, i) => (
+                  <div
+                    key={i}
+                    className="bg-encre-100 border border-encre-200/50 border-l-[3px] border-l-rouge-800 p-6 rounded-sm"
+                  >
+                    <h4 className="font-serif text-[1.05rem] text-encre-950 mb-2">
+                      {v.icon} {v.title}
+                    </h4>
+                    <p className="text-[0.84rem] text-encre-500 leading-[1.7]">{v.desc}</p>
+                  </div>
+                ))}
               </div>
 
-              <div className="mt-10 flex flex-wrap gap-4">
-                <Link href="/contact" className="btn-primary text-sm">
-                  Prendre contact
-                </Link>
-                <Link href="/services" className="btn-secondary text-sm">
-                  Mes services
+              <div className="mt-10">
+                <Link href="/contact" className="btn btn-primary">
+                  Prendre rendez-vous →
                 </Link>
               </div>
             </div>
@@ -160,106 +170,50 @@ export default function AProposPage() {
         </div>
       </section>
 
-      {/* Valeurs */}
-      <section className="py-20 lg:py-28 bg-white">
-        <div className="container-site">
-          <div className="max-w-2xl mx-auto text-center mb-16">
-            <SectionLabel>Ce qui me définit</SectionLabel>
-            <h2 className="font-serif text-3xl lg:text-4xl text-encre-950 font-bold mt-2">
-              Mes valeurs, au cœur de mon accompagnement
+      {/* ─── FORMATION ─────────────────────────────────── */}
+      <section className="section-pad bg-encre-100">
+        <div className="container-main">
+          <div className="text-center mb-14">
+            <span className="section-label">Formation & expérience</span>
+            <h2 className="font-serif text-[clamp(1.9rem,3vw,2.6rem)] text-encre-950 leading-[1.2]">
+              Un socle académique
+              <br />
+              <em className="text-rouge-800 font-light" style={{ fontStyle: "italic" }}>
+                et pratique solide
+              </em>
             </h2>
-            <div className="divider-or mx-auto" />
           </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {VALUES.map((v) => (
-              <div key={v.title} className="card-premium">
-                <div className="w-12 h-12 rounded-sm bg-rouge-50 border border-rouge-100 flex items-center justify-center text-xl mb-6">
-                  {v.icon}
+          <div className="max-w-[700px] mx-auto space-y-0 divide-y divide-encre-200">
+            {FORMATION.map((f, i) => (
+              <div key={i} className="flex gap-7 py-8">
+                <div className="text-[2rem] flex-shrink-0 pt-1">{f.icon}</div>
+                <div>
+                  <h4 className="font-serif text-[1.12rem] text-encre-950 mb-2">{f.title}</h4>
+                  <p className="text-[0.9rem] text-encre-500 leading-[1.8]">{f.desc}</p>
                 </div>
-                <h3 className="font-serif text-lg text-encre-950 font-semibold mb-3">{v.title}</h3>
-                <p className="text-encre-500 text-sm leading-relaxed">{v.desc}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Domaines de compétence */}
-      <section className="py-20 lg:py-28 bg-encre-950">
-        <div className="container-site">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <SectionLabel light>Compétences</SectionLabel>
-              <h2 className="font-serif text-3xl lg:text-4xl text-white font-bold mt-2 mb-6">
-                Domaines d&apos;intervention
-              </h2>
-              <p className="text-encre-300 text-sm leading-relaxed mb-8">
-                Ma spécialisation exclusive en droit du travail me permet de
-                traiter en profondeur l&apos;ensemble des problématiques liées aux
-                relations professionnelles, au bénéfice des salariés comme des employeurs.
-              </p>
-              <div className="grid grid-cols-2 gap-3">
-                {[
-                  "Contrats de travail",
-                  "Licenciement",
-                  "Rupture conventionnelle",
-                  "Procédures disciplinaires",
-                  "Harcèlement moral",
-                  "Harcèlement sexuel",
-                  "Discrimination",
-                  "Heures supplémentaires",
-                  "Congés & absences",
-                  "Accord d'entreprise",
-                  "Clause de non-concurrence",
-                  "Assistance précontentieuse",
-                ].map((comp) => (
-                  <div key={comp} className="flex items-center gap-2.5">
-                    <div className="w-1.5 h-1.5 rounded-full bg-or-500 flex-shrink-0" />
-                    <span className="text-encre-300 text-xs">{comp}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="space-y-4">
-              {[
-                { label: "Droit du travail — salariés", level: 98 },
-                { label: "Droit du travail — employeurs", level: 95 },
-                { label: "Assistance précontentieuse", level: 90 },
-                { label: "Rédaction de contrats", level: 97 },
-                { label: "Gestion des conflits", level: 92 },
-              ].map((skill) => (
-                <div key={skill.label}>
-                  <div className="flex justify-between items-center mb-2">
-                    <span className="text-encre-300 text-xs font-medium">{skill.label}</span>
-                    <span className="text-or-400 text-xs font-semibold">{skill.level}%</span>
-                  </div>
-                  <div className="h-1 bg-encre-800 rounded-full overflow-hidden">
-                    <div
-                      className="h-full bg-gradient-to-r from-rouge-800 to-or-500 rounded-full"
-                      style={{ width: `${skill.level}%` }}
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section className="py-16 bg-rouge-800">
-        <div className="container-site text-center">
-          <h2 className="font-serif text-2xl lg:text-3xl text-white font-bold mb-4">
-            Prêt(e) à être accompagné(e) ?
+      {/* ─── CTA ───────────────────────────────────────── */}
+      <section className="section-pad bg-rouge-800">
+        <div className="container-main text-center">
+          <h2 className="font-serif text-[clamp(2rem,4vw,2.8rem)] text-white mb-4">
+            Prêt à faire valoir vos droits ?
           </h2>
-          <p className="text-white/70 text-sm mb-8 max-w-md mx-auto">
-            Contactez-moi pour un premier échange confidentiel sur votre situation.
+          <p className="text-white/70 mb-9">
+            Première analyse personnalisée sous 48h.
           </p>
-          <Link href="/contact" className="inline-flex items-center justify-center gap-2 bg-white text-rouge-800 px-8 py-4 rounded-sm font-semibold text-sm tracking-wide transition-all duration-300 hover:bg-encre-50 hover:-translate-y-0.5">
-            Prendre contact
-          </Link>
+          <div className="flex flex-wrap gap-4 justify-center">
+            <Link href="/contact" className="btn btn-white">
+              Prendre rendez-vous
+            </Link>
+            <Link href="/services" className="btn btn-ghost-white">
+              Voir les services
+            </Link>
+          </div>
         </div>
       </section>
     </>

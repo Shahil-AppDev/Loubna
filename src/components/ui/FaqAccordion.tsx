@@ -2,72 +2,59 @@
 
 import { useState } from "react";
 import { cn } from "@/lib/utils";
-import { FAQ_ITEMS } from "@/lib/constants";
 
-export default function FaqAccordion() {
-  const [openIndex, setOpenIndex] = useState<number | null>(0);
+interface FaqItem {
+  question: string;
+  answer: string;
+  category?: string;
+}
+
+interface FaqAccordionProps {
+  items: FaqItem[];
+}
+
+export default function FaqAccordion({ items }: FaqAccordionProps) {
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+  const toggle = (index: number) => {
+    setOpenIndex(openIndex === index ? null : index);
+  };
 
   return (
-    <div className="space-y-3">
-      {FAQ_ITEMS.map((item, index) => (
-        <div
-          key={index}
-          className={cn(
-            "border rounded-sm transition-all duration-300",
-            openIndex === index
-              ? "border-rouge-800/30 bg-white shadow-rouge-sm"
-              : "border-encre-100 bg-white hover:border-encre-200"
-          )}
-        >
+    <div className="divide-y divide-encre-100">
+      {items.map((item, i) => (
+        <div key={i} className="faq-item">
           <button
-            onClick={() => setOpenIndex(openIndex === index ? null : index)}
-            className="w-full flex items-start justify-between gap-4 p-6 text-left"
-            aria-expanded={openIndex === index}
+            onClick={() => toggle(i)}
+            aria-expanded={openIndex === i}
+            className={cn(
+              "w-full text-left py-6 flex items-center justify-between gap-6",
+              "font-serif text-[1.08rem] font-semibold transition-colors duration-200",
+              openIndex === i ? "text-rouge-800" : "text-encre-950 hover:text-rouge-800"
+            )}
           >
+            <span>{item.question}</span>
             <span
               className={cn(
-                "font-serif text-base font-medium leading-snug transition-colors duration-200",
-                openIndex === index ? "text-rouge-800" : "text-encre-900"
+                "flex-shrink-0 w-8 h-8 rounded-full border border-rouge-800/25 flex items-center justify-center",
+                "text-rouge-800 text-xl transition-all duration-250",
+                openIndex === i
+                  ? "bg-rouge-800 text-white border-rouge-800 rotate-45"
+                  : "bg-transparent"
               )}
             >
-              {item.question}
-            </span>
-            <span
-              className={cn(
-                "flex-shrink-0 w-6 h-6 rounded-full border flex items-center justify-center transition-all duration-300",
-                openIndex === index
-                  ? "bg-rouge-800 border-rouge-800 rotate-45"
-                  : "border-encre-300"
-              )}
-            >
-              <svg
-                className={cn(
-                  "w-3 h-3 transition-colors",
-                  openIndex === index ? "text-white" : "text-encre-500"
-                )}
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M12 5v14M5 12h14"
-                />
-              </svg>
+              +
             </span>
           </button>
           <div
             className={cn(
-              "overflow-hidden transition-all duration-350 ease-in-out",
-              openIndex === index ? "max-h-96" : "max-h-0"
+              "overflow-hidden transition-all duration-500 ease-[cubic-bezier(.4,0,.2,1)]",
+              openIndex === i ? "max-h-[400px] pb-6" : "max-h-0"
             )}
           >
-            <div className="px-6 pb-6">
-              <div className="w-8 h-px bg-or-400 mb-4" />
-              <p className="text-encre-600 text-sm leading-relaxed">{item.answer}</p>
-            </div>
+            <p className="text-[0.93rem] text-encre-600 leading-[1.85]">
+              {item.answer}
+            </p>
           </div>
         </div>
       ))}
