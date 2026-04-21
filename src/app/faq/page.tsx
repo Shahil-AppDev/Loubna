@@ -4,9 +4,9 @@ import SectionLabel from "@/components/ui/SectionLabel";
 import FaqAccordion from "@/components/ui/FaqAccordion";
 
 export const metadata: Metadata = {
-  title: "FAQ — Questions fréquentes sur le droit du travail",
+  title: "FAQ — Loubna Abouz Manta, Juriste en Droit du Travail",
   description:
-    "Réponses aux questions les plus fréquentes sur le droit du travail : consultation, tarifs, licenciement, rupture conventionnelle, harcèlement et plus.",
+    "Questions fréquentes sur l'activité de Loubna Abouz Manta : accident du travail, maladie professionnelle, DUERP, prévention des risques, licenciement et plus.",
 };
 
 export default function FaqPage() {
@@ -15,7 +15,13 @@ export default function FaqPage() {
       {/* Header */}
       <section className="bg-encre-950 pt-32 pb-20 relative overflow-hidden">
         <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-or-500 to-transparent" />
-        <div className="absolute inset-0 opacity-5" style={{ backgroundImage: "radial-gradient(circle at 40% 50%, rgba(201,168,76,0.5) 0%, transparent 60%)" }} />
+        <div
+          className="absolute inset-0 opacity-5"
+          style={{
+            backgroundImage:
+              "radial-gradient(circle at 40% 50%, rgba(201,168,76,0.5) 0%, transparent 60%)",
+          }}
+        />
         <div className="container-site relative z-10 text-center">
           <SectionLabel light>FAQ</SectionLabel>
           <h1 className="font-serif text-4xl lg:text-5xl text-white font-bold mt-2">
@@ -23,8 +29,8 @@ export default function FaqPage() {
           </h1>
           <div className="w-16 h-0.5 bg-gradient-to-r from-or-500 to-or-300 my-6 mx-auto" />
           <p className="text-encre-300 text-base leading-relaxed max-w-xl mx-auto">
-            Les réponses aux questions que vous vous posez sur mon activité,
-            mes services et le droit du travail en général.
+            Les réponses aux questions les plus fréquentes sur mon activité,
+            mes modalités d&apos;intervention et les thématiques du droit du travail.
           </p>
         </div>
       </section>
@@ -65,7 +71,11 @@ export default function FaqPage() {
                   {[
                     {
                       icon: "⚖️",
-                      text: "Juriste ≠ avocat : même expertise, mais intervention préjudiciaire uniquement",
+                      text: "Je ne suis pas avocat et n'assure pas de représentation en justice",
+                    },
+                    {
+                      icon: "🔀",
+                      text: "Si votre situation nécessite un avocat, vous serez orienté(e)",
                     },
                     {
                       icon: "🔒",
@@ -73,11 +83,7 @@ export default function FaqPage() {
                     },
                     {
                       icon: "🌐",
-                      text: "Intervention à distance sur toute la France",
-                    },
-                    {
-                      icon: "💡",
-                      text: "Devis gratuit avant tout engagement",
+                      text: "Interventions à distance sur toute la France",
                     },
                   ].map((item) => (
                     <li key={item.text} className="flex items-start gap-3">
@@ -88,9 +94,18 @@ export default function FaqPage() {
                 </ul>
               </div>
 
+              {/* Disclaimer légal */}
+              <div className="bg-encre-50 border border-encre-200 rounded-sm p-5">
+                <p className="text-encre-500 text-xs leading-relaxed">
+                  <span className="font-semibold text-encre-700 block mb-1">Note importante</span>
+                  Les informations fournies ne constituent pas une consultation juridique
+                  au sens de la réglementation applicable à la profession d&apos;avocat.
+                </p>
+              </div>
+
               <div className="bg-rouge-800 rounded-sm p-6 text-center">
                 <p className="font-serif text-white text-lg font-semibold mb-2">
-                  Urgence juridique ?
+                  Situation urgente ?
                 </p>
                 <p className="text-white/70 text-xs mb-5">
                   Précisez &ldquo;URGENT&rdquo; dans votre message pour un traitement prioritaire.
@@ -99,7 +114,7 @@ export default function FaqPage() {
                   href="/contact"
                   className="inline-flex items-center justify-center gap-2 bg-white text-rouge-800 px-6 py-3 rounded-sm font-semibold text-xs tracking-wide transition-all duration-300 hover:bg-encre-50 w-full"
                 >
-                  Contact urgent
+                  Me contacter
                 </Link>
               </div>
             </div>
@@ -118,15 +133,16 @@ export default function FaqPage() {
           </div>
           <div className="flex flex-wrap justify-center gap-3">
             {[
-              "Consultation juridique",
-              "Tarifs & honoraires",
+              "Juriste vs Avocat",
+              "Accident du travail",
+              "Maladie professionnelle",
+              "DUERP",
+              "Prévention des risques",
               "Licenciement",
               "Rupture conventionnelle",
-              "Harcèlement",
-              "Contrats de travail",
               "Distanciel",
               "Confidentialité",
-              "Juriste vs Avocat",
+              "Tarifs",
             ].map((theme) => (
               <span
                 key={theme}

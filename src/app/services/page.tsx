@@ -4,9 +4,9 @@ import { SERVICES } from "@/lib/constants";
 import SectionLabel from "@/components/ui/SectionLabel";
 
 export const metadata: Metadata = {
-  title: "Services — Conseil & Accompagnement en Droit du Travail",
+  title: "Interventions — Loubna Abouz Manta, Juriste en Droit du Travail",
   description:
-    "Découvrez les services de Loubna Abouz Manta : conseil juridique, accompagnement salariés et employeurs, contrats de travail, licenciement, rupture conventionnelle, harcèlement et plus.",
+    "Découvrez les domaines d'intervention de Loubna Abouz Manta : analyse de situation professionnelle, DUERP, prévention des risques, accompagnement des salariés et des entreprises.",
 };
 
 export default function ServicesPage() {
@@ -15,20 +15,36 @@ export default function ServicesPage() {
       {/* Header */}
       <section className="bg-encre-950 pt-32 pb-20 relative overflow-hidden">
         <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-or-500 to-transparent" />
-        <div className="absolute inset-0 opacity-5" style={{ backgroundImage: "radial-gradient(circle at 70% 50%, rgba(201,168,76,0.5) 0%, transparent 60%)" }} />
+        <div
+          className="absolute inset-0 opacity-5"
+          style={{
+            backgroundImage:
+              "radial-gradient(circle at 70% 50%, rgba(201,168,76,0.5) 0%, transparent 60%)",
+          }}
+        />
         <div className="container-site relative z-10 text-center">
-          <SectionLabel light>Mes prestations</SectionLabel>
+          <SectionLabel light>Mes interventions</SectionLabel>
           <h1 className="font-serif text-4xl lg:text-5xl text-white font-bold mt-2">
-            Des services adaptés à chaque situation
+            Des interventions adaptées à chaque situation
           </h1>
           <div className="w-16 h-0.5 bg-gradient-to-r from-or-500 to-or-300 my-6 mx-auto" />
           <p className="text-encre-300 text-base leading-relaxed max-w-2xl mx-auto">
-            Chaque situation professionnelle est unique. Je propose un accompagnement
-            sur-mesure pour répondre à vos besoins spécifiques, que vous soyez
-            salarié ou employeur.
+            J&apos;interviens en amont afin d&apos;analyser les situations de travail,
+            identifier les risques et accompagner salariés et entreprises dans
+            une logique de prévention et de sécurisation des pratiques.
           </p>
         </div>
       </section>
+
+      {/* Disclaimer légal visible */}
+      <div className="bg-encre-900 border-b border-encre-800">
+        <div className="container-site py-4">
+          <p className="text-encre-400 text-xs text-center leading-relaxed">
+            <span className="text-or-400 mr-1">ℹ</span>
+            Les informations fournies ne constituent pas une consultation juridique au sens de la réglementation applicable à la profession d&apos;avocat.
+          </p>
+        </div>
+      </div>
 
       {/* Services grid */}
       <section className="py-20 lg:py-28 bg-encre-50">
@@ -92,7 +108,7 @@ export default function ServicesPage() {
               {
                 icon: "🖥️",
                 title: "100% Distanciel",
-                desc: "Toutes mes prestations sont disponibles à distance : téléphone, visioconférence, échange de documents sécurisé. Où que vous soyez en France.",
+                desc: "Toutes mes interventions sont disponibles à distance : téléphone, visioconférence, échange de documents sécurisé. Où que vous soyez en France.",
               },
               {
                 icon: "⚡",
@@ -102,7 +118,7 @@ export default function ServicesPage() {
               {
                 icon: "💰",
                 title: "Tarification claire",
-                desc: "Devis transparent établi avant tout engagement. Pas de surprise, pas de frais cachés. Consultation ponctuelle ou accompagnement sur-mesure.",
+                desc: "Devis transparent établi avant tout engagement. Pas de surprise, pas de frais cachés. Échange ponctuel ou accompagnement sur-mesure.",
               },
             ].map((item) => (
               <div key={item.title} className="card-premium text-center">
@@ -125,7 +141,7 @@ export default function ServicesPage() {
             </h2>
             <p className="text-encre-300 text-sm leading-relaxed mb-10">
               Chaque situation est unique. Contactez-moi directement pour que nous
-              puissions discuter de votre problématique et définir l&apos;accompagnement
+              puissions analyser votre problématique et définir l&apos;accompagnement
               le plus adapté à vos besoins.
             </p>
             <Link

@@ -3,7 +3,7 @@ export const SITE_CONFIG = {
   title: "Loubna Abouz Manta — Juriste en Droit du Travail",
   titleShort: "Loubna Abouz Manta",
   description:
-    "Juriste spécialisée en droit du travail. Conseil, accompagnement et assistance pour salariés et employeurs. Expertise rigoureuse, écoute attentive, confidentialité garantie.",
+    "Loubna Abouz Manta, juriste en droit du travail. Accompagnement des salariés et des entreprises dans l'analyse de leurs situations professionnelles et la prévention des risques, en amont des procédures.",
   url: "https://loubna-abouz-manta.fr", // À MODIFIER
   email: "contact@loubna-abouz-manta.fr", // À MODIFIER
   phone: "+33 X XX XX XX XX", // À MODIFIER
@@ -23,127 +23,163 @@ export const NAV_LINKS = [
 
 export const SERVICES = [
   {
-    id: "conseil",
-    icon: "⚖️",
-    title: "Conseil en droit du travail",
+    id: "analyse",
+    icon: "🔎",
+    title: "Analyse de situation professionnelle",
     description:
-      "Analyse de votre situation, réponses précises à vos questions juridiques et anticipation des risques pour sécuriser vos décisions.",
-    tags: ["Analyse", "Prévention", "Stratégie"],
+      "Analyse approfondie de la situation de travail pour identifier les enjeux, clarifier le cadre applicable et orienter vers les options les plus adaptées, en amont de toute démarche.",
+    tags: ["Analyse", "Orientation", "Amont"],
+  },
+  {
+    id: "prevention-conflits",
+    icon: "🛡️",
+    title: "Prévention des conflits",
+    description:
+      "Identification des tensions en amont pour agir avant leur escalade. Accompagnement dans la mise en place de pratiques visant à préserver la qualité des relations professionnelles.",
+    tags: ["Prévention", "Anticipation", "Relations"],
   },
   {
     id: "salaries",
     icon: "👤",
-    title: "Accompagnement salariés",
+    title: "Accompagnement des salariés",
     description:
-      "Défense de vos droits face à l'employeur, compréhension de votre contrat et assistance dans toutes les étapes de votre parcours professionnel.",
-    tags: ["Droits", "Protection", "Accompagnement"],
+      "Analyse de la situation professionnelle, compréhension du cadre applicable et orientation dans les démarches à engager. Intervention en amont pour clarifier les enjeux et les options disponibles.",
+    tags: ["Analyse", "Information", "Orientation"],
   },
   {
     id: "employeurs",
     icon: "🏢",
-    title: "Accompagnement employeurs",
+    title: "Accompagnement des entreprises",
     description:
-      "Conseil opérationnel pour la gestion RH, conformité légale, prévention des contentieux et sécurisation de vos pratiques managériales.",
+      "Accompagnement des dirigeants et équipes RH dans la mise en conformité de leurs pratiques, la sécurisation de leurs procédures et la prévention des risques liés aux relations de travail.",
     tags: ["RH", "Conformité", "Prévention"],
+  },
+  {
+    id: "prevention-risques",
+    icon: "⚠️",
+    title: "Prévention des risques professionnels",
+    description:
+      "Identification et évaluation des risques professionnels — physiques, psychosociaux, organisationnels. Accompagnement dans la mise en place d'une démarche structurée de prévention.",
+    tags: ["Risques", "Santé", "Sécurité"],
+  },
+  {
+    id: "duerp",
+    icon: "📋",
+    title: "DUERP — Document Unique",
+    description:
+      "Accompagnement dans la réalisation et la mise à jour du Document Unique d'Évaluation des Risques Professionnels (DUERP), en collaboration avec les acteurs de l'entreprise.",
+    tags: ["DUERP", "Audit", "Obligation légale"],
+  },
+  {
+    id: "sante-securite",
+    icon: "🏥",
+    title: "Santé, sécurité et conditions de travail",
+    description:
+      "Accompagnement sur les obligations légales en matière de santé et sécurité au travail, analyse des conditions de travail et identification des actions correctives à mettre en place.",
+    tags: ["Santé", "Sécurité", "CSSCT"],
   },
   {
     id: "contrats",
     icon: "📄",
     title: "Contrats de travail",
     description:
-      "Rédaction, analyse et négociation de tous types de contrats : CDI, CDD, clause de non-concurrence, période d'essai, avenant.",
-    tags: ["Rédaction", "Analyse", "Négociation"],
+      "Analyse et rédaction de contrats de travail, avenants et clauses spécifiques. Vérification de la conformité des documents contractuels au regard du cadre légal et conventionnel applicable.",
+    tags: ["Rédaction", "Analyse", "Conformité"],
   },
   {
-    id: "disciplinaire",
-    icon: "🔍",
-    title: "Procédures disciplinaires",
+    id: "licenciement",
+    icon: "📁",
+    title: "Sécurisation d'une procédure de licenciement",
     description:
-      "Assistance lors d'entretiens préalables, analyse de la régularité des procédures et conseil sur les recours disponibles.",
-    tags: ["Procédure", "Défense", "Recours"],
+      "Accompagnement en amont d'une procédure de licenciement : vérification du cadre, analyse des éléments constitutifs, sécurisation des étapes procédurales avant toute mise en œuvre.",
+    tags: ["Procédure", "Sécurisation", "Amont"],
   },
   {
     id: "rupture",
     icon: "🤝",
     title: "Rupture conventionnelle",
     description:
-      "Accompagnement dans la négociation et la conclusion d'une rupture conventionnelle dans les meilleures conditions pour toutes les parties.",
-    tags: ["Négociation", "Indemnités", "Accord"],
-  },
-  {
-    id: "licenciement",
-    icon: "📋",
-    title: "Licenciement",
-    description:
-      "Analyse de la légitimité du licenciement, vérification du respect de la procédure, conseil sur les contestations possibles.",
-    tags: ["Analyse", "Contestation", "Indemnités"],
+      "Analyse du cadre et accompagnement dans la compréhension des conditions et enjeux d'une rupture conventionnelle. Information sur les démarches, les étapes et les points de vigilance.",
+    tags: ["Information", "Accompagnement", "Rupture"],
   },
   {
     id: "harcelement",
-    icon: "🛡️",
-    title: "Harcèlement & conflits",
+    icon: "🔒",
+    title: "Harcèlement & risques psychosociaux",
     description:
-      "Prise en charge des situations de harcèlement moral ou sexuel, discrimination, et accompagnement dans la résolution des conflits professionnels.",
-    tags: ["Protection", "Médiation", "Résolution"],
+      "Analyse des situations pouvant caractériser un harcèlement moral ou sexuel, ou des risques psychosociaux (RPS). Accompagnement dans l'identification des mesures préventives adaptées.",
+    tags: ["RPS", "Prévention", "Analyse"],
   },
   {
     id: "relecture",
     icon: "✏️",
-    title: "Relecture de documents",
+    title: "Relecture et analyse de documents",
     description:
-      "Vérification juridique de tout document professionnel : accord, règlement intérieur, charte, protocole, lettre de licenciement.",
-    tags: ["Vérification", "Conformité", "Sécurité"],
-  },
-  {
-    id: "precontentieux",
-    icon: "⚡",
-    title: "Assistance précontentieuse",
-    description:
-      "Intervention avant toute procédure judiciaire : mise en demeure, médiation, négociation amiable pour éviter le contentieux.",
-    tags: ["Médiation", "Négociation", "Résolution"],
+      "Examen de tout document professionnel — règlement intérieur, accord d'entreprise, charte, procédure interne — afin d'en vérifier la conformité et la cohérence avec le cadre légal applicable.",
+    tags: ["Vérification", "Conformité", "Documents"],
   },
 ];
 
 export const FAQ_ITEMS = [
   {
-    question: "Quelle est la différence entre un avocat et un juriste en droit du travail ?",
+    question: "Quelle est la différence entre un juriste et un avocat ?",
     answer:
-      "Un juriste en droit du travail est un professionnel diplômé en droit, spécialisé dans ce domaine. Contrairement à un avocat, il ne peut pas représenter ses clients devant les tribunaux, mais il peut conseiller, accompagner, rédiger des actes et intervenir en phase précontentieuse. Pour beaucoup de situations, un juriste suffit et offre une expertise au rapport qualité-prix souvent plus accessible.",
+      "Un juriste intervient dans l'analyse des situations professionnelles, la rédaction de documents et l'orientation des personnes ou des entreprises dans leurs démarches. Il n'est pas avocat et ne représente pas les clients devant les juridictions. Lorsqu'une situation nécessite une procédure judiciaire ou une représentation, une orientation vers un avocat compétent en droit du travail est proposée. Les informations fournies ne constituent pas une consultation au sens de la réglementation applicable à la profession d'avocat.",
   },
   {
-    question: "À qui s'adressent vos services : salariés ou employeurs ?",
+    question: "À qui s'adressent vos interventions ?",
     answer:
-      "Les deux ! J'accompagne aussi bien les salariés qui ont besoin de comprendre ou défendre leurs droits, que les employeurs souhaitant sécuriser leurs pratiques RH, rédiger des contrats ou gérer des procédures disciplinaires. Chaque cas est traité avec la même rigueur et confidentialité.",
+      "J'interviens aussi bien auprès des salariés souhaitant comprendre leur situation professionnelle, que des entreprises, dirigeants et équipes RH cherchant à sécuriser leurs pratiques et à prévenir les risques liés aux relations de travail. Chaque situation est traitée avec la même rigueur et confidentialité.",
   },
   {
-    question: "Comment se déroule une première consultation ?",
+    question: "Comment se déroule un premier échange ?",
     answer:
-      "La première consultation se fait généralement par téléphone ou visioconférence. Vous exposez votre situation, je vous pose les questions nécessaires et vous fournis une première analyse. À l'issue, je vous propose un accompagnement adapté si votre dossier le nécessite. Remplissez le formulaire de contact pour prendre rendez-vous.",
+      "Le premier échange se fait par téléphone ou visioconférence. Vous présentez votre situation, j'analyse les éléments essentiels et vous propose une orientation adaptée. Si un accompagnement plus approfondi est nécessaire, nous en définissons ensemble les contours. Remplissez le formulaire de contact pour initier cet échange.",
   },
   {
     question: "Quels sont vos tarifs ?",
     answer:
-      "Les honoraires sont définis en fonction de la complexité du dossier et du type de prestation (consultation ponctuelle, accompagnement, rédaction de documents). Un devis clair vous est communiqué avant tout engagement. Contactez-moi pour obtenir une estimation personnalisée.",
+      "Les honoraires sont définis en fonction de la nature et de la complexité de la situation. Un devis clair vous est communiqué avant tout engagement. Contactez-moi pour obtenir une estimation personnalisée.",
   },
   {
-    question: "Intervenez-vous pour des litiges en cours avec mon employeur ?",
+    question: "Qu'est-ce qu'un accident du travail ?",
     answer:
-      "Oui. J'interviens notamment en phase précontentieuse : analyse de la situation, rédaction de courriers, mise en demeure, négociation amiable. Si une procédure judiciaire s'avère nécessaire, je vous orienterai vers un avocat en droit du travail avec qui je collabore si besoin.",
+      "Un accident du travail est un accident survenu par le fait ou à l'occasion du travail. Il doit être déclaré à l'employeur dans les 24 heures et à la CPAM. Sa qualification ouvre droit à une prise en charge spécifique (soins à 100 %, indemnités journalières majorées). J'interviens en amont pour analyser les éléments de la situation et orienter vers les démarches adaptées.",
   },
   {
-    question: "Peut-on travailler à distance ?",
+    question: "Qu'est-ce qu'une maladie professionnelle ?",
     answer:
-      "Absolument. Je travaille en 100% distanciel via téléphone, visioconférence et échange de documents sécurisé. Vous pouvez être n'importe où en France, je suis disponible pour vous accompagner.",
+      "Une maladie professionnelle résulte directement de l'exercice habituel d'une profession. Elle figure dans les tableaux de maladies professionnelles ou peut être reconnue après instruction. Sa reconnaissance ouvre des droits spécifiques. J'interviens pour analyser votre situation et vous orienter vers les démarches appropriées.",
   },
   {
-    question: "Combien de temps dure un accompagnement ?",
+    question: "Quelle différence entre maladie professionnelle et maladie non professionnelle ?",
     answer:
-      "Cela dépend entièrement de votre situation. Une consultation ponctuelle peut se résoudre en une à deux sessions. Un accompagnement dans une procédure disciplinaire ou une rupture conventionnelle peut s'étaler sur plusieurs semaines. Je vous donne une estimation dès notre premier échange.",
+      "La maladie professionnelle est directement liée aux conditions d'exercice du travail et reconnue selon des critères précis par la Sécurité sociale. La maladie non professionnelle, dite de droit commun, relève du régime général. La distinction a des conséquences importantes sur la prise en charge, les indemnités et les droits du salarié. Une analyse préalable de votre situation permet d'identifier la qualification applicable.",
+  },
+  {
+    question: "Qu'est-ce que le DUERP et pourquoi le mettre à jour ?",
+    answer:
+      "Le Document Unique d'Évaluation des Risques Professionnels (DUERP) est obligatoire pour toute entreprise dès le premier salarié. Il recense l'ensemble des risques auxquels sont exposés les travailleurs et doit être mis à jour au moins une fois par an, lors de tout aménagement important, ou après un accident du travail. Sa mise à jour est une obligation légale et un levier essentiel de prévention. J'accompagne les entreprises dans sa réalisation et sa mise à jour.",
+  },
+  {
+    question: "Comment prévenir les risques professionnels dans mon entreprise ?",
+    answer:
+      "La prévention repose sur une démarche structurée : identification et évaluation des risques (physiques, psychosociaux, organisationnels), mise à jour du DUERP, définition d'un plan d'action et suivi de sa mise en œuvre. J'accompagne les entreprises dans cette démarche, en lien avec les acteurs internes (RH, direction, CSE/CSSCT) et en tenant compte des spécificités de chaque environnement de travail.",
+  },
+  {
+    question: "Comment sécuriser une procédure de licenciement ?",
+    answer:
+      "La sécurisation passe par une vérification en amont des éléments constitutifs : motif, respect de la procédure, chronologie. J'interviens avant l'engagement de la procédure pour analyser le dossier, vérifier la conformité des étapes envisagées et identifier les points de vigilance. Cette intervention en amont permet de limiter les risques de contestation ultérieure. Si une procédure judiciaire s'avérait nécessaire, une orientation vers un avocat compétent serait proposée.",
+  },
+  {
+    question: "Peut-on travailler entièrement à distance ?",
+    answer:
+      "Oui. Toutes mes interventions sont disponibles à distance : téléphone, visioconférence, échange de documents sécurisé. Vous pouvez être n'importe où en France.",
   },
   {
     question: "Mes informations sont-elles confidentielles ?",
     answer:
-      "La confidentialité est une valeur fondamentale de mon exercice. Toutes les informations que vous me transmettez sont traitées avec la plus stricte discrétion et ne sont jamais partagées avec des tiers sans votre accord explicite.",
+      "La confidentialité est un principe fondamental de mon activité. Toutes les informations que vous me transmettez sont traitées avec la plus stricte discrétion et ne sont jamais communiquées à des tiers sans votre accord explicite.",
   },
 ];
 
@@ -152,21 +188,21 @@ export const TESTIMONIALS = [
     name: "Marie D.",
     role: "Salariée, secteur tertiaire",
     content:
-      "Loubna m'a accompagnée lors de mon licenciement avec une expertise remarquable. Elle a su me rassurer, analyser la situation et m'expliquer clairement mes droits. Je lui fais entièrement confiance.",
+      "Loubna m'a accompagnée dans une situation professionnelle difficile avec beaucoup de sérieux. Elle a su analyser ma situation avec précision et m'expliquer clairement les enjeux. Un accompagnement rigoureux et vraiment humain.",
     rating: 5,
   },
   {
     name: "Thomas R.",
     role: "Directeur RH, PME",
     content:
-      "Un accompagnement professionnel et réactif. Ses conseils nous ont permis de sécuriser nos procédures internes et d'éviter plusieurs risques juridiques. Je recommande vivement.",
+      "Un accompagnement professionnel et réactif. Son analyse nous a permis de sécuriser nos procédures internes et d'anticiper plusieurs risques en amont. Je recommande vivement.",
     rating: 5,
   },
   {
     name: "Isabelle M.",
     role: "Salariée, cadre",
     content:
-      "J'ai consulté Loubna suite à une situation de harcèlement. Son écoute, sa rigueur et sa disponibilité ont été essentielles. Elle m'a guidée avec beaucoup d'humanité et de compétence.",
+      "J'ai sollicité Loubna dans une situation professionnelle complexe. Son écoute, sa rigueur et sa disponibilité ont été essentielles. Elle m'a orientée clairement, avec beaucoup d'humanité et de compétence.",
     rating: 5,
   },
 ];

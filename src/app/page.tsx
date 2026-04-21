@@ -6,38 +6,31 @@ import SectionLabel from "@/components/ui/SectionLabel";
 import StarRating from "@/components/ui/StarRating";
 
 export const metadata: Metadata = {
-  title: "Juriste en Droit du Travail | Loubna Abouz Manta",
+  title: "Loubna Abouz Manta — Juriste en Droit du Travail · Prévention des Risques",
   description:
-    "Juriste spécialisée en droit du travail. Conseil, accompagnement et assistance pour salariés et employeurs. Expertise rigoureuse, écoute attentive, confidentialité garantie.",
+    "Loubna Abouz Manta, juriste en droit du travail. Accompagnement des salariés et entreprises dans l'analyse de leurs situations professionnelles et la prévention des risques, en amont des procédures.",
 };
 
-const VALUES = [
-  {
-    icon: "⚖️",
-    title: "Rigueur juridique",
-    desc: "Chaque situation est analysée avec précision, en prenant en compte tous les aspects légaux et jurisprudentiels applicables.",
-  },
-  {
-    icon: "👂",
-    title: "Écoute & disponibilité",
-    desc: "Votre situation est unique. Je prends le temps de comprendre votre contexte pour vous apporter des réponses adaptées et personnalisées.",
-  },
-  {
-    icon: "🔒",
-    title: "Confidentialité absolue",
-    desc: "Tout échange est strictement confidentiel. Vos informations ne sont jamais transmises à des tiers sans votre accord explicite.",
-  },
-  {
-    icon: "💡",
-    title: "Clarté & pédagogie",
-    desc: "Le droit peut être complexe. Je m'engage à vous expliquer clairement vos droits et les démarches à suivre, sans jargon inutile.",
-  },
+const EXPERTISE_SALARIES = [
+  "Analyser votre situation professionnelle et identifier les enjeux",
+  "Comprendre le cadre applicable à votre contrat ou à votre situation",
+  "Être orienté(e) dans les démarches à engager",
+  "Identifier les situations de harcèlement ou de risques psychosociaux",
+  "Comprendre les enjeux d'une rupture conventionnelle ou d'un licenciement",
+];
+
+const EXPERTISE_EMPLOYEURS = [
+  "Sécuriser vos procédures internes et pratiques RH",
+  "Réaliser ou mettre à jour votre DUERP",
+  "Prévenir les risques professionnels et les situations conflictuelles",
+  "Vérifier la conformité de vos documents contractuels",
+  "Anticiper les risques en amont de toute procédure",
 ];
 
 const STATS = [
-  { value: "10+", label: "Années d'expertise" },
-  { value: "500+", label: "Dossiers traités" },
-  { value: "98%", label: "Clients satisfaits" },
+  { value: "Master", label: "Droit & Management" },
+  { value: "100%", label: "Distanciel possible" },
+  { value: "Amont", label: "Intervention préventive" },
   { value: "100%", label: "Confidentialité" },
 ];
 
@@ -59,9 +52,7 @@ export default function HomePage() {
             )`,
           }}
         />
-        {/* Gradient overlay */}
         <div className="absolute inset-0 bg-gradient-to-br from-rouge-950/60 via-transparent to-encre-950/80" />
-        {/* Gold accent line */}
         <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-or-500 to-transparent" />
 
         <div className="container-site relative z-10 pt-32 pb-24 lg:pt-40 lg:pb-32">
@@ -69,29 +60,29 @@ export default function HomePage() {
             {/* Content */}
             <div className="lg:col-span-7 space-y-8">
               <div className="animate-fade-up" style={{ animationFillMode: "both" }}>
-                <SectionLabel light>Juriste · Droit du Travail</SectionLabel>
+                <SectionLabel light>Juriste · Droit du Travail · Prévention des Risques</SectionLabel>
               </div>
 
               <h1
                 className="font-serif text-4xl sm:text-5xl lg:text-6xl xl:text-7xl text-white font-bold leading-[1.1] animate-fade-up animate-delay-100"
                 style={{ animationFillMode: "both" }}
               >
-                Défendre vos droits avec{" "}
+                Juriste en droit du travail —{" "}
                 <span className="relative">
-                  <span className="text-or-400">expertise</span>
+                  <span className="text-or-400">prévention</span>
                   <span className="absolute -bottom-1 left-0 right-0 h-px bg-gradient-to-r from-or-500 to-transparent" />
                 </span>{" "}
-                et rigueur
+                des risques professionnels
               </h1>
 
               <p
                 className="text-encre-300 text-base lg:text-lg leading-relaxed max-w-xl animate-fade-up animate-delay-200"
                 style={{ animationFillMode: "both" }}
               >
-                Juriste spécialisée en droit du travail, j&apos;accompagne salariés et
-                employeurs avec précision, écoute et confidentialité. Conseil
-                personnalisé, assistance précontentieuse et analyse rigoureuse
-                de vos situations professionnelles.
+                J&apos;interviens en amont afin d&apos;analyser les situations de travail,
+                d&apos;identifier les risques professionnels et d&apos;accompagner salariés
+                et entreprises dans une logique de prévention et de sécurisation
+                des pratiques.
               </p>
 
               <div
@@ -105,7 +96,7 @@ export default function HomePage() {
                   </svg>
                 </Link>
                 <Link href="/services" className="btn-outline-white text-sm px-8 py-4">
-                  Découvrir mes services
+                  Découvrir mes interventions
                 </Link>
               </div>
 
@@ -114,14 +105,17 @@ export default function HomePage() {
                 className="flex flex-wrap gap-6 pt-4 animate-fade-up animate-delay-400"
                 style={{ animationFillMode: "both" }}
               >
-                {["Conseil juridique", "Salariés & Employeurs", "100% Confidentiel", "Distanciel"].map(
-                  (tag) => (
-                    <div key={tag} className="flex items-center gap-2">
-                      <div className="w-1.5 h-1.5 rounded-full bg-or-500" />
-                      <span className="text-encre-300 text-xs tracking-wide">{tag}</span>
-                    </div>
-                  )
-                )}
+                {[
+                  "Droit du travail",
+                  "Salariés & Entreprises",
+                  "Prévention des risques",
+                  "100% Distanciel",
+                ].map((tag) => (
+                  <div key={tag} className="flex items-center gap-2">
+                    <div className="w-1.5 h-1.5 rounded-full bg-or-500" />
+                    <span className="text-encre-300 text-xs tracking-wide">{tag}</span>
+                  </div>
+                ))}
               </div>
             </div>
 
@@ -149,7 +143,7 @@ export default function HomePage() {
           <div className="mt-16 lg:mt-20 grid grid-cols-2 lg:grid-cols-4 gap-px bg-encre-800 rounded-sm overflow-hidden border border-encre-800">
             {STATS.map((stat) => (
               <div key={stat.label} className="bg-encre-900 px-6 py-5 text-center">
-                <p className="font-serif text-2xl lg:text-3xl text-or-400 font-bold">{stat.value}</p>
+                <p className="font-serif text-xl lg:text-2xl text-or-400 font-bold">{stat.value}</p>
                 <p className="text-encre-400 text-xs mt-1 tracking-wide">{stat.label}</p>
               </div>
             ))}
@@ -157,18 +151,18 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ─── EXPERTISE ────────────────────────────────── */}
+      {/* ─── DOMAINES D'INTERVENTION ──────────────────── */}
       <section className="py-20 lg:py-28 bg-encre-50">
         <div className="container-site">
           <div className="max-w-2xl mx-auto text-center mb-16">
-            <SectionLabel>Mon expertise</SectionLabel>
+            <SectionLabel>Domaines d&apos;intervention</SectionLabel>
             <h2 className="font-serif text-3xl lg:text-4xl text-encre-950 font-bold mt-2">
-              Le droit du travail, un domaine qui exige un spécialiste
+              Une intervention centrée sur l&apos;amont et la prévention
             </h2>
             <div className="divider-or mx-auto" />
             <p className="text-encre-500 text-sm leading-relaxed">
-              Face aux enjeux professionnels et humains que représentent les relations
-              de travail, l&apos;expertise juridique n&apos;est pas un luxe — c&apos;est une nécessité.
+              Mon approche repose sur l&apos;analyse préalable des situations professionnelles
+              pour prévenir les risques et éviter les situations conflictuelles.
             </p>
           </div>
 
@@ -177,26 +171,12 @@ export default function HomePage() {
               {
                 title: "Pour les salariés",
                 icon: "👤",
-                color: "rouge",
-                items: [
-                  "Comprendre vos droits face à l'employeur",
-                  "Contester un licenciement ou une sanction",
-                  "Négocier une rupture conventionnelle",
-                  "Faire face au harcèlement moral ou sexuel",
-                  "Analyser votre contrat ou un avenant",
-                ],
+                items: EXPERTISE_SALARIES,
               },
               {
-                title: "Pour les employeurs",
+                title: "Pour les entreprises",
                 icon: "🏢",
-                color: "encre",
-                items: [
-                  "Sécuriser vos procédures disciplinaires",
-                  "Rédiger des contrats conformes",
-                  "Prévenir les risques de contentieux",
-                  "Gérer une rupture de contrat",
-                  "Mettre en conformité vos pratiques RH",
-                ],
+                items: EXPERTISE_EMPLOYEURS,
               },
             ].map((col) => (
               <div
@@ -222,7 +202,7 @@ export default function HomePage() {
                     href="/services"
                     className="text-rouge-800 text-xs font-semibold tracking-wide uppercase hover:text-rouge-700 transition-colors duration-200 flex items-center gap-2"
                   >
-                    Voir mes services
+                    Voir mes interventions
                     <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                     </svg>
@@ -239,18 +219,38 @@ export default function HomePage() {
         <div className="container-site">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div>
-              <SectionLabel>Pourquoi me choisir</SectionLabel>
+              <SectionLabel>Mon positionnement</SectionLabel>
               <h2 className="font-serif text-3xl lg:text-4xl text-encre-950 font-bold mt-2 mb-6">
-                Une juriste à votre écoute, engagée pour vos droits
+                Agir en amont, analyser avec rigueur, orienter avec clarté
               </h2>
               <p className="text-encre-500 text-sm leading-relaxed mb-8">
-                Mon approche repose sur une conviction simple : chaque situation
-                professionnelle mérite une attention individuelle, une analyse
-                rigoureuse et des conseils clairs. Je m&apos;engage à vous
-                accompagner avec sérieux, humanité et transparence.
+                Mon activité repose sur une conviction : mieux vaut prévenir que subir.
+                J&apos;interviens en amont des situations conflictuelles pour analyser,
+                informer et orienter — avec rigueur, transparence et confidentialité.
               </p>
               <div className="space-y-5">
-                {VALUES.map((v) => (
+                {[
+                  {
+                    icon: "⚖️",
+                    title: "Rigueur analytique",
+                    desc: "Chaque situation est analysée avec précision, en tenant compte du cadre juridique applicable et de la réalité du terrain.",
+                  },
+                  {
+                    icon: "👂",
+                    title: "Écoute & disponibilité",
+                    desc: "Comprendre votre situation dans sa globalité est la condition d'un accompagnement vraiment adapté à vos besoins.",
+                  },
+                  {
+                    icon: "🔒",
+                    title: "Confidentialité absolue",
+                    desc: "Tout échange est strictement confidentiel. Vos informations ne sont jamais transmises à des tiers sans votre accord explicite.",
+                  },
+                  {
+                    icon: "💡",
+                    title: "Clarté & pédagogie",
+                    desc: "Je m'engage à vous expliquer les enjeux en langage clair, sans jargon inutile, pour que vous puissiez agir en connaissance de cause.",
+                  },
+                ].map((v) => (
                   <div key={v.title} className="flex items-start gap-4">
                     <div className="w-10 h-10 rounded-sm bg-rouge-50 border border-rouge-100 flex items-center justify-center flex-shrink-0 text-lg">
                       {v.icon}
@@ -276,9 +276,9 @@ export default function HomePage() {
               <div className="relative bg-encre-950 rounded-sm p-10 lg:p-12">
                 <div className="font-serif text-5xl text-or-400 leading-none mb-6 opacity-60">&ldquo;</div>
                 <blockquote className="font-serif text-lg lg:text-xl text-white/90 leading-relaxed italic mb-8">
-                  Mon rôle n&apos;est pas seulement de vous informer sur le droit —
-                  c&apos;est de vous donner les clés pour comprendre votre situation
-                  et prendre les meilleures décisions pour votre avenir professionnel.
+                  Mon objectif est d&apos;apporter un accompagnement rigoureux, accessible
+                  et adapté à chaque situation, dans une logique de prévention et de
+                  sécurisation des pratiques professionnelles.
                 </blockquote>
                 <div className="flex items-center gap-4">
                   <div className="w-10 h-0.5 bg-or-500" />
@@ -298,7 +298,7 @@ export default function HomePage() {
         <div className="container-site">
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-14">
             <div>
-              <SectionLabel>Mes prestations</SectionLabel>
+              <SectionLabel>Mes interventions</SectionLabel>
               <h2 className="font-serif text-3xl lg:text-4xl text-encre-950 font-bold mt-2">
                 Un accompagnement complet
               </h2>
@@ -307,7 +307,7 @@ export default function HomePage() {
               href="/services"
               className="text-rouge-800 text-xs font-semibold tracking-wide uppercase hover:text-rouge-700 transition-colors duration-200 flex items-center gap-2 flex-shrink-0"
             >
-              Voir tous les services
+              Voir toutes les interventions
               <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
               </svg>
@@ -338,15 +338,14 @@ export default function HomePage() {
 
           <div className="text-center mt-12">
             <Link href="/services" className="btn-secondary text-sm">
-              Voir les 10 services disponibles
+              Voir les {SERVICES.length} domaines d&apos;intervention
             </Link>
           </div>
         </div>
       </section>
 
-      {/* ─── ACCOMPAGNEMENT / PROCESSUS ───────────────── */}
+      {/* ─── COMMENT ÇA MARCHE ────────────────────────── */}
       <section className="py-20 lg:py-28 bg-encre-950">
-        <div className="absolute inset-0 pointer-events-none" />
         <div className="container-site">
           <div className="max-w-2xl mx-auto text-center mb-16">
             <SectionLabel light>Comment ça marche</SectionLabel>
@@ -355,8 +354,8 @@ export default function HomePage() {
             </h2>
             <div className="w-16 h-0.5 bg-gradient-to-r from-or-500 to-or-300 my-6 mx-auto" />
             <p className="text-encre-300 text-sm leading-relaxed">
-              De votre première prise de contact à la résolution de votre problématique,
-              chaque étape est pensée pour vous offrir clarté et sérénité.
+              De la première prise de contact à l&apos;orientation finale, chaque étape
+              est pensée pour vous offrir clarté et sérénité.
             </p>
           </div>
 
@@ -369,18 +368,18 @@ export default function HomePage() {
               },
               {
                 num: "02",
-                title: "Analyse initiale",
-                desc: "Premier échange pour comprendre votre situation, vos besoins et les enjeux de votre dossier.",
+                title: "Analyse de la situation",
+                desc: "Premier échange pour comprendre votre situation, identifier les enjeux et les risques éventuels.",
               },
               {
                 num: "03",
                 title: "Accompagnement",
-                desc: "Conseil personnalisé, rédaction de documents, assistance ou suivi selon vos besoins.",
+                desc: "Analyse approfondie, rédaction de documents, mise à jour du DUERP ou suivi selon vos besoins.",
               },
               {
                 num: "04",
-                title: "Résolution",
-                desc: "Vous disposez de toutes les clés pour agir avec confiance et faire valoir vos droits.",
+                title: "Orientation",
+                desc: "Si votre situation nécessite une procédure judiciaire, vous êtes orienté(e) vers un avocat compétent en droit du travail.",
               },
             ].map((step, i) => (
               <div key={step.num} className="relative">
@@ -399,7 +398,7 @@ export default function HomePage() {
 
           <div className="text-center mt-14">
             <Link href="/contact" className="btn-primary text-sm px-8 py-4">
-              Démarrer maintenant
+              Initier un échange
             </Link>
           </div>
         </div>
@@ -460,18 +459,18 @@ export default function HomePage() {
           <div className="max-w-2xl mx-auto">
             <div className="w-16 h-0.5 bg-or-400/50 mx-auto mb-8" />
             <h2 className="font-serif text-3xl lg:text-5xl text-white font-bold leading-tight mb-6">
-              Votre situation mérite une réponse experte
+              Votre situation mérite une analyse sérieuse
             </h2>
             <p className="text-white/75 text-base leading-relaxed mb-10">
-              Ne restez pas seul(e) face à vos interrogations juridiques.
-              Contactez-moi dès aujourd&apos;hui pour un premier échange confidentiel.
+              N&apos;attendez pas que la situation se détériore. Contactez-moi pour
+              un premier échange confidentiel et sans engagement.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
                 href="/contact"
                 className="inline-flex items-center justify-center gap-2 bg-white text-rouge-800 px-8 py-4 rounded-sm font-semibold text-sm tracking-wide transition-all duration-300 hover:bg-encre-50 hover:-translate-y-0.5 hover:shadow-lg"
               >
-                Prendre contact maintenant
+                Prendre contact
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
                 </svg>
@@ -487,7 +486,7 @@ export default function HomePage() {
               </a>
             </div>
             <p className="mt-8 text-white/50 text-xs">
-              Réponse garantie sous 24–48h ouvrées · {SITE_CONFIG.hours}
+              Réponse sous 24–48h ouvrées · {SITE_CONFIG.hours}
             </p>
           </div>
         </div>

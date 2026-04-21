@@ -31,8 +31,8 @@ export default function Footer() {
               </div>
             </div>
             <p className="text-encre-300 text-sm leading-relaxed max-w-sm">
-              Expertise juridique en droit du travail pour salariés et employeurs.
-              Conseil rigoureux, écoute attentive, confidentialité absolue.
+              Accompagnement en droit du travail et prévention des risques professionnels,
+              en amont des procédures. Pour les salariés et les entreprises.
             </p>
             <div className="mt-6 flex flex-col gap-2">
               <a
@@ -125,8 +125,9 @@ export default function Footer() {
 
             <div className="mt-8 p-4 border border-encre-800 rounded-sm">
               <p className="text-encre-400 text-xs leading-relaxed">
-                Les informations publiées sur ce site ont un caractère général et
-                ne constituent pas un conseil juridique personnalisé.
+                Les informations fournies ne constituent pas une consultation
+                juridique au sens de la réglementation applicable à la
+                profession d&apos;avocat.
               </p>
             </div>
           </div>
