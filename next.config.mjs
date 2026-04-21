@@ -3,40 +3,18 @@ const nextConfig = {
   // Enable React strict mode for better development experience
   reactStrictMode: true,
 
-  // Image optimization
-  images: {
-    formats: ["image/avif", "image/webp"],
-    // Add your domain here if loading external images
-    // domains: [],
-  },
+  // Static export for GitHub Pages
+  output: 'export',
+  
+  // Base path for GitHub Pages (repo name)
+  basePath: '/Loubna',
+  
+  // Trailing slash for better compatibility
+  trailingSlash: true,
 
-  // Headers for security and performance
-  async headers() {
-    return [
-      {
-        source: "/(.*)",
-        headers: [
-          { key: "X-Content-Type-Options", value: "nosniff" },
-          { key: "X-Frame-Options", value: "DENY" },
-          { key: "X-XSS-Protection", value: "1; mode=block" },
-          { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
-          {
-            key: "Permissions-Policy",
-            value: "camera=(), microphone=(), geolocation=()",
-          },
-        ],
-      },
-      {
-        // Cache static assets
-        source: "/(.*)\\.(ico|png|jpg|jpeg|svg|gif|webp|woff|woff2)",
-        headers: [
-          {
-            key: "Cache-Control",
-            value: "public, max-age=31536000, immutable",
-          },
-        ],
-      },
-    ];
+  // Image optimization - unoptimized for static export
+  images: {
+    unoptimized: true,
   },
 };
 
