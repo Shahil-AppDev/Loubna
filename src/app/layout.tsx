@@ -83,8 +83,58 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "ProfessionalService",
+    "name": "Loubna Abouz Manta - Juriste Conseil",
+    "image": `${SITE_CONFIG.url}/logo.png`,
+    "@id": SITE_CONFIG.url,
+    "url": SITE_CONFIG.url,
+    "telephone": SITE_CONFIG.phone,
+    "email": SITE_CONFIG.email,
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "45 rue des Mines",
+      "addressLocality": "Audincourt",
+      "postalCode": "25400",
+      "addressCountry": "FR"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": 47.4833,
+      "longitude": 6.8333
+    },
+    "openingHoursSpecification": [
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday"],
+        "opens": "10:00",
+        "closes": "18:00"
+      },
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": "Friday",
+        "opens": "10:00",
+        "closes": "12:30"
+      }
+    ],
+    "sameAs": [
+      SITE_CONFIG.linkedin,
+      SITE_CONFIG.instagram,
+      SITE_CONFIG.tiktok
+    ],
+    "priceRange": "€€",
+    "description": SITE_CONFIG.description
+  };
+
   return (
     <html lang="fr" className={`${playfair.variable} ${dmSans.variable}`} suppressHydrationWarning>
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      </head>
       <body className="font-sans bg-encre-50 text-encre-950 antialiased" suppressHydrationWarning>
         <Header />
         <main>{children}</main>
