@@ -106,19 +106,19 @@ export default function Header() {
       {/* ─── MOBILE MENU ──────────────────────────── */}
       <div
         className={cn(
-          "fixed inset-0 bg-encre-950 z-40 flex flex-col items-center justify-center gap-2 md:hidden overflow-y-auto",
-          "transition-transform duration-400 ease-in-out",
-          mobileOpen ? "translate-x-0" : "translate-x-full"
+          "fixed inset-0 bg-encre-950/98 backdrop-blur-sm z-[100] flex flex-col items-center justify-center md:hidden overflow-y-auto",
+          "transition-all duration-300 ease-in-out",
+          mobileOpen ? "opacity-100 translate-x-0" : "opacity-0 translate-x-full pointer-events-none"
         )}
       >
-        <div className="flex flex-col items-center gap-2 w-full px-6 py-8">
+        <div className="flex flex-col items-center justify-center gap-3 w-full max-w-md px-8 py-12">
           {NAV_LINKS.map((link) => (
             <Link
               key={link.href}
               href={link.href}
               className={cn(
-                "text-xl font-serif font-semibold text-white/60 hover:text-white transition-colors py-2.5 px-6 w-full text-center",
-                pathname === link.href && "text-white"
+                "text-2xl font-serif font-semibold text-white/70 hover:text-white transition-all duration-200 py-3 px-6 w-full text-center",
+                pathname === link.href && "text-white scale-105"
               )}
             >
               {link.label}
@@ -127,22 +127,22 @@ export default function Header() {
           <Link
             href="/contact"
             className={cn(
-              "mt-4 bg-rouge-800 text-white hover:bg-rouge-900 text-sm font-sans tracking-widest uppercase font-bold py-3.5 px-8 w-full text-center rounded-sm transition-colors",
+              "mt-6 bg-rouge-800 text-white hover:bg-rouge-900 text-sm font-sans tracking-widest uppercase font-bold py-4 px-10 w-full text-center rounded-sm transition-all duration-200 shadow-lg",
               pathname === "/contact" && "opacity-90"
             )}
           >
             Prendre contact
           </Link>
-          <div className="mt-6 pt-6 border-t border-white/10 w-full flex flex-col gap-2">
+          <div className="mt-8 pt-6 border-t border-white/10 w-full flex flex-col gap-3">
             <Link
               href="/mentions-legales"
-              className="text-sm text-white/40 hover:text-white/60 transition-colors text-center py-1.5"
+              className="text-sm text-white/50 hover:text-white/70 transition-colors text-center py-2"
             >
               Mentions légales
             </Link>
             <Link
               href="/politique-de-confidentialite"
-              className="text-sm text-white/40 hover:text-white/60 transition-colors text-center py-1.5"
+              className="text-sm text-white/50 hover:text-white/70 transition-colors text-center py-2"
             >
               Politique de confidentialité
             </Link>
