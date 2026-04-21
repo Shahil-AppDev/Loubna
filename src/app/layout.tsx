@@ -1,5 +1,6 @@
 import Footer from "@/components/layout/Footer";
 import Header from "@/components/layout/Header";
+import { getAssetPath } from "@/lib/basePath";
 import { SITE_CONFIG } from "@/lib/constants";
 import type { Metadata, Viewport } from "next";
 import { DM_Sans, Playfair_Display } from "next/font/google";
@@ -46,8 +47,8 @@ export const metadata: Metadata = {
   authors: [{ name: SITE_CONFIG.name }],
   creator: SITE_CONFIG.name,
   icons: {
-    icon: "/logo.png",
-    apple: "/logo.png",
+    icon: getAssetPath("/logo.png"),
+    apple: getAssetPath("/logo.png"),
   },
   openGraph: {
     type: "website",
@@ -87,7 +88,7 @@ export default function RootLayout({
     "@context": "https://schema.org",
     "@type": "ProfessionalService",
     "name": "Loubna Abouz Manta - Juriste Conseil",
-    "image": `${SITE_CONFIG.url}/logo.png`,
+    "image": `${SITE_CONFIG.url}${getAssetPath("/logo.png")}`,
     "@id": SITE_CONFIG.url,
     "url": SITE_CONFIG.url,
     "telephone": SITE_CONFIG.phone,

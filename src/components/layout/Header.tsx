@@ -1,5 +1,6 @@
 "use client";
 
+import { getAssetPath } from "@/lib/basePath";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
@@ -46,7 +47,7 @@ export default function Header() {
         <Link href="/" className="flex items-center gap-3.5 group">
           <div className="relative w-11 h-11 flex-shrink-0">
             <Image
-              src="/logo.png"
+              src={getAssetPath("/logo.png")}
               alt="Loubna Abouz Manta"
               fill
               className="object-contain rounded-full"

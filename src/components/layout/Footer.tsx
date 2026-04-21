@@ -1,3 +1,4 @@
+import { getAssetPath } from "@/lib/basePath";
 import { SITE_CONFIG } from "@/lib/constants";
 import Image from "next/image";
 import Link from "next/link";
@@ -30,7 +31,7 @@ export default function Footer() {
             <div className="flex items-center gap-3 mb-5">
               <div className="relative w-14 h-14 flex-shrink-0">
                 <Image
-                  src="/logo.png"
+                  src={getAssetPath("/logo.png")}
                   alt="Loubna Abouz Manta"
                   fill
                   className="object-contain rounded-full"
