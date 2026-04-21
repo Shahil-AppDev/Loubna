@@ -1,130 +1,150 @@
-import type { Metadata } from "next";
 import { SITE_CONFIG } from "@/lib/constants";
-import SectionLabel from "@/components/ui/SectionLabel";
+import type { Metadata } from "next";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Mentions légales",
   description: "Mentions légales du site de Loubna Abouz Manta, juriste en droit du travail.",
+  robots: { index: false, follow: false },
 };
 
 export default function MentionsLegalesPage() {
   return (
     <>
-      <section className="bg-encre-950 pt-32 pb-16 relative overflow-hidden">
-        <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-or-500 to-transparent" />
-        <div className="container-site relative z-10">
-          <SectionLabel light>Légal</SectionLabel>
-          <h1 className="font-serif text-3xl lg:text-4xl text-white font-bold mt-2">
+      <section className="page-hero">
+        <div className="hero-grid-bg" />
+        <div className="container-main relative z-10 pt-20 pb-12">
+          <nav className="text-[0.72rem] tracking-[0.14em] uppercase text-white/30 mb-5 flex gap-2">
+            <Link href="/" className="hover:text-white/60 transition-colors">Accueil</Link>
+            <span>›</span>
+            <span className="text-or-500">Mentions légales</span>
+          </nav>
+          <h1 className="font-serif text-[clamp(2rem,4vw,3rem)] text-white leading-tight">
             Mentions légales
           </h1>
+          <p className="text-white/40 mt-3 text-sm">
+            Dernière mise à jour : {new Date().getFullYear()}
+          </p>
         </div>
       </section>
 
-      <section className="py-16 lg:py-20 bg-encre-50">
-        <div className="container-site">
-          <div className="max-w-3xl">
-            <div className="bg-white border border-encre-100 rounded-sm p-8 lg:p-10 space-y-10 text-sm text-encre-600 leading-relaxed">
+      <section className="section-pad bg-encre-50">
+        <div className="container-main">
+          <div className="max-w-[760px] mx-auto prose-legal">
 
-              <div>
-                <h2 className="font-serif text-xl text-encre-950 font-semibold mb-4">
-                  1. Éditeur du site
-                </h2>
-                <div className="space-y-1.5">
-                  <p><strong className="text-encre-800">Nom :</strong> Loubna Abouz Manta</p>
-                  <p><strong className="text-encre-800">Activité :</strong> Juriste en droit du travail</p>
-                  <p><strong className="text-encre-800">Adresse :</strong> {SITE_CONFIG.address} {/* À MODIFIER */}</p>
-                  <p><strong className="text-encre-800">Email :</strong>{" "}
-                    <a href={`mailto:${SITE_CONFIG.email}`} className="text-rouge-700 hover:underline">
-                      {SITE_CONFIG.email}
-                    </a>
-                  </p>
-                  <p><strong className="text-encre-800">Téléphone :</strong> {SITE_CONFIG.phone}</p>
-                  <p><strong className="text-encre-800">SIRET :</strong> XXX XXX XXX XXXXX {/* À MODIFIER */}</p>
-                </div>
-              </div>
+            <h2>1. Éditeur du site</h2>
+            <p>
+              Le présent site internet est édité par :
+            </p>
+            <ul>
+              <li><strong>Nom :</strong> {SITE_CONFIG.name}</li>
+              <li><strong>Qualité :</strong> {SITE_CONFIG.title}</li>
+              <li><strong>Adresse :</strong> {SITE_CONFIG.address}</li>
+              <li><strong>Email :</strong> <a href={`mailto:${SITE_CONFIG.email}`}>{SITE_CONFIG.email}</a></li>
+              <li><strong>Téléphone :</strong> {SITE_CONFIG.phone}</li>
+              <li><strong>SIREN :</strong> {SITE_CONFIG.siren}</li>
+              <li><strong>SIRET :</strong> {SITE_CONFIG.siret}</li>
+              <li><strong>Code APE :</strong> {SITE_CONFIG.ape}</li>
+              <li><strong>Nature de l'activité :</strong> Libérale non réglementée</li>
+              <li><strong>Date d'immatriculation :</strong> 14 février 2024</li>
+            </ul>
 
-              <div>
-                <h2 className="font-serif text-xl text-encre-950 font-semibold mb-4">
-                  2. Hébergement
-                </h2>
-                <div className="space-y-1.5">
-                  <p><strong className="text-encre-800">Hébergeur :</strong> Vercel Inc. {/* À MODIFIER si besoin */}</p>
-                  <p><strong className="text-encre-800">Adresse :</strong> 340 Pine Street, Suite 701, San Francisco, CA 94104, États-Unis</p>
-                  <p><strong className="text-encre-800">Site web :</strong> vercel.com</p>
-                </div>
-              </div>
+            <h2>2. Hébergeur</h2>
+            <p>
+              Ce site est hébergé par :
+              <br />
+              <strong>Vercel Inc.</strong>
+              <br />
+              340 Pine Street, Suite 701, San Francisco, CA 94104, États-Unis
+              <br />
+              <a href="https://vercel.com" target="_blank" rel="noopener noreferrer">https://vercel.com</a>
+            </p>
 
-              <div>
-                <h2 className="font-serif text-xl text-encre-950 font-semibold mb-4">
-                  3. Propriété intellectuelle
-                </h2>
-                <p>
-                  L&apos;ensemble du contenu de ce site (textes, visuels, logo, architecture)
-                  est protégé par le droit de la propriété intellectuelle et appartient
-                  exclusivement à Loubna Abouz Manta, sauf mentions contraires.
-                  Toute reproduction, même partielle, est interdite sans autorisation écrite préalable.
-                </p>
-              </div>
+            <h2>3. Propriété intellectuelle</h2>
+            <p>
+              L'ensemble des contenus présents sur ce site (textes, images, logos, structure) sont
+              la propriété exclusive de {SITE_CONFIG.name} ou de leurs auteurs respectifs. Toute
+              reproduction, représentation, modification, publication ou adaptation, totale ou partielle,
+              des éléments du site, quel que soit le moyen ou le procédé utilisé, est interdite sans
+              l'autorisation préalable et écrite de {SITE_CONFIG.name}.
+            </p>
 
-              <div>
-                <h2 className="font-serif text-xl text-encre-950 font-semibold mb-4">
-                  4. Limitation de responsabilité
-                </h2>
-                <p>
-                  Les informations publiées sur ce site ont un caractère général et
-                  informatif. Elles ne constituent en aucun cas un conseil juridique
-                  personnalisé et ne sauraient engager la responsabilité de
-                  Loubna Abouz Manta. Pour toute problématique juridique spécifique,
-                  il convient de consulter un professionnel du droit.
-                </p>
-              </div>
+            <h2>4. Limitation de responsabilité</h2>
+            <p>
+              Les informations contenues sur ce site sont fournies à titre indicatif. Elles ne
+              constituent pas un conseil juridique personnalisé et ne sauraient engager la responsabilité
+              de {SITE_CONFIG.name}. Chaque situation étant unique, il convient de prendre contact
+              directement pour obtenir un conseil adapté.
+            </p>
+            <p>
+              {SITE_CONFIG.name} ne saurait être tenu responsable des dommages directs ou indirects
+              causés au matériel de l'utilisateur lors de l'accès au site, résultant de l'utilisation
+              d'un matériel ne répondant pas aux spécifications requises ou de l'apparition d'un
+              bug ou d'une incompatibilité.
+            </p>
 
-              <div>
-                <h2 className="font-serif text-xl text-encre-950 font-semibold mb-4">
-                  5. Données personnelles
-                </h2>
-                <p>
-                  Le traitement des données personnelles collectées via le formulaire
-                  de contact est effectué conformément au Règlement Général sur la
-                  Protection des Données (RGPD). Pour en savoir plus, consultez notre{" "}
-                  <a href="/politique-de-confidentialite" className="text-rouge-700 hover:underline">
-                    politique de confidentialité
-                  </a>
-                  .
-                </p>
-              </div>
+            <h2>5. Liens hypertextes</h2>
+            <p>
+              Le site peut contenir des liens vers d'autres sites. {SITE_CONFIG.name} n'exerce aucun
+              contrôle sur ces sites et décline toute responsabilité quant à leur contenu.
+            </p>
 
-              <div>
-                <h2 className="font-serif text-xl text-encre-950 font-semibold mb-4">
-                  6. Cookies
-                </h2>
-                <p>
-                  Ce site peut utiliser des cookies techniques nécessaires à son
-                  fonctionnement. Aucun cookie de traçage publicitaire n&apos;est
-                  déposé sans votre consentement explicite.
-                </p>
-              </div>
+            <h2>6. Droit applicable</h2>
+            <p>
+              Le présent site est soumis au droit français. Tout litige relatif à son utilisation
+              sera soumis à la compétence exclusive des tribunaux français.
+            </p>
 
-              <div>
-                <h2 className="font-serif text-xl text-encre-950 font-semibold mb-4">
-                  7. Droit applicable
-                </h2>
-                <p>
-                  Le présent site et ses mentions légales sont soumis au droit français.
-                  Tout litige relatif à l&apos;utilisation de ce site sera soumis à la
-                  compétence exclusive des tribunaux français.
-                </p>
-              </div>
-
-              <div className="pt-4 border-t border-encre-100">
-                <p className="text-encre-400 text-xs">
-                  Dernière mise à jour : Avril 2026
-                </p>
-              </div>
-            </div>
+            <h2>7. Contact</h2>
+            <p>
+              Pour toute question relative aux présentes mentions légales, vous pouvez nous contacter :
+            </p>
+            <ul>
+              <li>
+                Par email : <a href={`mailto:${SITE_CONFIG.email}`}>{SITE_CONFIG.email}</a>
+              </li>
+              <li>
+                Via le{" "}
+                <Link href="/contact" className="text-rouge-800 underline">formulaire de contact</Link>
+              </li>
+            </ul>
           </div>
         </div>
       </section>
+
+      {/* Inline prose styles for legal pages */}
+      <style>{`
+        .prose-legal h2 {
+          font-family: var(--font-playfair), Georgia, serif;
+          font-size: 1.45rem;
+          color: #0A0A0A;
+          margin-top: 3rem;
+          margin-bottom: 1rem;
+          padding-bottom: 0.75rem;
+          border-bottom: 1px solid #E8E5E0;
+        }
+        .prose-legal p {
+          font-size: 0.93rem;
+          color: #6E6760;
+          line-height: 1.9;
+          margin-bottom: 1rem;
+        }
+        .prose-legal ul {
+          list-style: disc;
+          padding-left: 1.5rem;
+          margin-bottom: 1rem;
+        }
+        .prose-legal ul li {
+          font-size: 0.93rem;
+          color: #6E6760;
+          line-height: 1.8;
+          margin-bottom: 0.5rem;
+        }
+        .prose-legal a {
+          color: #8B0000;
+          text-decoration: underline;
+        }
+      `}</style>
     </>
   );
 }

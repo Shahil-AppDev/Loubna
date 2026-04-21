@@ -1,156 +1,153 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import Link from "next/link";
-import Image from "next/image";
-import { NAV_LINKS, SITE_CONFIG } from "@/lib/constants";
+import { getAssetPath } from "@/lib/basePath";
 import { cn } from "@/lib/utils";
+import Image from "next/image";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
+
+const NAV_LINKS = [
+  { href: "/", label: "Accueil" },
+  { href: "/a-propos", label: "À propos" },
+  { href: "/services", label: "Services" },
+  { href: "/blog", label: "Blog" },
+  { href: "/faq", label: "FAQ" },
+];
 
 export default function Header() {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 20);
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    const onScroll = () => setScrolled(window.scrollY > 40);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // Close mobile menu on route change
+  useEffect(() => { setMobileOpen(false); }, [pathname]);
+
+  // Lock body scroll when menu open
   useEffect(() => {
-    if (isMobileOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-    return () => { document.body.style.overflow = ""; };
-  }, [isMobileOpen]);
+    document.body.style.overflow = mobileOpen ? "hidden" : "";
+  }, [mobileOpen]);
 
   return (
     <header
       className={cn(
-        "fixed top-0 left-0 right-0 z-50 transition-all duration-500",
-        isScrolled
-          ? "bg-encre-950/98 backdrop-blur-md shadow-lg"
-          : "bg-transparent"
+        "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
+        "bg-encre-950/97 backdrop-blur-md border-b border-or-500/15",
+        scrolled ? "h-16 md:h-[68px] border-or-500/25" : "h-16 md:h-20"
       )}
     >
-      <div className="container-site">
-        <div className="flex items-center justify-between h-20">
-          {/* Logo */}
-          <Link
-            href="/"
-            className="flex items-center gap-3 group"
-            onClick={() => setIsMobileOpen(false)}
-          >
-            <div className="relative w-12 h-12 flex-shrink-0">
-              <Image
-                src="/logo.png"
-                alt="Loubna Abouz Manta — Juriste"
-                fill
-                className="object-contain"
-                priority
-              />
-            </div>
-            <div className="hidden sm:block">
-              <p className="font-serif text-white text-sm font-semibold leading-tight tracking-wide">
-                Loubna Abouz Manta
-              </p>
-              <p className="text-or-400 text-xs tracking-[0.15em] uppercase font-medium">
-                Juriste · Droit du travail
-              </p>
-            </div>
-          </Link>
+      <nav className="container-main h-full flex items-center justify-between">
 
-          {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center gap-8">
-            {NAV_LINKS.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="text-white/80 hover:text-white text-sm font-medium tracking-wide transition-all duration-200 relative group"
-              >
-                {link.label}
-                <span className="absolute -bottom-0.5 left-0 w-0 h-px bg-or-400 transition-all duration-300 group-hover:w-full" />
-              </Link>
-            ))}
-            <Link
-              href="/contact"
-              className="btn-primary text-xs px-5 py-2.5"
-            >
-              Prendre contact
-            </Link>
-          </nav>
+        {/* ─── LOGO ─────────────────────────────────── */}
+        <Link href="/" className="flex items-center gap-2 md:gap-3.5 group">
+          <div className="relative w-9 h-9 md:w-11 md:h-11 flex-shrink-0">
+            <Image
+              src={getAssetPath("/logo.png")}
+              alt="Loubna Abouz Manta"
+              fill
+              className="object-contain rounded-full"
+              priority
+            />
+          </div>
+          <div className="flex flex-col">
+            <span className="font-serif text-[0.9rem] md:text-[1.05rem] font-semibold text-white leading-tight">
+              Loubna Abouz Manta
+            </span>
+            <span className="text-[0.5rem] md:text-[0.6rem] font-bold tracking-[0.12em] md:tracking-[0.15em] uppercase text-or-500 leading-none mt-0.5">
+              Juriste · Droit du travail
+            </span>
+          </div>
+        </Link>
 
-          {/* Mobile toggle */}
-          <button
-            onClick={() => setIsMobileOpen(!isMobileOpen)}
-            className="lg:hidden text-white p-2 rounded-sm"
-            aria-label={isMobileOpen ? "Fermer le menu" : "Ouvrir le menu"}
-          >
-            <div className="w-6 h-5 flex flex-col justify-between">
-              <span
-                className={cn(
-                  "block h-0.5 bg-white transition-all duration-300",
-                  isMobileOpen && "rotate-45 translate-y-2"
-                )}
-              />
-              <span
-                className={cn(
-                  "block h-0.5 bg-white transition-all duration-300",
-                  isMobileOpen && "opacity-0"
-                )}
-              />
-              <span
-                className={cn(
-                  "block h-0.5 bg-white transition-all duration-300",
-                  isMobileOpen && "-rotate-45 -translate-y-2"
-                )}
-              />
-            </div>
-          </button>
-        </div>
-      </div>
-
-      {/* Mobile Menu */}
-      <div
-        className={cn(
-          "lg:hidden fixed inset-0 top-20 bg-encre-950 z-40 transition-all duration-300 flex flex-col",
-          isMobileOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
-        )}
-      >
-        <nav className="flex flex-col p-8 gap-2">
-          {NAV_LINKS.map((link, i) => (
+        {/* ─── DESKTOP LINKS ────────────────────────── */}
+        <div className="hidden md:flex items-center gap-1">
+          {NAV_LINKS.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              onClick={() => setIsMobileOpen(false)}
               className={cn(
-                "text-white/80 hover:text-white text-2xl font-serif font-medium py-3 border-b border-encre-800 transition-all duration-200",
-                isMobileOpen && "animate-fade-up"
+                "nav-link",
+                pathname === link.href && "nav-link-active text-white"
               )}
-              style={{ animationDelay: `${i * 60}ms`, animationFillMode: "both" }}
             >
               {link.label}
             </Link>
           ))}
-          <div className="mt-8">
+          <Link
+            href="/contact"
+            className={cn(
+              "ml-3 btn btn-primary text-[0.75rem] py-2.5 px-5",
+              pathname === "/contact" && "opacity-90"
+            )}
+          >
+            Prendre contact
+          </Link>
+        </div>
+
+        {/* ─── MOBILE TOGGLE ────────────────────────── */}
+        <button
+          onClick={() => setMobileOpen(!mobileOpen)}
+          className="md:hidden flex flex-col gap-[5px] p-2 z-50 relative"
+          aria-label={mobileOpen ? "Fermer le menu" : "Ouvrir le menu"}
+          aria-expanded={mobileOpen}
+        >
+          <span className={cn("block w-6 h-0.5 bg-white transition-all duration-300 origin-center", mobileOpen && "translate-y-[7px] rotate-45")} />
+          <span className={cn("block w-6 h-0.5 bg-white transition-all duration-300", mobileOpen && "opacity-0")} />
+          <span className={cn("block w-6 h-0.5 bg-white transition-all duration-300 origin-center", mobileOpen && "-translate-y-[7px] -rotate-45")} />
+        </button>
+      </nav>
+
+      {/* ─── MOBILE MENU ──────────────────────────── */}
+      <div
+        className={cn(
+          "fixed inset-0 bg-encre-950/98 backdrop-blur-sm z-[100] flex flex-col items-center justify-center md:hidden overflow-y-auto",
+          "transition-all duration-300 ease-in-out",
+          mobileOpen ? "opacity-100 translate-x-0" : "opacity-0 translate-x-full pointer-events-none"
+        )}
+      >
+        <div className="flex flex-col items-center justify-center gap-3 w-full max-w-md px-8 py-12">
+          {NAV_LINKS.map((link) => (
             <Link
-              href="/contact"
-              onClick={() => setIsMobileOpen(false)}
-              className="btn-primary w-full justify-center text-base py-4"
+              key={link.href}
+              href={link.href}
+              className={cn(
+                "text-2xl font-serif font-semibold text-white/70 hover:text-white transition-all duration-200 py-3 px-6 w-full text-center",
+                pathname === link.href && "text-white scale-105"
+              )}
             >
-              Prendre contact
+              {link.label}
+            </Link>
+          ))}
+          <Link
+            href="/contact"
+            className={cn(
+              "mt-6 bg-rouge-800 text-white hover:bg-rouge-900 text-sm font-sans tracking-widest uppercase font-bold py-4 px-10 w-full text-center rounded-sm transition-all duration-200 shadow-lg",
+              pathname === "/contact" && "opacity-90"
+            )}
+          >
+            Prendre contact
+          </Link>
+          <div className="mt-8 pt-6 border-t border-white/10 w-full flex flex-col gap-3">
+            <Link
+              href="/mentions-legales"
+              className="text-sm text-white/50 hover:text-white/70 transition-colors text-center py-2"
+            >
+              Mentions légales
+            </Link>
+            <Link
+              href="/politique-de-confidentialite"
+              className="text-sm text-white/50 hover:text-white/70 transition-colors text-center py-2"
+            >
+              Politique de confidentialité
             </Link>
           </div>
-          <div className="mt-8 pt-8 border-t border-encre-800">
-            <a
-              href={`tel:${SITE_CONFIG.phone}`}
-              className="text-or-400 text-sm font-medium"
-            >
-              {SITE_CONFIG.phone}
-            </a>
-          </div>
-        </nav>
+        </div>
       </div>
     </header>
   );

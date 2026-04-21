@@ -1,12 +1,16 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import Image from "next/image";
-import SectionLabel from "@/components/ui/SectionLabel";
+import { SITE_CONFIG } from "@/lib/constants";
 
 export const metadata: Metadata = {
   title: "À propos — Loubna Abouz Manta, Juriste en Droit du Travail",
   description:
     "Découvrez le parcours de Loubna Abouz Manta, juriste en droit du travail et prévention des risques professionnels. Master en droit et management, intervention en amont des procédures.",
+  openGraph: {
+    title: `À propos – ${SITE_CONFIG.name}`,
+    description:
+      "Parcours et engagement d'une juriste spécialisée en droit du travail et prévention des risques professionnels.",
+  },
 };
 
 const VALUES = [
@@ -18,50 +22,68 @@ const VALUES = [
   {
     icon: "👂",
     title: "Écoute",
-    desc: "Avant toute analyse, j'écoute. Comprendre votre situation dans sa globalité est la condition d'un accompagnement réellement adapté.",
+    desc: "Comprendre votre situation dans sa globalité est la condition d'un accompagnement réellement adapté.",
   },
   {
     icon: "🔒",
     title: "Confidentialité",
-    desc: "Tout ce que vous me confiez reste strictement confidentiel. La discrétion est un engagement non négociable dans mon activité.",
+    desc: "Vos informations restent strictement confidentielles. La discrétion est un engagement non négociable.",
   },
   {
     icon: "💡",
     title: "Clarté",
-    desc: "Je m'engage à vous expliquer les enjeux en langage accessible, sans jargon inutile, pour que vous compreniez pleinement votre situation.",
+    desc: "Je m'engage à vous expliquer les enjeux en langage accessible, sans jargon inutile.",
   },
   {
     icon: "🛡️",
     title: "Prévention",
-    desc: "Mon approche est résolument préventive : j'interviens en amont pour éviter l'escalade des situations et sécuriser les pratiques.",
+    desc: "Mon approche est résolument préventive : j'interviens en amont pour éviter l'escalade des situations.",
   },
   {
     icon: "🎯",
     title: "Pragmatisme",
-    desc: "Mon objectif n'est pas de théoriser, mais de vous apporter des réponses concrètes, adaptées à votre réalité professionnelle.",
+    desc: "Mon objectif n'est pas de théoriser, mais de vous apporter des réponses concrètes, adaptées à votre réalité.",
+  },
+];
+
+const FORMATION = [
+  {
+    icon: "🎓",
+    title: "Master en Droit et Management",
+    desc: "Double approche à l'intersection du droit du travail et du management des organisations, permettant d'analyser les situations professionnelles en tenant compte à la fois du cadre juridique et de la réalité du terrain.",
+  },
+  {
+    icon: "⚠️",
+    title: "Spécialisation en prévention des risques professionnels",
+    desc: "Expertise en identification et évaluation des risques (RPS, accidents du travail, maladies professionnelles), rédaction du DUERP, et accompagnement des entreprises dans leur démarche de prévention.",
+  },
+  {
+    icon: "📚",
+    title: "Formation continue",
+    desc: "Dans une démarche d'amélioration continue, je maintiens mes connaissances à jour via des formations régulières en droit du travail, santé-sécurité au travail et management des risques professionnels.",
   },
 ];
 
 export default function AProposPage() {
   return (
     <>
-      {/* Header */}
-      <section className="bg-encre-950 pt-32 pb-20 relative overflow-hidden">
-        <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-or-500 to-transparent" />
+      {/* ─── PAGE HERO ─────────────────────────────────── */}
+      <section className="page-hero">
+        <div className="hero-grid-bg" />
         <div
-          className="absolute inset-0 opacity-5"
-          style={{
-            backgroundImage:
-              "radial-gradient(circle at 30% 50%, rgba(201,168,76,0.5) 0%, transparent 60%)",
-          }}
+          className="absolute -bottom-40 -right-40 w-[500px] h-[500px] rounded-full pointer-events-none"
+          style={{ background: "radial-gradient(circle, rgba(139,0,0,.22) 0%, transparent 70%)" }}
         />
-        <div className="container-site relative z-10 text-center">
-          <SectionLabel light>À propos</SectionLabel>
-          <h1 className="font-serif text-4xl lg:text-5xl text-white font-bold mt-2">
+        <div className="container-main relative z-10 pt-20 pb-12">
+          <nav className="text-[0.72rem] tracking-[0.14em] uppercase text-white/30 mb-5 flex gap-2">
+            <Link href="/" className="hover:text-white/60 transition-colors">Accueil</Link>
+            <span>›</span>
+            <span className="text-or-500">À propos</span>
+          </nav>
+          <h1 className="font-serif text-[clamp(2.4rem,5vw,3.8rem)] font-semibold text-white leading-[1.12] max-w-2xl">
             Loubna Abouz Manta
           </h1>
-          <div className="w-16 h-0.5 bg-gradient-to-r from-or-500 to-or-300 my-6 mx-auto" />
-          <p className="text-encre-300 text-base leading-relaxed max-w-xl mx-auto">
+          <p className="text-white/50 text-[1rem] max-w-[500px] mt-5 leading-[1.8]">
             Juriste en droit du travail, spécialisée dans la prévention des risques
             professionnels et l&apos;accompagnement des salariés et des entreprises
             en amont des procédures.
@@ -69,71 +91,82 @@ export default function AProposPage() {
         </div>
       </section>
 
-      {/* Présentation */}
-      <section className="py-20 lg:py-28 bg-encre-50">
-        <div className="container-site">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
-            {/* Logo / identité */}
-            <div className="lg:col-span-4 flex justify-center lg:justify-start">
-              <div className="relative w-full max-w-xs">
-                <div className="absolute -top-4 -left-4 w-full h-full border border-or-300/30 rounded-sm" />
-                <div className="relative bg-encre-950 rounded-sm p-10 flex items-center justify-center">
-                  <div className="relative w-48 h-48">
-                    <Image
-                      src="/logo.png"
-                      alt="Loubna Abouz Manta — Juriste en Droit du Travail"
-                      fill
-                      className="object-contain"
-                    />
-                  </div>
+      {/* ─── ABOUT MAIN ────────────────────────────────── */}
+      <section className="section-pad bg-encre-50">
+        <div className="container-main">
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.7fr] gap-20 items-start">
+
+            {/* Identité */}
+            <div className="lg:sticky lg:top-24">
+              <div className="relative">
+                <div
+                  className="aspect-[3/4] rounded-sm border border-or-500/20 flex flex-col items-center justify-center gap-4 text-white/25 max-w-sm"
+                  style={{ background: "linear-gradient(135deg, #1a1a1a, #2a2a2a)" }}
+                >
+                  <span className="text-5xl">⚖️</span>
+                  <span className="text-[0.75rem] tracking-[0.1em] uppercase">Photo professionnelle</span>
+                  <span className="text-[0.65rem] tracking-[0.08em] opacity-60">
+                    À remplacer dans /public/
+                  </span>
                 </div>
-                <div className="mt-4 bg-white border border-encre-100 rounded-sm p-5">
-                  <p className="font-serif text-lg text-encre-950 font-semibold">
-                    Loubna Abouz Manta
+                <div className="absolute -bottom-5 -right-5 bg-rouge-800 text-white p-5 rounded-sm shadow-rouge-lg text-center">
+                  <strong className="block font-serif text-[1.4rem] leading-none">Master</strong>
+                  <span className="text-[0.65rem] opacity-80 leading-tight block mt-1">
+                    Droit &amp; Management
+                  </span>
+                </div>
+              </div>
+
+              <div className="mt-10 bg-encre-950 rounded-sm p-6">
+                <p className="font-serif text-white font-semibold text-sm mb-0.5">
+                  Loubna Abouz Manta
+                </p>
+                <p className="text-or-500 text-[0.65rem] tracking-[0.15em] uppercase font-medium">
+                  Juriste · Droit du Travail
+                </p>
+                <div className="w-10 h-px bg-or-400 my-4" />
+                <div className="space-y-2.5">
+                  <p className="text-encre-300 text-xs flex items-center gap-2">
+                    <span className="text-or-500">🎓</span>
+                    Master 2 Droit &amp; Management
                   </p>
-                  <p className="text-or-500 text-xs tracking-[0.15em] uppercase font-medium mt-0.5">
-                    Juriste · Droit du Travail
+                  <p className="text-encre-300 text-xs flex items-center gap-2">
+                    <span className="text-or-500">⚠️</span>
+                    Prévention des risques professionnels
                   </p>
-                  <div className="w-12 h-0.5 bg-or-400 my-4" />
-                  <div className="space-y-2">
-                    <p className="text-encre-500 text-xs flex items-center gap-2">
-                      <span className="text-or-500">🎓</span>
-                      Master 2 Droit &amp; Management
-                    </p>
-                    <p className="text-encre-500 text-xs flex items-center gap-2">
-                      <span className="text-or-500">⚠️</span>
-                      Prévention des risques professionnels
-                    </p>
-                    <p className="text-encre-500 text-xs flex items-center gap-2">
-                      <span className="text-or-500">🌐</span>
-                      Interventions 100% distanciel
-                    </p>
-                  </div>
+                  <p className="text-encre-300 text-xs flex items-center gap-2">
+                    <span className="text-or-500">🌐</span>
+                    Interventions 100% distanciel
+                  </p>
                 </div>
               </div>
             </div>
 
-            {/* Texte — bio fournie par la cliente */}
-            <div className="lg:col-span-8">
-              <SectionLabel>Mon parcours</SectionLabel>
-              <h2 className="font-serif text-3xl lg:text-4xl text-encre-950 font-bold mt-2 mb-6">
-                Une double approche : droit du travail et management des organisations
-              </h2>
-              <div className="space-y-5 text-encre-600 text-sm leading-relaxed">
-                <p>
+            {/* Content */}
+            <div className="pt-2">
+              <span className="section-label">Mon parcours</span>
+
+              <blockquote className="font-serif text-[1.3rem] italic text-encre-950 leading-[1.65] mb-7 border-l-[3px] border-rouge-800 pl-5">
+                « Mon objectif est d&apos;apporter un accompagnement rigoureux, accessible
+                et adapté à chaque situation, dans une logique de prévention et de
+                sécurisation des pratiques professionnelles. »
+              </blockquote>
+
+              <div className="space-y-5 mb-12">
+                <p className="text-[0.95rem] text-encre-600 leading-[1.88]">
                   J&apos;interviens en amont afin d&apos;analyser les situations de travail,
                   d&apos;identifier les risques professionnels et d&apos;accompagner les entreprises
                   dans la rédaction et la mise à jour de leur DUERP, dans une logique de
                   prévention et de sécurisation des pratiques.
                 </p>
-                <p>
+                <p className="text-[0.95rem] text-encre-600 leading-[1.88]">
                   Titulaire d&apos;un Master en droit et management, j&apos;ai développé une
                   expertise à l&apos;intersection du droit du travail et du management des
                   organisations. Cette double approche me permet d&apos;analyser en profondeur
                   les situations professionnelles, en tenant compte à la fois du cadre
                   juridique et de la réalité du terrain.
                 </p>
-                <p>
+                <p className="text-[0.95rem] text-encre-600 leading-[1.88]">
                   J&apos;interviens principalement en droit du travail, avec une attention
                   particulière portée à la prévention des risques professionnels, notamment
                   en matière de santé, sécurité et conditions de travail. Dans ce cadre,
@@ -142,109 +175,15 @@ export default function AProposPage() {
                   Unique d&apos;Évaluation des Risques Professionnels (DUERP), en collaboration
                   avec les acteurs de l&apos;entreprise.
                 </p>
-                <p>
+                <p className="text-[0.95rem] text-encre-600 leading-[1.88]">
                   Mon approche ne se limite pas à la rédaction de documents : elle repose
                   sur une analyse concrète des situations de travail et une volonté d&apos;agir
-                  en amont, afin de prévenir les tensions et éviter les situations
-                  conflictuelles.
-                </p>
-                <p>
-                  Dans une démarche d&apos;amélioration continue, je poursuis régulièrement
-                  des formations afin de maintenir un haut niveau d&apos;exigence et
-                  d&apos;actualisation de mes connaissances en droit du travail et en santé
-                  et sécurité au travail.
+                  en amont, afin de prévenir les tensions et éviter les situations conflictuelles.
                 </p>
               </div>
 
-              <div className="mt-10 p-6 bg-white border-l-2 border-or-500 rounded-sm">
-                <p className="font-serif text-base text-encre-800 italic leading-relaxed">
-                  &ldquo;Mon objectif est d&apos;apporter un accompagnement rigoureux, accessible
-                  et adapté à chaque situation, dans une logique de prévention et de
-                  sécurisation des pratiques professionnelles.&rdquo;
-                </p>
-                <p className="mt-3 text-or-500 text-xs font-semibold tracking-wide uppercase">
-                  — Loubna Abouz Manta
-                </p>
-              </div>
-
-              <div className="mt-10 flex flex-wrap gap-4">
-                <Link href="/contact" className="btn-primary text-sm">
-                  Prendre contact
-                </Link>
-                <Link href="/services" className="btn-secondary text-sm">
-                  Mes interventions
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Valeurs */}
-      <section className="py-20 lg:py-28 bg-white">
-        <div className="container-site">
-          <div className="max-w-2xl mx-auto text-center mb-16">
-            <SectionLabel>Ce qui me définit</SectionLabel>
-            <h2 className="font-serif text-3xl lg:text-4xl text-encre-950 font-bold mt-2">
-              Mes valeurs, au cœur de mon accompagnement
-            </h2>
-            <div className="divider-or mx-auto" />
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {VALUES.map((v) => (
-              <div key={v.title} className="card-premium">
-                <div className="w-12 h-12 rounded-sm bg-rouge-50 border border-rouge-100 flex items-center justify-center text-xl mb-6">
-                  {v.icon}
-                </div>
-                <h3 className="font-serif text-lg text-encre-950 font-semibold mb-3">{v.title}</h3>
-                <p className="text-encre-500 text-sm leading-relaxed">{v.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Domaines d'intervention */}
-      <section className="py-20 lg:py-28 bg-encre-950">
-        <div className="container-site">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-            <div>
-              <SectionLabel light>Domaines</SectionLabel>
-              <h2 className="font-serif text-3xl lg:text-4xl text-white font-bold mt-2 mb-6">
-                Domaines d&apos;intervention
-              </h2>
-              <p className="text-encre-300 text-sm leading-relaxed mb-8">
-                Ma spécialisation en droit du travail et en prévention des risques
-                professionnels me permet d&apos;intervenir sur l&apos;ensemble des problématiques
-                liées aux relations professionnelles, en amont des situations conflictuelles.
-              </p>
-              <div className="grid grid-cols-2 gap-3">
-                {[
-                  "Analyse de situation professionnelle",
-                  "Prévention des risques (RPS, AT, MP)",
-                  "DUERP — Document Unique",
-                  "Santé, sécurité au travail",
-                  "Contrats de travail",
-                  "Procédures disciplinaires",
-                  "Licenciement — sécurisation",
-                  "Rupture conventionnelle",
-                  "Harcèlement moral / sexuel",
-                  "Conditions de travail",
-                  "Accidents du travail",
-                  "Maladies professionnelles",
-                ].map((comp) => (
-                  <div key={comp} className="flex items-start gap-2.5">
-                    <div className="w-1.5 h-1.5 rounded-full bg-or-500 flex-shrink-0 mt-1.5" />
-                    <span className="text-encre-300 text-xs leading-relaxed">{comp}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="space-y-6">
-              {/* Disclaimer légal mis en valeur */}
-              <div className="bg-encre-900 border border-encre-700 rounded-sm p-6">
+              {/* Information importante */}
+              <div className="bg-encre-950 border border-encre-700 rounded-sm p-6 mb-10">
                 <div className="flex items-start gap-3">
                   <span className="text-or-400 text-lg flex-shrink-0 mt-0.5">ℹ️</span>
                   <div>
@@ -262,32 +201,28 @@ export default function AProposPage() {
                 </div>
               </div>
 
-              {/* Formations continues */}
-              <div className="bg-encre-900 border border-encre-800 rounded-sm p-6">
-                <h4 className="font-serif text-white text-base font-semibold mb-4">
-                  Formation continue
-                </h4>
-                <p className="text-encre-300 text-xs leading-relaxed">
-                  Dans une démarche d&apos;amélioration continue, je maintiens mes
-                  connaissances à jour via des formations régulières en droit du travail,
-                  santé-sécurité au travail et management des risques professionnels.
-                </p>
+              {/* Values */}
+              <span className="section-label">Mes valeurs</span>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-2">
+                {VALUES.map((v, i) => (
+                  <div
+                    key={i}
+                    className="bg-encre-100 border border-encre-200/50 border-l-[3px] border-l-rouge-800 p-6 rounded-sm"
+                  >
+                    <h4 className="font-serif text-[1.05rem] text-encre-950 mb-2">
+                      {v.icon} {v.title}
+                    </h4>
+                    <p className="text-[0.84rem] text-encre-500 leading-[1.7]">{v.desc}</p>
+                  </div>
+                ))}
               </div>
 
-              {/* CTA */}
-              <div className="bg-rouge-800 rounded-sm p-6">
-                <h4 className="font-serif text-white text-base font-semibold mb-3">
-                  Vous avez une question ?
-                </h4>
-                <p className="text-white/70 text-xs mb-5 leading-relaxed">
-                  Contactez-moi pour un premier échange confidentiel et sans engagement
-                  sur votre situation.
-                </p>
-                <Link
-                  href="/contact"
-                  className="inline-flex items-center justify-center gap-2 bg-white text-rouge-800 px-6 py-3 rounded-sm font-semibold text-xs tracking-wide transition-all duration-300 hover:bg-encre-50 w-full"
-                >
-                  Prendre contact
+              <div className="mt-10 flex flex-wrap gap-4">
+                <Link href="/contact" className="btn btn-primary">
+                  Prendre contact →
+                </Link>
+                <Link href="/services" className="btn btn-ghost">
+                  Voir mes interventions
                 </Link>
               </div>
             </div>
@@ -295,21 +230,48 @@ export default function AProposPage() {
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="py-16 bg-encre-50 border-t border-encre-100">
-        <div className="container-site text-center">
-          <h2 className="font-serif text-2xl lg:text-3xl text-encre-950 font-bold mb-4">
+      {/* ─── FORMATION ─────────────────────────────────── */}
+      <section className="section-pad bg-encre-100">
+        <div className="container-main">
+          <div className="text-center mb-14">
+            <span className="section-label">Formation &amp; spécialisation</span>
+            <h2 className="font-serif text-[clamp(1.9rem,3vw,2.6rem)] text-encre-950 leading-[1.2]">
+              Une double approche
+              <br />
+              <em className="text-rouge-800 font-light" style={{ fontStyle: "italic" }}>
+                droit du travail et management
+              </em>
+            </h2>
+          </div>
+          <div className="max-w-[700px] mx-auto space-y-0 divide-y divide-encre-200">
+            {FORMATION.map((f, i) => (
+              <div key={i} className="flex gap-7 py-8">
+                <div className="text-[2rem] flex-shrink-0 pt-1">{f.icon}</div>
+                <div>
+                  <h4 className="font-serif text-[1.12rem] text-encre-950 mb-2">{f.title}</h4>
+                  <p className="text-[0.9rem] text-encre-500 leading-[1.8]">{f.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ─── CTA ───────────────────────────────────────── */}
+      <section className="section-pad bg-rouge-800">
+        <div className="container-main text-center">
+          <h2 className="font-serif text-[clamp(2rem,4vw,2.8rem)] text-white mb-4">
             Prêt(e) à être accompagné(e) ?
           </h2>
-          <p className="text-encre-500 text-sm mb-8 max-w-md mx-auto">
+          <p className="text-white/70 mb-9">
             Contactez-moi pour un premier échange sur votre situation professionnelle.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/contact" className="btn-primary text-sm">
+          <div className="flex flex-wrap gap-4 justify-center">
+            <Link href="/contact" className="btn btn-white">
               Prendre contact
             </Link>
-            <Link href="/services" className="btn-secondary text-sm">
-              Voir mes interventions
+            <Link href="/services" className="btn btn-ghost-white">
+              Voir les interventions
             </Link>
           </div>
         </div>

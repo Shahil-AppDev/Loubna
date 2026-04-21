@@ -1,88 +1,107 @@
 import { NextRequest, NextResponse } from "next/server";
 
-interface ContactPayload {
-  nom: string;
-  prenom: string;
-  email: string;
-  telephone?: string;
-  typedemande: string;
-  statut: string;
-  sujet: string;
-  message: string;
-}
-
-function validatePayload(data: Partial<ContactPayload>): string | null {
-  if (!data.nom?.trim()) return "Nom requis";
-  if (!data.prenom?.trim()) return "Prénom requis";
-  if (!data.email?.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email))
-    return "Email invalide";
-  if (!data.typedemande) return "Type de demande requis";
-  if (!data.statut) return "Statut requis";
-  if (!data.sujet?.trim()) return "Sujet requis";
-  if (!data.message?.trim() || data.message.trim().length < 20)
-    return "Message trop court (20 caractères minimum)";
-  return null;
-}
+// ═══════════════════════════════════════════════════════════
+// API Route — /api/contact
+// Gestion des soumissions du formulaire de contact
+//
+// Pour activer cette route avec Resend :
+// 1. npm install resend
+// 2. Ajouter RESEND_API_KEY dans .env.local
+// 3. Décommenter le code ci-dessous
+// ═══════════════════════════════════════════════════════════
 
 export async function POST(request: NextRequest) {
   try {
-    const body: Partial<ContactPayload> = await request.json();
+    const body = await request.json();
 
-    const validationError = validatePayload(body);
-    if (validationError) {
-      return NextResponse.json({ error: validationError }, { status: 400 });
+    const {
+      nom,
+      prenom,
+      email,
+      tel,
+      typeDemande,
+      statut,
+      sujet,
+      message,
+    } = body;
+
+    // ─── Validation serveur ────────────────────────────────
+    if (!nom || !prenom || !email || !sujet || !message) {
+      return NextResponse.json(
+        { error: "Champs obligatoires manquants." },
+        { status: 400 }
+      );
     }
 
-    // ─── Option 1 : Resend ────────────────────────────────────────────
-    // npm install resend
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return NextResponse.json(
+        { error: "Adresse email invalide." },
+        { status: 400 }
+      );
+    }
+
+    if (message.trim().length < 20) {
+      return NextResponse.json(
+        { error: "Message trop court." },
+        { status: 400 }
+      );
+    }
+
+    // ─── Envoi avec Resend ────────────────────────────────
+    // Décommentez et installez : npm install resend
+    //
     // import { Resend } from "resend";
     // const resend = new Resend(process.env.RESEND_API_KEY);
+    //
     // await resend.emails.send({
     //   from: "Site web <noreply@loubna-abouz-manta.fr>",
-    //   to: process.env.CONTACT_EMAIL!,
-    //   replyTo: body.email,
-    //   subject: `Nouvelle demande : ${body.sujet}`,
-    //   text: `
-    //     Nom : ${body.prenom} ${body.nom}
-    //     Email : ${body.email}
-    //     Téléphone : ${body.telephone || "Non renseigné"}
-    //     Type : ${body.typedemande}
-    //     Statut : ${body.statut}
-    //     Sujet : ${body.sujet}
-    //
-    //     Message :
-    //     ${body.message}
+    //   to: [process.env.CONTACT_EMAIL_TO!],
+    //   replyTo: email,
+    //   subject: `[Contact] ${sujet} — ${prenom} ${nom}`,
+    //   html: `
+    //     <div style="font-family: Georgia, serif; max-width: 600px; margin: 0 auto;">
+    //       <div style="background: #8B0000; padding: 24px; text-align: center;">
+    //         <h1 style="color: white; margin: 0; font-size: 1.4rem;">Nouvelle demande de contact</h1>
+    //       </div>
+    //       <div style="padding: 32px; background: #fff; border: 1px solid #eee;">
+    //         <table style="width: 100%; border-collapse: collapse;">
+    //           <tr><td style="padding: 8px 0; color: #666; font-size: 0.85rem; width: 140px;"><strong>Nom</strong></td><td style="padding: 8px 0;">${prenom} ${nom}</td></tr>
+    //           <tr><td style="padding: 8px 0; color: #666; font-size: 0.85rem;"><strong>Email</strong></td><td style="padding: 8px 0;"><a href="mailto:${email}">${email}</a></td></tr>
+    //           <tr><td style="padding: 8px 0; color: #666; font-size: 0.85rem;"><strong>Téléphone</strong></td><td style="padding: 8px 0;">${tel || "Non renseigné"}</td></tr>
+    //           <tr><td style="padding: 8px 0; color: #666; font-size: 0.85rem;"><strong>Statut</strong></td><td style="padding: 8px 0;">${statut || "Non précisé"}</td></tr>
+    //           <tr><td style="padding: 8px 0; color: #666; font-size: 0.85rem;"><strong>Type</strong></td><td style="padding: 8px 0;">${typeDemande || "Non précisé"}</td></tr>
+    //           <tr><td style="padding: 8px 0; color: #666; font-size: 0.85rem;"><strong>Sujet</strong></td><td style="padding: 8px 0;">${sujet}</td></tr>
+    //         </table>
+    //         <hr style="margin: 24px 0; border: none; border-top: 1px solid #eee;" />
+    //         <h3 style="color: #8B0000; margin-bottom: 12px;">Message</h3>
+    //         <p style="color: #333; line-height: 1.7; white-space: pre-wrap;">${message}</p>
+    //       </div>
+    //       <div style="padding: 16px; text-align: center; color: #999; font-size: 0.75rem;">
+    //         Loubna Abouz Manta — Juriste en droit du travail
+    //       </div>
+    //     </div>
     //   `,
     // });
 
-    // ─── Option 2 : Nodemailer (SMTP) ────────────────────────────────
-    // npm install nodemailer @types/nodemailer
-    // import nodemailer from "nodemailer";
-    // const transporter = nodemailer.createTransport({ ... });
-    // await transporter.sendMail({ ... });
-
-    // ─── Option 3 : Formspree (webhook forward) ───────────────────────
-    // Redirigez directement depuis le front vers Formspree (pas besoin d'API route).
-
-    // Pour l'instant, on simule un succès.
-    // Remplacez ce bloc par l'intégration de votre choix.
-    console.log("Nouvelle demande de contact :", {
-      nom: `${body.prenom} ${body.nom}`,
-      email: body.email,
-      sujet: body.sujet,
-      type: body.typedemande,
-      statut: body.statut,
-    });
+    // Simulation pour développement (à retirer en production)
+    console.log("📧 Form submission:", { nom, prenom, email, sujet, statut, typeDemande });
+    await new Promise((r) => setTimeout(r, 500));
 
     return NextResponse.json(
-      { success: true, message: "Message envoyé avec succès." },
+      { success: true, message: "Votre message a bien été envoyé." },
       { status: 200 }
     );
   } catch (error) {
-    console.error("Erreur API contact:", error);
+    console.error("Contact API error:", error);
     return NextResponse.json(
-      { error: "Erreur serveur. Veuillez réessayer." },
+      { error: "Une erreur interne est survenue. Veuillez réessayer." },
       { status: 500 }
     );
   }
+}
+
+// Bloquer les méthodes non autorisées
+export async function GET() {
+  return NextResponse.json({ error: "Méthode non autorisée." }, { status: 405 });
 }
