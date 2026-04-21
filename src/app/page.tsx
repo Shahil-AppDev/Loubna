@@ -18,7 +18,7 @@ export default function HomePage() {
       {/* HERO */}
       {/* ═══════════════════════════════════════════════════ */}
       <section
-        className="relative min-h-screen flex items-center overflow-hidden bg-encre-950"
+        className="relative min-h-[85vh] md:min-h-screen flex items-center overflow-hidden bg-encre-950"
         style={{ paddingTop: "var(--nav-h)" }}
       >
         {/* Grid background */}
@@ -36,18 +36,18 @@ export default function HomePage() {
           style={{ background: "radial-gradient(circle, rgba(139,0,0,.28) 0%, transparent 70%)" }}
         />
 
-        <div className="container-main relative z-10 py-24">
+        <div className="container-main relative z-10 py-12 md:py-24">
           {/* Badge */}
-          <div className="flex items-center gap-4 mb-7">
-            <span className="block w-8 h-px bg-or-500 opacity-60" />
-            <span className="text-[0.7rem] font-bold tracking-[0.22em] uppercase text-or-500">
+          <div className="flex items-center gap-2 md:gap-4 mb-5 md:mb-7">
+            <span className="block w-6 md:w-8 h-px bg-or-500 opacity-60" />
+            <span className="text-[0.6rem] md:text-[0.7rem] font-bold tracking-[0.18em] md:tracking-[0.22em] uppercase text-or-500">
               Juriste conseil · Droit du travail
             </span>
-            <span className="block w-8 h-px bg-or-500 opacity-60" />
+            <span className="block w-6 md:w-8 h-px bg-or-500 opacity-60" />
           </div>
 
           {/* H1 */}
-          <h1 className="font-serif text-[clamp(2.8rem,5.5vw,4.6rem)] font-semibold text-white leading-[1.1] mb-6 max-w-3xl">
+          <h1 className="font-serif text-[clamp(2rem,7vw,4.6rem)] font-semibold text-white leading-[1.1] mb-4 md:mb-6 max-w-3xl">
             Votre droit du travail,
             <br />
             <em className="font-light text-or-500 not-italic" style={{ fontStyle: "italic" }}>
@@ -55,38 +55,38 @@ export default function HomePage() {
             </em>
           </h1>
 
-          <p className="text-[1.05rem] text-white/60 max-w-[540px] leading-[1.8] mb-10">
+          <p className="text-[0.95rem] md:text-[1.05rem] text-white/60 max-w-[540px] leading-[1.7] md:leading-[1.8] mb-6 md:mb-10">
             Loubna Abouz Manta vous accompagne dans toutes vos situations
             juridiques liées au travail — avec clarté, écoute et un engagement
             sans compromis.
           </p>
 
           {/* CTAs */}
-          <div className="flex flex-wrap gap-4 mb-16">
-            <Link href="/contact" className="btn btn-primary">
+          <div className="flex flex-col sm:flex-row flex-wrap gap-3 md:gap-4 mb-10 md:mb-16">
+            <Link href="/contact" className="btn btn-primary text-center justify-center">
               Prendre rendez-vous
             </Link>
-            <Link href="/services" className="btn btn-ghost">
+            <Link href="/services" className="btn btn-ghost text-center justify-center">
               Découvrir les services
             </Link>
           </div>
 
           {/* Stats */}
-          <div className="flex flex-wrap items-center gap-0">
+          <div className="grid grid-cols-3 gap-4 md:flex md:flex-wrap md:items-center md:gap-0">
             {[
               { num: "+ 10", label: "ans d'expérience" },
               { num: "100%", label: "confidentialité" },
               { num: "48h", label: "délai de réponse" },
             ].map((stat, i) => (
-              <div key={i} className="flex items-center">
+              <div key={i} className="flex items-center justify-center md:justify-start">
                 {i > 0 && (
-                  <div className="w-px h-9 bg-white/15 mx-7" />
+                  <div className="hidden md:block w-px h-9 bg-white/15 mx-7" />
                 )}
-                <div>
-                  <div className="font-serif text-[2.1rem] font-bold text-white leading-none">
+                <div className="text-center md:text-left">
+                  <div className="font-serif text-[1.6rem] md:text-[2.1rem] font-bold text-white leading-none">
                     {stat.num}
                   </div>
-                  <div className="text-[0.68rem] text-white/45 tracking-[0.08em] uppercase mt-1">
+                  <div className="text-[0.6rem] md:text-[0.68rem] text-white/45 tracking-[0.08em] uppercase mt-1">
                     {stat.label}
                   </div>
                 </div>
@@ -96,7 +96,7 @@ export default function HomePage() {
         </div>
 
         {/* Scroll indicator */}
-        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 z-10">
+        <div className="hidden md:flex absolute bottom-10 left-1/2 -translate-x-1/2 flex-col items-center gap-3 z-10">
           <span className="text-[0.62rem] tracking-[0.2em] uppercase text-white/35">Défiler</span>
           <div
             className="w-px h-12 animate-scroll-pulse"
@@ -110,9 +110,9 @@ export default function HomePage() {
       {/* ═══════════════════════════════════════════════════ */}
       <section className="section-pad bg-encre-50">
         <div className="container-main">
-          <div className="text-center mb-14">
+          <div className="text-center mb-10 md:mb-14">
             <span className="section-label">Domaines d'expertise</span>
-            <h2 className="font-serif text-[clamp(1.9rem,3.5vw,2.8rem)] text-encre-950 leading-[1.2]">
+            <h2 className="font-serif text-[clamp(1.6rem,5vw,2.8rem)] text-encre-950 leading-[1.2]">
               Un accompagnement complet
               <br />
               <em className="text-rouge-800 font-light not-italic" style={{ fontStyle: "italic" }}>
@@ -120,7 +120,7 @@ export default function HomePage() {
               </em>
             </h2>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5">
             {[
               { icon: "⚖️", title: "Salariés", desc: "Licenciement abusif, harcèlement, rupture conventionnelle — je défends vos droits face à l'employeur." },
               { icon: "🏢", title: "Employeurs", desc: "Sécurisation des contrats, procédures disciplinaires, gestion des conflits internes." },
@@ -128,10 +128,10 @@ export default function HomePage() {
               { icon: "🛡️", title: "Prévention & conseil", desc: "Anticiper les risques, sécuriser vos pratiques RH et prévenir les litiges." },
             ].map((card, i) => (
               <Link href="/services" key={i} className="expertise-card group block">
-                <span className="text-3xl mb-5 block">{card.icon}</span>
-                <h3 className="font-serif text-[1.25rem] text-encre-950 mb-3">{card.title}</h3>
-                <p className="text-[0.88rem] text-encre-500 leading-[1.7] mb-5">{card.desc}</p>
-                <span className="text-[0.75rem] font-bold tracking-[0.08em] uppercase text-rouge-800 group-hover:tracking-[0.12em] transition-all">
+                <span className="text-2xl md:text-3xl mb-4 md:mb-5 block">{card.icon}</span>
+                <h3 className="font-serif text-[1.1rem] md:text-[1.25rem] text-encre-950 mb-2 md:mb-3">{card.title}</h3>
+                <p className="text-[0.85rem] md:text-[0.88rem] text-encre-500 leading-[1.6] md:leading-[1.7] mb-4 md:mb-5">{card.desc}</p>
+                <span className="text-[0.7rem] md:text-[0.75rem] font-bold tracking-[0.08em] uppercase text-rouge-800 group-hover:tracking-[0.12em] transition-all">
                   En savoir plus →
                 </span>
               </Link>
@@ -145,17 +145,17 @@ export default function HomePage() {
       {/* ═══════════════════════════════════════════════════ */}
       <section className="section-pad bg-encre-900">
         <div className="container-main">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-16 lg:gap-20 items-start">
             <div>
               <span className="section-label-gold">Pourquoi me faire confiance</span>
-              <h2 className="font-serif text-[clamp(1.9rem,3.5vw,2.8rem)] text-white leading-[1.2] mb-6">
+              <h2 className="font-serif text-[clamp(1.6rem,5vw,2.8rem)] text-white leading-[1.2] mb-4 md:mb-6">
                 Une expertise juridique
                 <br />
                 <em className="text-or-500 font-light" style={{ fontStyle: "italic" }}>
                   à votre service
                 </em>
               </h2>
-              <p className="text-white/55 text-[0.95rem] leading-[1.85] mb-9">
+              <p className="text-white/55 text-[0.9rem] md:text-[0.95rem] leading-[1.75] md:leading-[1.85] mb-6 md:mb-9">
                 En droit du travail, chaque situation est unique. Ma mission est de vous apporter
                 une réponse juridique précise, claire et adaptée à votre contexte — que vous soyez
                 salarié en difficulté ou employeur face à un litige.
@@ -172,13 +172,13 @@ export default function HomePage() {
                 ["04", "Réactivité garantie", "Réponse sous 48h ouvrées. Parce qu'une situation juridique ne peut pas toujours attendre."],
               ].map(([num, title, desc], i) => (
                 <div key={i} className={`trust-item ${i === 0 ? "pt-0" : ""} ${i === 3 ? "border-b-0 pb-0" : ""}`}>
-                  <div className="font-serif text-[2.2rem] font-bold leading-none flex-shrink-0 w-14"
+                  <div className="font-serif text-[1.8rem] md:text-[2.2rem] font-bold leading-none flex-shrink-0 w-12 md:w-14"
                     style={{ color: "rgba(201,168,76,.18)" }}>
                     {num}
                   </div>
                   <div>
-                    <h4 className="font-serif text-[1.1rem] text-white mb-2">{title}</h4>
-                    <p className="text-[0.88rem] text-white/45 leading-[1.75]">{desc}</p>
+                    <h4 className="font-serif text-[1rem] md:text-[1.1rem] text-white mb-1.5 md:mb-2">{title}</h4>
+                    <p className="text-[0.85rem] md:text-[0.88rem] text-white/45 leading-[1.65] md:leading-[1.75]">{desc}</p>
                   </div>
                 </div>
               ))}
@@ -192,9 +192,9 @@ export default function HomePage() {
       {/* ═══════════════════════════════════════════════════ */}
       <section className="section-pad bg-encre-50">
         <div className="container-main">
-          <div className="text-center mb-16">
+          <div className="text-center mb-10 md:mb-16">
             <span className="section-label">Comment ça fonctionne</span>
-            <h2 className="font-serif text-[clamp(1.9rem,3.5vw,2.8rem)] text-encre-950 leading-[1.2]">
+            <h2 className="font-serif text-[clamp(1.6rem,5vw,2.8rem)] text-encre-950 leading-[1.2]">
               Un accompagnement
               <br />
               <em className="text-rouge-800 font-light" style={{ fontStyle: "italic" }}>
@@ -202,7 +202,7 @@ export default function HomePage() {
               </em>
             </h2>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 relative">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 relative">
             {/* Connecting line (desktop) */}
             <div
               className="hidden lg:block absolute top-8 left-[12%] right-[12%] h-px"
@@ -215,11 +215,11 @@ export default function HomePage() {
               ["4", "Suivi continu", "Je vous accompagne à chaque étape, de la consultation jusqu'à la résolution de votre situation."],
             ].map(([n, t, d], i) => (
               <div key={i} className="process-step">
-                <div className="w-16 h-16 rounded-full bg-rouge-800 text-white font-serif text-[1.4rem] font-bold flex items-center justify-center mx-auto mb-6 relative z-10 shadow-rouge-md">
+                <div className="w-14 h-14 md:w-16 md:h-16 rounded-full bg-rouge-800 text-white font-serif text-[1.2rem] md:text-[1.4rem] font-bold flex items-center justify-center mx-auto mb-4 md:mb-6 relative z-10 shadow-rouge-md">
                   {n}
                 </div>
-                <h4 className="font-serif text-[1.12rem] text-encre-950 mb-3">{t}</h4>
-                <p className="text-[0.86rem] text-encre-500 leading-[1.75]">{d}</p>
+                <h4 className="font-serif text-[1rem] md:text-[1.12rem] text-encre-950 mb-2 md:mb-3">{t}</h4>
+                <p className="text-[0.82rem] md:text-[0.86rem] text-encre-500 leading-[1.65] md:leading-[1.75]">{d}</p>
               </div>
             ))}
           </div>
@@ -231,9 +231,9 @@ export default function HomePage() {
       {/* ═══════════════════════════════════════════════════ */}
       <section className="section-pad bg-encre-100">
         <div className="container-main">
-          <div className="text-center mb-14">
+          <div className="text-center mb-10 md:mb-14">
             <span className="section-label">Témoignages</span>
-            <h2 className="font-serif text-[clamp(1.9rem,3.5vw,2.8rem)] text-encre-950 leading-[1.2]">
+            <h2 className="font-serif text-[clamp(1.6rem,5vw,2.8rem)] text-encre-950 leading-[1.2]">
               Ce que disent
               <br />
               <em className="text-rouge-800 font-light" style={{ fontStyle: "italic" }}>
@@ -241,7 +241,7 @@ export default function HomePage() {
               </em>
             </h2>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6 mb-6">
             {TESTIMONIALS.map((t, i) => (
               <div key={i} className="testimonial-card">
                 <div

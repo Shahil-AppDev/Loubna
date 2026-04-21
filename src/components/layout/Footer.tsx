@@ -7,6 +7,7 @@ const NAV_LINKS = [
   { href: "/", label: "Accueil" },
   { href: "/a-propos", label: "À propos" },
   { href: "/services", label: "Services" },
+  { href: "/blog", label: "Blog" },
   { href: "/faq", label: "FAQ" },
   { href: "/contact", label: "Contact" },
 ];
@@ -21,15 +22,15 @@ const SERVICE_LINKS = [
 
 export default function Footer() {
   return (
-    <footer className="bg-encre-950 pt-20 border-t border-or-500/12">
+    <footer className="bg-encre-950 pt-12 md:pt-20 border-t border-or-500/12">
       <div className="container-main">
         {/* ─── GRID ──────────────────────────────── */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12 mb-10 md:mb-16">
 
           {/* Brand */}
           <div className="lg:col-span-1">
-            <div className="flex items-center gap-3 mb-5">
-              <div className="relative w-14 h-14 flex-shrink-0">
+            <div className="flex items-center gap-2.5 md:gap-3 mb-4 md:mb-5">
+              <div className="relative w-12 h-12 md:w-14 md:h-14 flex-shrink-0">
                 <Image
                   src={getAssetPath("/logo.png")}
                   alt="Loubna Abouz Manta"
@@ -38,15 +39,15 @@ export default function Footer() {
                 />
               </div>
               <div>
-                <p className="font-serif text-white font-semibold leading-tight">
+                <p className="font-serif text-white font-semibold leading-tight text-[0.95rem] md:text-base">
                   Loubna Abouz Manta
                 </p>
-                <p className="text-[0.6rem] text-or-500 tracking-[0.12em] uppercase mt-0.5">
+                <p className="text-[0.55rem] md:text-[0.6rem] text-or-500 tracking-[0.12em] uppercase mt-0.5">
                   Juriste · Droit du travail
                 </p>
               </div>
             </div>
-            <p className="text-white/40 text-sm leading-7 mb-6">
+            <p className="text-white/40 text-[0.85rem] md:text-sm leading-6 md:leading-7 mb-5 md:mb-6">
               Juriste spécialisée en droit du travail.
               <br />
               Conseil, rigueur et accompagnement.

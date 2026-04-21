@@ -11,6 +11,7 @@ const NAV_LINKS = [
   { href: "/", label: "Accueil" },
   { href: "/a-propos", label: "À propos" },
   { href: "/services", label: "Services" },
+  { href: "/blog", label: "Blog" },
   { href: "/faq", label: "FAQ" },
 ];
 
@@ -38,14 +39,14 @@ export default function Header() {
       className={cn(
         "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
         "bg-encre-950/97 backdrop-blur-md border-b border-or-500/15",
-        scrolled ? "h-[68px] border-or-500/25" : "h-20"
+        scrolled ? "h-16 md:h-[68px] border-or-500/25" : "h-16 md:h-20"
       )}
     >
       <nav className="container-main h-full flex items-center justify-between">
 
         {/* ─── LOGO ─────────────────────────────────── */}
-        <Link href="/" className="flex items-center gap-3.5 group">
-          <div className="relative w-11 h-11 flex-shrink-0">
+        <Link href="/" className="flex items-center gap-2 md:gap-3.5 group">
+          <div className="relative w-9 h-9 md:w-11 md:h-11 flex-shrink-0">
             <Image
               src={getAssetPath("/logo.png")}
               alt="Loubna Abouz Manta"
@@ -55,10 +56,10 @@ export default function Header() {
             />
           </div>
           <div className="flex flex-col">
-            <span className="font-serif text-[1.05rem] font-semibold text-white leading-tight">
+            <span className="font-serif text-[0.9rem] md:text-[1.05rem] font-semibold text-white leading-tight">
               Loubna Abouz Manta
             </span>
-            <span className="text-[0.6rem] font-bold tracking-[0.15em] uppercase text-or-500 leading-none mt-0.5">
+            <span className="text-[0.5rem] md:text-[0.6rem] font-bold tracking-[0.12em] md:tracking-[0.15em] uppercase text-or-500 leading-none mt-0.5">
               Juriste · Droit du travail
             </span>
           </div>
@@ -105,24 +106,48 @@ export default function Header() {
       {/* ─── MOBILE MENU ──────────────────────────── */}
       <div
         className={cn(
-          "fixed inset-0 bg-encre-950 z-40 flex flex-col items-center justify-center gap-3 md:hidden",
+          "fixed inset-0 bg-encre-950 z-40 flex flex-col items-center justify-center gap-2 md:hidden overflow-y-auto",
           "transition-transform duration-400 ease-in-out",
           mobileOpen ? "translate-x-0" : "translate-x-full"
         )}
       >
-        {[...NAV_LINKS, { href: "/contact", label: "Prendre contact" }].map((link) => (
+        <div className="flex flex-col items-center gap-2 w-full px-6 py-8">
+          {NAV_LINKS.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              className={cn(
+                "text-xl font-serif font-semibold text-white/60 hover:text-white transition-colors py-2.5 px-6 w-full text-center",
+                pathname === link.href && "text-white"
+              )}
+            >
+              {link.label}
+            </Link>
+          ))}
           <Link
-            key={link.href}
-            href={link.href}
+            href="/contact"
             className={cn(
-              "text-2xl font-serif font-semibold text-white/60 hover:text-white transition-colors py-3 px-8 w-full text-center",
-              pathname === link.href && "text-white",
-              link.href === "/contact" && "mt-4 bg-rouge-800 text-white hover:bg-rouge-900 text-base font-sans tracking-widest uppercase font-bold py-4 mx-8 rounded-sm"
+              "mt-4 bg-rouge-800 text-white hover:bg-rouge-900 text-sm font-sans tracking-widest uppercase font-bold py-3.5 px-8 w-full text-center rounded-sm transition-colors",
+              pathname === "/contact" && "opacity-90"
             )}
           >
-            {link.label}
+            Prendre contact
           </Link>
-        ))}
+          <div className="mt-6 pt-6 border-t border-white/10 w-full flex flex-col gap-2">
+            <Link
+              href="/mentions-legales"
+              className="text-sm text-white/40 hover:text-white/60 transition-colors text-center py-1.5"
+            >
+              Mentions légales
+            </Link>
+            <Link
+              href="/politique-de-confidentialite"
+              className="text-sm text-white/40 hover:text-white/60 transition-colors text-center py-1.5"
+            >
+              Politique de confidentialité
+            </Link>
+          </div>
+        </div>
       </div>
     </header>
   );
