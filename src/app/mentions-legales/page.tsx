@@ -42,7 +42,11 @@ export default function MentionsLegalesPage() {
               <li><strong>Adresse :</strong> {SITE_CONFIG.address}</li>
               <li><strong>Email :</strong> <a href={`mailto:${SITE_CONFIG.email}`}>{SITE_CONFIG.email}</a></li>
               <li><strong>Téléphone :</strong> {SITE_CONFIG.phone}</li>
+              <li><strong>SIREN :</strong> {SITE_CONFIG.siren}</li>
               <li><strong>SIRET :</strong> {SITE_CONFIG.siret}</li>
+              <li><strong>Code APE :</strong> {SITE_CONFIG.ape}</li>
+              <li><strong>Nature de l'activité :</strong> Libérale non réglementée</li>
+              <li><strong>Date d'immatriculation :</strong> 14 février 2024</li>
             </ul>
 
             <h2>2. Hébergeur</h2>

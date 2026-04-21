@@ -5,18 +5,20 @@
 
 export const SITE_CONFIG = {
   name: "Loubna Abouz Manta",
-  title: "Juriste en droit du travail et en responsabilité sociale des entreprises",
-  url: "https://loubna-abouz-manta.fr",
+  title: "Juriste conseil en droit du travail",
+  url: "https://bymantajuriste.com",
   email: "louamjuristeconseil@gmail.com",
   phone: "06 59 11 11 08",
-  address: "France",
+  address: "45 rue des Mines, 25400 Audincourt",
   hours: "Du lundi au jeudi : 10h–12h et 14h–18h · Vendredi : 10h–12h30",
   siret: "984 609 255 00018",
+  siren: "984 609 255",
+  ape: "6910Z - Activités juridiques",
   linkedin: "https://www.linkedin.com/in/loubna-abouz-manta-27a5032b7/",
   instagram: "https://www.instagram.com/louaamm/",
   tiktok: "https://www.tiktok.com/@loubna.am25",
   description:
-    "Juriste spécialisée en droit du travail et en responsabilité sociale des entreprises. Conseil juridique pour salariés et employeurs : contrat de travail, licenciement, rupture conventionnelle, sanctions disciplinaires, recrutement de salariés étrangers.",
+    "Juriste conseil spécialisée en droit du travail. Conseil juridique et accompagnement pour salariés et employeurs : contrat de travail, licenciement, rupture conventionnelle, sanctions disciplinaires, recrutement de salariés étrangers, négociation et sensibilisation prévention.",
 };
 
 export const SERVICES = [

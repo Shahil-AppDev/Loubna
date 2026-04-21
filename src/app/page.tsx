@@ -41,7 +41,7 @@ export default function HomePage() {
           <div className="flex items-center gap-4 mb-7">
             <span className="block w-8 h-px bg-or-500 opacity-60" />
             <span className="text-[0.7rem] font-bold tracking-[0.22em] uppercase text-or-500">
-              Juriste · Droit du travail & RSE
+              Juriste conseil · Droit du travail
             </span>
             <span className="block w-8 h-px bg-or-500 opacity-60" />
           </div>
