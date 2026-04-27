@@ -43,9 +43,7 @@ export default function ServicesPage() {
             </em>
           </h1>
           <p className="text-white/50 text-[1rem] max-w-[520px] mt-5 leading-[1.8]">
-            J&apos;interviens en amont afin d&apos;analyser les situations de travail,
-            identifier les risques et accompagner salariés et entreprises dans
-            une logique de prévention et de sécurisation des pratiques.
+            J&apos;interviens dans une démarche d&apos;accompagnement, d&apos;information et de prévention en droit du travail — afin de comprendre les situations de travail, identifier les risques et orienter salariés et entreprises dans une logique de prévention et de sécurisation des pratiques.
           </p>
         </div>
       </section>
@@ -104,12 +102,7 @@ export default function ServicesPage() {
               ℹ️ Note importante
             </h4>
             <p className="text-[0.9rem] text-encre-500 leading-[1.85]">
-              Les informations fournies ne constituent pas une consultation juridique
-              au sens de la réglementation applicable à la profession d&apos;avocat.
-              En tant que juriste (et non avocate inscrite au barreau), mon intervention
-              se situe en amont : analyse, accompagnement préventif, rédaction de documents.
-              Pour la représentation en justice, je vous oriente vers un avocat compétent
-              si nécessaire.
+              <strong>Prestations d&apos;accompagnement, d&apos;information et de prévention – hors consultation juridique réglementée.</strong> Les prestations proposées relèvent de l&apos;information, de l&apos;accompagnement et de la prévention en droit du travail. Elles ne constituent pas une consultation juridique au sens de la réglementation applicable à la profession d&apos;avocat. En tant que juriste (et non avocate inscrite au barreau), mon intervention se situe en amont : accompagnement préventif, information, rédaction de documents. Pour la représentation en justice, je vous oriente vers un avocat compétent si nécessaire.
             </p>
           </div>
         </div>
@@ -122,7 +115,7 @@ export default function ServicesPage() {
             Discutons de votre situation.
           </h2>
           <p className="text-white/70 mb-9 max-w-md mx-auto leading-[1.75]">
-            Chaque situation est unique. Prenez contact pour une analyse personnalisée.
+            Chaque situation est unique. Prenez contact pour un accompagnement personnalisé.
           </p>
           <div className="flex flex-wrap gap-4 justify-center">
             <Link href="/contact" className="btn btn-white">

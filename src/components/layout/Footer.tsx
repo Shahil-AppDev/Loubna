@@ -12,11 +12,11 @@ const NAV_LINKS = [
 ];
 
 const SERVICE_LINKS = [
-  { href: "/services", label: "Analyse de situation" },
+  { href: "/services", label: "Compréhension de situation" },
   { href: "/services", label: "DUERP" },
   { href: "/services", label: "Prévention des risques" },
-  { href: "/services", label: "Licenciement" },
-  { href: "/services", label: "Rupture conventionnelle" },
+  { href: "/services", label: "Accompagnement – fin de contrat" },
+  { href: "/services", label: "Information en droit du travail" },
 ];
 
 export default function Footer() {
@@ -46,9 +46,12 @@ export default function Footer() {
                 </p>
               </div>
             </div>
-            <p className="text-white/40 text-[0.85rem] md:text-sm leading-6 md:leading-7 mb-5 md:mb-6">
-              Accompagnement en droit du travail et prévention des risques professionnels,
-              en amont des procédures.
+            <p className="text-white/40 text-[0.85rem] md:text-sm leading-6 md:leading-7 mb-2 md:mb-3">
+              Accompagnement &amp; information en droit du travail (FR/AR) —
+              prévention des risques professionnels, en amont des procédures.
+            </p>
+            <p className="text-or-500/60 text-[0.72rem] mb-5 md:mb-6 tracking-wide">
+              Accompagnement bilingue français / arabe
             </p>
             <div className="flex items-center gap-3">
               <a
@@ -148,10 +151,11 @@ export default function Footer() {
             </ul>
 
             <div className="mt-6 p-4 border border-encre-800 rounded-sm">
+              <p className="text-encre-300 text-xs leading-relaxed font-semibold mb-1.5">
+                Prestations d&apos;accompagnement, d&apos;information et de prévention – hors consultation juridique réglementée.
+              </p>
               <p className="text-encre-400 text-xs leading-relaxed">
-                Les informations fournies ne constituent pas une consultation
-                juridique au sens de la réglementation applicable à la
-                profession d&apos;avocat.
+                Les prestations proposées relèvent de l&apos;information, de l&apos;accompagnement et de la prévention en droit du travail. Elles ne constituent pas une consultation juridique au sens de la réglementation applicable à la profession d&apos;avocat.
               </p>
             </div>
           </div>

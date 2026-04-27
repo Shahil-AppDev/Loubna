@@ -41,7 +41,7 @@ export default function HomePage() {
           <div className="flex items-center gap-2 md:gap-4 mb-5 md:mb-7">
             <span className="block w-6 md:w-8 h-px bg-or-500 opacity-60" />
             <span className="text-[0.6rem] md:text-[0.7rem] font-bold tracking-[0.18em] md:tracking-[0.22em] uppercase text-or-500">
-              Juriste · Droit du Travail · Prévention des Risques
+              Accompagnement &amp; information en droit du travail (FR/AR)
             </span>
             <span className="block w-6 md:w-8 h-px bg-or-500 opacity-60" />
           </div>
@@ -55,10 +55,13 @@ export default function HomePage() {
             </em>
           </h1>
 
-          <p className="text-[0.95rem] md:text-[1.05rem] text-white/60 max-w-[540px] leading-[1.7] md:leading-[1.8] mb-6 md:mb-10">
-            Loubna Abouz Manta accompagne salariés et entreprises dans l&apos;analyse
+          <p className="text-[0.95rem] md:text-[1.05rem] text-white/60 max-w-[540px] leading-[1.7] md:leading-[1.8] mb-3 md:mb-4">
+            Loubna Abouz Manta accompagne salariés et entreprises dans la compréhension
             de leurs situations professionnelles et la prévention des risques —
             en amont des procédures, avec rigueur et confidentialité.
+          </p>
+          <p className="text-[0.85rem] md:text-[0.9rem] text-or-400/80 max-w-[540px] leading-[1.6] mb-6 md:mb-10 font-medium">
+            J&apos;interviens dans une démarche d&apos;accompagnement, d&apos;information et de prévention en droit du travail. · Accompagnement bilingue français / arabe
           </p>
 
           {/* CTAs */}
@@ -122,7 +125,7 @@ export default function HomePage() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5">
             {[
-              { icon: "🔍", title: "Salariés", desc: "Analyse de situation, procédure disciplinaire, licenciement, rupture conventionnelle, harcèlement — comprenez vos droits et les enjeux de votre situation." },
+              { icon: "🔍", title: "Salariés", desc: "Compréhension de situation, procédure disciplinaire, fin de contrat, harcèlement — comprenez vos droits et les enjeux de votre situation." },
               { icon: "🏢", title: "Employeurs", desc: "Sécurisation des contrats, DUERP, prévention des risques professionnels, procédures disciplinaires — anticipez les risques juridiques." },
               { icon: "⚠️", title: "Prévention des risques", desc: "Identification et évaluation des risques professionnels, RPS, accidents du travail, maladies professionnelles. Mise en place de mesures préventives." },
               { icon: "📋", title: "DUERP", desc: "Réalisation et mise à jour du Document Unique d'Évaluation des Risques Professionnels. Obligation légale pour toute entreprise employant des salariés." },
@@ -166,7 +169,7 @@ export default function HomePage() {
             </div>
             <div>
               {[
-                ["01", "Intervention en amont", "J'interviens avant que les situations ne dégénèrent. Analyser tôt, c'est éviter l'escalade vers des procédures coûteuses et épuisantes."],
+                ["01", "Intervention en amont", "J'interviens avant que les situations ne dégénèrent. Intervenir tôt, c'est éviter l'escalade vers des procédures coûteuses et épuisantes."],
                 ["02", "Écoute et clarté", "Je traduis le droit en langage accessible. Vous comprenez chaque enjeu, chaque décision."],
                 ["03", "Confidentialité absolue", "Vos informations sont strictement confidentielles. Discrétion et professionnalisme sont au cœur de mon exercice."],
                 ["04", "Orientation si nécessaire", "Si votre situation nécessite une procédure judiciaire, vous êtes orienté(e) vers un avocat compétent en droit du travail."],
@@ -209,7 +212,7 @@ export default function HomePage() {
             />
             {[
               ["1", "Premier contact", "Vous m'exposez votre situation via le formulaire ou par téléphone. Je prends le temps d'écouter."],
-              ["2", "Analyse juridique", "J'analyse votre situation avec rigueur et vous propose une première orientation claire sous 48h."],
+              ["2", "Évaluation de la situation", "J'évalue votre situation avec rigueur et vous propose une première orientation claire sous 48h."],
               ["3", "Accompagnement adapté", "Ensemble, nous définissons la meilleure approche en fonction de vos objectifs et de votre situation."],
               ["4", "Orientation si besoin", "Si votre situation nécessite une représentation en justice, vous êtes orienté(e) vers un avocat compétent."],
             ].map(([n, t, d], i) => (
@@ -282,11 +285,11 @@ export default function HomePage() {
           <h2 className="font-serif text-[clamp(2rem,4vw,3rem)] text-white mb-5 leading-[1.2]">
             Votre situation mérite
             <br />
-            une analyse sérieuse.
+            un accompagnement sérieux.
           </h2>
           <p className="text-white/70 text-[1rem] mb-10 max-w-[500px] mx-auto leading-[1.75]">
             N&apos;attendez pas que la situation s&apos;aggrave. Prenez contact dès aujourd&apos;hui
-            — première analyse sous 48h.
+            — première orientation sous 48h.
           </p>
           <div className="flex flex-wrap gap-4 justify-center">
             <Link href="/contact" className="btn btn-white">
@@ -303,10 +306,13 @@ export default function HomePage() {
       {/* DISCLAIMER */}
       {/* ═══════════════════════════════════════════════════ */}
       <div className="bg-encre-900 border-t border-encre-800">
-        <div className="container-main py-4">
-          <p className="text-encre-400 text-xs text-center leading-relaxed">
+        <div className="container-main py-5">
+          <p className="text-encre-400 text-xs text-center leading-relaxed mb-1">
             <span className="text-or-400 mr-1">ℹ</span>
-            Les informations fournies ne constituent pas une consultation juridique au sens de la réglementation applicable à la profession d&apos;avocat.
+            <strong className="text-encre-300">Prestations d&apos;accompagnement, d&apos;information et de prévention – hors consultation juridique réglementée.</strong>
+          </p>
+          <p className="text-encre-400 text-xs text-center leading-relaxed">
+            Les prestations proposées relèvent de l&apos;information, de l&apos;accompagnement et de la prévention en droit du travail. Elles ne constituent pas une consultation juridique au sens de la réglementation applicable à la profession d&apos;avocat.
           </p>
         </div>
       </div>
