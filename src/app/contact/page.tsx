@@ -84,7 +84,7 @@ export default function ContactPage() {
 
             {/* ─── Info column ───────────────────────── */}
             <div className="lg:sticky lg:top-24">
-              <h2 className="font-serif text-[1.8rem] text-encre-950 mb-2">
+              <h2 className="font-serif text-[1.8rem] text-encre-800 mb-2">
                 Coordonnées
               </h2>
               <p className="text-[0.9rem] text-encre-500 leading-[1.75] mb-10">
@@ -108,12 +108,12 @@ export default function ContactPage() {
                           href={item.href}
                           target={item.external ? "_blank" : undefined}
                           rel={item.external ? "noopener noreferrer" : undefined}
-                          className="text-[0.93rem] text-encre-950 font-medium hover:text-rouge-800 transition-colors"
+                          className="text-[0.93rem] text-encre-800 font-medium hover:text-rouge-800 transition-colors"
                         >
                           {item.value}
                         </a>
                       ) : (
-                        <p className="text-[0.93rem] text-encre-950 font-medium whitespace-pre-line leading-[1.6]">
+                        <p className="text-[0.93rem] text-encre-800 font-medium whitespace-pre-line leading-[1.6]">
                           {item.value}
                         </p>
                       )}

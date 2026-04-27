@@ -72,7 +72,7 @@ export default function ServicesPage() {
             return (
               <div key={cat.key} className="mb-20 last:mb-0">
                 <div className="flex items-center gap-5 mb-9">
-                  <h2 className="font-serif text-[1.65rem] text-encre-950 whitespace-nowrap">
+                  <h2 className="font-serif text-[1.65rem] text-encre-800 whitespace-nowrap">
                     {cat.label}
                   </h2>
                   <div
@@ -98,7 +98,7 @@ export default function ServicesPage() {
 
           {/* ─── Disclaimer ──────────────────────────── */}
           <div className="mt-16 bg-white border border-encre-100 border-l-[4px] border-l-or-500 p-8 rounded-sm max-w-2xl">
-            <h4 className="font-serif text-[1.15rem] text-encre-950 mb-3">
+            <h4 className="font-serif text-[1.15rem] text-encre-800 mb-3">
               ℹ️ Note importante
             </h4>
             <p className="text-[0.9rem] text-encre-500 leading-[1.85]">
@@ -151,7 +151,7 @@ function ServiceCard({
       className="service-card group flex flex-col h-full"
     >
       <span className="text-[1.75rem] mb-4 block">{service.icon}</span>
-      <h3 className="font-serif text-[1.18rem] text-encre-950 mb-2.5">
+      <h3 className="font-serif text-[1.18rem] text-encre-800 mb-2.5">
         {service.title}
       </h3>
       <p className="text-[0.87rem] text-encre-500 leading-[1.75] mb-6 flex-1">

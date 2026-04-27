@@ -431,16 +431,16 @@ export default function ServicePage({ params }: Props) {
         <div className="container-main">
           <div className="max-w-[820px] mx-auto">
             <div className="prose prose-lg max-w-none">
-              <p className="text-[1.1rem] text-encre-700 leading-relaxed mb-8">
+              <p className="text-[1.1rem] text-encre-600 leading-relaxed mb-8">
                 {content.intro}
               </p>
 
               {content.sections.map((section, idx) => (
                 <div key={idx} className="mb-10">
-                  <h2 className="font-serif text-[1.75rem] text-encre-950 mb-4 mt-12">
+                  <h2 className="font-serif text-[1.75rem] text-encre-800 mb-4 mt-12">
                     {section.h2}
                   </h2>
-                  <div className="text-encre-700 leading-relaxed whitespace-pre-line">
+                  <div className="text-encre-600 leading-relaxed whitespace-pre-line">
                     {section.content}
                   </div>
                 </div>
@@ -448,16 +448,16 @@ export default function ServicePage({ params }: Props) {
 
               {content.faq && content.faq.length > 0 && (
                 <div className="mt-16 bg-white p-8 rounded-sm border border-or-500/10">
-                  <h2 className="font-serif text-[1.75rem] text-encre-950 mb-6">
+                  <h2 className="font-serif text-[1.75rem] text-encre-800 mb-6">
                     Foire Aux Questions (FAQ)
                   </h2>
                   <div className="space-y-6">
                     {content.faq.map((item, idx) => (
                       <div key={idx}>
-                        <h3 className="font-semibold text-encre-950 mb-2">
+                        <h3 className="font-semibold text-encre-800 mb-2">
                           {item.q}
                         </h3>
-                        <p className="text-encre-700">{item.a}</p>
+                        <p className="text-encre-600">{item.a}</p>
                       </div>
                     ))}
                   </div>
@@ -465,10 +465,10 @@ export default function ServicePage({ params }: Props) {
               )}
 
               <div className="mt-12 p-8 bg-rouge-50 border-l-4 border-rouge-800 rounded-sm">
-                <h3 className="font-serif text-xl text-encre-950 mb-4">
+                <h3 className="font-serif text-xl text-encre-800 mb-4">
                   Besoin d'un accompagnement personnalisé ?
                 </h3>
-                <p className="text-encre-700 mb-6">
+                <p className="text-encre-600 mb-6">
                   Chaque situation est unique. Prenons le temps d&apos;étudier votre dossier et de définir ensemble la meilleure approche.
                 </p>
                 <div className="flex flex-wrap gap-4">
@@ -501,7 +501,7 @@ export default function ServicePage({ params }: Props) {
 
               {content.relatedLinks && content.relatedLinks.length > 0 && (
                 <div className="mt-12 pt-8 border-t border-or-500/20">
-                  <h3 className="font-serif text-lg text-encre-950 mb-4">
+                  <h3 className="font-serif text-lg text-encre-800 mb-4">
                     Pour aller plus loin
                   </h3>
                   <ul className="space-y-2">

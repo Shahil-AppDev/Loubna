@@ -115,7 +115,7 @@ export default function HomePage() {
         <div className="container-main">
           <div className="text-center mb-10 md:mb-14">
             <span className="section-label">Domaines d&apos;intervention</span>
-            <h2 className="font-serif text-[clamp(1.6rem,5vw,2.8rem)] text-encre-950 leading-[1.2]">
+            <h2 className="font-serif text-[clamp(1.6rem,5vw,2.8rem)] text-encre-800 leading-[1.2]">
               Un accompagnement centré
               <br />
               <em className="text-rouge-800 font-light not-italic" style={{ fontStyle: "italic" }}>
@@ -132,7 +132,7 @@ export default function HomePage() {
             ].map((card, i) => (
               <Link href="/services" key={i} className="expertise-card group block">
                 <span className="text-2xl md:text-3xl mb-4 md:mb-5 block">{card.icon}</span>
-                <h3 className="font-serif text-[1.1rem] md:text-[1.25rem] text-encre-950 mb-2 md:mb-3">{card.title}</h3>
+                <h3 className="font-serif text-[1.1rem] md:text-[1.25rem] text-encre-800 mb-2 md:mb-3">{card.title}</h3>
                 <p className="text-[0.85rem] md:text-[0.88rem] text-encre-500 leading-[1.6] md:leading-[1.7] mb-4 md:mb-5">{card.desc}</p>
                 <span className="text-[0.7rem] md:text-[0.75rem] font-bold tracking-[0.08em] uppercase text-rouge-800 group-hover:tracking-[0.12em] transition-all">
                   En savoir plus →
@@ -197,7 +197,7 @@ export default function HomePage() {
         <div className="container-main">
           <div className="text-center mb-10 md:mb-16">
             <span className="section-label">Comment ça fonctionne</span>
-            <h2 className="font-serif text-[clamp(1.6rem,5vw,2.8rem)] text-encre-950 leading-[1.2]">
+            <h2 className="font-serif text-[clamp(1.6rem,5vw,2.8rem)] text-encre-800 leading-[1.2]">
               Un accompagnement
               <br />
               <em className="text-rouge-800 font-light" style={{ fontStyle: "italic" }}>
@@ -220,7 +220,7 @@ export default function HomePage() {
                 <div className="w-14 h-14 md:w-16 md:h-16 rounded-full bg-rouge-800 text-white font-serif text-[1.2rem] md:text-[1.4rem] font-bold flex items-center justify-center mx-auto mb-4 md:mb-6 relative z-10 shadow-rouge-md">
                   {n}
                 </div>
-                <h4 className="font-serif text-[1rem] md:text-[1.12rem] text-encre-950 mb-2 md:mb-3">{t}</h4>
+                <h4 className="font-serif text-[1rem] md:text-[1.12rem] text-encre-800 mb-2 md:mb-3">{t}</h4>
                 <p className="text-[0.82rem] md:text-[0.86rem] text-encre-500 leading-[1.65] md:leading-[1.75]">{d}</p>
               </div>
             ))}
@@ -235,7 +235,7 @@ export default function HomePage() {
         <div className="container-main">
           <div className="text-center mb-10 md:mb-14">
             <span className="section-label">Témoignages</span>
-            <h2 className="font-serif text-[clamp(1.6rem,5vw,2.8rem)] text-encre-950 leading-[1.2]">
+            <h2 className="font-serif text-[clamp(1.6rem,5vw,2.8rem)] text-encre-800 leading-[1.2]">
               Ce que disent
               <br />
               <em className="text-rouge-800 font-light" style={{ fontStyle: "italic" }}>
@@ -260,7 +260,7 @@ export default function HomePage() {
                     {t.initials}
                   </div>
                   <div>
-                    <span className="block font-semibold text-[0.9rem] text-encre-950">
+                    <span className="block font-semibold text-[0.9rem] text-encre-800">
                       {t.name}
                     </span>
                     <span className="block text-[0.75rem] text-encre-400 tracking-[0.04em]">

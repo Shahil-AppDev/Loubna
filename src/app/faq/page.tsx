@@ -61,7 +61,7 @@ export default function FaqPage() {
               return (
                 <div key={cat.key} className="mb-16 last:mb-0">
                   <div className="flex items-center gap-5 mb-8">
-                    <h2 className="font-serif text-[1.55rem] text-encre-950 whitespace-nowrap">
+                    <h2 className="font-serif text-[1.55rem] text-encre-800 whitespace-nowrap">
                       {cat.label}
                     </h2>
                     <div
@@ -88,7 +88,7 @@ export default function FaqPage() {
 
             {/* ─── CTA card ────────────────────────── */}
             <div className="mt-14 text-center p-12 bg-white border border-encre-100 rounded-sm shadow-sm">
-              <h3 className="font-serif text-[1.8rem] text-encre-950 mb-3">
+              <h3 className="font-serif text-[1.8rem] text-encre-800 mb-3">
                 Vous ne trouvez pas la réponse ?
               </h3>
               <p className="text-encre-500 text-[0.93rem] mb-8 max-w-md mx-auto leading-[1.75]">
