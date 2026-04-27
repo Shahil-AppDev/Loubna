@@ -264,6 +264,105 @@ const SERVICES_DATA = {
         { href: "/services/redaction-contrat-travail", label: "Rédaction de contrats" }
       ]
     }
+  },
+  "prevention-risques": {
+    title: "Prévention des Risques Professionnels | Accompagnement en Droit du Travail",
+    description: "Accompagnement des entreprises dans l'identification et la prévention des risques professionnels : conditions de travail, organisation, relations internes.",
+    h1: "Prévention des Risques Professionnels",
+    content: {
+      intro: "J'accompagne les entreprises dans l'identification et la prévention des risques professionnels, qu'ils soient liés aux conditions de travail, à l'organisation ou aux relations internes.",
+      sections: [
+        {
+          h2: "Anticiper les risques pour sécuriser votre organisation",
+          content: `À partir d'une compréhension de votre activité, j'identifie les situations à risque : accidents du travail, maladies professionnelles, stress, tensions ou surcharge.
+
+Je propose ensuite des actions concrètes et adaptées à votre structure, afin de limiter les risques et améliorer les conditions de travail.
+
+**Objectif :** prévenir les difficultés, sécuriser vos pratiques et agir en amont.`
+        }
+      ],
+      faq: [],
+      ctaEmployeur: "Évaluer les risques de mon entreprise",
+      relatedLinks: [
+        { href: "/services/duerp", label: "DUERP – Document Unique" },
+        { href: "/services/sante-securite", label: "Santé, sécurité et conditions de travail" }
+      ]
+    }
+  },
+  "duerp": {
+    title: "DUERP – Document Unique d'Évaluation des Risques Professionnels | Juriste",
+    description: "Accompagnement dans la rédaction ou la mise à jour du DUERP : identification des risques, rédaction du document, recommandations concrètes et applicables.",
+    h1: "DUERP – Document Unique d'Évaluation des Risques Professionnels",
+    content: {
+      intro: "Je vous accompagne dans la rédaction ou la mise à jour de votre Document Unique d'Évaluation des Risques Professionnels (DUERP), à partir d'une compréhension concrète de vos situations de travail. L'objectif est d'identifier les risques réels auxquels vos équipes sont exposées : accidents du travail, maladies professionnelles, mais aussi risques liés à l'organisation ou aux relations de travail. Le DUERP devient ainsi un outil clair, structuré et utile au quotidien.",
+      sections: [
+        {
+          h2: "Une approche concrète et sur mesure",
+          content: `Chaque intervention est adaptée à votre activité et à votre organisation. Elle comprend :
+
+- La compréhension des situations de travail
+- L'identification des risques (physiques et psychosociaux)
+- La rédaction ou la mise à jour du DUERP
+- Des recommandations concrètes et applicables
+
+Les échanges avec les équipes permettent d'intégrer la réalité du terrain et d'assurer la pertinence des actions proposées.`
+        },
+        {
+          h2: "Au-delà de l'obligation réglementaire",
+          content: `Mon accompagnement ne se limite pas à la rédaction d'un document. Il s'inscrit dans une démarche globale de prévention visant à :
+
+- Anticiper les situations à risque
+- Limiter les tensions et les difficultés internes
+- Sécuriser les pratiques de l'employeur
+
+**Objectif :** disposer d'un outil de travail fiable, pour prévenir les problèmes plutôt que les subir.`
+        }
+      ],
+      faq: [],
+      ctaEmployeur: "Faire réaliser ou mettre à jour mon DUERP",
+      relatedLinks: [
+        { href: "/services/prevention-risques", label: "Prévention des risques professionnels" },
+        { href: "/services/sante-securite", label: "Santé, sécurité et conditions de travail" }
+      ]
+    }
+  },
+  "sante-securite": {
+    title: "Santé, Sécurité et Conditions de Travail | Accompagnement en Droit du Travail",
+    description: "Accompagnement des entreprises dans la mise en place d'une démarche de prévention en matière de santé, sécurité et conditions de travail.",
+    h1: "Santé, Sécurité et Conditions de Travail",
+    content: {
+      intro: "J'accompagne les entreprises dans la mise en place et le suivi de leur démarche en matière de santé, sécurité et conditions de travail. Au-delà des obligations réglementaires, il s'agit d'intégrer la prévention dans le fonctionnement quotidien de l'entreprise, en tenant compte des réalités du terrain.",
+      sections: [
+        {
+          h2: "Un accompagnement concret",
+          content: `Mon intervention permet de :
+
+- Structurer une démarche de prévention cohérente
+- Clarifier les rôles et responsabilités de chacun
+- Améliorer les conditions de travail
+- Accompagner les managers dans leur rôle au quotidien
+
+J'interviens également en appui des acteurs internes (direction, managers, CSE / CSSCT) afin de faciliter la mise en œuvre des actions.`
+        },
+        {
+          h2: "Une approche adaptée à vos besoins",
+          content: `Chaque accompagnement est construit en fonction de votre organisation et de vos enjeux. Il peut inclure :
+
+- La compréhension de vos pratiques existantes
+- L'identification des axes d'amélioration
+- La mise en place d'actions concrètes
+- Un suivi dans le temps
+
+**Objectif :** installer une démarche de prévention durable, utile et adaptée à votre entreprise.`
+        }
+      ],
+      faq: [],
+      ctaEmployeur: "Structurer ma démarche de prévention",
+      relatedLinks: [
+        { href: "/services/prevention-risques", label: "Prévention des risques professionnels" },
+        { href: "/services/duerp", label: "DUERP – Document Unique" }
+      ]
+    }
   }
 };
 

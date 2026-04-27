@@ -131,14 +131,23 @@ export default function ServicesPage() {
   );
 }
 
+const SLUGS_WITH_DETAIL_PAGE = new Set([
+  "prevention-risques",
+  "duerp",
+  "sante-securite",
+]);
+
 function ServiceCard({
   service,
 }: {
   service: (typeof SERVICES)[number];
 }) {
+  const hasDetailPage = SLUGS_WITH_DETAIL_PAGE.has(service.slug);
+  const href = hasDetailPage ? `/services/${service.slug}` : "/contact";
+
   return (
     <Link
-      href="/contact"
+      href={href}
       className="service-card group flex flex-col h-full"
     >
       <span className="text-[1.75rem] mb-4 block">{service.icon}</span>
@@ -149,7 +158,7 @@ function ServiceCard({
         {service.description}
       </p>
       <span className="text-[0.73rem] font-bold tracking-[0.08em] uppercase text-rouge-800 group-hover:tracking-[0.12em] transition-all inline-flex items-center gap-1.5">
-        Prendre contact
+        {hasDetailPage ? "En savoir plus" : "Prendre contact"}
         <span className="group-hover:translate-x-1 transition-transform">→</span>
       </span>
     </Link>
