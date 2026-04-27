@@ -181,6 +181,19 @@ export default function Footer() {
             </Link>
           </div>
         </div>
+        <div className="border-t border-white/[0.04] py-3 text-center">
+          <p className="text-[0.65rem] text-white/20">
+            Réalisé par Shahil AppDev ·{" "}
+            <a
+              href="https://www.francenum.gouv.fr/activateurs/shahil-appdev"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-white/30 hover:text-or-500/70 transition-colors underline underline-offset-2"
+            >
+              Activateurs France Numérique
+            </a>
+          </p>
+        </div>
       </div>
     </footer>
   );
