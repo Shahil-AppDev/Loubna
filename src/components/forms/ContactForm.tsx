@@ -146,11 +146,11 @@ export default function ContactForm() {
     return (
       <div className="text-center py-16">
         <div className="text-5xl mb-6">✅</div>
-        <h3 className="font-serif text-3xl text-encre-950 mb-3">Message envoyé !</h3>
+        <h3 className="font-serif text-3xl text-encre-800 mb-3">Message envoyé !</h3>
         <p className="text-encre-500 text-[0.95rem] leading-7 mb-8">
           Merci pour votre message. Je vous réponds personnellement
           <br />
-          sous <strong className="text-encre-900">48h ouvrées</strong>.
+          sous <strong className="text-encre-700">48h ouvrées</strong>.
         </p>
         <button
           onClick={() => setSuccess(false)}
@@ -164,7 +164,7 @@ export default function ContactForm() {
 
   return (
     <form onSubmit={handleSubmit} noValidate>
-      <h3 className="font-serif text-2xl text-encre-950 mb-1.5">Votre demande</h3>
+      <h3 className="font-serif text-2xl text-encre-800 mb-1.5">Votre demande</h3>
       <p className="text-xs text-encre-400 mb-9">
         Les champs marqués <span className="text-rouge-800">*</span> sont obligatoires.
       </p>

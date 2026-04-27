@@ -49,7 +49,7 @@ export default function BlogPage() {
                     <span className="text-6xl opacity-20">⚖️</span>
                   </div>
                   <div className="absolute top-4 left-4">
-                    <span className="inline-block px-3 py-1 bg-or-500 text-encre-950 text-xs font-bold tracking-wider uppercase rounded-sm">
+                    <span className="inline-block px-3 py-1 bg-or-500 text-encre-800 text-xs font-bold tracking-wider uppercase rounded-sm">
                       {article.category}
                     </span>
                   </div>
@@ -66,7 +66,7 @@ export default function BlogPage() {
                     <span>•</span>
                     <span>{article.readTime}</span>
                   </div>
-                  <h2 className="font-serif text-xl text-encre-950 mb-3 group-hover:text-rouge-800 transition-colors line-clamp-2">
+                  <h2 className="font-serif text-xl text-encre-800 mb-3 group-hover:text-rouge-800 transition-colors line-clamp-2">
                     <Link href={`/blog/${article.slug}`}>
                       {article.title}
                     </Link>
@@ -98,7 +98,7 @@ export default function BlogPage() {
 
       <section className="section-pad bg-white">
         <div className="container-main text-center">
-          <h2 className="font-serif text-[2rem] text-encre-950 mb-4">
+          <h2 className="font-serif text-[2rem] text-encre-800 mb-4">
             Une question juridique spécifique ?
           </h2>
           <p className="text-encre-600 max-w-[600px] mx-auto mb-8">

@@ -146,7 +146,7 @@ export default function AProposPage() {
             <div className="pt-2">
               <span className="section-label">Mon parcours</span>
 
-              <blockquote className="font-serif text-[1.3rem] italic text-encre-950 leading-[1.65] mb-7 border-l-[3px] border-rouge-800 pl-5">
+              <blockquote className="font-serif text-[1.3rem] italic text-encre-800 leading-[1.65] mb-7 border-l-[3px] border-rouge-800 pl-5">
                 « Mon objectif est d&apos;apporter un accompagnement rigoureux, accessible
                 et adapté à chaque situation, dans une logique de prévention et de
                 sécurisation des pratiques professionnelles. »
@@ -209,7 +209,7 @@ export default function AProposPage() {
                     key={i}
                     className="bg-encre-100 border border-encre-200/50 border-l-[3px] border-l-rouge-800 p-6 rounded-sm"
                   >
-                    <h4 className="font-serif text-[1.05rem] text-encre-950 mb-2">
+                    <h4 className="font-serif text-[1.05rem] text-encre-800 mb-2">
                       {v.icon} {v.title}
                     </h4>
                     <p className="text-[0.84rem] text-encre-500 leading-[1.7]">{v.desc}</p>
@@ -235,7 +235,7 @@ export default function AProposPage() {
         <div className="container-main">
           <div className="text-center mb-14">
             <span className="section-label">Formation &amp; spécialisation</span>
-            <h2 className="font-serif text-[clamp(1.9rem,3vw,2.6rem)] text-encre-950 leading-[1.2]">
+            <h2 className="font-serif text-[clamp(1.9rem,3vw,2.6rem)] text-encre-800 leading-[1.2]">
               Une double approche
               <br />
               <em className="text-rouge-800 font-light" style={{ fontStyle: "italic" }}>
@@ -248,7 +248,7 @@ export default function AProposPage() {
               <div key={i} className="flex gap-7 py-8">
                 <div className="text-[2rem] flex-shrink-0 pt-1">{f.icon}</div>
                 <div>
-                  <h4 className="font-serif text-[1.12rem] text-encre-950 mb-2">{f.title}</h4>
+                  <h4 className="font-serif text-[1.12rem] text-encre-800 mb-2">{f.title}</h4>
                   <p className="text-[0.9rem] text-encre-500 leading-[1.8]">{f.desc}</p>
                 </div>
               </div>

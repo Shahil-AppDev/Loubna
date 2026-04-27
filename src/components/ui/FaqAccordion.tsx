@@ -30,7 +30,7 @@ export default function FaqAccordion({ items }: FaqAccordionProps) {
             className={cn(
               "w-full text-left py-6 flex items-center justify-between gap-6",
               "font-serif text-[1.08rem] font-semibold transition-colors duration-200",
-              openIndex === i ? "text-rouge-800" : "text-encre-950 hover:text-rouge-800"
+              openIndex === i ? "text-rouge-800" : "text-encre-800 hover:text-rouge-800"
             )}
           >
             <span>{item.question}</span>

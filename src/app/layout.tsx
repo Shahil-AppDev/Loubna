@@ -161,7 +161,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className="font-sans bg-encre-50 text-encre-950 antialiased" suppressHydrationWarning>
+      <body className="font-sans bg-encre-50 text-encre-800 antialiased" suppressHydrationWarning>
         <Header />
         <main>{children}</main>
         <Footer />
