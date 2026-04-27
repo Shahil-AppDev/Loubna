@@ -6,7 +6,7 @@ import ContactForm from "@/components/forms/ContactForm";
 export const metadata: Metadata = {
   title: "Contact",
   description:
-    "Contactez Loubna Abouz Manta pour un conseil en droit du travail. Formulaire sécurisé, réponse personnelle sous 48h. Licenciement, rupture conventionnelle, harcèlement.",
+    "Contactez Loubna Abouz Manta pour un accompagnement en droit du travail. Formulaire sécurisé, réponse personnelle sous 48h. Fin de contrat, rupture conventionnelle, harcèlement.",
   openGraph: {
     title: `Contact – ${SITE_CONFIG.name}`,
     description: "Prenez contact avec Loubna Abouz Manta, juriste en droit du travail. Réponse sous 48h.",
@@ -72,7 +72,7 @@ export default function ContactPage() {
           </h1>
           <p className="text-white/50 text-[1rem] max-w-[510px] mt-5 leading-[1.8]">
             Décrivez-moi votre situation. Je vous réponds personnellement sous 48h ouvrées,
-            avec une première orientation claire sur vos options juridiques.
+            avec une première orientation claire sur vos options en droit du travail.
           </p>
         </div>
       </section>

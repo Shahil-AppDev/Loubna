@@ -45,7 +45,7 @@ export const metadata: Metadata = {
     "accident du travail",
     "maladie professionnelle",
     "santé sécurité travail",
-    "analyse situation professionnelle",
+    "compréhension situation professionnelle",
     "juriste Audincourt",
     "droit du travail France",
     "prévention conflits professionnels",
@@ -133,7 +133,7 @@ export default function RootLayout({
         description:
           "Accompagnement des salariés et des entreprises en droit du travail et prévention des risques professionnels, en amont des procédures.",
         areaServed: "France",
-        availableLanguage: "Français",
+        availableLanguage: ["Français", "Arabe"],
         openingHoursSpecification: [
           {
             "@type": "OpeningHoursSpecification",

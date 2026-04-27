@@ -17,7 +17,7 @@ const VALUES = [
   {
     icon: "⚖️",
     title: "Rigueur",
-    desc: "Chaque situation est analysée avec précision, en tenant compte du cadre juridique applicable et de la réalité concrète du terrain.",
+    desc: "Chaque situation est étudiée avec précision, en tenant compte du cadre applicable et de la réalité concrète du terrain.",
   },
   {
     icon: "👂",
@@ -50,12 +50,12 @@ const FORMATION = [
   {
     icon: "🎓",
     title: "Master en Droit et Management",
-    desc: "Double approche à l'intersection du droit du travail et du management des organisations, permettant d'analyser les situations professionnelles en tenant compte à la fois du cadre juridique et de la réalité du terrain.",
+    desc: "Double approche à l'intersection du droit du travail et du management des organisations, permettant de comprendre les situations professionnelles en tenant compte à la fois du cadre juridique et de la réalité du terrain.",
   },
   {
     icon: "⚠️",
     title: "Spécialisation en prévention des risques professionnels",
-    desc: "Expertise en identification et évaluation des risques (RPS, accidents du travail, maladies professionnelles), rédaction du DUERP, et accompagnement des entreprises dans leur démarche de prévention.",
+    desc: "Spécialisation en identification et évaluation des risques (RPS, accidents du travail, maladies professionnelles), rédaction du DUERP, et accompagnement des entreprises dans leur démarche de prévention.",
   },
   {
     icon: "📚",
@@ -154,15 +154,15 @@ export default function AProposPage() {
 
               <div className="space-y-5 mb-12">
                 <p className="text-[0.95rem] text-encre-600 leading-[1.88]">
-                  J&apos;interviens en amont afin d&apos;analyser les situations de travail,
+                  J&apos;interviens en amont afin de comprendre les situations de travail,
                   d&apos;identifier les risques professionnels et d&apos;accompagner les entreprises
                   dans la rédaction et la mise à jour de leur DUERP, dans une logique de
                   prévention et de sécurisation des pratiques.
                 </p>
                 <p className="text-[0.95rem] text-encre-600 leading-[1.88]">
                   Titulaire d&apos;un Master en droit et management, j&apos;ai développé une
-                  expertise à l&apos;intersection du droit du travail et du management des
-                  organisations. Cette double approche me permet d&apos;analyser en profondeur
+                  spécialisation à l&apos;intersection du droit du travail et du management des
+                  organisations. Cette double approche me permet d&apos;appréhender avec précision
                   les situations professionnelles, en tenant compte à la fois du cadre
                   juridique et de la réalité du terrain.
                 </p>
@@ -177,7 +177,7 @@ export default function AProposPage() {
                 </p>
                 <p className="text-[0.95rem] text-encre-600 leading-[1.88]">
                   Mon approche ne se limite pas à la rédaction de documents : elle repose
-                  sur une analyse concrète des situations de travail et une volonté d&apos;agir
+                  sur une compréhension concrète des situations de travail et une volonté d&apos;agir
                   en amont, afin de prévenir les tensions et éviter les situations conflictuelles.
                 </p>
               </div>

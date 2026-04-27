@@ -5,8 +5,8 @@ import { notFound } from "next/navigation";
 
 const SERVICES_DATA = {
   "redaction-contrat-travail": {
-    title: "Rédaction & Analyse de Contrat de Travail (CDI/CDD) | Juriste",
-    description: "Employeur ou salarié, sécurisez vos contrats de travail (CDI, CDD). Rédaction sur-mesure, analyse des clauses (non-concurrence) et prévention des litiges.",
+    title: "Rédaction & Vérification de Contrat de Travail (CDI/CDD) | Juriste",
+    description: "Employeur ou salarié, sécurisez vos contrats de travail (CDI, CDD). Rédaction sur-mesure, vérification des clauses (non-concurrence) et prévention des litiges.",
     h1: "Rédaction, Révision et Sécurisation de vos Contrats de Travail",
     content: {
       intro: "Le contrat de travail est le fondement de la relation professionnelle. Qu'il s'agisse d'un CDI, d'un CDD ou d'un temps partiel, les termes qui y sont inscrits engageront les deux parties pendant des années. Une rédaction imprécise ou l'utilisation d'un modèle type inadapté est la première cause de contentieux prud'homal.",
@@ -19,10 +19,10 @@ const SERVICES_DATA = {
         },
         {
           h2: "Mon accompagnement juridique",
-          content: `En tant que juriste conseil, je vous accompagne à chaque étape de la vie du contrat :
+          content: `En tant que juriste, je vous accompagne à chaque étape de la vie du contrat :
 
-- **Audit et Rédaction** : Création de contrats personnalisés, conformes à votre convention collective et aux dernières réformes du droit du travail.
-- **Analyse et Relecture** : Décryptage des clauses complexes avant signature, pour les cadres et salariés.
+- **Rédaction** : Création de contrats personnalisés, conformes à votre convention collective et aux dernières réformes du droit du travail.
+- **Vérification et Relecture** : Décryptage des clauses complexes avant signature, pour les cadres et salariés.
 - **Modification du contrat** : Accompagnement dans la rédaction d'avenants (changement de rémunération, de lieu ou de temps de travail).`
         }
       ],
@@ -57,7 +57,7 @@ const SERVICES_DATA = {
         },
         {
           h2: "Comment je vous accompagne ?",
-          content: `**Pour les salariés** : Analyse des griefs reprochés, vérification des délais légaux, et rédaction stratégique du courrier de contestation de la sanction. Préparation à l'entretien préalable.
+          content: `**Pour les salariés** : Compréhension des griefs reprochés, vérification des délais légaux, et rédaction du courrier de contestation de la sanction. Préparation à l'entretien préalable.
 
 **Pour les employeurs** : Qualification de la faute (simple, grave, lourde), choix de la sanction adaptée à l'échelle prévue par votre règlement intérieur, et rédaction des courriers de convocation et de notification dans le strict respect des délais légaux.`
         }
@@ -83,7 +83,7 @@ const SERVICES_DATA = {
   "recrutement-salaries-etrangers": {
     title: "Aide au Recrutement de Salariés Étrangers (Hors UE) | Juriste",
     description: "Employeurs, externalisez vos démarches d'autorisation de travail. Sécurisez l'embauche de vos talents étrangers en France en toute conformité.",
-    h1: "Conseil et Démarches pour le Recrutement de Salariés Étrangers",
+    h1: "Accompagnement et Démarches pour le Recrutement de Salariés Étrangers",
     content: {
       intro: "Face à la pénurie de talents dans de nombreux secteurs (informatique, ingénierie, restauration), recruter un ressortissant étranger (hors UE) est souvent une nécessité stratégique. Cependant, la complexité des démarches administratives et les délais d'obtention des autorisations de travail freinent de nombreuses entreprises.",
       sections: [
@@ -118,9 +118,9 @@ const SERVICES_DATA = {
     }
   },
   "conseil-licenciement": {
-    title: "Conseil et Accompagnement Procédure de Licenciement | Juriste",
-    description: "Licenciement économique, pour faute ou inaptitude : bénéficiez d'un conseil juridique expert pour sécuriser la procédure ou défendre vos droits.",
-    h1: "Conseil et Accompagnement dans les Procédures de Licenciement",
+    title: "Accompagnement dans les Procédures de Licenciement | Juriste",
+    description: "Licenciement économique, pour faute ou inaptitude : bénéficiez d'un accompagnement en droit du travail pour sécuriser la procédure ou comprendre vos droits.",
+    h1: "Accompagnement dans les Procédures de Licenciement",
     content: {
       intro: "Le licenciement est l'acte le plus lourd de conséquences dans la relation de travail. Qu'il soit fondé sur un motif personnel (faute, insuffisance professionnelle) ou économique, il obéit à un formalisme extrêmement rigoureux. La moindre erreur procédurale ou un motif mal caractérisé ouvre la voie au contentieux.",
       sections: [
@@ -131,10 +131,10 @@ const SERVICES_DATA = {
 **Enjeux salarié** : Un licenciement brutal ou injustifié cause un préjudice moral et financier majeur. Faire valoir l'irrégularité de la procédure ou l'absence de motif légitime permet d'obtenir une juste réparation.`
         },
         {
-          h2: "Mon expertise à votre service",
+          h2: "Mon accompagnement à votre service",
           content: `**Pour les employeurs** : Choix du motif de licenciement le plus approprié, rédaction des courriers (convocation, notification), calcul précis des indemnités de départ (légales, conventionnelles, préavis, congés payés) et respect du calendrier procédural.
 
-**Pour les salariés** : Analyse approfondie de la lettre de licenciement, vérification du respect de vos droits (priorité de réembauche, CSP), et évaluation de l'opportunité d'une contestation ou d'une transaction amiable.`
+**Pour les salariés** : Vérification approfondie de la lettre de licenciement, contrôle du respect de vos droits (priorité de réembauche, CSP), et évaluation de l'opportunité d'une contestation ou d'une transaction amiable.`
         }
       ],
       faq: [
@@ -147,7 +147,7 @@ const SERVICES_DATA = {
           a: "Oui, par une personne de l'entreprise ou, s'il n'y a pas de représentants du personnel, par un conseiller extérieur."
         }
       ],
-      ctaSalarie: "Faire analyser ma lettre de licenciement",
+      ctaSalarie: "Faire vérifier ma lettre de licenciement",
       ctaEmployeur: "Sécuriser ma procédure de licenciement",
       relatedLinks: [
         { href: "/services/negociation-accord-transactionnel", label: "Négociation amiable" },
@@ -193,8 +193,8 @@ const SERVICES_DATA = {
     }
   },
   "rupture-conventionnelle": {
-    title: "Conseil et Procédure de Rupture Conventionnelle | Juriste",
-    description: "Sécurisez votre rupture conventionnelle en 2024. Accompagnement juridique pour le calcul des indemnités, la négociation et le respect des délais.",
+    title: "Information et Accompagnement en Rupture Conventionnelle | Juriste",
+    description: "Sécurisez votre rupture conventionnelle en 2024. Accompagnement pour le calcul des indemnités, la négociation et le respect des délais.",
     h1: "Accompagnement Complet en Rupture Conventionnelle",
     content: {
       intro: "La rupture conventionnelle est le seul mode de rupture amiable du CDI. Elle permet aux deux parties de se séparer d'un commun accord, en garantissant au salarié le bénéfice des allocations chômage. Toutefois, un formalisme strict et des délais incompressibles doivent être respectés sous peine de nullité.",
@@ -207,7 +207,7 @@ const SERVICES_DATA = {
           h2: "Un accompagnement pour sécuriser votre séparation",
           content: `**Pour les employeurs** : Audit de la faisabilité, calcul exact de l'indemnité légale ou conventionnelle, rédaction du Cerfa, gestion du calendrier de rétractation et télétransmission à la DREETS.
 
-**Pour les salariés** : Vérification du calcul de vos indemnités, stratégie pour négocier une indemnité supra-légale, conseil sur l'application de la clause de non-concurrence et du sort de vos congés payés.`
+**Pour les salariés** : Vérification du calcul de vos indemnités, stratégie pour négocier une indemnité supra-légale, information sur l'application de la clause de non-concurrence et du sort de vos congés payés.`
         }
       ],
       faq: [
@@ -240,7 +240,7 @@ const SERVICES_DATA = {
           content: `La prévention (harcèlement, risques psychosociaux - RPS, égalité professionnelle) n'est pas qu'une contrainte administrative. C'est le socle de votre marque employeur. Une entreprise en conformité réduit son taux d'absentéisme, fidélise ses talents et se prémunit contre les contentieux prud'homaux longs et coûteux.`
         },
         {
-          h2: "Mon offre d'audit et de mise en conformité",
+          h2: "Mon offre d'état des lieux et de mise en conformité",
           content: `Je vous accompagne dans la structuration juridique de votre politique de prévention :
 
 - **Le Document Unique (DUERP)** : Audit, rédaction et mise à jour annuelle de votre Document Unique d'Évaluation des Risques Professionnels (obligatoire dès 1 salarié).
@@ -370,7 +370,7 @@ export default function ServicePage({ params }: Props) {
                   Besoin d'un accompagnement personnalisé ?
                 </h3>
                 <p className="text-encre-700 mb-6">
-                  Chaque situation est unique. Prenons le temps d'analyser votre dossier et de définir ensemble la meilleure stratégie juridique.
+                  Chaque situation est unique. Prenons le temps d&apos;étudier votre dossier et de définir ensemble la meilleure approche.
                 </p>
                 <div className="flex flex-wrap gap-4">
                   {'ctaSalarie' in content && content.ctaSalarie && (
