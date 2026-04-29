@@ -1,8 +1,6 @@
 "use client";
 
-import { getAssetPath } from "@/lib/basePath";
 import { cn } from "@/lib/utils";
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -47,12 +45,10 @@ export default function Header() {
         {/* ─── LOGO ─────────────────────────────────── */}
         <Link href="/" className="flex items-center gap-2 md:gap-3.5 group">
           <div className="relative w-9 h-9 md:w-11 md:h-11 flex-shrink-0">
-            <Image
-              src={getAssetPath("/logo.png")}
+            <img
+              src="/logo.png"
               alt="Loubna Abouz Manta"
-              fill
-              className="object-contain rounded-full"
-              priority
+              className="w-full h-full object-contain rounded-full"
             />
           </div>
           <div className="flex flex-col">
@@ -93,7 +89,7 @@ export default function Header() {
         {/* ─── MOBILE TOGGLE ────────────────────────── */}
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
-          className="md:hidden flex flex-col gap-[5px] p-2 z-50 relative"
+          className="md:hidden flex flex-col gap-[5px] p-2 z-[110] relative"
           aria-label={mobileOpen ? "Fermer le menu" : "Ouvrir le menu"}
           aria-expanded={!!mobileOpen}
         >

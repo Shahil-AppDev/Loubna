@@ -1,6 +1,4 @@
-import { getAssetPath } from "@/lib/basePath";
 import { SITE_CONFIG } from "@/lib/constants";
-import Image from "next/image";
 import Link from "next/link";
 
 const NAV_LINKS = [
@@ -30,11 +28,10 @@ export default function Footer() {
           <div className="lg:col-span-1">
             <div className="flex items-center gap-2.5 md:gap-3 mb-4 md:mb-5">
               <div className="relative w-12 h-12 md:w-14 md:h-14 flex-shrink-0">
-                <Image
-                  src={getAssetPath("/logo.png")}
+                <img
+                  src="/logo.png"
                   alt="Loubna Abouz Manta"
-                  fill
-                  className="object-contain rounded-full"
+                  className="w-full h-full object-contain rounded-full"
                 />
               </div>
               <div>
