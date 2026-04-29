@@ -271,9 +271,7 @@ export default function HomePage() {
               </div>
             ))}
           </div>
-          <p className="text-center text-[0.75rem] text-encre-400 italic">
-            * Témoignages illustratifs — à remplacer par vos vrais avis clients
-          </p>
+
         </div>
       </section>
 
