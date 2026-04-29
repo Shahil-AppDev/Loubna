@@ -34,11 +34,6 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
     };
   }, [isOpen]);
 
-  // Close on route change
-  useEffect(() => {
-    onClose();
-  }, [pathname, onClose]);
-
   // Close on Escape key
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {

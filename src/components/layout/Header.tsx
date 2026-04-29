@@ -82,7 +82,12 @@ export default function Header() {
 
         {/* ─── MOBILE TOGGLE ────────────────────────── */}
         <button
-          onClick={() => setMobileOpen(!mobileOpen)}
+          type="button"
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            setMobileOpen(!mobileOpen);
+          }}
           className="md:hidden flex flex-col gap-[5px] p-2 z-[200] relative"
           aria-label={mobileOpen ? "Fermer le menu" : "Ouvrir le menu"}
           aria-expanded={!!mobileOpen}
