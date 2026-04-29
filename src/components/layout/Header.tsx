@@ -89,7 +89,7 @@ export default function Header() {
         {/* ─── MOBILE TOGGLE ────────────────────────── */}
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
-          className="md:hidden flex flex-col gap-[5px] p-2 z-[110] relative"
+          className="md:hidden flex flex-col gap-[5px] p-2 z-[200] relative"
           aria-label={mobileOpen ? "Fermer le menu" : "Ouvrir le menu"}
           aria-expanded={!!mobileOpen}
         >
@@ -99,49 +99,99 @@ export default function Header() {
         </button>
       </nav>
 
-      {/* ─── MOBILE MENU ──────────────────────────── */}
+      {/* ─── MOBILE MENU PREMIUM ──────────────────── */}
       <div
         className={cn(
-          "fixed inset-0 bg-encre-950/98 backdrop-blur-sm z-[100] flex flex-col items-start justify-start md:hidden overflow-y-auto pt-20",
-          "transition-all duration-300 ease-in-out",
-          mobileOpen ? "opacity-100 translate-x-0" : "opacity-0 translate-x-full pointer-events-none"
+          "fixed inset-0 z-[150] md:hidden",
+          "bg-gradient-to-br from-encre-950 via-encre-900 to-encre-950",
+          "transition-all duration-500 ease-out",
+          mobileOpen ? "opacity-100 visible" : "opacity-0 invisible"
         )}
       >
-        <div className="flex flex-col items-center justify-start gap-3 w-full max-w-md px-8 py-8 min-h-screen">
-          {NAV_LINKS.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className={cn(
-                "text-2xl font-serif font-semibold text-white/70 hover:text-white transition-all duration-200 py-3 px-6 w-full text-center",
-                pathname === link.href && "text-white scale-105"
-              )}
-            >
-              {link.label}
-            </Link>
-          ))}
+        {/* Backdrop avec effet blur */}
+        <div className="absolute inset-0 backdrop-blur-md bg-encre-950/95" />
+
+        {/* Effet décoratif premium */}
+        <div className="absolute top-0 right-0 w-96 h-96 bg-or-500/5 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 left-0 w-96 h-96 bg-rouge-800/5 rounded-full blur-3xl" />
+
+        {/* Conteneur menu scrollable */}
+        <div className={cn(
+          "relative h-full overflow-y-auto overflow-x-hidden",
+          "flex flex-col items-center justify-center",
+          "px-6 py-20 safe-area-inset",
+          "transition-transform duration-500 ease-out",
+          mobileOpen ? "translate-y-0" : "translate-y-8"
+        )}>
+
+          {/* Navigation principale */}
+          <nav className="w-full max-w-sm space-y-2">
+            {NAV_LINKS.map((link, index) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={cn(
+                  "block w-full text-center py-4 px-6 rounded-lg",
+                  "font-serif text-2xl font-semibold",
+                  "transition-all duration-300 ease-out",
+                  "border border-transparent",
+                  pathname === link.href
+                    ? "text-white bg-rouge-800/20 border-rouge-800/40 shadow-lg shadow-rouge-800/10"
+                    : "text-white/70 hover:text-white hover:bg-white/5 hover:border-white/10",
+                  mobileOpen && `animate-slide-in-${index}`
+                )}
+                style={{
+                  animationDelay: mobileOpen ? `${index * 80}ms` : '0ms'
+                }}
+              >
+                {link.label}
+              </Link>
+            ))}
+          </nav>
+
+          {/* Bouton Contact premium */}
           <Link
             href="/contact"
             className={cn(
-              "mt-6 bg-rouge-800 text-white hover:bg-rouge-900 text-sm font-sans tracking-widest uppercase font-bold py-4 px-10 w-full text-center rounded-sm transition-all duration-200 shadow-lg",
+              "mt-8 w-full max-w-sm block text-center",
+              "bg-gradient-to-r from-rouge-800 to-rouge-900",
+              "text-white font-sans font-bold text-sm tracking-widest uppercase",
+              "py-5 px-8 rounded-lg",
+              "border border-rouge-700/50",
+              "shadow-xl shadow-rouge-900/30",
+              "transition-all duration-300",
+              "hover:shadow-2xl hover:shadow-rouge-900/50 hover:scale-[1.02]",
+              "active:scale-[0.98]",
               pathname === "/contact" && "opacity-90"
             )}
           >
-            Prendre contact
+            <span className="flex items-center justify-center gap-2">
+              <span>Prendre contact</span>
+              <span className="text-or-500">→</span>
+            </span>
           </Link>
-          <div className="mt-8 pt-6 border-t border-white/10 w-full flex flex-col gap-3">
+
+          {/* Liens secondaires */}
+          <div className="mt-12 pt-8 border-t border-white/10 w-full max-w-sm space-y-3">
             <Link
               href="/mentions-legales"
-              className="text-sm text-white/50 hover:text-white/70 transition-colors text-center py-2"
+              className="block text-center text-sm text-white/40 hover:text-white/70 transition-colors py-2"
             >
               Mentions légales
             </Link>
             <Link
               href="/politique-de-confidentialite"
-              className="text-sm text-white/50 hover:text-white/70 transition-colors text-center py-2"
+              className="block text-center text-sm text-white/40 hover:text-white/70 transition-colors py-2"
             >
               Politique de confidentialité
             </Link>
+          </div>
+
+          {/* Signature */}
+          <div className="mt-8 text-center">
+            <p className="text-xs text-white/20 font-serif italic">
+              Cabinet juridique premium
+            </p>
           </div>
         </div>
       </div>
