@@ -6,10 +6,10 @@ import ContactForm from "@/components/forms/ContactForm";
 export const metadata: Metadata = {
   title: "Contact",
   description:
-    "Contactez Loubna Abouz Manta pour un accompagnement en droit du travail. Formulaire sécurisé, réponse personnelle sous 48h. Fin de contrat, rupture conventionnelle, harcèlement.",
+    "Contactez-moi pour un accompagnement en droit du travail. Formulaire sécurisé, réponse personnelle sous 48h. Fin de contrat, rupture conventionnelle, harcèlement.",
   openGraph: {
     title: `Contact – ${SITE_CONFIG.name}`,
-    description: "Prenez contact avec Loubna Abouz Manta, juriste en droit du travail. Réponse sous 48h.",
+    description: "Prenez contact avec moi, juriste en droit du travail. Réponse sous 48h.",
   },
 };
 

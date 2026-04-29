@@ -6,7 +6,7 @@ import FaqAccordion from "@/components/ui/FaqAccordion";
 export const metadata: Metadata = {
   title: "FAQ — Loubna Abouz Manta, Juriste en Droit du Travail",
   description:
-    "Questions fréquentes sur l'activité de Loubna Abouz Manta : accident du travail, maladie professionnelle, DUERP, prévention des risques, licenciement et plus.",
+    "Questions fréquentes sur mon activité : accident du travail, maladie professionnelle, DUERP, prévention des risques, licenciement et plus.",
   openGraph: {
     title: `FAQ – ${SITE_CONFIG.name}`,
     description:

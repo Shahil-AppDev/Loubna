@@ -5,7 +5,7 @@ import { SERVICES, SITE_CONFIG } from "@/lib/constants";
 export const metadata: Metadata = {
   title: "Interventions — Loubna Abouz Manta, Juriste en Droit du Travail",
   description:
-    "Découvrez les domaines d'intervention de Loubna Abouz Manta : analyse de situation professionnelle, DUERP, prévention des risques, accompagnement des salariés et des entreprises.",
+    "Découvrez mes domaines d'intervention : analyse de situation professionnelle, DUERP, prévention des risques, accompagnement des salariés et des entreprises.",
   openGraph: {
     title: `Interventions – ${SITE_CONFIG.name}`,
     description:
