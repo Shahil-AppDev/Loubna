@@ -3,11 +3,8 @@ const nextConfig = {
   // Enable React strict mode for better development experience
   reactStrictMode: true,
 
-  // Static export for GitHub Pages
+  // Static export for GitHub Pages with custom domain
   output: 'export',
-  
-  // Base path for GitHub Pages (repo name)
-  basePath: '/Loubna',
   
   // Trailing slash for better compatibility
   trailingSlash: true,
