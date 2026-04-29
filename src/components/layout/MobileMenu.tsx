@@ -4,11 +4,7 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect } from "react";
-
-interface MobileMenuProps {
-  isOpen: boolean;
-  onClose: () => void;
-}
+import { useMobileMenu } from "./MobileMenuProvider";
 
 const NAV_LINKS = [
   { href: "/", label: "Accueil" },
@@ -21,8 +17,9 @@ const NAV_LINKS = [
   { href: "/politique-de-confidentialite", label: "Politique de confidentialité" },
 ];
 
-export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
+export default function MobileMenu() {
   const pathname = usePathname();
+  const { isOpen, close } = useMobileMenu();
 
   // Lock body scroll when menu is open
   useEffect(() => {
@@ -40,12 +37,12 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === "Escape" && isOpen) {
-        onClose();
+        close();
       }
     };
     window.addEventListener("keydown", handleEscape);
     return () => window.removeEventListener("keydown", handleEscape);
-  }, [isOpen, onClose]);
+  }, [isOpen, close]);
 
   if (!isOpen) return null;
 
@@ -83,7 +80,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
           {/* Bouton X */}
           <button
             type="button"
-            onClick={onClose}
+            onClick={close}
             className="p-3 text-white hover:text-or-500 transition-colors rounded-lg hover:bg-white/5"
             aria-label="Fermer le menu"
           >
@@ -101,7 +98,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
             <li key={link.href}>
               <Link
                 href={link.href}
-                onClick={onClose}
+                onClick={close}
                 className={cn(
                   "block w-full text-left py-4 px-5 rounded-lg",
                   "font-serif text-xl font-bold",

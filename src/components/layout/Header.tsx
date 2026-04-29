@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import MobileMenu from "./MobileMenu";
+import { useMobileMenu } from "./MobileMenuProvider";
 
 const NAV_LINKS = [
   { href: "/", label: "Accueil" },
@@ -16,8 +16,8 @@ const NAV_LINKS = [
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
-  const [mobileOpen, setMobileOpen] = useState(false);
   const pathname = usePathname();
+  const { isOpen: mobileOpen, toggle } = useMobileMenu();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -86,7 +86,7 @@ export default function Header() {
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
-            setMobileOpen(!mobileOpen);
+            toggle();
           }}
           className="md:hidden flex flex-col gap-[5px] p-2 z-[200] relative"
           aria-label={mobileOpen ? "Fermer le menu" : "Ouvrir le menu"}
@@ -97,9 +97,6 @@ export default function Header() {
           <span className={cn("block w-6 h-0.5 bg-white transition-all duration-300 origin-center", mobileOpen && "-translate-y-[7px] -rotate-45")} />
         </button>
       </nav>
-
-      {/* ─── MOBILE MENU COMPONENT (SÉPARÉ) ────────── */}
-      <MobileMenu isOpen={mobileOpen} onClose={() => setMobileOpen(false)} />
     </header>
   );
 }
