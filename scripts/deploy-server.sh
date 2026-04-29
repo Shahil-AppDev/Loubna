@@ -41,7 +41,7 @@ if [ -f "$NGINX_CONFIG" ]; then
     echo -e "${GREEN}✓ Sauvegarde: ${NGINX_CONFIG}.bak-${TIMESTAMP}${NC}"
 fi
 
-# Créer la configuration Nginx pour site statique
+# Créer la configuration Nginx pour site statique avec HTTPS
 sudo tee "$NGINX_CONFIG" > /dev/null << 'EOF'
 # Configuration Nginx pour juriste-droit-du-travail.com
 # Site statique Next.js
@@ -51,6 +51,26 @@ server {
     listen 80;
     listen [::]:80;
     server_name juriste-droit-du-travail.com www.juriste-droit-du-travail.com;
+    
+    # Redirection HTTPS
+    return 301 https://$host$request_uri;
+}
+
+server {
+    listen 443 ssl http2;
+    listen [::]:443 ssl http2;
+    server_name juriste-droit-du-travail.com www.juriste-droit-du-travail.com;
+
+    # Certificats SSL
+    ssl_certificate /etc/letsencrypt/live/juriste-droit-du-travail.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/juriste-droit-du-travail.com/privkey.pem;
+    
+    # Protocoles et ciphers SSL
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_ciphers HIGH:!aNULL:!MD5;
+    ssl_prefer_server_ciphers on;
+    ssl_session_cache shared:SSL:10m;
+    ssl_session_timeout 10m;
 
     # Logs dédiés
     access_log /var/log/nginx/loubna-access.log;
@@ -86,6 +106,7 @@ server {
     add_header X-Frame-Options "SAMEORIGIN" always;
     add_header X-Content-Type-Options "nosniff" always;
     add_header X-XSS-Protection "1; mode=block" always;
+    add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
 
     # Compression
     gzip on;
@@ -93,53 +114,6 @@ server {
     gzip_min_length 1024;
     gzip_types text/plain text/css text/xml text/javascript application/x-javascript application/xml+rss application/json application/javascript;
 }
-
-# Configuration HTTPS (sera activée après certificat SSL)
-# server {
-#     listen 443 ssl http2;
-#     listen [::]:443 ssl http2;
-#     server_name juriste-droit-du-travail.com www.juriste-droit-du-travail.com;
-#
-#     ssl_certificate /etc/letsencrypt/live/juriste-droit-du-travail.com/fullchain.pem;
-#     ssl_certificate_key /etc/letsencrypt/live/juriste-droit-du-travail.com/privkey.pem;
-#     ssl_protocols TLSv1.2 TLSv1.3;
-#     ssl_ciphers HIGH:!aNULL:!MD5;
-#     ssl_prefer_server_ciphers on;
-#
-#     access_log /var/log/nginx/loubna-access.log;
-#     error_log /var/log/nginx/loubna-error.log;
-#
-#     root /var/www/loubna-site/current;
-#     index index.html;
-#
-#     location / {
-#         try_files $uri $uri.html $uri/ =404;
-#     }
-#
-#     location ~* \.(jpg|jpeg|png|gif|ico|css|js|svg|woff|woff2|ttf|eot)$ {
-#         expires 1y;
-#         add_header Cache-Control "public, immutable";
-#     }
-#
-#     location = /favicon.ico {
-#         log_not_found off;
-#         access_log off;
-#     }
-#
-#     location = /robots.txt {
-#         log_not_found off;
-#         access_log off;
-#     }
-#
-#     add_header X-Frame-Options "SAMEORIGIN" always;
-#     add_header X-Content-Type-Options "nosniff" always;
-#     add_header X-XSS-Protection "1; mode=block" always;
-#
-#     gzip on;
-#     gzip_vary on;
-#     gzip_min_length 1024;
-#     gzip_types text/plain text/css text/xml text/javascript application/x-javascript application/xml+rss application/json application/javascript;
-# }
 EOF
 
 echo -e "${GREEN}✓ Configuration Nginx créée: $NGINX_CONFIG${NC}"
