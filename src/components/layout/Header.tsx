@@ -102,12 +102,12 @@ export default function Header() {
       {/* ─── MOBILE MENU ──────────────────────────── */}
       <div
         className={cn(
-          "fixed inset-0 bg-encre-950/98 backdrop-blur-sm z-[100] flex flex-col items-center justify-center md:hidden overflow-y-auto",
+          "fixed inset-0 bg-encre-950/98 backdrop-blur-sm z-[100] flex flex-col items-start justify-start md:hidden overflow-y-auto pt-20",
           "transition-all duration-300 ease-in-out",
           mobileOpen ? "opacity-100 translate-x-0" : "opacity-0 translate-x-full pointer-events-none"
         )}
       >
-        <div className="flex flex-col items-center justify-center gap-3 w-full max-w-md px-8 py-12">
+        <div className="flex flex-col items-center justify-start gap-3 w-full max-w-md px-8 py-8 min-h-screen">
           {NAV_LINKS.map((link) => (
             <Link
               key={link.href}
