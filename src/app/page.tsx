@@ -56,7 +56,7 @@ export default function HomePage() {
           </h1>
 
           <p className="text-[0.95rem] md:text-[1.05rem] text-white/60 max-w-[540px] leading-[1.7] md:leading-[1.8] mb-3 md:mb-4">
-            Loubna Abouz Manta accompagne salariés et entreprises dans la compréhension
+            J&apos;accompagne salariés et entreprises dans la compréhension
             de leurs situations professionnelles et la prévention des risques —
             en amont des procédures, avec rigueur et confidentialité.
           </p>

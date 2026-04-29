@@ -5,7 +5,7 @@ import { SITE_CONFIG } from "@/lib/constants";
 export const metadata: Metadata = {
   title: "À propos — Loubna Abouz Manta, Juriste en Droit du Travail",
   description:
-    "Découvrez le parcours de Loubna Abouz Manta, juriste en droit du travail et prévention des risques professionnels. Master en droit et management, intervention en amont des procédures.",
+    "Découvrez mon parcours de juriste en droit du travail et prévention des risques professionnels. Master en droit et management, intervention en amont des procédures.",
   openGraph: {
     title: `À propos – ${SITE_CONFIG.name}`,
     description:
@@ -84,8 +84,8 @@ export default function AProposPage() {
             Loubna Abouz Manta
           </h1>
           <p className="text-white/50 text-[1rem] max-w-[500px] mt-5 leading-[1.8]">
-            Juriste en droit du travail, spécialisée dans la prévention des risques
-            professionnels et l&apos;accompagnement des salariés et des entreprises
+            Juriste en droit du travail — je me spécialise dans la prévention des risques
+            professionnels et l&apos;accompagnement des salariés et des entreprises,
             en amont des procédures.
           </p>
         </div>

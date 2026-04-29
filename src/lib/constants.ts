@@ -13,7 +13,7 @@ export const SITE_CONFIG = {
   instagram: "https://www.instagram.com/louaamm/",
   tiktok: "https://www.tiktok.com/@loubna.am25",
   description:
-    "Loubna Abouz Manta, juriste en droit du travail. Accompagnement & information en droit du travail (FR/AR) — accompagnement des salariés et des entreprises dans la compréhension de leurs situations professionnelles et la prévention des risques, en amont des procédures.",
+    "Juriste en droit du travail (FR/AR) — j'accompagne salariés et entreprises dans la compréhension de leurs situations professionnelles et la prévention des risques, en amont des procédures.",
 };
 
 export const SERVICES = [
