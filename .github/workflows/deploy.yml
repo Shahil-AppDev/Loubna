@@ -33,23 +33,39 @@ jobs:
       - name: Build Next.js static site
         run: npm run build
 
-      - name: Prepare deployment package
-        run: |
-          mkdir -p deploy-package
-          cp -r out/* deploy-package/
-          cp scripts/deploy-server.sh deploy-package/
-          chmod +x deploy-package/deploy-server.sh
-
-      - name: Deploy to VPS
-        uses: appleboy/scp-action@v0.1.7
+      - name: Deploy to VPS via rsync
+        uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_SSH_KEY }}
           port: ${{ secrets.VPS_PORT }}
-          source: "deploy-package/*"
-          target: "/tmp/loubna-deploy-${{ github.sha }}"
-          strip_components: 1
+          script: |
+            # Create temp directory
+            mkdir -p /tmp/loubna-build-${{ github.sha }}
+
+      - name: Transfer files via rsync
+        run: |
+          # Install rsync if needed
+          sudo apt-get update && sudo apt-get install -y rsync
+
+          # Create SSH key file
+          mkdir -p ~/.ssh
+          echo "${{ secrets.VPS_SSH_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+
+          # Transfer files
+          rsync -avz -e "ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no -p ${{ secrets.VPS_PORT }}" \
+            out/ \
+            ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/tmp/loubna-build-${{ github.sha }}/
+
+          # Transfer deployment script
+          rsync -avz -e "ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no -p ${{ secrets.VPS_PORT }}" \
+            scripts/deploy-server.sh \
+            ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/tmp/loubna-build-${{ github.sha }}/
+
+          # Cleanup
+          rm -f ~/.ssh/deploy_key
 
       - name: Execute deployment on server
         uses: appleboy/ssh-action@v1.0.3
@@ -65,7 +81,7 @@ jobs:
 
             # Variables
             DEPLOY_PATH="${{ secrets.DEPLOY_PATH }}"
-            TEMP_DIR="/tmp/loubna-deploy-${{ github.sha }}"
+            TEMP_DIR="/tmp/loubna-build-${{ github.sha }}"
             TIMESTAMP=$(date +%Y%m%d-%H%M%S)
 
             # Create deploy directory if not exists
