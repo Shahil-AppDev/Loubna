@@ -92,8 +92,7 @@ export default function FaqPage() {
                 Vous ne trouvez pas la réponse ?
               </h3>
               <p className="text-encre-500 text-[0.93rem] mb-8 max-w-md mx-auto leading-[1.75]">
-                Chaque situation est unique. Posez-moi directement votre question —
-                je vous réponds personnellement sous 48h.
+                Vous ne trouvez pas l&apos;information recherchée, contactez-moi pour une réponse personnalisée sous 48 heures.
               </p>
               <Link href="/contact" className="btn btn-primary">
                 Poser ma question
