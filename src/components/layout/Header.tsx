@@ -95,7 +95,7 @@ export default function Header() {
           onClick={() => setMobileOpen(!mobileOpen)}
           className="md:hidden flex flex-col gap-[5px] p-2 z-50 relative"
           aria-label={mobileOpen ? "Fermer le menu" : "Ouvrir le menu"}
-          aria-expanded={mobileOpen}
+          aria-expanded={!!mobileOpen}
         >
           <span className={cn("block w-6 h-0.5 bg-white transition-all duration-300 origin-center", mobileOpen && "translate-y-[7px] rotate-45")} />
           <span className={cn("block w-6 h-0.5 bg-white transition-all duration-300", mobileOpen && "opacity-0")} />
