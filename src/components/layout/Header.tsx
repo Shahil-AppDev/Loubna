@@ -102,8 +102,8 @@ export default function Header() {
       {/* ─── MOBILE MENU PREMIUM ──────────────────── */}
       <div
         className={cn(
-          "fixed inset-0 z-[150] md:hidden",
-          "bg-encre-950",
+          "fixed inset-0 z-[9999] md:hidden",
+          "bg-[#080808]",
           "transition-all duration-300 ease-out",
           mobileOpen ? "opacity-100 visible" : "opacity-0 invisible"
         )}
