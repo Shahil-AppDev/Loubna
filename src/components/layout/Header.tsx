@@ -1,11 +1,10 @@
 "use client";
 
-import { getAssetPath } from "@/lib/basePath";
 import { cn } from "@/lib/utils";
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useMobileMenu } from "./MobileMenuProvider";
 
 const NAV_LINKS = [
   { href: "/", label: "Accueil" },
@@ -17,8 +16,8 @@ const NAV_LINKS = [
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
-  const [mobileOpen, setMobileOpen] = useState(false);
   const pathname = usePathname();
+  const { isOpen: mobileOpen, toggle } = useMobileMenu();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -26,13 +25,6 @@ export default function Header() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Close mobile menu on route change
-  useEffect(() => { setMobileOpen(false); }, [pathname]);
-
-  // Lock body scroll when menu open
-  useEffect(() => {
-    document.body.style.overflow = mobileOpen ? "hidden" : "";
-  }, [mobileOpen]);
 
   return (
     <header
@@ -47,12 +39,10 @@ export default function Header() {
         {/* ─── LOGO ─────────────────────────────────── */}
         <Link href="/" className="flex items-center gap-2 md:gap-3.5 group">
           <div className="relative w-9 h-9 md:w-11 md:h-11 flex-shrink-0">
-            <Image
-              src={getAssetPath("/logo.png")}
+            <img
+              src="/logo.png"
               alt="Loubna Abouz Manta"
-              fill
-              className="object-contain rounded-full"
-              priority
+              className="w-full h-full object-contain rounded-full"
             />
           </div>
           <div className="flex flex-col">
@@ -92,63 +82,21 @@ export default function Header() {
 
         {/* ─── MOBILE TOGGLE ────────────────────────── */}
         <button
-          onClick={() => setMobileOpen(!mobileOpen)}
-          className="md:hidden flex flex-col gap-[5px] p-2 z-50 relative"
+          type="button"
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            toggle();
+          }}
+          className="md:hidden flex flex-col gap-[5px] p-2 z-[200] relative"
           aria-label={mobileOpen ? "Fermer le menu" : "Ouvrir le menu"}
-          aria-expanded={mobileOpen}
+          aria-expanded={mobileOpen ? "true" : "false"}
         >
           <span className={cn("block w-6 h-0.5 bg-white transition-all duration-300 origin-center", mobileOpen && "translate-y-[7px] rotate-45")} />
           <span className={cn("block w-6 h-0.5 bg-white transition-all duration-300", mobileOpen && "opacity-0")} />
           <span className={cn("block w-6 h-0.5 bg-white transition-all duration-300 origin-center", mobileOpen && "-translate-y-[7px] -rotate-45")} />
         </button>
       </nav>
-
-      {/* ─── MOBILE MENU ──────────────────────────── */}
-      <div
-        className={cn(
-          "fixed inset-0 bg-encre-950/98 backdrop-blur-sm z-[100] flex flex-col items-center justify-center md:hidden overflow-y-auto",
-          "transition-all duration-300 ease-in-out",
-          mobileOpen ? "opacity-100 translate-x-0" : "opacity-0 translate-x-full pointer-events-none"
-        )}
-      >
-        <div className="flex flex-col items-center justify-center gap-3 w-full max-w-md px-8 py-12">
-          {NAV_LINKS.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className={cn(
-                "text-2xl font-serif font-semibold text-white/70 hover:text-white transition-all duration-200 py-3 px-6 w-full text-center",
-                pathname === link.href && "text-white scale-105"
-              )}
-            >
-              {link.label}
-            </Link>
-          ))}
-          <Link
-            href="/contact"
-            className={cn(
-              "mt-6 bg-rouge-800 text-white hover:bg-rouge-900 text-sm font-sans tracking-widest uppercase font-bold py-4 px-10 w-full text-center rounded-sm transition-all duration-200 shadow-lg",
-              pathname === "/contact" && "opacity-90"
-            )}
-          >
-            Prendre contact
-          </Link>
-          <div className="mt-8 pt-6 border-t border-white/10 w-full flex flex-col gap-3">
-            <Link
-              href="/mentions-legales"
-              className="text-sm text-white/50 hover:text-white/70 transition-colors text-center py-2"
-            >
-              Mentions légales
-            </Link>
-            <Link
-              href="/politique-de-confidentialite"
-              className="text-sm text-white/50 hover:text-white/70 transition-colors text-center py-2"
-            >
-              Politique de confidentialité
-            </Link>
-          </div>
-        </div>
-      </div>
     </header>
   );
 }
