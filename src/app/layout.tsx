@@ -1,5 +1,7 @@
 import Footer from "@/components/layout/Footer";
 import Header from "@/components/layout/Header";
+import MobileMenu from "@/components/layout/MobileMenu";
+import { MobileMenuProvider } from "@/components/layout/MobileMenuProvider";
 import { getAssetPath } from "@/lib/basePath";
 import { SITE_CONFIG } from "@/lib/constants";
 import type { Metadata, Viewport } from "next";
@@ -162,9 +164,13 @@ export default function RootLayout({
         />
       </head>
       <body className="font-sans bg-encre-50 text-encre-800 antialiased" suppressHydrationWarning>
-        <Header />
-        <main>{children}</main>
-        <Footer />
+        <MobileMenuProvider>
+          <Header />
+          <main>{children}</main>
+          <Footer />
+          {/* Menu mobile rendu au niveau racine du body, HORS du header */}
+          <MobileMenu />
+        </MobileMenuProvider>
       </body>
     </html>
   );

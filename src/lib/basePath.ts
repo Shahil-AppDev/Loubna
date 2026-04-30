@@ -1,8 +1,7 @@
 /**
- * Helper function to handle basePath for GitHub Pages deployment
- * Returns the correct path with basePath prefix when needed
+ * Helper function to handle asset paths
+ * Returns the path as-is (no basePath needed with custom domain)
  */
 export function getAssetPath(path: string): string {
-  const basePath = process.env.NODE_ENV === 'production' ? '/Loubna' : '';
-  return `${basePath}${path}`;
+  return path;
 }
