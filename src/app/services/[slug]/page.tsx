@@ -396,6 +396,58 @@ export async function generateStaticParams() {
   }));
 }
 
+function renderContent(text: string) {
+  const lines = text.split('\n');
+  const elements: React.ReactNode[] = [];
+  let listItems: string[] = [];
+  let keyCounter = 0;
+
+  const processInline = (str: string): React.ReactNode[] => {
+    const parts = str.split(/(\*\*.*?\*\*)/g);
+    return parts.map((part, i) => {
+      if (part.startsWith('**') && part.endsWith('**')) {
+        return <strong key={i} className="font-semibold text-encre-800">{part.slice(2, -2)}</strong>;
+      }
+      return part;
+    });
+  };
+
+  const flushList = () => {
+    if (listItems.length > 0) {
+      elements.push(
+        <ul key={`ul-${keyCounter++}`} className="space-y-3 my-5 pl-0">
+          {listItems.map((item, j) => (
+            <li key={j} className="flex gap-3 items-start text-[1rem] text-encre-600 leading-[1.8]">
+              <span className="text-rouge-800 font-bold mt-0.5 flex-shrink-0">—</span>
+              <span>{processInline(item)}</span>
+            </li>
+          ))}
+        </ul>
+      );
+      listItems = [];
+    }
+  };
+
+  lines.forEach((line) => {
+    const trimmed = line.trim();
+    if (trimmed.startsWith('- ')) {
+      listItems.push(trimmed.slice(2));
+    } else {
+      flushList();
+      if (trimmed) {
+        elements.push(
+          <p key={keyCounter++} className="text-[1rem] text-encre-600 leading-[1.85] mb-4">
+            {processInline(trimmed)}
+          </p>
+        );
+      }
+    }
+  });
+  flushList();
+
+  return <div className="space-y-1">{elements}</div>;
+}
+
 export default function ServicePage({ params }: Props) {
   const service = SERVICES_DATA[params.slug as keyof typeof SERVICES_DATA];
 
@@ -407,118 +459,127 @@ export default function ServicePage({ params }: Props) {
 
   return (
     <>
+      {/* ─── HERO ──────────────────────────────────────── */}
       <section className="page-hero">
         <div className="hero-grid-bg" />
         <div className="container-main relative z-10 pt-20 pb-12">
-          <nav className="text-[0.72rem] tracking-[0.14em] uppercase text-white/30 mb-5 flex gap-2">
-            <Link href="/" className="hover:text-white/60 transition-colors">
-              Accueil
-            </Link>
+          <nav className="text-[0.72rem] tracking-[0.14em] uppercase text-white/30 mb-6 flex gap-2 flex-wrap">
+            <Link href="/" className="hover:text-white/60 transition-colors">Accueil</Link>
             <span>›</span>
-            <Link href="/services" className="hover:text-white/60 transition-colors">
-              Services
-            </Link>
+            <Link href="/services" className="hover:text-white/60 transition-colors">Services</Link>
             <span>›</span>
             <span className="text-or-500">{service.h1}</span>
           </nav>
-          <h1 className="font-serif text-[clamp(2rem,4vw,3rem)] text-white leading-tight">
+          <h1 className="font-serif text-[clamp(2rem,4vw,3.2rem)] text-white leading-[1.15] max-w-3xl mb-6">
             {service.h1}
           </h1>
+          <p className="text-white/55 text-[1rem] md:text-[1.05rem] max-w-[620px] leading-[1.85]">
+            {content.intro}
+          </p>
         </div>
       </section>
 
+      {/* ─── MAIN CONTENT ──────────────────────────────── */}
       <section className="section-pad bg-encre-50">
         <div className="container-main">
-          <div className="max-w-[820px] mx-auto">
-            <div className="prose prose-lg max-w-none">
-              <p className="text-[1.1rem] text-encre-600 leading-relaxed mb-8">
-                {content.intro}
-              </p>
+          <div className="max-w-[800px] mx-auto">
 
-              {content.sections.map((section, idx) => (
-                <div key={idx} className="mb-10">
-                  <h2 className="font-serif text-[1.75rem] text-encre-800 mb-4 mt-12">
-                    {section.h2}
-                  </h2>
-                  <div className="text-encre-600 leading-relaxed whitespace-pre-line">
-                    {section.content}
-                  </div>
-                </div>
-              ))}
-
-              {content.faq && content.faq.length > 0 && (
-                <div className="mt-16 bg-white p-8 rounded-sm border border-or-500/10">
-                  <h2 className="font-serif text-[1.75rem] text-encre-800 mb-6">
-                    Foire Aux Questions (FAQ)
-                  </h2>
-                  <div className="space-y-6">
-                    {content.faq.map((item, idx) => (
-                      <div key={idx}>
-                        <h3 className="font-semibold text-encre-800 mb-2">
-                          {item.q}
-                        </h3>
-                        <p className="text-encre-600">{item.a}</p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              <div className="mt-12 p-8 bg-rouge-50 border-l-4 border-rouge-800 rounded-sm">
-                <h3 className="font-serif text-xl text-encre-800 mb-4">
-                  Besoin d'un accompagnement personnalisé ?
-                </h3>
-                <p className="text-encre-600 mb-6">
-                  Chaque situation est unique. Prenons le temps d&apos;étudier votre dossier et de définir ensemble la meilleure approche.
-                </p>
-                <div className="flex flex-wrap gap-4">
-                  {'ctaSalarie' in content && content.ctaSalarie && (
-                    <Link
-                      href="/contact"
-                      className="btn btn-primary"
-                    >
-                      {content.ctaSalarie}
-                    </Link>
-                  )}
-                  {'ctaEmployeur' in content && content.ctaEmployeur && (
-                    <Link
-                      href="/contact"
-                      className="btn btn-ghost"
-                    >
-                      {content.ctaEmployeur}
-                    </Link>
-                  )}
-                  {'cta' in content && content.cta && !('ctaSalarie' in content) && !('ctaEmployeur' in content) && (
-                    <Link
-                      href="/contact"
-                      className="btn btn-primary"
-                    >
-                      {content.cta}
-                    </Link>
-                  )}
+            {/* Sections */}
+            {content.sections.map((section, idx) => (
+              <div key={idx} className={`${idx === 0 ? "mt-0" : "mt-14"} mb-10`}>
+                <h2 className="font-serif text-[1.7rem] md:text-[2rem] text-encre-800 mb-5 leading-[1.2]">
+                  {section.h2}
+                </h2>
+                <div className="border-l-2 border-or-500/30 pl-6">
+                  {renderContent(section.content)}
                 </div>
               </div>
+            ))}
 
-              {content.relatedLinks && content.relatedLinks.length > 0 && (
-                <div className="mt-12 pt-8 border-t border-or-500/20">
-                  <h3 className="font-serif text-lg text-encre-800 mb-4">
-                    Pour aller plus loin
-                  </h3>
-                  <ul className="space-y-2">
-                    {content.relatedLinks.map((link, idx) => (
-                      <li key={idx}>
-                        <Link
-                          href={link.href}
-                          className="text-rouge-800 hover:text-rouge-900 underline"
-                        >
-                          {link.label}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
+            {/* FAQ */}
+            {content.faq && content.faq.length > 0 && (
+              <div className="mt-16 bg-white rounded-sm border border-encre-100 overflow-hidden">
+                <div className="px-8 py-7 border-b border-encre-100">
+                  <h2 className="font-serif text-[1.6rem] text-encre-800">
+                    Questions fréquentes
+                  </h2>
                 </div>
-              )}
+                <div className="divide-y divide-encre-100">
+                  {content.faq.map((item, idx) => (
+                    <div key={idx} className="px-8 py-6">
+                      <h3 className="font-serif text-[1.08rem] font-semibold text-encre-800 mb-3">
+                        {item.q}
+                      </h3>
+                      <p className="text-[0.97rem] text-encre-600 leading-[1.8]">{item.a}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* CTA block */}
+            <div className="mt-14 p-8 md:p-10 bg-encre-950 rounded-sm">
+              <p className="text-[0.68rem] font-bold tracking-[0.18em] uppercase text-or-500 mb-4">
+                Prendre contact
+              </p>
+              <h3 className="font-serif text-[1.5rem] md:text-[1.75rem] text-white mb-3 leading-[1.2]">
+                Besoin d&apos;un accompagnement personnalisé ?
+              </h3>
+              <p className="text-[0.97rem] text-white/55 mb-8 leading-[1.85] max-w-[520px]">
+                Chaque situation est unique. Décrivez-moi votre situation — je vous réponds personnellement sous 48 heures.
+              </p>
+              <div className="flex flex-wrap gap-4">
+                {'ctaSalarie' in content && content.ctaSalarie && (
+                  <Link href="/contact" className="btn btn-white">
+                    {content.ctaSalarie}
+                  </Link>
+                )}
+                {'ctaEmployeur' in content && content.ctaEmployeur && (
+                  <Link href="/contact" className="btn btn-ghost-white">
+                    {content.ctaEmployeur}
+                  </Link>
+                )}
+                {'cta' in content && content.cta && !('ctaSalarie' in content) && !('ctaEmployeur' in content) && (
+                  <Link href="/contact" className="btn btn-white">
+                    {content.cta}
+                  </Link>
+                )}
+                {!('ctaSalarie' in content) && !('ctaEmployeur' in content) && !('cta' in content) && (
+                  <Link href="/contact" className="btn btn-white">
+                    Me contacter →
+                  </Link>
+                )}
+              </div>
             </div>
+
+            {/* Legal disclaimer */}
+            <div className="mt-8 p-5 bg-white border border-encre-100 border-l-[3px] border-l-or-500 rounded-sm">
+              <p className="text-[0.82rem] text-encre-500 leading-[1.8]">
+                <span className="font-semibold text-encre-700 block mb-1">Note importante</span>
+                Prestations d&apos;accompagnement, d&apos;information et de prévention — hors consultation juridique réglementée. Les prestations proposées ne constituent pas une consultation juridique au sens de la réglementation applicable à la profession d&apos;avocat.
+              </p>
+            </div>
+
+            {/* Related links */}
+            {content.relatedLinks && content.relatedLinks.length > 0 && (
+              <div className="mt-12 pt-8 border-t border-or-500/20">
+                <p className="text-[0.7rem] font-bold tracking-[0.16em] uppercase text-encre-400 mb-5">
+                  Pour aller plus loin
+                </p>
+                <div className="flex flex-wrap gap-3">
+                  {content.relatedLinks.map((link, idx) => (
+                    <Link
+                      key={idx}
+                      href={link.href}
+                      className="inline-flex items-center gap-2 px-4 py-2.5 bg-white border border-encre-200 rounded-sm text-[0.88rem] text-encre-700 hover:border-rouge-800/30 hover:text-rouge-800 transition-colors"
+                    >
+                      {link.label} →
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
+
           </div>
         </div>
       </section>
