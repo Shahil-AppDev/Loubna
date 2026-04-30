@@ -154,31 +154,29 @@ export default function AProposPage() {
 
               <div className="space-y-5 mb-12">
                 <p className="text-[0.95rem] text-encre-600 leading-[1.88]">
-                  J&apos;interviens en amont afin de comprendre les situations de travail,
-                  d&apos;identifier les risques professionnels et d&apos;accompagner les entreprises
-                  dans la rédaction et la mise à jour de leur DUERP, dans une logique de
-                  prévention et de sécurisation des pratiques.
+                  Titulaire d&apos;un Master en droit et management, orienté notamment vers la santé
+                  et la sécurité au travail ainsi que la responsabilité sociale des entreprises,
+                  j&apos;ai développé une expertise à l&apos;intersection du droit du travail et du
+                  management des organisations. Cette double approche me permet d&apos;appréhender
+                  les situations professionnelles avec précision, en tenant compte à la fois du
+                  cadre juridique et de la réalité du terrain.
                 </p>
                 <p className="text-[0.95rem] text-encre-600 leading-[1.88]">
-                  Titulaire d&apos;un Master en droit et management, j&apos;ai développé une
-                  spécialisation à l&apos;intersection du droit du travail et du management des
-                  organisations. Cette double approche me permet d&apos;appréhender avec précision
-                  les situations professionnelles, en tenant compte à la fois du cadre
-                  juridique et de la réalité du terrain.
+                  J&apos;interviens en droit du travail auprès des entreprises comme des salariés,
+                  avec une attention particulière portée à la santé et à la sécurité au travail
+                  ainsi qu&apos;à la prévention des risques professionnels.
                 </p>
                 <p className="text-[0.95rem] text-encre-600 leading-[1.88]">
-                  J&apos;interviens principalement en droit du travail, avec une attention
-                  particulière portée à la prévention des risques professionnels, notamment
-                  en matière de santé, sécurité et conditions de travail. Dans ce cadre,
-                  j&apos;accompagne les entreprises dans l&apos;identification et l&apos;évaluation des
-                  risques, à travers la réalisation d&apos;audits et la mise à jour du Document
-                  Unique d&apos;Évaluation des Risques Professionnels (DUERP), en collaboration
-                  avec les acteurs de l&apos;entreprise.
+                  J&apos;accompagne les entreprises dans l&apos;identification et l&apos;évaluation des risques,
+                  notamment à travers la réalisation d&apos;audits et la mise à jour du Document
+                  Unique d&apos;Évaluation des Risques Professionnels (DUERP), ainsi que sur les
+                  problématiques liées aux accidents du travail et maladies professionnelles
+                  (AT/MP). J&apos;assiste également les salariés dans la compréhension de leurs droits
+                  et dans l&apos;étude de leur situation professionnelle.
                 </p>
                 <p className="text-[0.95rem] text-encre-600 leading-[1.88]">
-                  Mon approche ne se limite pas à la rédaction de documents : elle repose
-                  sur une compréhension concrète des situations de travail et une volonté d&apos;agir
-                  en amont, afin de prévenir les tensions et éviter les situations conflictuelles.
+                  Mon approche repose sur une compréhension concrète des situations de travail,
+                  afin d&apos;agir en amont et de prévenir les difficultés.
                 </p>
               </div>
 
