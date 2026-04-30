@@ -56,9 +56,8 @@ export default function HomePage() {
           </h1>
 
           <p className="text-[0.95rem] md:text-[1.05rem] text-white/60 max-w-[540px] leading-[1.7] md:leading-[1.8] mb-3 md:mb-4">
-            J&apos;accompagne salariés et entreprises dans la compréhension
-            de leurs situations professionnelles et la prévention des risques —
-            en amont des procédures, avec rigueur et confidentialité.
+            J&apos;accompagne salariés et entreprises dans la prévention des risques
+            et la sécurisation professionnelles, en amont des procédures.
           </p>
           <p className="text-[0.85rem] md:text-[0.9rem] text-or-400/80 max-w-[540px] leading-[1.6] mb-6 md:mb-10 font-medium">
             J&apos;interviens dans une démarche d&apos;accompagnement, d&apos;information et de prévention en droit du travail. · Accompagnement bilingue français / arabe
