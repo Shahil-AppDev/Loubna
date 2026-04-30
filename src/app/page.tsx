@@ -180,8 +180,8 @@ export default function HomePage() {
                     {num}
                   </div>
                   <div>
-                    <h4 className="font-serif text-[1rem] md:text-[1.1rem] text-white mb-1.5 md:mb-2">{title}</h4>
-                    <p className="text-[0.85rem] md:text-[0.88rem] text-white/45 leading-[1.65] md:leading-[1.75]">{desc}</p>
+                    <h4 className="font-serif text-[1rem] md:text-[1.1rem] text-white mb-2 md:mb-2.5">{title}</h4>
+                    <p className="text-[0.9rem] md:text-[0.93rem] text-white/50 leading-[1.75] max-w-[480px]">{desc}</p>
                   </div>
                 </div>
               ))}

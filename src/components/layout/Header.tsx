@@ -49,7 +49,7 @@ export default function Header() {
             <span className="font-serif text-[0.9rem] md:text-[1.05rem] font-semibold text-white leading-tight">
               Loubna Abouz Manta
             </span>
-            <span className="text-[0.5rem] md:text-[0.6rem] font-bold tracking-[0.12em] md:tracking-[0.15em] uppercase text-or-500 leading-none mt-0.5">
+            <span className="text-[0.6rem] font-bold tracking-[0.12em] md:tracking-[0.15em] uppercase text-or-500 leading-none mt-0.5">
               Juriste · Droit du travail
             </span>
           </div>

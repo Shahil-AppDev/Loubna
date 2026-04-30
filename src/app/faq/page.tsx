@@ -61,7 +61,7 @@ export default function FaqPage() {
               return (
                 <div key={cat.key} className="mb-16 last:mb-0">
                   <div className="flex items-center gap-5 mb-8">
-                    <h2 className="font-serif text-[1.55rem] text-encre-800 whitespace-nowrap">
+                    <h2 className="font-serif text-[1.65rem] text-encre-800 whitespace-nowrap">
                       {cat.label}
                     </h2>
                     <div
@@ -79,7 +79,7 @@ export default function FaqPage() {
 
             {/* ─── Disclaimer ──────────────────────── */}
             <div className="mt-10 bg-white border border-encre-200 border-l-[3px] border-l-or-500 rounded-sm p-5">
-              <p className="text-encre-500 text-xs leading-relaxed">
+              <p className="text-encre-500 text-[0.85rem] leading-[1.8]">
                 <span className="font-semibold text-encre-700 block mb-1">Note importante</span>
                 Les informations fournies ne constituent pas une consultation juridique
                 au sens de la réglementation applicable à la profession d&apos;avocat.
@@ -92,8 +92,7 @@ export default function FaqPage() {
                 Vous ne trouvez pas la réponse ?
               </h3>
               <p className="text-encre-500 text-[0.93rem] mb-8 max-w-md mx-auto leading-[1.75]">
-                Chaque situation est unique. Posez-moi directement votre question —
-                je vous réponds personnellement sous 48h.
+                Vous ne trouvez pas l&apos;information recherchée, contactez-moi pour une réponse personnalisée sous 48 heures.
               </p>
               <Link href="/contact" className="btn btn-primary">
                 Poser ma question

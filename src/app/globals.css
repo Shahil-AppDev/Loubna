@@ -110,7 +110,7 @@
 
   /* Page hero */
   .page-hero {
-    @apply relative overflow-hidden bg-encre-900 pt-[var(--nav-h)] pb-16 md:pb-20;
+    @apply relative overflow-hidden bg-encre-900 pt-[var(--nav-h)] pb-16 md:pb-24;
   }
 
   .hero-grid-bg {
@@ -176,16 +176,16 @@
   }
 
   .form-label {
-    @apply block text-[0.72rem] font-bold tracking-[0.12em] uppercase text-encre-700 mb-2;
+    @apply block text-[0.8rem] font-bold tracking-[0.1em] uppercase text-encre-700 mb-2;
   }
 
   .form-error-msg {
-    @apply text-[0.75rem] text-red-500 mt-1.5 flex items-center gap-1;
+    @apply text-[0.85rem] text-red-500 mt-1.5 flex items-center gap-1;
   }
 
   /* Footer nav */
   .footer-nav-title {
-    @apply text-[0.65rem] font-bold tracking-[0.2em] uppercase text-or-500 mb-5;
+    @apply text-[0.75rem] font-bold tracking-[0.18em] uppercase text-or-500 mb-5;
   }
 }
 

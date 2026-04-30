@@ -183,10 +183,10 @@ export default function Footer() {
               </ul>
 
               <div className="mt-6 p-4 border border-encre-800 rounded-sm">
-                <p className="text-encre-300 text-xs leading-relaxed font-semibold mb-1.5">
+                <p className="text-encre-300 text-[0.8rem] leading-relaxed font-semibold mb-1.5">
                   Prestations d&apos;accompagnement, d&apos;information et de prévention – hors consultation juridique réglementée.
                 </p>
-                <p className="text-encre-400 text-xs leading-relaxed">
+                <p className="text-encre-400 text-[0.8rem] leading-relaxed">
                   Les prestations proposées relèvent de l&apos;information, de l&apos;accompagnement et de la prévention en droit du travail. Elles ne constituent pas une consultation juridique au sens de la réglementation applicable à la profession d&apos;avocat.
                 </p>
               </div>
