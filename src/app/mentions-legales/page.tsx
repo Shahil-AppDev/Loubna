@@ -72,9 +72,9 @@ export default function MentionsLegalesPage() {
             <h2>4. Limitation de responsabilité</h2>
             <p>
               Les informations contenues sur ce site sont fournies à titre indicatif. Elles ne
-              constituent pas un conseil juridique personnalisé et ne sauraient engager la responsabilité
+              constituent pas un accompagnement personnalisé et ne sauraient engager la responsabilité
               de {SITE_CONFIG.name}. Chaque situation étant unique, il convient de prendre contact
-              directement pour obtenir un conseil adapté.
+              directement pour obtenir un accompagnement adapté.
             </p>
             <p>
               {SITE_CONFIG.name} ne saurait être tenu responsable des dommages directs ou indirects

@@ -1,6 +1,6 @@
+import { SITE_CONFIG } from "@/lib/constants";
 import type { Metadata } from "next";
 import Link from "next/link";
-import { SITE_CONFIG } from "@/lib/constants";
 
 export const metadata: Metadata = {
   title: "Politique de confidentialité",
@@ -62,7 +62,7 @@ export default function ConfidentialitePage() {
             <h2>3. Finalités du traitement</h2>
             <p>Vos données sont collectées et traitées pour les finalités suivantes :</p>
             <ul>
-              <li>Répondre à vos demandes de conseil et d'information</li>
+              <li>Répondre à vos demandes d'accompagnement et d'information</li>
               <li>Assurer le suivi de votre dossier</li>
               <li>Améliorer la qualité du service proposé</li>
             </ul>

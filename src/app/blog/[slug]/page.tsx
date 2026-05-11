@@ -1,8 +1,8 @@
+import { getAllArticles, getArticleBySlug } from "@/lib/blog-data";
+import { SITE_CONFIG } from "@/lib/constants";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getArticleBySlug, getAllArticles } from "@/lib/blog-data";
-import { SITE_CONFIG } from "@/lib/constants";
 
 type Props = {
   params: { slug: string };
@@ -10,7 +10,7 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const article = getArticleBySlug(params.slug);
-  
+
   if (!article) {
     return {
       title: "Article non trouvé",
@@ -159,7 +159,7 @@ Adressez un courrier recommandé avec AR à votre employeur en exposant :
 - La disproportion de la sanction
 - Votre demande de retrait de la sanction de votre dossier
 
-**Étape 4 : Saisir le Conseil de prud'hommes (si nécessaire)**
+**Étape 4 : Saisir le CPH (Conseil de prud'hommes) si nécessaire**
 Si l'employeur maintient la sanction, vous pouvez saisir le CPH pour demander l'annulation de la sanction et, le cas échéant, des dommages et intérêts pour préjudice moral.`
       },
       {

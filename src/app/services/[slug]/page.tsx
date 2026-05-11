@@ -76,7 +76,7 @@ const SERVICES_DATA = {
       ctaEmployeur: "Sécuriser une procédure disciplinaire",
       relatedLinks: [
         { href: "/blog/comment-contester-sanction-disciplinaire-avertissement", label: "Guide : Contester une sanction" },
-        { href: "/services/conseil-licenciement", label: "Accompagnement licenciement" }
+        { href: "/services/licenciement", label: "Accompagnement licenciement" }
       ]
     }
   },
@@ -117,7 +117,7 @@ const SERVICES_DATA = {
       ]
     }
   },
-  "conseil-licenciement": {
+  "licenciement": {
     title: "Accompagnement dans les Procédures de Licenciement | Juriste",
     description: "Licenciement économique, pour faute ou inaptitude : bénéficiez d'un accompagnement en droit du travail pour sécuriser la procédure ou comprendre vos droits.",
     h1: "Accompagnement dans les Procédures de Licenciement",
@@ -187,7 +187,7 @@ const SERVICES_DATA = {
       ],
       cta: "Évaluer le montant d'une transaction amiable",
       relatedLinks: [
-        { href: "/services/conseil-licenciement", label: "Accompagnement licenciement" },
+        { href: "/services/licenciement", label: "Accompagnement licenciement" },
         { href: "/services/rupture-conventionnelle", label: "Rupture conventionnelle" }
       ]
     }

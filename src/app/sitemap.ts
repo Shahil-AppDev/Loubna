@@ -9,7 +9,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "redaction-contrat-travail",
     "sanctions-disciplinaires",
     "recrutement-salaries-etrangers",
-    "conseil-licenciement",
+    "licenciement",
     "negociation-accord-transactionnel",
     "rupture-conventionnelle",
     "sensibilisation-rse-prevention"
@@ -41,6 +41,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: new Date(),
       changeFrequency: "weekly" as const,
       priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/formations`,
+      lastModified: new Date(),
+      changeFrequency: "monthly" as const,
+      priority: 0.8,
     },
     {
       url: `${baseUrl}/faq`,
