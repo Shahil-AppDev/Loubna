@@ -2,11 +2,10 @@ import { query } from '@/lib/db/postgres';
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2026-04-22.dahlia',
-});
-
 export async function POST(request: NextRequest) {
+  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
+    apiVersion: '2026-04-22.dahlia',
+  });
   try {
     const body = await request.json();
     const { appointment_id, service_id } = body;
