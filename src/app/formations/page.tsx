@@ -17,77 +17,81 @@ const FORMATIONS = [
   {
     id: "accidents-travail",
     icon: "⚠️",
-    title: "Réduire les zones de risque en matière d'accidents du travail",
+    title: "Prévention et gestion des accidents du travail",
     duration: "1 journée (7h)",
     public: "Employeurs, DRH, Responsables HSE, Managers",
+    intro: "Les accidents du travail représentent un enjeu majeur pour les entreprises, tant sur le plan humain que juridique et financier. Cette formation vous permet de comprendre les obligations légales, d'identifier les situations à risque et de mettre en place une démarche de prévention efficace.",
+    pourquoi: "Parce qu'un accident du travail peut avoir des conséquences lourdes : arrêt de travail, impact sur la santé du salarié, coûts directs et indirects pour l'entreprise, responsabilité de l'employeur. Anticiper et prévenir, c'est protéger vos salariés et sécuriser votre activité.",
     objectifs: [
-      "Identifier les situations à risque dans l'entreprise",
-      "Comprendre les obligations légales en matière de prévention",
-      "Mettre en place des mesures préventives efficaces",
-      "Connaître les conséquences d'un accident du travail pour l'entreprise",
-      "Maîtriser la procédure de déclaration et de gestion d'un AT"
+      "Comprendre ce qu'est un accident du travail et ses conséquences",
+      "Identifier les situations à risque dans votre entreprise",
+      "Connaître vos obligations légales en matière de prévention",
+      "Savoir réagir en cas d'accident : déclaration, enquête, mesures correctives",
+      "Mettre en place une démarche de prévention adaptée"
     ],
     programme: [
       {
-        titre: "Les accidents du travail : définition et enjeux",
-        contenu: "Définition juridique, statistiques, coûts directs et indirects pour l'entreprise"
+        titre: "Qu'est-ce qu'un accident du travail ?",
+        contenu: "Définition juridique, critères de reconnaissance, distinction avec l'accident de trajet et la maladie professionnelle"
       },
       {
         titre: "Les obligations de l'employeur",
-        contenu: "Obligation de sécurité, DUERP, formation à la sécurité, équipements de protection"
+        contenu: "Obligation de sécurité de résultat, évaluation des risques, DUERP, formation et information des salariés"
       },
       {
-        titre: "Identifier et évaluer les risques",
-        contenu: "Méthodologie d'identification des risques, analyse des postes de travail, visite terrain"
+        titre: "Identifier les situations à risque",
+        contenu: "Méthodologie d'analyse des postes de travail, facteurs de risque, outils d'identification"
       },
       {
-        titre: "Mettre en place des actions préventives",
-        contenu: "Priorisation des actions, plan d'action, suivi et évaluation"
+        titre: "Que faire en cas d'accident ?",
+        contenu: "Procédure de déclaration (délais, documents), enquête interne, analyse des causes, mesures correctives"
       },
       {
-        titre: "Gérer un accident du travail",
-        contenu: "Procédure de déclaration, enquête interne, mesures correctives"
+        titre: "Mettre en place une démarche de prévention",
+        contenu: "Plan d'action, priorisation des mesures, suivi et évaluation, implication des équipes"
       }
     ],
-    methodes: "Apports théoriques, études de cas, exercices pratiques, analyse de situations réelles",
+    methodes: "Apports théoriques et juridiques, études de cas concrets, exercices pratiques, analyse de situations réelles issues de votre secteur d'activité, échanges et retours d'expérience",
     tarif: "Sur devis selon effectif et modalités"
   },
   {
     id: "pouvoir-disciplinaire",
     icon: "⚖️",
-    title: "Exercice du pouvoir disciplinaire de l'employeur",
+    title: "Gestion des procédures disciplinaires",
     duration: "1 journée (7h)",
     public: "Employeurs, DRH, Responsables RH, Managers",
+    intro: "Gérer une procédure disciplinaire nécessite de maîtriser le cadre juridique, de respecter des étapes précises et de sécuriser chaque décision. Une erreur peut fragiliser la sanction et exposer l'entreprise à un contentieux. Cette formation vous donne les clés pour agir avec rigueur et sécurité.",
+    pourquoi: "Parce qu'une procédure mal menée peut être annulée, même si les faits reprochés sont avérés. Parce que chaque étape compte : qualification des faits, respect des délais, proportionnalité de la sanction. Sécuriser vos décisions, c'est éviter les erreurs et limiter les risques contentieux.",
     objectifs: [
       "Maîtriser le cadre juridique du pouvoir disciplinaire",
-      "Identifier les faits justifiant une sanction",
+      "Savoir qualifier les faits et choisir la sanction appropriée",
       "Respecter la procédure disciplinaire obligatoire",
-      "Choisir la sanction appropriée et proportionnée",
-      "Sécuriser juridiquement les décisions disciplinaires"
+      "Rédiger les documents (convocation, notification) de manière sécurisée",
+      "Anticiper les risques contentieux et sécuriser vos décisions"
     ],
     programme: [
       {
         titre: "Le cadre juridique du pouvoir disciplinaire",
-        contenu: "Définition, fondements légaux, règlement intérieur, échelle des sanctions"
+        contenu: "Définition de la faute, fondements légaux, règlement intérieur, échelle des sanctions, sanctions interdites"
       },
       {
-        titre: "Les faits justifiant une sanction",
-        contenu: "Faute professionnelle, manquement aux obligations, distinction faute/insuffisance professionnelle"
+        titre: "Qualifier les faits",
+        contenu: "Distinction faute / insuffisance professionnelle, gravité de la faute, éléments de preuve, prescription"
       },
       {
         titre: "La procédure disciplinaire obligatoire",
-        contenu: "Convocation à entretien préalable, délais, notification de la sanction, prescription"
+        contenu: "Convocation à entretien préalable (forme, délais, contenu), déroulement de l'entretien, notification de la sanction, délais à respecter"
       },
       {
-        titre: "Le choix de la sanction",
-        contenu: "Proportionnalité, non-discrimination, principe du non bis in idem, sanctions interdites"
+        titre: "Choisir la sanction",
+        contenu: "Proportionnalité, non-discrimination, principe du non bis in idem, gradation des sanctions"
       },
       {
-        titre: "Les risques juridiques et contentieux",
-        contenu: "Contestation de la sanction, annulation, dommages et intérêts, sécurisation des procédures"
+        titre: "Sécuriser la procédure et anticiper les risques",
+        contenu: "Erreurs fréquentes à éviter, contestation de la sanction, contentieux prud'homal, rédaction sécurisée des documents"
       }
     ],
-    methodes: "Apports juridiques, cas pratiques, rédaction de documents, jeux de rôle (entretien préalable)",
+    methodes: "Apports juridiques, cas pratiques et mises en situation, rédaction de documents (convocation, notification), jeux de rôle (simulation d'entretien préalable), analyse de jurisprudence récente",
     tarif: "Sur devis selon effectif et modalités"
   }
 ];
@@ -161,6 +165,24 @@ export default function FormationsPage() {
 
                 {/* Content */}
                 <div className="p-8 space-y-8">
+                  {/* Introduction */}
+                  <div className="bg-encre-50 border border-encre-200 rounded-sm p-6">
+                    <p className="text-[0.95rem] text-encre-700 leading-[1.85]">
+                      {formation.intro}
+                    </p>
+                  </div>
+
+                  {/* Pourquoi c'est essentiel */}
+                  <div className="border-l-[4px] border-l-rouge-800 pl-6 py-2">
+                    <h4 className="font-semibold text-[1rem] text-encre-800 mb-2 flex items-center gap-2">
+                      <span>❓</span>
+                      Pourquoi c&apos;est essentiel
+                    </h4>
+                    <p className="text-[0.9rem] text-encre-600 leading-[1.8]">
+                      {formation.pourquoi}
+                    </p>
+                  </div>
+
                   {/* Objectifs */}
                   <div>
                     <h3 className="font-serif text-[1.2rem] text-encre-800 mb-4 flex items-center gap-2">
