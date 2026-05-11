@@ -1,6 +1,6 @@
+import { SITE_CONFIG } from "@/lib/constants";
 import type { Metadata } from "next";
 import Link from "next/link";
-import { SITE_CONFIG } from "@/lib/constants";
 
 export const metadata: Metadata = {
   title: "Formations — Loubna Abouz Manta, Juriste en Droit du Travail",
@@ -109,15 +109,10 @@ export default function FormationsPage() {
             <span className="text-or-500">Formations</span>
           </nav>
           <h1 className="font-serif text-[clamp(2.4rem,5vw,3.8rem)] font-semibold text-white leading-[1.12] max-w-2xl">
-            Formations professionnelles
-            <br />
-            <em className="text-or-500 font-light" style={{ fontStyle: "italic" }}>
-              en droit du travail.
-            </em>
+            Formations
           </h1>
           <p className="text-white/50 text-[1rem] max-w-[520px] mt-5 leading-[1.8]">
-            Formations ciblées pour les employeurs, DRH et managers souhaitant maîtriser
-            les enjeux juridiques et pratiques du droit du travail et de la prévention des risques.
+            Formations concrètes et directement applicables en entreprise pour les employeurs, DRH, responsables RH et managers.
           </p>
         </div>
       </section>
