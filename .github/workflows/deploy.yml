@@ -30,171 +30,99 @@ jobs:
       - name: Run linter
         run: npm run lint
 
-      - name: Build Next.js application
-        run: npm run build
-
-      - name: Deploy to VPS via rsync
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.VPS_HOST }}
-          username: ${{ secrets.VPS_USER }}
-          key: ${{ secrets.VPS_SSH_KEY }}
-          port: ${{ secrets.VPS_PORT }}
-          script: |
-            # Create temp directory
-            mkdir -p /tmp/loubna-build-${{ github.sha }}
-
-      - name: Transfer files via rsync
+      - name: Transfer source to VPS
         run: |
-          # Install rsync if needed
-          sudo apt-get update && sudo apt-get install -y rsync
+          sudo apt-get update -qq && sudo apt-get install -y -qq rsync
 
-          # Create SSH key file
           mkdir -p ~/.ssh
           echo "${{ secrets.VPS_SSH_KEY }}" > ~/.ssh/deploy_key
           chmod 600 ~/.ssh/deploy_key
 
-          # Transfer Next.js build files
-          rsync -avz -e "ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no -p ${{ secrets.VPS_PORT }}" \
-            --exclude 'node_modules' \
-            --exclude '.git' \
-            --exclude '.next/cache' \
-            .next/ \
-            ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/tmp/loubna-build-${{ github.sha }}/.next/
+          REMOTE="${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}"
+          PORT="${{ secrets.VPS_PORT }}"
+          TEMP="/tmp/loubna-build-${{ github.sha }}"
 
-          # Transfer source + configs (required for next build / runtime; .next alone is not enough)
-          rsync -avz -e "ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no -p ${{ secrets.VPS_PORT }}" \
+          # Create temp dir on server
+          ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no -p $PORT $REMOTE "mkdir -p $TEMP"
+
+          # Transfer entire source tree (no build, no node_modules)
+          rsync -az --delete \
+            -e "ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no -p $PORT" \
             --exclude 'node_modules' \
             --exclude '.git' \
             --exclude '.next' \
-            package.json package-lock.json next.config.mjs next-env.d.ts next-sitemap.config.js \
-            tsconfig.json tailwind.config.ts postcss.config.js public/ src/ \
-            ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/tmp/loubna-build-${{ github.sha }}/
+            --exclude '.env*' \
+            . \
+            $REMOTE:$TEMP/
 
-          # Transfer deployment script
-          rsync -avz -e "ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no -p ${{ secrets.VPS_PORT }}" \
-            scripts/deploy-nextjs.sh \
-            ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/tmp/loubna-build-${{ github.sha }}/
-
-          # Cleanup
           rm -f ~/.ssh/deploy_key
 
-      - name: Execute deployment on server
+      - name: Build and deploy on server
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_SSH_KEY }}
           port: ${{ secrets.VPS_PORT }}
+          command_timeout: "10m"
           script: |
             set -euo pipefail
 
-            echo "🚀 Starting deployment for juriste-droit-du-travail.com"
-
-            # Variables
             DEPLOY_PATH="${{ secrets.DEPLOY_PATH }}"
-            TEMP_DIR="/tmp/loubna-build-${{ github.sha }}"
+            TEMP="/tmp/loubna-build-${{ github.sha }}"
             TIMESTAMP=$(date +%Y%m%d-%H%M%S)
+            APP_NAME="nextjs-loubna"
+            PORT=3000
 
-            # Create deploy directory if not exists
-            if [ ! -d "$DEPLOY_PATH" ]; then
-              echo "📁 Creating deployment directory: $DEPLOY_PATH"
-              sudo mkdir -p "$DEPLOY_PATH"
-              sudo chown -R $USER:$USER "$DEPLOY_PATH"
+            echo "=== [1/5] Restore .env.local from previous deploy ==="
+            if [ -f "$DEPLOY_PATH/current/.env.local" ]; then
+              cp "$DEPLOY_PATH/current/.env.local" "$TEMP/.env.local"
+              echo "✓ .env.local copied to build dir"
+            else
+              echo "⚠ No .env.local found in current — skipping"
             fi
 
-            # Backup current version
+            echo "=== [2/5] Install dependencies on server ==="
+            cd "$TEMP"
+            npm ci
+
+            echo "=== [3/5] Build Next.js on server ==="
+            npm run build
+
+            echo "=== [4/5] Atomic swap current → backup, new build → current ==="
             if [ -d "$DEPLOY_PATH/current" ]; then
-              echo "💾 Backing up current version"
-              sudo mv "$DEPLOY_PATH/current" "$DEPLOY_PATH/backup-$TIMESTAMP" || true
+              mv "$DEPLOY_PATH/current" "$DEPLOY_PATH/backup-$TIMESTAMP"
             fi
-
-            # Deploy new version
-            echo "📦 Deploying new version"
-            sudo mkdir -p "$DEPLOY_PATH/current"
-            sudo cp -r "$TEMP_DIR"/* "$DEPLOY_PATH/current/"
-            sudo chown -R $USER:$USER "$DEPLOY_PATH/current"
-
-            # Preserve production secrets across deploys (not in git artifact)
-            if [ -d "$DEPLOY_PATH/backup-$TIMESTAMP" ] && [ -f "$DEPLOY_PATH/backup-$TIMESTAMP/.env.local" ]; then
-              cp "$DEPLOY_PATH/backup-$TIMESTAMP/.env.local" "$DEPLOY_PATH/current/.env.local"
-              echo "✓ Restored .env.local from backup-$TIMESTAMP"
-            fi
-
-            # Execute deployment script
-            if [ -f "$DEPLOY_PATH/current/deploy-nextjs.sh" ]; then
-              echo "⚙️  Executing deployment script"
-              cd "$DEPLOY_PATH/current"
-              chmod +x deploy-nextjs.sh
-              bash deploy-nextjs.sh
-            fi
-
-            # IMMEDIATE DIAGNOSTIC AND FIX - PRIORITY 1
-            echo "� Running immediate diagnostic and fix for 403 Forbidden..."
-            cd "$DEPLOY_PATH/current"
-
-            if [ -f "immediate-diagnostic.sh" ]; then
-              echo "⚙️  Executing immediate-diagnostic.sh script"
-              chmod +x immediate-diagnostic.sh
-              bash immediate-diagnostic.sh
-            else
-              echo "❌ immediate-diagnostic.sh script not found"
-            fi
-
-            # FALLBACK TO OTHER FIXES IF NEEDED
-            echo "🚨 Checking if app responds after immediate fix..."
-            if ! curl -s http://localhost:3000 > /dev/null; then
-              echo "❌ App still not responding, running standard fix..."
-              
-              if [ -f "fix-403.sh" ]; then
-                echo "⚙️  Executing fix-403.sh script"
-                chmod +x fix-403.sh
-                bash fix-403.sh
-              else
-                echo "❌ fix-403.sh script not found"
-              fi
-
-              # EMERGENCY FIX IF STILL NOT WORKING
-              echo "🚨 Checking if app responds..."
-              if ! curl -s http://localhost:3000 > /dev/null; then
-                echo "❌ App still not responding, running emergency fix..."
-                
-                if [ -f "emergency-fix.sh" ]; then
-                  echo "⚙️  Executing emergency-fix.sh"
-                  chmod +x emergency-fix.sh
-                  bash emergency-fix.sh
-                else
-                  echo "❌ emergency-fix.sh not found"
-                fi
-                
-                # DIRECT FIX AS LAST RESORT
-                echo "🔥 Running direct fix as last resort..."
-                if [ -f "direct-fix.sh" ]; then
-                  echo "⚙️  Executing direct-fix.sh"
-                  chmod +x direct-fix.sh
-                  bash direct-fix.sh
-                else
-                  echo "❌ direct-fix.sh not found"
-                fi
-              else
-                echo "✅ App is responding after standard fix"
-              fi
-            else
-              echo "✅ App is responding after immediate fix"
-            fi
-
-            # Cleanup temp directory
-            echo "🧹 Cleaning up temporary files"
-            rm -rf "$TEMP_DIR"
+            mv "$TEMP" "$DEPLOY_PATH/current"
 
             # Keep only last 3 backups
             cd "$DEPLOY_PATH"
-            ls -t | grep "^backup-" | tail -n +4 | xargs -r sudo rm -rf
+            ls -dt backup-* 2>/dev/null | tail -n +4 | xargs -r rm -rf
 
-            echo "✅ Deployment completed successfully"
-            echo "🌐 Site URL: https://www.juriste-droit-du-travail.com"
+            echo "=== [5/5] Restart PM2 ==="
+            cd "$DEPLOY_PATH/current"
+            if pm2 list | grep -q "$APP_NAME"; then
+              pm2 restart "$APP_NAME"
+            else
+              PORT=$PORT pm2 start npm --name "$APP_NAME" -- start
+            fi
+            pm2 save
 
-      - name: Verify deployment
+            sleep 5
+
+            echo "=== Validation ==="
+            HTTP=$(curl -so /dev/null -w "%{http_code}" http://127.0.0.1:$PORT)
+            if [ "$HTTP" = "200" ] || [ "$HTTP" = "307" ] || [ "$HTTP" = "301" ]; then
+              echo "✅ App responds HTTP $HTTP on port $PORT"
+            else
+              echo "❌ App returned HTTP $HTTP — check pm2 logs $APP_NAME"
+              pm2 logs "$APP_NAME" --lines 40 --nostream
+              exit 1
+            fi
+
+            echo "✅ Deployment complete — https://www.juriste-droit-du-travail.com"
+
+      - name: Verify HTTPS
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.VPS_HOST }}
@@ -202,29 +130,11 @@ jobs:
           key: ${{ secrets.VPS_SSH_KEY }}
           port: ${{ secrets.VPS_PORT }}
           script: |
-            echo "🔍 Verifying deployment"
-
-            # Check if files exist
-            if [ -d "${{ secrets.DEPLOY_PATH }}/current" ]; then
-              echo "✅ Deployment directory exists"
-              ls -lh "${{ secrets.DEPLOY_PATH }}/current" | head -10
+            nginx -t 2>&1 | tail -2
+            HTTP=$(curl -so /dev/null -w "%{http_code}" -L https://www.juriste-droit-du-travail.com 2>/dev/null || echo "000")
+            echo "HTTPS check: $HTTP"
+            if [ "$HTTP" != "200" ]; then
+              echo "⚠ HTTPS returned $HTTP (may be a redirect chain — check manually)"
             else
-              echo "❌ Deployment directory not found"
-              exit 1
+              echo "✅ Site is live"
             fi
-
-            # Check Nginx status
-            if sudo nginx -t 2>&1 | grep -q "successful"; then
-              echo "✅ Nginx configuration is valid"
-            else
-              echo "⚠️  Nginx configuration has issues"
-            fi
-
-            # Test site response
-            if curl -s -o /dev/null -w "%{http_code}" http://localhost | grep -q "200\|301\|302"; then
-              echo "✅ Site is responding"
-            else
-              echo "⚠️  Site may not be responding correctly"
-            fi
-
-            echo "✅ Verification completed"
