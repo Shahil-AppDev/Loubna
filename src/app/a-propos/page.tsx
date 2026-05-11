@@ -1,5 +1,6 @@
 import { SITE_CONFIG } from "@/lib/constants";
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 
 export const metadata: Metadata = {
@@ -13,38 +14,6 @@ export const metadata: Metadata = {
   },
 };
 
-const VALUES = [
-  {
-    icon: "⚖️",
-    title: "Rigueur",
-    desc: "Chaque situation est étudiée avec précision, en tenant compte du cadre applicable et de la réalité concrète du terrain.",
-  },
-  {
-    icon: "👂",
-    title: "Écoute",
-    desc: "Comprendre votre situation dans sa globalité est la condition d'un accompagnement réellement adapté.",
-  },
-  {
-    icon: "🔒",
-    title: "Confidentialité",
-    desc: "Vos informations restent strictement confidentielles. La discrétion est un engagement non négociable.",
-  },
-  {
-    icon: "💡",
-    title: "Clarté",
-    desc: "Je m'engage à vous expliquer les enjeux en langage accessible, sans jargon inutile.",
-  },
-  {
-    icon: "🛡️",
-    title: "Prévention",
-    desc: "Mon approche est résolument préventive : j'interviens en amont pour éviter l'escalade des situations.",
-  },
-  {
-    icon: "🎯",
-    title: "Pragmatisme",
-    desc: "Mon objectif n'est pas de théoriser, mais de vous apporter des réponses concrètes, adaptées à votre réalité.",
-  },
-];
 
 const FORMATION = [
   {
@@ -98,15 +67,15 @@ export default function AProposPage() {
             {/* Identité */}
             <div className="lg:sticky lg:top-24">
               <div className="relative">
-                <div
-                  className="aspect-[3/4] rounded-sm border border-or-500/20 flex flex-col items-center justify-center gap-4 text-white/25 max-w-sm"
-                  style={{ background: "linear-gradient(135deg, #1a1a1a, #2a2a2a)" }}
-                >
-                  <span className="text-5xl">⚖️</span>
-                  <span className="text-[0.75rem] tracking-[0.1em] uppercase">Photo professionnelle</span>
-                  <span className="text-[0.65rem] tracking-[0.08em] opacity-60">
-                    À remplacer dans /public/
-                  </span>
+                <div className="aspect-[3/4] rounded-sm border border-or-500/20 overflow-hidden max-w-sm bg-white">
+                  <Image
+                    src="/logo.png"
+                    alt="Loubna Abouz Manta - Juriste en droit du travail"
+                    width={400}
+                    height={533}
+                    className="w-full h-full object-cover"
+                    priority
+                  />
                 </div>
                 <div className="absolute -bottom-5 -right-5 bg-rouge-800 text-white p-5 rounded-sm shadow-rouge-lg text-center">
                   <strong className="block font-serif text-[1.4rem] leading-none">Master</strong>
