@@ -50,13 +50,13 @@ export default function AdminLeadsPage() {
             <div className="flex flex-wrap items-center justify-between gap-2">
               <div>
                 <div className="font-semibold">{lead.first_name} {lead.last_name}</div>
-                <div className="text-sm text-encre-600">{lead.email}</div>
+                <div className="text-sm text-encre-600 break-all">{lead.email}</div>
               </div>
               <select
                 value={lead.status}
                 aria-label="Mettre a jour le statut du lead"
                 onChange={(e) => updateLead(lead.id, e.target.value)}
-                className="border rounded px-2 py-1 text-sm"
+                className="border rounded px-2 py-1 text-sm min-w-[130px]"
               >
                 <option value="new">Nouveau</option>
                 <option value="in_progress">En cours</option>
@@ -65,12 +65,17 @@ export default function AdminLeadsPage() {
             </div>
             <div className="mt-2 font-medium">{lead.subject}</div>
             <p className="text-sm text-encre-700 mt-1 whitespace-pre-wrap">{lead.message}</p>
+            {lead.phone && <div className="text-sm text-encre-600 mt-2">Tel: {lead.phone}</div>}
             <div className="text-xs text-encre-500 mt-2">
               Recu le {new Date(lead.created_at).toLocaleString('fr-FR')}
             </div>
           </div>
         ))}
-        {items.length === 0 && <div className="text-encre-500">Aucun lead pour le moment.</div>}
+        {items.length === 0 && (
+          <div className="text-encre-500 bg-white border rounded-lg p-6">
+            Aucun lead pour le moment.
+          </div>
+        )}
       </div>
     </div>
   );
