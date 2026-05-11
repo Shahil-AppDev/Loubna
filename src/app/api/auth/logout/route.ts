@@ -1,5 +1,7 @@
-import { NextResponse } from 'next/server';
 import { destroySession } from '@/lib/auth/session';
+import { NextResponse } from 'next/server';
+
+export const dynamic = 'force-dynamic';
 
 export async function POST() {
   try {

@@ -1,7 +1,9 @@
-import { NextRequest, NextResponse } from 'next/server';
-import bcrypt from 'bcrypt';
-import { query } from '@/lib/db/postgres';
 import { createSession } from '@/lib/auth/session';
+import { query } from '@/lib/db/postgres';
+import bcrypt from 'bcrypt';
+import { NextRequest, NextResponse } from 'next/server';
+
+export const dynamic = 'force-dynamic';
 
 export async function POST(request: NextRequest) {
   try {
