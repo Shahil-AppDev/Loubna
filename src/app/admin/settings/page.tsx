@@ -1,6 +1,28 @@
 'use client';
 
+import { useState } from 'react';
+
 export default function SettingsPage() {
+  const [newPassword, setNewPassword] = useState('');
+  const [message, setMessage] = useState('');
+
+  async function handleResetPassword(e: React.FormEvent) {
+    e.preventDefault();
+    setMessage('');
+    const res = await fetch('/api/auth/reset-password', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ newPassword }),
+    });
+    const data = await res.json();
+    if (!res.ok) {
+      setMessage(data.error || 'Erreur');
+      return;
+    }
+    setMessage('Mot de passe mis a jour');
+    setNewPassword('');
+  }
+
   return (
     <div>
       <div className="mb-8">
@@ -10,6 +32,25 @@ export default function SettingsPage() {
 
       <div className="bg-white rounded-lg border border-encre-200 p-6">
         <div className="space-y-6">
+          <div>
+            <h3 className="font-serif text-xl font-semibold text-encre-900 mb-4">
+              Securite admin
+            </h3>
+            <form onSubmit={handleResetPassword} className="bg-encre-50 border border-encre-200 rounded-lg p-4 space-y-3">
+              <input
+                type="password"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                placeholder="Nouveau mot de passe admin"
+                className="w-full border rounded px-3 py-2"
+                minLength={10}
+                required
+              />
+              <button className="px-4 py-2 bg-encre-900 text-white rounded">Mettre a jour</button>
+              {message && <p className="text-sm text-encre-700">{message}</p>}
+            </form>
+          </div>
+
           <div>
             <h3 className="font-serif text-xl font-semibold text-encre-900 mb-4">
               Horaires de disponibilité
@@ -38,6 +79,17 @@ export default function SettingsPage() {
               <p className="text-sm text-encre-700">
                 Gérez les dates bloquées dans la table <code>blocked_dates</code>
               </p>
+            </div>
+          </div>
+
+          <div>
+            <h3 className="font-serif text-xl font-semibold text-encre-900 mb-4">
+              Garde-fous editoriaux
+            </h3>
+            <div className="bg-amber-50 border border-amber-300 rounded-lg p-4 text-sm text-amber-900">
+              Eviter les formulations: "conseil juridique", "Maitre", "defense", "representation".
+              <br />
+              Preferer: analyse, prevention, accompagnement, information, securisation.
             </div>
           </div>
 
