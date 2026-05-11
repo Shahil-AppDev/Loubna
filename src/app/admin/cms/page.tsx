@@ -13,6 +13,7 @@ export default function AdminCmsPage() {
   const [testimonials, setTestimonials] = useState<Item[]>([]);
   const [seo, setSeo] = useState<Item | null>(null);
   const [warning, setWarning] = useState('');
+  const [notice, setNotice] = useState('');
 
   async function loadAll() {
     const [p, b, f, t, s] = await Promise.all([
@@ -92,6 +93,7 @@ export default function AdminCmsPage() {
         schema_json: form.get('schema_json'),
       }),
     });
+    setNotice('SEO sauvegarde avec succes.');
     loadAll();
   }
 
@@ -140,6 +142,7 @@ export default function AdminCmsPage() {
         <p className="text-encre-600 mt-2">Gestion contenus, FAQ, blog, temoignages et SEO.</p>
       </div>
       {warning && <div className="p-3 bg-amber-100 border border-amber-300 text-amber-900 rounded">{warning}</div>}
+      {notice && <div className="p-3 bg-green-100 border border-green-300 text-green-900 rounded">{notice}</div>}
 
       <section className="bg-white border rounded-lg p-5">
         <h2 className="font-semibold mb-3">Creer une page editable</h2>
@@ -201,6 +204,11 @@ export default function AdminCmsPage() {
           <textarea name="schema_json" defaultValue={seo?.schema_json || ''} placeholder="Schema JSON" className="border p-2 rounded md:col-span-2" />
           <button className="bg-encre-900 text-white rounded px-4 py-2 md:w-fit">Sauvegarder SEO</button>
         </form>
+        <div className="mt-4 rounded border bg-encre-50 p-3">
+          <p className="text-xs text-encre-500 uppercase tracking-wide">Apercu SEO</p>
+          <p className="font-medium text-encre-900 mt-1">{seo?.site_title || 'Titre non defini'}</p>
+          <p className="text-sm text-encre-700 mt-1">{seo?.site_description || 'Description non definie'}</p>
+        </div>
       </section>
 
       <section className="bg-white border rounded-lg p-5">
