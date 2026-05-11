@@ -17,105 +17,128 @@ export const SITE_CONFIG = {
 };
 
 export const SERVICES = [
-  {
-    id: "analyse",
-    icon: "🔍",
-    title: "Compréhension de situation professionnelle",
-    description:
-      "Compréhension approfondie de votre situation au regard du droit du travail : contrat, conditions de travail, relation employeur/salarié. Identification des enjeux et des leviers d'action en amont de toute procédure.",
-    category: "all",
-    slug: "analyse-situation",
-    tags: ["Compréhension", "Éclairage", "Droit du travail"],
-  },
-  {
-    id: "contrat",
-    icon: "📄",
-    title: "Contrats de travail",
-    description:
-      "Rédaction, révision et sécurisation de vos contrats de travail (CDI, CDD, temps partiel). Vérification des clauses, conformité et adaptation à votre situation.",
-    category: "all",
-    slug: "contrat-travail",
-    tags: ["CDI", "CDD", "Clauses contractuelles"],
-  },
+  // POUR LES SALARIÉS
   {
     id: "sanctions",
     icon: "⚡",
     title: "Procédures disciplinaires",
     description:
-      "Accompagnement face aux procédures disciplinaires : avertissement, mise à pied, convocation à un entretien préalable. Compréhension de la situation, de la procédure et préparation de votre réponse.",
+      "Comprendre, anticiper et sécuriser votre situation. Je vous accompagne face aux procédures disciplinaires (avertissement, mise à pied, entretien préalable) pour analyser votre situation, comprendre vos droits et préparer votre réponse.",
     category: "salarie",
     slug: "sanctions-disciplinaires",
     tags: ["Avertissement", "Mise à pied", "Entretien préalable"],
   },
   {
-    id: "licenciement",
-    icon: "🚫",
-    title: "Accompagnement – fin de contrat (licenciement, rupture…)",
+    id: "harcelement",
+    icon: "�",
+    title: "Harcèlement et RPS",
     description:
-      "Compréhension de votre situation de licenciement (économique, personnel, faute). Vérification de la procédure, identification des enjeux et sécurisation des étapes, en amont de toute démarche contentieuse.",
-    category: "all",
-    slug: "licenciement",
-    tags: ["Licenciement économique", "Licenciement personnel", "Procédure"],
+      "Identifier les situations et agir avec clarté. Analyse des situations de harcèlement, discrimination ou risques psychosociaux. Je vous aide à qualifier les faits, comprendre les mécanismes et identifier les actions adaptées.",
+    category: "salarie",
+    slug: "harcelement-rps",
+    tags: ["Harcèlement moral", "RPS", "Discrimination"],
   },
   {
-    id: "rupture",
-    icon: "✍️",
-    title: "Information en droit du travail",
+    id: "atmp",
+    icon: "🏥",
+    title: "Accidents du travail & maladies professionnelles (AT/MP)",
     description:
-      "Accompagnement complet dans votre rupture conventionnelle : compréhension des conditions, vérification du respect de la procédure, sécurisation de vos droits à l'assurance chômage.",
-    category: "all",
-    slug: "rupture-conventionnelle",
-    tags: ["Rupture conventionnelle", "Indemnités", "Chômage"],
+      "Constituer un dossier solide et éviter les erreurs. Je vous accompagne dans vos démarches de reconnaissance (y compris TMS), notamment en cas de contestation ou de refus. Aide à la compréhension des attentes de la CPAM et à la structuration de votre dossier. Orientation vers un avocat si une procédure devient nécessaire.",
+    category: "salarie",
+    slug: "atmp",
+    tags: ["Accident du travail", "Maladie professionnelle", "TMS"],
   },
+  // POUR LES EMPLOYEURS
   {
     id: "prevention-risques",
     icon: "⚠️",
     title: "Prévention des risques professionnels",
     description:
-      "Identification et évaluation des risques professionnels (RPS, accidents du travail, maladies professionnelles). Accompagnement dans la mise en œuvre de mesures préventives adaptées.",
+      "Structurer votre démarche et réduire les risques. Accompagnement dans l'évaluation des risques professionnels (RPS, TMS, AT/MP) et la mise en place d'actions concrètes de prévention adaptées à votre organisation.",
     category: "employeur",
     slug: "prevention-risques",
-    tags: ["RPS", "Risques professionnels", "Santé au travail"],
+    tags: ["RPS", "TMS", "AT/MP"],
   },
   {
     id: "duerp",
     icon: "📋",
-    title: "DUERP — Document Unique",
+    title: "DUERP – Document Unique",
     description:
-      "Réalisation ou mise à jour du Document Unique d'Évaluation des Risques Professionnels (DUERP). Audit des situations de travail, identification des risques, rédaction du document en collaboration avec les acteurs de l'entreprise.",
+      "Un outil de prévention, pas seulement une obligation. Réalisation ou mise à jour du DUERP avec une approche opérationnelle : analyse des situations de travail, identification des risques et structuration du document.",
     category: "employeur",
     slug: "duerp",
     tags: ["DUERP", "Document Unique", "Obligation légale"],
   },
   {
-    id: "sante-securite",
-    icon: "🛡️",
-    title: "Santé, sécurité et conditions de travail",
+    id: "procedures-disciplinaires-employeur",
+    icon: "⚖️",
+    title: "Procédures disciplinaires",
     description:
-      "Accompagnement sur les problématiques de santé et sécurité au travail : évaluation des conditions de travail, prévention des accidents du travail et des maladies professionnelles, sensibilisation des équipes.",
+      "Sécuriser vos décisions et éviter les erreurs. Accompagnement en amont des procédures disciplinaires : analyse de la situation, qualification des faits, respect des étapes et sécurisation des décisions.",
     category: "employeur",
-    slug: "sante-securite",
-    tags: ["Santé au travail", "Accident du travail", "Maladie professionnelle"],
+    slug: "procedures-disciplinaires-employeur",
+    tags: ["Sanctions", "Procédure", "Sécurisation"],
   },
   {
-    id: "harcelement",
-    icon: "🔴",
-    title: "Harcèlement et RPS",
+    id: "situations-sensibles",
+    icon: "�",
+    title: "Gestion des situations sensibles RH",
     description:
-      "Compréhension des situations de harcèlement moral ou sexuel, de discrimination et de risques psychosociaux. Accompagnement pour identifier les faits, comprendre les mécanismes et déterminer les actions appropriées.",
-    category: "salarie",
-    slug: "harcelement-rps",
-    tags: ["Harcèlement moral", "RPS", "Discrimination"],
+      "Anticiper les risques et sécuriser vos décisions. Intervention en amont sur des situations à risque : signalement de harcèlement, conflit, situation dégradée ou problématique disciplinaire. Analyse de la situation, identification des enjeux et accompagnement pour sécuriser les décisions et éviter les erreurs.",
+    category: "employeur",
+    slug: "situations-sensibles",
+    tags: ["Harcèlement", "Conflit", "Prévention"],
+  },
+  // SALARIÉS & EMPLOYEURS
+  {
+    id: "contrat",
+    icon: "�",
+    title: "Contrats de travail",
+    description:
+      "Sécuriser vos engagements contractuels. Relecture, vérification et sécurisation de vos contrats de travail (CDI, CDD, temps partiel). Analyse des clauses, conformité juridique et adaptation à votre situation. Possibilité d'accompagnement à la rédaction, avec une approche orientée prévention des risques.",
+    category: "all",
+    slug: "contrat-travail",
+    tags: ["CDI", "CDD", "Clauses contractuelles"],
+  },
+  {
+    id: "analyse",
+    icon: "�",
+    title: "Analyse de situation professionnelle",
+    description:
+      "Prendre du recul et sécuriser vos décisions. Analyse approfondie de votre situation au regard du droit du travail et du contexte professionnel. Identification des enjeux, des risques et des leviers d'action en amont de toute démarche.",
+    category: "all",
+    slug: "analyse-situation",
+    tags: ["Compréhension", "Éclairage", "Droit du travail"],
+  },
+  {
+    id: "securisation-demarches",
+    icon: "✅",
+    title: "Sécurisation des démarches",
+    description:
+      "Éviter les erreurs et structurer vos actions. Accompagnement dans la compréhension des procédures et des étapes à respecter, afin d'éviter les erreurs et sécuriser vos démarches.",
+    category: "all",
+    slug: "securisation-demarches",
+    tags: ["Procédure", "Sécurisation", "Accompagnement"],
   },
   {
     id: "negociation",
     icon: "🤝",
     title: "Négociation amiable",
     description:
-      "Accompagnement dans les démarches de négociation amiable : conditions de départ, protocoles d'accord, conciliation. Évaluation des enjeux et sécurisation des intérêts de chaque partie.",
+      "Trouver une solution sans passer par le contentieux. Accompagnement dans les démarches de négociation : conditions de départ, protocole d'accord, conciliation. Évaluation des enjeux et sécurisation des intérêts de chaque partie.",
     category: "all",
     slug: "negociation",
     tags: ["Négociation", "Accord amiable", "Médiation"],
+  },
+  {
+    id: "information",
+    icon: "📚",
+    title: "Information en droit du travail",
+    description:
+      "Comprendre pour agir avec clarté. Apport d'éclairages juridiques adaptés à votre situation pour vous permettre de prendre des décisions éclairées.",
+    category: "all",
+    slug: "information",
+    tags: ["Information", "Éclairage", "Droit du travail"],
   },
 ];
 
