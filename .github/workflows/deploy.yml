@@ -62,12 +62,13 @@ jobs:
             .next/ \
             ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/tmp/loubna-build-${{ github.sha }}/.next/
 
-          # Transfer source files
+          # Transfer source + configs (required for next build / runtime; .next alone is not enough)
           rsync -avz -e "ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no -p ${{ secrets.VPS_PORT }}" \
             --exclude 'node_modules' \
             --exclude '.git' \
             --exclude '.next' \
-            package.json package-lock.json next.config.mjs public/ \
+            package.json package-lock.json next.config.mjs next-env.d.ts next-sitemap.config.js \
+            tsconfig.json tailwind.config.ts postcss.config.js public/ src/ \
             ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/tmp/loubna-build-${{ github.sha }}/
 
           # Transfer deployment script
@@ -113,6 +114,12 @@ jobs:
             sudo mkdir -p "$DEPLOY_PATH/current"
             sudo cp -r "$TEMP_DIR"/* "$DEPLOY_PATH/current/"
             sudo chown -R $USER:$USER "$DEPLOY_PATH/current"
+
+            # Preserve production secrets across deploys (not in git artifact)
+            if [ -d "$DEPLOY_PATH/backup-$TIMESTAMP" ] && [ -f "$DEPLOY_PATH/backup-$TIMESTAMP/.env.local" ]; then
+              cp "$DEPLOY_PATH/backup-$TIMESTAMP/.env.local" "$DEPLOY_PATH/current/.env.local"
+              echo "✓ Restored .env.local from backup-$TIMESTAMP"
+            fi
 
             # Execute deployment script
             if [ -f "$DEPLOY_PATH/current/deploy-nextjs.sh" ]; then
