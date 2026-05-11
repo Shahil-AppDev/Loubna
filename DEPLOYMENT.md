@@ -1,5 +1,46 @@
 # 🚀 GUIDE DE DÉPLOIEMENT - SITE LOUBNA
 
+## ✅ Incident 403 - Correctif production (2026-05-11)
+
+**Connexion SSH utilisée (clé locale existante)** :
+- **Alias SSH** : `crealive-server`
+- **Host** : `65.21.104.251`
+- **User** : `root`
+- **Clé privée** : `C:\Users\DarkNode\.ssh\id_deploy` (nom uniquement)
+
+**Cause identifiée du 403** :
+- Nginx servait le dossier statique `/var/www/loubna-site/current`.
+- Le déploiement courant ne contenait plus `index.html` (ni export statique complet), donc Nginx retournait `directory index ... is forbidden` (403).
+- Le process PM2 `nextjs-loubna` était aussi en erreur (build `.next` absent), ce qui confirmait un artefact de déploiement incomplet.
+
+**Correctif appliqué en production** :
+- Restauration du dernier backup statique fonctionnel vers `/var/www/loubna-site/current` (`backup-20260511-120201`).
+- Permissions réappliquées :
+  - `chown -R www-data:www-data /var/www/loubna-site/current`
+  - `chmod -R 755 /var/www/loubna-site/current`
+- Validation et rechargement Nginx :
+  - `nginx -t`
+  - `systemctl reload nginx`
+- Process PM2 `nextjs-loubna` remis en ligne sur `3000` via service statique dédié (script `/tmp/loubna-serve.sh`) pour supervision PM2.
+
+**Procédure de redéploiement recommandée** :
+1. Vérifier que l’artefact déployé contient bien `index.html` (si mode statique) ou les sources + build (si mode serveur).
+2. Déployer vers un dossier temporaire.
+3. Vérifier localement sur serveur (`curl -I http://localhost` / `curl -I http://localhost:3000`).
+4. Basculer seulement après validation vers `current`.
+5. Recharger Nginx (`nginx -t && systemctl reload nginx`).
+
+**Rollback rapide** :
+```bash
+cd /var/www/loubna-site
+ls -la | grep backup-
+rm -rf current
+cp -a backup-YYYYMMDD-HHMMSS current
+chown -R www-data:www-data current
+chmod -R 755 current
+nginx -t && systemctl reload nginx
+```
+
 ## 📋 ARCHITECTURE
 
 **Stack technique** :
