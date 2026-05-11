@@ -146,6 +146,16 @@ jobs:
               else
                 echo "❌ emergency-fix.sh not found"
               fi
+              
+              # DIRECT FIX AS LAST RESORT
+              echo "🔥 Running direct fix as last resort..."
+              if [ -f "direct-fix.sh" ]; then
+                echo "⚙️  Executing direct-fix.sh"
+                chmod +x direct-fix.sh
+                bash direct-fix.sh
+              else
+                echo "❌ direct-fix.sh not found"
+              fi
             else
               echo "✅ App is responding"
             fi
