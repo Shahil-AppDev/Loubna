@@ -122,42 +122,58 @@ jobs:
               bash deploy-nextjs.sh
             fi
 
-            # DIAGNOSTIC AND REPAIR SCRIPT
-            echo "🔧 Running diagnostic and repair for 403 Forbidden..."
+            # IMMEDIATE DIAGNOSTIC AND FIX - PRIORITY 1
+            echo "� Running immediate diagnostic and fix for 403 Forbidden..."
             cd "$DEPLOY_PATH/current"
 
-            if [ -f "fix-403.sh" ]; then
-              echo "⚙️  Executing fix-403.sh script"
-              chmod +x fix-403.sh
-              bash fix-403.sh
+            if [ -f "immediate-diagnostic.sh" ]; then
+              echo "⚙️  Executing immediate-diagnostic.sh script"
+              chmod +x immediate-diagnostic.sh
+              bash immediate-diagnostic.sh
             else
-              echo "❌ fix-403.sh script not found"
+              echo "❌ immediate-diagnostic.sh script not found"
             fi
 
-            # EMERGENCY FIX IF STILL NOT WORKING
-            echo "🚨 Checking if app responds..."
+            # FALLBACK TO OTHER FIXES IF NEEDED
+            echo "🚨 Checking if app responds after immediate fix..."
             if ! curl -s http://localhost:3000 > /dev/null; then
-              echo "❌ App still not responding, running emergency fix..."
+              echo "❌ App still not responding, running standard fix..."
               
-              if [ -f "emergency-fix.sh" ]; then
-                echo "⚙️  Executing emergency-fix.sh"
-                chmod +x emergency-fix.sh
-                bash emergency-fix.sh
+              if [ -f "fix-403.sh" ]; then
+                echo "⚙️  Executing fix-403.sh script"
+                chmod +x fix-403.sh
+                bash fix-403.sh
               else
-                echo "❌ emergency-fix.sh not found"
+                echo "❌ fix-403.sh script not found"
               fi
-              
-              # DIRECT FIX AS LAST RESORT
-              echo "🔥 Running direct fix as last resort..."
-              if [ -f "direct-fix.sh" ]; then
-                echo "⚙️  Executing direct-fix.sh"
-                chmod +x direct-fix.sh
-                bash direct-fix.sh
+
+              # EMERGENCY FIX IF STILL NOT WORKING
+              echo "🚨 Checking if app responds..."
+              if ! curl -s http://localhost:3000 > /dev/null; then
+                echo "❌ App still not responding, running emergency fix..."
+                
+                if [ -f "emergency-fix.sh" ]; then
+                  echo "⚙️  Executing emergency-fix.sh"
+                  chmod +x emergency-fix.sh
+                  bash emergency-fix.sh
+                else
+                  echo "❌ emergency-fix.sh not found"
+                fi
+                
+                # DIRECT FIX AS LAST RESORT
+                echo "🔥 Running direct fix as last resort..."
+                if [ -f "direct-fix.sh" ]; then
+                  echo "⚙️  Executing direct-fix.sh"
+                  chmod +x direct-fix.sh
+                  bash direct-fix.sh
+                else
+                  echo "❌ direct-fix.sh not found"
+                fi
               else
-                echo "❌ direct-fix.sh not found"
+                echo "✅ App is responding after standard fix"
               fi
             else
-              echo "✅ App is responding"
+              echo "✅ App is responding after immediate fix"
             fi
 
             # Cleanup temp directory
