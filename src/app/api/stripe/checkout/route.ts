@@ -1,4 +1,4 @@
-import { supabaseAdmin } from '@/lib/supabase/server';
+import { query } from '@/lib/db/postgres';
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 
@@ -19,17 +19,23 @@ export async function POST(request: NextRequest) {
     }
 
     // Récupérer le rendez-vous et le service
-    const { data: appointment, error: appointmentError } = await supabaseAdmin
-      .from('appointments')
-      .select('*, service:services_rdv(*)')
-      .eq('id', appointment_id)
-      .single();
+    const result = await query(
+      `SELECT 
+        a.*,
+        row_to_json(s.*) as service
+      FROM appointments a
+      LEFT JOIN services_rdv s ON a.service_id = s.id
+      WHERE a.id = $1`,
+      [appointment_id]
+    );
 
-    if (appointmentError || !appointment) {
+    if (result.rows.length === 0) {
       return NextResponse.json({ error: 'Appointment not found' }, { status: 404 });
     }
 
+    const appointment = result.rows[0];
     const service = appointment.service;
+    
     if (!service) {
       return NextResponse.json({ error: 'Service not found' }, { status: 404 });
     }
@@ -63,10 +69,10 @@ export async function POST(request: NextRequest) {
     });
 
     // Mettre à jour le rendez-vous avec le session_id
-    await supabaseAdmin
-      .from('appointments')
-      .update({ stripe_session_id: session.id })
-      .eq('id', appointment_id);
+    await query(
+      'UPDATE appointments SET stripe_session_id = $1 WHERE id = $2',
+      [session.id, appointment_id]
+    );
 
     return NextResponse.json({ sessionId: session.id, url: session.url });
   } catch (error: any) {

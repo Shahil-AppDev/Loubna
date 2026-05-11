@@ -1,4 +1,4 @@
-import { supabaseAdmin } from '@/lib/supabase/server';
+import { query } from '@/lib/db/postgres';
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 
@@ -69,24 +69,19 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
   }
 
   // Mettre à jour le rendez-vous
-  await supabaseAdmin
-    .from('appointments')
-    .update({
-      status: 'paid',
-      payment_status: 'paid',
-      stripe_payment_intent_id: session.payment_intent as string,
-    })
-    .eq('id', appointmentId);
+  await query(
+    `UPDATE appointments 
+     SET status = 'paid', payment_status = 'paid', stripe_payment_intent_id = $1
+     WHERE id = $2`,
+    [session.payment_intent as string, appointmentId]
+  );
 
   // Créer l'enregistrement de paiement
-  await supabaseAdmin.from('payments').insert({
-    appointment_id: appointmentId,
-    amount_cents: session.amount_total || 0,
-    stripe_payment_intent_id: session.payment_intent as string,
-    stripe_session_id: session.id,
-    status: 'succeeded',
-    metadata: session.metadata,
-  });
+  await query(
+    `INSERT INTO payments (appointment_id, amount_cents, stripe_payment_intent_id, stripe_session_id, status, metadata)
+     VALUES ($1, $2, $3, $4, $5, $6)`,
+    [appointmentId, session.amount_total || 0, session.payment_intent as string, session.id, 'succeeded', JSON.stringify(session.metadata)]
+  );
 
   console.log(`Payment completed for appointment ${appointmentId}`);
 }
@@ -98,14 +93,12 @@ async function handlePaymentSucceeded(paymentIntent: Stripe.PaymentIntent) {
     return;
   }
 
-  await supabaseAdmin
-    .from('appointments')
-    .update({
-      status: 'paid',
-      payment_status: 'paid',
-      stripe_payment_intent_id: paymentIntent.id,
-    })
-    .eq('id', appointmentId);
+  await query(
+    `UPDATE appointments 
+     SET status = 'paid', payment_status = 'paid', stripe_payment_intent_id = $1
+     WHERE id = $2`,
+    [paymentIntent.id, appointmentId]
+  );
 
   console.log(`Payment succeeded for appointment ${appointmentId}`);
 }
@@ -117,13 +110,12 @@ async function handlePaymentFailed(paymentIntent: Stripe.PaymentIntent) {
     return;
   }
 
-  await supabaseAdmin
-    .from('appointments')
-    .update({
-      status: 'pending',
-      payment_status: 'unpaid',
-    })
-    .eq('id', appointmentId);
+  await query(
+    `UPDATE appointments 
+     SET status = 'pending', payment_status = 'unpaid'
+     WHERE id = $1`,
+    [appointmentId]
+  );
 
   console.log(`Payment failed for appointment ${appointmentId}`);
 }

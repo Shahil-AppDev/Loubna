@@ -1,5 +1,5 @@
+import { query } from '@/lib/db/postgres';
 import { NextRequest, NextResponse } from 'next/server';
-import { supabaseAdmin } from '@/lib/supabase/server';
 
 // GET - Récupérer tous les rendez-vous (admin only)
 export async function GET(request: NextRequest) {
@@ -10,38 +10,48 @@ export async function GET(request: NextRequest) {
     const startDate = searchParams.get('start_date');
     const endDate = searchParams.get('end_date');
 
-    let query = supabaseAdmin
-      .from('appointments')
-      .select(`
-        *,
-        service:services_rdv(*)
-      `)
-      .order('appointment_date', { ascending: false });
+    let sql = `
+      SELECT 
+        a.*,
+        row_to_json(s.*) as service
+      FROM appointments a
+      LEFT JOIN services_rdv s ON a.service_id = s.id
+      WHERE 1=1
+    `;
+    const params: any[] = [];
+    let paramIndex = 1;
 
     if (status) {
-      query = query.eq('status', status);
+      sql += ` AND a.status = $${paramIndex}`;
+      params.push(status);
+      paramIndex++;
     }
 
     if (paymentStatus) {
-      query = query.eq('payment_status', paymentStatus);
+      sql += ` AND a.payment_status = $${paramIndex}`;
+      params.push(paymentStatus);
+      paramIndex++;
     }
 
     if (startDate) {
-      query = query.gte('appointment_date', startDate);
+      sql += ` AND a.appointment_date >= $${paramIndex}`;
+      params.push(startDate);
+      paramIndex++;
     }
 
     if (endDate) {
-      query = query.lte('appointment_date', endDate);
+      sql += ` AND a.appointment_date <= $${paramIndex}`;
+      params.push(endDate);
+      paramIndex++;
     }
 
-    const { data, error } = await query;
+    sql += ` ORDER BY a.appointment_date DESC`;
 
-    if (error) {
-      return NextResponse.json({ error: error.message }, { status: 500 });
-    }
+    const result = await query(sql, params);
 
-    return NextResponse.json({ appointments: data });
-  } catch (error) {
+    return NextResponse.json({ appointments: result.rows });
+  } catch (error: any) {
+    console.error('Error fetching appointments:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
@@ -69,13 +79,13 @@ export async function POST(request: NextRequest) {
     }
 
     // Vérifier que le créneau est disponible
-    const { data: existingAppointments } = await supabaseAdmin
-      .from('appointments')
-      .select('*')
-      .eq('appointment_date', appointment_date)
-      .neq('status', 'cancelled');
+    const checkResult = await query(
+      `SELECT * FROM appointments 
+       WHERE appointment_date = $1 AND status != 'cancelled'`,
+      [appointment_date]
+    );
 
-    if (existingAppointments && existingAppointments.length > 0) {
+    if (checkResult.rows.length > 0) {
       return NextResponse.json(
         { error: 'Ce créneau est déjà réservé' },
         { status: 409 }
@@ -83,28 +93,17 @@ export async function POST(request: NextRequest) {
     }
 
     // Créer le rendez-vous
-    const { data, error } = await supabaseAdmin
-      .from('appointments')
-      .insert({
-        client_name,
-        client_email,
-        client_phone,
-        service_id,
-        appointment_date,
-        duration_minutes,
-        notes,
-        status: 'pending',
-        payment_status: 'unpaid'
-      })
-      .select()
-      .single();
+    const insertResult = await query(
+      `INSERT INTO appointments 
+       (client_name, client_email, client_phone, service_id, appointment_date, duration_minutes, notes, status, payment_status)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, 'pending', 'unpaid')
+       RETURNING *`,
+      [client_name, client_email, client_phone, service_id, appointment_date, duration_minutes, notes]
+    );
 
-    if (error) {
-      return NextResponse.json({ error: error.message }, { status: 500 });
-    }
-
-    return NextResponse.json({ appointment: data }, { status: 201 });
-  } catch (error) {
+    return NextResponse.json({ appointment: insertResult.rows[0] }, { status: 201 });
+  } catch (error: any) {
+    console.error('Error creating appointment:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

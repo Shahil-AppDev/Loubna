@@ -1,5 +1,5 @@
+import { query } from '@/lib/db/postgres';
 import { NextRequest, NextResponse } from 'next/server';
-import { supabaseAdmin } from '@/lib/supabase/server';
 
 // GET - Récupérer un rendez-vous par ID
 export async function GET(
@@ -7,25 +7,23 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   try {
-    const { data, error } = await supabaseAdmin
-      .from('appointments')
-      .select(`
-        *,
-        service:services_rdv(*)
-      `)
-      .eq('id', params.id)
-      .single();
+    const result = await query(
+      `SELECT 
+        a.*,
+        row_to_json(s.*) as service
+      FROM appointments a
+      LEFT JOIN services_rdv s ON a.service_id = s.id
+      WHERE a.id = $1`,
+      [params.id]
+    );
 
-    if (error) {
-      return NextResponse.json({ error: error.message }, { status: 500 });
-    }
-
-    if (!data) {
+    if (result.rows.length === 0) {
       return NextResponse.json({ error: 'Appointment not found' }, { status: 404 });
     }
 
-    return NextResponse.json({ appointment: data });
-  } catch (error) {
+    return NextResponse.json({ appointment: result.rows[0] });
+  } catch (error: any) {
+    console.error('Error fetching appointment:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
@@ -50,19 +48,21 @@ export async function PATCH(
       return NextResponse.json({ error: 'No valid fields to update' }, { status: 400 });
     }
 
-    const { data, error } = await supabaseAdmin
-      .from('appointments')
-      .update(updates)
-      .eq('id', params.id)
-      .select()
-      .single();
+    const setClauses = Object.keys(updates).map((key, index) => `${key} = $${index + 2}`).join(', ');
+    const values = [params.id, ...Object.values(updates)];
 
-    if (error) {
-      return NextResponse.json({ error: error.message }, { status: 500 });
+    const result = await query(
+      `UPDATE appointments SET ${setClauses} WHERE id = $1 RETURNING *`,
+      values
+    );
+
+    if (result.rows.length === 0) {
+      return NextResponse.json({ error: 'Appointment not found' }, { status: 404 });
     }
 
-    return NextResponse.json({ appointment: data });
-  } catch (error) {
+    return NextResponse.json({ appointment: result.rows[0] });
+  } catch (error: any) {
+    console.error('Error updating appointment:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
@@ -73,17 +73,10 @@ export async function DELETE(
   { params }: { params: { id: string } }
 ) {
   try {
-    const { error } = await supabaseAdmin
-      .from('appointments')
-      .delete()
-      .eq('id', params.id);
-
-    if (error) {
-      return NextResponse.json({ error: error.message }, { status: 500 });
-    }
-
+    await query('DELETE FROM appointments WHERE id = $1', [params.id]);
     return NextResponse.json({ message: 'Appointment deleted successfully' });
-  } catch (error) {
+  } catch (error: any) {
+    console.error('Error deleting appointment:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

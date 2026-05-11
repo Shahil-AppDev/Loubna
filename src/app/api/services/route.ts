@@ -1,5 +1,5 @@
+import { query } from '@/lib/db/postgres';
 import { NextRequest, NextResponse } from 'next/server';
-import { supabaseAdmin } from '@/lib/supabase/server';
 
 // GET - Récupérer tous les services
 export async function GET(request: NextRequest) {
@@ -7,23 +7,21 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
     const activeOnly = searchParams.get('active') === 'true';
 
-    let query = supabaseAdmin
-      .from('services_rdv')
-      .select('*')
-      .order('created_at', { ascending: true });
+    let sql = 'SELECT * FROM services_rdv';
+    const params: any[] = [];
 
     if (activeOnly) {
-      query = query.eq('active', true);
+      sql += ' WHERE active = $1';
+      params.push(true);
     }
 
-    const { data, error } = await query;
+    sql += ' ORDER BY created_at ASC';
 
-    if (error) {
-      return NextResponse.json({ error: error.message }, { status: 500 });
-    }
+    const result = await query(sql, params);
 
-    return NextResponse.json({ services: data });
-  } catch (error) {
+    return NextResponse.json({ services: result.rows });
+  } catch (error: any) {
+    console.error('Error fetching services:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
@@ -41,25 +39,16 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const { data, error } = await supabaseAdmin
-      .from('services_rdv')
-      .insert({
-        name,
-        description,
-        duration_minutes,
-        price_cents,
-        stripe_price_id,
-        active: active !== undefined ? active : true
-      })
-      .select()
-      .single();
+    const result = await query(
+      `INSERT INTO services_rdv (name, description, duration_minutes, price_cents, stripe_price_id, active)
+       VALUES ($1, $2, $3, $4, $5, $6)
+       RETURNING *`,
+      [name, description, duration_minutes, price_cents, stripe_price_id, active !== undefined ? active : true]
+    );
 
-    if (error) {
-      return NextResponse.json({ error: error.message }, { status: 500 });
-    }
-
-    return NextResponse.json({ service: data }, { status: 201 });
-  } catch (error) {
+    return NextResponse.json({ service: result.rows[0] }, { status: 201 });
+  } catch (error: any) {
+    console.error('Error creating service:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
