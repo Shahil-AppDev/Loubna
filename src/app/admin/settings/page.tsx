@@ -36,18 +36,21 @@ export default function SettingsPage() {
             <h3 className="font-serif text-xl font-semibold text-encre-900 mb-4">
               Securite admin
             </h3>
-            <form onSubmit={handleResetPassword} className="bg-encre-50 border border-encre-200 rounded-lg p-4 space-y-3">
-              <input
-                type="password"
-                value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
-                placeholder="Nouveau mot de passe admin"
-                className="w-full border rounded px-3 py-2"
-                minLength={10}
-                required
-              />
-              <button className="px-4 py-2 bg-encre-900 text-white rounded">Mettre a jour</button>
-              {message && <p className="text-sm text-encre-700">{message}</p>}
+            <form onSubmit={handleResetPassword} className="bg-encre-50 border border-encre-100 rounded-sm p-5 space-y-3">
+              <div>
+                <label className="admin-label">Nouveau mot de passe</label>
+                <input
+                  type="password"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  placeholder="Minimum 10 caractères"
+                  className="admin-input"
+                  minLength={10}
+                  required
+                />
+              </div>
+              <button className="btn btn-primary text-[0.75rem] py-2.5 px-6">Mettre à jour</button>
+              {message && <p className="text-sm text-encre-700 mt-1">{message}</p>}
             </form>
           </div>
 

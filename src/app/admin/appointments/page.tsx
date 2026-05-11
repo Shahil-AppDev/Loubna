@@ -71,16 +71,14 @@ export default function AppointmentsPage() {
       </div>
 
       {/* Filters */}
-      <div className="bg-white rounded-lg border border-encre-200 p-4 mb-6">
-        <div className="flex gap-4">
+      <div className="admin-panel p-4 mb-6">
+        <div className="flex flex-wrap gap-4">
           <div>
-            <label className="block text-sm font-medium text-encre-700 mb-2">
-              Statut
-            </label>
+            <label className="admin-label">Statut</label>
             <select
               value={filter.status || ''}
               onChange={(e) => setFilter({ ...filter, status: e.target.value || undefined })}
-              className="px-4 py-2 border border-encre-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-or-500"
+              className="admin-input"
               title="Filtrer par statut"
             >
               <option value="">Tous</option>
@@ -92,13 +90,11 @@ export default function AppointmentsPage() {
             </select>
           </div>
           <div>
-            <label className="block text-sm font-medium text-encre-700 mb-2">
-              Paiement
-            </label>
+            <label className="admin-label">Paiement</label>
             <select
               value={filter.payment_status || ''}
               onChange={(e) => setFilter({ ...filter, payment_status: e.target.value || undefined })}
-              className="px-4 py-2 border border-encre-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-or-500"
+              className="admin-input"
               title="Filtrer par statut de paiement"
             >
               <option value="">Tous</option>
@@ -111,7 +107,7 @@ export default function AppointmentsPage() {
       </div>
 
       {/* Appointments List */}
-      <div className="bg-white rounded-lg border border-encre-200 overflow-hidden">
+      <div className="admin-panel overflow-hidden">
         {appointments.length === 0 ? (
           <div className="text-center py-12 text-encre-500">
             Aucun rendez-vous trouvé
@@ -121,24 +117,9 @@ export default function AppointmentsPage() {
             <table className="w-full">
               <thead className="bg-encre-50 border-b border-encre-200">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-encre-700 uppercase tracking-wider">
-                    Client
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-encre-700 uppercase tracking-wider">
-                    Service
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-encre-700 uppercase tracking-wider">
-                    Date & Heure
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-encre-700 uppercase tracking-wider">
-                    Statut
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-encre-700 uppercase tracking-wider">
-                    Paiement
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-encre-700 uppercase tracking-wider">
-                    Actions
-                  </th>
+                  {['Client', 'Service', 'Date & Heure', 'Statut', 'Paiement', 'Actions'].map(h => (
+                    <th key={h} className="admin-th">{h}</th>
+                  ))}
                 </tr>
               </thead>
               <tbody className="divide-y divide-encre-100">
@@ -178,7 +159,7 @@ export default function AppointmentsPage() {
                       <select
                         value={appointment.status}
                         onChange={(e) => updateAppointmentStatus(appointment.id, e.target.value)}
-                        className="px-3 py-1 border border-encre-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-or-500"
+                        className="admin-input py-1 text-xs"
                         title="Modifier le statut du rendez-vous"
                       >
                         <option value="pending">En attente</option>
@@ -189,12 +170,13 @@ export default function AppointmentsPage() {
                       </select>
                     </td>
                     <td className="px-6 py-4">
-                      <span className={`px-3 py-1 rounded-full text-xs font-medium ${appointment.payment_status === 'paid'
-                        ? 'bg-green-100 text-green-800'
-                        : appointment.payment_status === 'refunded'
-                          ? 'bg-purple-100 text-purple-800'
-                          : 'bg-orange-100 text-orange-800'
-                        }`}>
+                      <span className={`admin-badge ${
+                        appointment.payment_status === 'paid'
+                          ? 'admin-badge-paid'
+                          : appointment.payment_status === 'refunded'
+                          ? 'admin-badge-refunded'
+                          : 'admin-badge-unpaid'
+                      }`}>
                         {appointment.payment_status === 'paid' ? 'Payé' :
                           appointment.payment_status === 'refunded' ? 'Remboursé' : 'Non payé'}
                       </span>
