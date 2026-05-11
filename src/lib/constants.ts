@@ -143,76 +143,79 @@ export const SERVICES = [
 ];
 
 export const FAQ_ITEMS = [
+  // POUR LES SALARIÉS
   {
-    question: "Quelle est la différence entre un juriste et un avocat ?",
+    question: "Qu'est-ce qu'un accident du travail et comment réagir ?",
     answer:
-      "Un juriste est un professionnel du droit diplômé qui peut accompagner ses clients dans la compréhension de leurs situations, rédiger des documents et les orienter dans leurs démarches. Il n'est pas inscrit au barreau et ne peut pas représenter ses clients devant les juridictions. Un avocat, inscrit au barreau, est habilité à plaider et à représenter en justice. Mon rôle est d'intervenir en amont : compréhension de situation, accompagnement préventif, rédaction de documents. Si votre situation nécessite une procédure judiciaire, je vous oriente vers un avocat compétent en droit du travail. Les informations que je fournis ne constituent pas une consultation juridique au sens de la réglementation applicable à la profession d'avocat.",
-    category: "general",
-  },
-  {
-    question: "Qu'est-ce qu'un accident du travail et comment dois-je réagir ?",
-    answer:
-      "Un accident du travail est un accident survenu par le fait ou à l'occasion du travail, quelle qu'en soit la cause. Il doit être déclaré à l'employeur dans les 24 heures et à la CPAM. La reconnaissance en accident du travail ouvre des droits spécifiques : prise en charge des soins à 100 %, indemnités journalières plus favorables, protection contre le licenciement. Si vous avez été victime d'un accident du travail et que la procédure n'a pas été respectée, ou si vous souhaitez comprendre vos droits, je peux vous accompagner dans votre démarche et vous apporter un éclairage sur votre situation.",
+      "Un accident du travail est un événement soudain survenu dans le cadre de votre activité professionnelle, ayant entraîné une lésion physique ou psychologique. En cas d'accident, il est important de : informer votre employeur rapidement, consulter un médecin, faire établir un certificat médical initial, vérifier que la déclaration est bien effectuée. Une bonne gestion dès le départ est essentielle pour la reconnaissance de l'accident et la prise en charge par la CPAM.",
     category: "salarie",
   },
   {
-    question: "Quelle est la différence entre maladie professionnelle et maladie ordinaire ?",
+    question: "Quelle est la différence entre une maladie professionnelle et une maladie ordinaire ?",
     answer:
-      "Une maladie professionnelle est une maladie contractée directement à la suite de l'exposition habituelle à un risque lié à l'exercice du travail. Elle figure dans des tableaux réglementaires ou peut être reconnue hors tableau sous certaines conditions. À la différence d'une maladie ordinaire, la maladie professionnelle reconnue ouvre des droits renforcés : prise en charge intégrale des soins, indemnités journalières majorées, protection contre le licenciement et, en cas de faute inexcusable de l'employeur, possibilité d'obtenir une indemnisation complémentaire.",
+      "Une maladie professionnelle est reconnue comme étant liée à votre activité professionnelle. Elle ouvre droit à une prise en charge spécifique (indemnisation, protection renforcée). Une maladie ordinaire, en revanche, n'est pas directement liée au travail. La reconnaissance d'une maladie professionnelle repose sur des critères précis (tableaux ou procédure spécifique), d'où l'importance de bien constituer son dossier.",
     category: "salarie",
   },
   {
     question: "Comment identifier une situation de harcèlement moral ?",
     answer:
-      "Le harcèlement moral se caractérise par des agissements répétés qui ont pour objet ou pour effet une dégradation des conditions de travail susceptible de porter atteinte aux droits et à la dignité du salarié, d'altérer sa santé physique ou mentale ou de compromettre son avenir professionnel. Pour identifier votre situation : conservez tous les éléments factuels (emails, messages, comptes-rendus), notez les faits avec dates et témoins éventuels, et signalez les faits au médecin du travail si votre santé est affectée. Je peux vous accompagner et vous apporter un éclairage pour identifier les éléments pertinents.",
+      "Le harcèlement moral se caractérise par des agissements répétés qui dégradent vos conditions de travail et peuvent porter atteinte à vos droits, votre dignité ou votre santé. Il peut s'agir par exemple : de remarques répétées ou dévalorisantes, d'une mise à l'écart, d'une surcharge ou d'un retrait injustifié de travail. L'analyse de la situation dans son ensemble est essentielle pour qualifier les faits et identifier les actions possibles.",
     category: "salarie",
   },
   {
     question: "Mon employeur peut-il me licencier sans motif valable ?",
     answer:
-      "Non. En France, tout licenciement doit reposer sur une cause réelle et sérieuse — motif personnel (faute, insuffisance professionnelle) ou économique. Un licenciement sans motif valable est qualifié d'abusif et peut donner lieu à des indemnités significatives. Si vous pensez être dans cette situation, n'attendez pas : les délais pour contester sont strictement encadrés (12 mois à compter de la notification). Je peux vous accompagner et vous apporter un éclairage pour comprendre vos droits.",
+      "Non, un licenciement doit être fondé sur une cause réelle et sérieuse. Cela signifie que : le motif doit être réel (existant et vérifiable) et sérieux (suffisamment important pour justifier la rupture). En cas de doute, il est important de faire analyser votre situation pour comprendre les enjeux et les options possibles.",
     category: "salarie",
   },
   {
     question: "Qu'est-ce qu'une rupture conventionnelle ?",
     answer:
-      "La rupture conventionnelle est un accord amiable entre le salarié et l'employeur pour mettre fin au contrat de travail. Elle ouvre droit aux allocations chômage et à une indemnité spécifique de rupture qui ne peut pas être inférieure au minimum légal. La procédure est encadrée : entretien(s), délai de rétractation de 15 jours, homologation par la DREETS. Je vous accompagne pour vérifier les conditions proposées, contrôler le respect de la procédure et sécuriser vos droits.",
+      "La rupture conventionnelle est un accord entre le salarié et l'employeur pour mettre fin au contrat de travail. Elle nécessite : un accord des deux parties, une procédure encadrée, une validation par l'administration. Elle ouvre droit, sous conditions, aux allocations chômage. Il est important de bien comprendre les implications avant de s'engager.",
     category: "salarie",
   },
   {
-    question: "J'ai reçu une convocation à un entretien préalable. Que faire ?",
+    question: "J'ai reçu une convocation à un entretien préalable : que faire ?",
     answer:
-      "Cette convocation est une étape obligatoire avant tout licenciement. Ne la prenez pas à la légère. Vous avez le droit d'être assisté lors de cet entretien par un représentant du personnel ou, si votre entreprise n'en a pas, par un conseiller du salarié. Préparez votre exposé des faits, restez factuel et ne signez rien sans avoir bien compris. Contactez-moi dès réception — les délais sont souvent très courts.",
+      "La convocation à un entretien préalable est une étape importante dans une procédure disciplinaire ou de licenciement. Il est recommandé de : lire attentivement la convocation, comprendre les faits reprochés, préparer vos explications, vous faire assister si nécessaire. Une bonne préparation permet de mieux défendre votre position et d'éviter certaines erreurs.",
     category: "salarie",
   },
+  // POUR LES EMPLOYEURS
   {
-    question: "Qu'est-ce que le DUERP et quelle entreprise est concernée ?",
+    question: "Qu'est-ce que le DUERP et quelles entreprises sont concernées ?",
     answer:
-      "Le Document Unique d'Évaluation des Risques Professionnels (DUERP) est obligatoire pour toute entreprise ayant au moins un salarié. Il recense l'ensemble des risques professionnels auxquels sont exposés les salariés et les mesures de prévention mises en place. Sa mise à jour est obligatoire au minimum une fois par an, lors de toute décision d'aménagement important et après tout accident du travail. J'accompagne les entreprises dans la réalisation ou la mise à jour de leur DUERP, en procédant à un audit des situations de travail et en rédigeant le document en collaboration avec les équipes.",
+      "Le Document Unique d'Évaluation des Risques Professionnels (DUERP) recense les risques auxquels sont exposés les salariés et les mesures de prévention mises en place. Il est obligatoire pour toutes les entreprises dès l'embauche du premier salarié. Le DUERP doit être : mis à jour régulièrement, adapté aux situations de travail, utilisé comme un véritable outil de prévention.",
     category: "employeur",
   },
   {
-    question: "Qu'est-ce que la prévention des risques professionnels ?",
+    question: "Qu'implique la prévention des risques professionnels ?",
     answer:
-      "La prévention des risques professionnels regroupe l'ensemble des dispositions à mettre en œuvre pour préserver la santé et la sécurité des salariés, améliorer les conditions de travail et tendre à la suppression des risques. Elle comprend la prévention des risques physiques (accidents du travail, TMS), des risques psychosociaux (RPS, harcèlement, burn-out) et des risques liés aux conditions de travail. L'employeur est légalement tenu d'assurer la sécurité et de protéger la santé physique et mentale de ses salariés. J'accompagne les entreprises dans l'identification, l'évaluation et la prévention de ces risques.",
+      "La prévention des risques consiste à identifier, évaluer et limiter les risques auxquels les salariés sont exposés. Elle concerne notamment : les risques psychosociaux (RPS), les troubles musculosquelettiques (TMS), les accidents du travail. Une démarche structurée permet de sécuriser les pratiques et de limiter les risques juridiques et humains.",
     category: "employeur",
   },
   {
-    question: "Comment sécuriser juridiquement une procédure de licenciement ?",
+    question: "Comment sécuriser une procédure de licenciement ?",
     answer:
-      "Une procédure de licenciement sécurisée nécessite : un motif réel et sérieux bien documenté, le respect strict des étapes procédurales (convocation, entretien, délais légaux, notification écrite), et un calcul correct des indemnités dues. Chaque étape mal exécutée peut invalider la procédure et exposer l'entreprise à des condamnations prud'homales. J'accompagne les employeurs en amont pour comprendre la situation, sécuriser la procédure et anticiper les risques.",
+      "Une procédure de licenciement doit respecter des étapes précises : qualification du motif, respect de la procédure, respect des délais, rédaction des documents. Une erreur, même formelle, peut fragiliser la décision. Il est donc essentiel d'anticiper et de structurer chaque étape.",
     category: "employeur",
+  },
+  // QUESTIONS GÉNÉRALES
+  {
+    question: "Quelle est la différence entre un juriste et un avocat ?",
+    answer:
+      "Le juriste et l'avocat interviennent tous deux en droit du travail, notamment pour analyser les situations et accompagner les personnes concernées. La différence tient principalement au cadre d'intervention : Le juriste intervient en amont, dans une logique de compréhension, de structuration et de sécurisation des démarches. L'avocat est habilité à représenter et défendre les intérêts d'une personne dans le cadre d'une procédure contentieuse (tribunal). Les deux approches sont complémentaires. Lorsque la situation nécessite une action en justice, une orientation vers un avocat est proposée.",
+    category: "general",
   },
   {
     question: "Mes informations sont-elles confidentielles ?",
     answer:
-      "Absolument. La confidentialité est un principe fondamental de mon exercice professionnel. Toutes les informations que vous me communiquez — situation, documents, données personnelles — sont traitées avec la plus stricte discrétion. Elles ne sont jamais transmises à des tiers sans votre consentement explicite. Mon traitement des données est conforme au RGPD.",
+      "Oui, les échanges et les informations que vous partagez sont traités avec confidentialité. Le respect de la discrétion est essentiel dans l'accompagnement des situations professionnelles.",
     category: "general",
   },
   {
-    question: "Intervenez-vous uniquement en présentiel ou aussi à distance ?",
+    question: "Intervenez-vous uniquement à distance ?",
     answer:
-      "Toutes mes interventions sont disponibles à distance : téléphone, visioconférence, échange sécurisé de documents. Cela me permet d'accompagner des salariés et des entreprises partout en France, sans contrainte géographique. La distance ne diminue en rien la qualité de l'accompagnement et de l'information apportée.",
+      "J'interviens principalement à distance (visioconférence), un format souple, efficace et adapté aux contraintes actuelles, permettant des échanges rapides et confidentiels. Ce mode d'accompagnement offre également une grande flexibilité et permet de limiter les déplacements, dans une démarche plus responsable. Des modalités spécifiques peuvent être envisagées en fonction des besoins.",
     category: "general",
   },
 ];
