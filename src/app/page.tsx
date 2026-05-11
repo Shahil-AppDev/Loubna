@@ -124,10 +124,10 @@ export default function HomePage() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5">
             {[
-              { icon: "🔍", title: "Salariés", desc: "Compréhension de situation, procédure disciplinaire, fin de contrat, harcèlement — comprenez vos droits et les enjeux de votre situation." },
-              { icon: "🏢", title: "Employeurs", desc: "Sécurisation des contrats, DUERP, prévention des risques professionnels, procédures disciplinaires — anticipez les risques juridiques." },
-              { icon: "⚠️", title: "Prévention des risques", desc: "Identification et évaluation des risques professionnels, RPS, accidents du travail, maladies professionnelles. Mise en place de mesures préventives." },
-              { icon: "📋", title: "DUERP", desc: "Réalisation et mise à jour du Document Unique d'Évaluation des Risques Professionnels. Obligation légale pour toute entreprise employant des salariés." },
+              { icon: "🔍", title: "Salariés", desc: "J'accompagne salariés et entreprises en droit du travail, en apportant une analyse des situations professionnelles, une identification des risques et des solutions visant à sécuriser les pratiques." },
+              { icon: "🏢", title: "Employeurs", desc: "J'interviens pour analyser les situations de travail, identifier les risques et orienter salariés et entreprises vers des pratiques sécurisées." },
+              { icon: "⚠️", title: "Prévention des risques", desc: "J'interviens pour comprendre les situations de travail, identifier les risques et orienter salariés et entreprises vers des pratiques sécurisées, dans une démarche d'accompagnement, d'information et de prévention." },
+              { icon: "📋", title: "DUERP", desc: "J'accompagne les entreprises dans la réalisation et la mise à jour du document unique d'évaluation des risques professionnels (DUERP), afin d'identifier les risques, d'analyser les situations de travail et de sécuriser leurs pratiques." },
             ].map((card, i) => (
               <Link href="/services" key={i} className="expertise-card group block">
                 <span className="text-2xl md:text-3xl mb-4 md:mb-5 block">{card.icon}</span>
