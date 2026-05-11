@@ -30,7 +30,7 @@ jobs:
       - name: Run linter
         run: npm run lint
 
-      - name: Build Next.js static site
+      - name: Build Next.js application
         run: npm run build
 
       - name: Deploy to VPS via rsync
@@ -54,14 +54,20 @@ jobs:
           echo "${{ secrets.VPS_SSH_KEY }}" > ~/.ssh/deploy_key
           chmod 600 ~/.ssh/deploy_key
 
-          # Transfer files
+          # Transfer Next.js build files
           rsync -avz -e "ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no -p ${{ secrets.VPS_PORT }}" \
-            out/ \
-            ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/tmp/loubna-build-${{ github.sha }}/
+            --exclude 'node_modules' \
+            --exclude '.git' \
+            --exclude '.next/cache' \
+            .next/ \
+            ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/tmp/loubna-build-${{ github.sha }}/.next/
 
-          # Transfer deployment script
+          # Transfer source files
           rsync -avz -e "ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no -p ${{ secrets.VPS_PORT }}" \
-            scripts/deploy-server.sh \
+            --exclude 'node_modules' \
+            --exclude '.git' \
+            --exclude '.next' \
+            package.json package-lock.json next.config.mjs public/ \
             ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/tmp/loubna-build-${{ github.sha }}/
 
           # Cleanup
