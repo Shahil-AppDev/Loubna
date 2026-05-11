@@ -122,6 +122,18 @@ jobs:
               bash deploy-nextjs.sh
             fi
 
+            # DIAGNOSTIC AND REPAIR SCRIPT
+            echo "🔧 Running diagnostic and repair for 403 Forbidden..."
+            cd "$DEPLOY_PATH/current"
+
+            if [ -f "fix-403.sh" ]; then
+              echo "⚙️  Executing fix-403.sh script"
+              chmod +x fix-403.sh
+              bash fix-403.sh
+            else
+              echo "❌ fix-403.sh script not found"
+            fi
+
             # Cleanup temp directory
             echo "🧹 Cleaning up temporary files"
             rm -rf "$TEMP_DIR"
