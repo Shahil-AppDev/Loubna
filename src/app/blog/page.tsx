@@ -1,7 +1,6 @@
+import { getAllArticles } from "@/lib/blog-data";
 import type { Metadata } from "next";
 import Link from "next/link";
-import { getAllArticles } from "@/lib/blog-data";
-import { SITE_CONFIG } from "@/lib/constants";
 
 export const metadata: Metadata = {
   title: "Blog Droit du Travail & RSE | Loubna Abouz Manta",
@@ -28,10 +27,10 @@ export default function BlogPage() {
             <span className="text-or-500">Blog</span>
           </nav>
           <h1 className="font-serif text-[clamp(2.4rem,5vw,3.8rem)] font-semibold text-white leading-[1.12] max-w-2xl">
-            Actualités et conseils en droit du travail
+            Actualités juridiques
           </h1>
           <p className="text-white/50 text-[1rem] max-w-[500px] mt-5 leading-[1.8]">
-            Décryptages juridiques, guides pratiques et actualités pour salariés et employeurs.
+            Décryptages juridiques, guides pratiques et actualités en droit du travail pour salariés et employeurs.
           </p>
         </div>
       </section>
