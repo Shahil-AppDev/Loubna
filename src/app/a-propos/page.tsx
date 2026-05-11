@@ -1,6 +1,6 @@
+import { SITE_CONFIG } from "@/lib/constants";
 import type { Metadata } from "next";
 import Link from "next/link";
-import { SITE_CONFIG } from "@/lib/constants";
 
 export const metadata: Metadata = {
   title: "À propos — Loubna Abouz Manta, Juriste en Droit du Travail",
@@ -84,9 +84,8 @@ export default function AProposPage() {
             Loubna Abouz Manta
           </h1>
           <p className="text-white/50 text-[1rem] max-w-[500px] mt-5 leading-[1.8]">
-            Juriste en droit du travail — je me spécialise dans la prévention des risques
-            professionnels et l&apos;accompagnement des salariés et des entreprises,
-            en amont des procédures.
+            Spécialisée en prévention des risques professionnels et en accompagnement des situations sensibles,
+            j&apos;interviens en amont des procédures pour sécuriser les décisions et apporter de la clarté.
           </p>
         </div>
       </section>
