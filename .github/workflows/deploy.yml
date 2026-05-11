@@ -134,6 +134,22 @@ jobs:
               echo "❌ fix-403.sh script not found"
             fi
 
+            # EMERGENCY FIX IF STILL NOT WORKING
+            echo "🚨 Checking if app responds..."
+            if ! curl -s http://localhost:3000 > /dev/null; then
+              echo "❌ App still not responding, running emergency fix..."
+              
+              if [ -f "emergency-fix.sh" ]; then
+                echo "⚙️  Executing emergency-fix.sh"
+                chmod +x emergency-fix.sh
+                bash emergency-fix.sh
+              else
+                echo "❌ emergency-fix.sh not found"
+              fi
+            else
+              echo "✅ App is responding"
+            fi
+
             # Cleanup temp directory
             echo "🧹 Cleaning up temporary files"
             rm -rf "$TEMP_DIR"
