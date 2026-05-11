@@ -67,7 +67,7 @@ export default function Footer() {
                   </p>
                 </div>
               </div>
-              <p className="text-white/40 text-[0.85rem] md:text-sm leading-6 md:leading-7 mb-2 md:mb-3">
+              <p className="text-white/75 text-[0.85rem] md:text-sm leading-6 md:leading-7 mb-2 md:mb-3">
                 Accompagnement &amp; information en droit du travail (FR/AR) —
                 prévention des risques professionnels, en amont des procédures.
               </p>
@@ -125,7 +125,7 @@ export default function Footer() {
                   <li key={link.label}>
                     <Link
                       href={link.href}
-                      className="text-sm text-white/45 hover:text-white transition-colors"
+                      className="text-sm text-white/70 hover:text-white transition-colors"
                     >
                       {link.label}
                     </Link>
@@ -142,7 +142,7 @@ export default function Footer() {
                   <li key={i}>
                     <Link
                       href={link.href}
-                      className="text-sm text-white/45 hover:text-white transition-colors"
+                      className="text-sm text-white/70 hover:text-white transition-colors"
                     >
                       {link.label}
                     </Link>
@@ -155,7 +155,7 @@ export default function Footer() {
             <div>
               <h5 className="footer-nav-title">Contact</h5>
               <ul className="flex flex-col gap-3">
-                <li className="flex items-start gap-2.5 text-sm text-white/45">
+                <li className="flex items-start gap-2.5 text-sm text-white/70">
                   <span>📧</span>
                   <a
                     href={`mailto:${SITE_CONFIG.email}`}
@@ -164,7 +164,7 @@ export default function Footer() {
                     {SITE_CONFIG.email}
                   </a>
                 </li>
-                <li className="flex items-start gap-2.5 text-sm text-white/45">
+                <li className="flex items-start gap-2.5 text-sm text-white/70">
                   <span>📞</span>
                   <a
                     href={`tel:${SITE_CONFIG.phone.replace(/\s/g, "")}`}
@@ -173,21 +173,21 @@ export default function Footer() {
                     {SITE_CONFIG.phone}
                   </a>
                 </li>
-                <li className="flex items-start gap-2.5 text-sm text-white/45">
+                <li className="flex items-start gap-2.5 text-sm text-white/70">
                   <span>📍</span>
                   <span>{SITE_CONFIG.address}</span>
                 </li>
-                <li className="flex items-start gap-2.5 text-sm text-white/45">
+                <li className="flex items-start gap-2.5 text-sm text-white/70">
                   <span>🕐</span>
                   <span>{SITE_CONFIG.hours}</span>
                 </li>
               </ul>
 
               <div className="mt-6 p-4 border border-encre-800 rounded-sm">
-                <p className="text-encre-300 text-[0.8rem] leading-relaxed font-semibold mb-1.5">
+                <p className="text-white/90 text-[0.8rem] leading-relaxed font-semibold mb-1.5">
                   Prestations d&apos;accompagnement, d&apos;information et de prévention – hors consultation juridique réglementée.
                 </p>
-                <p className="text-encre-400 text-[0.8rem] leading-relaxed">
+                <p className="text-white/70 text-[0.8rem] leading-relaxed">
                   Les prestations proposées relèvent de l&apos;information, de l&apos;accompagnement et de la prévention en droit du travail. Elles ne constituent pas une consultation juridique au sens de la réglementation applicable à la profession d&apos;avocat.
                 </p>
               </div>
@@ -196,19 +196,19 @@ export default function Footer() {
 
           {/* ─── BOTTOM ────────────────────────────── */}
           <div className="border-t border-white/[0.06] py-6 flex flex-col sm:flex-row items-center justify-between gap-4 flex-wrap">
-            <p className="text-xs text-white/25">
+            <p className="text-xs text-white/45">
               © {new Date().getFullYear()} {SITE_CONFIG.name} · Juriste en droit du travail
             </p>
             <div className="flex gap-6">
               <Link
                 href="/mentions-legales"
-                className="text-xs text-white/25 hover:text-white/60 transition-colors"
+                className="text-xs text-white/45 hover:text-white/75 transition-colors"
               >
                 Mentions légales
               </Link>
               <Link
                 href="/politique-de-confidentialite"
-                className="text-xs text-white/25 hover:text-white/60 transition-colors"
+                className="text-xs text-white/45 hover:text-white/75 transition-colors"
               >
                 Politique de confidentialité
               </Link>

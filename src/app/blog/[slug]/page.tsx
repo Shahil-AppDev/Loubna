@@ -515,18 +515,18 @@ export default function BlogArticlePage({ params }: Props) {
         <section className="page-hero">
           <div className="hero-grid-bg" />
           <div className="container-main relative z-10 pt-20 pb-12">
-            <nav className="text-[0.72rem] tracking-[0.14em] uppercase text-white/30 mb-5 flex gap-2">
-              <Link href="/" className="hover:text-white/60 transition-colors">
+            <nav className="text-[0.72rem] tracking-[0.14em] uppercase text-white/50 mb-5 flex gap-2">
+              <Link href="/" className="hover:text-white/80 transition-colors">
                 Accueil
               </Link>
               <span>›</span>
-              <Link href="/blog" className="hover:text-white/60 transition-colors">
+              <Link href="/blog" className="hover:text-white/80 transition-colors">
                 Blog
               </Link>
               <span>›</span>
               <span className="text-or-500">{article.category}</span>
             </nav>
-            <div className="flex items-center gap-3 text-xs text-white/40 mb-4">
+            <div className="flex items-center gap-3 text-xs text-white/65 mb-4">
               <span className="px-3 py-1 bg-or-500 text-encre-950 font-bold tracking-wider uppercase rounded-sm">
                 {article.category}
               </span>

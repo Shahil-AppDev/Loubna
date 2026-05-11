@@ -14,15 +14,15 @@ export default function ConfidentialitePage() {
       <section className="page-hero">
         <div className="hero-grid-bg" />
         <div className="container-main relative z-10 pt-20 pb-12">
-          <nav className="text-[0.72rem] tracking-[0.14em] uppercase text-white/30 mb-5 flex gap-2">
-            <Link href="/" className="hover:text-white/60 transition-colors">Accueil</Link>
+          <nav className="text-[0.72rem] tracking-[0.14em] uppercase text-white/50 mb-5 flex gap-2">
+            <Link href="/" className="hover:text-white/80 transition-colors">Accueil</Link>
             <span>›</span>
             <span className="text-or-500">Politique de confidentialité</span>
           </nav>
           <h1 className="font-serif text-[clamp(2rem,4vw,3rem)] text-white leading-tight">
             Politique de confidentialité
           </h1>
-          <p className="text-white/40 mt-3 text-sm">
+          <p className="text-white/65 mt-3 text-sm">
             Conformité RGPD — Dernière mise à jour : {new Date().getFullYear()}
           </p>
         </div>

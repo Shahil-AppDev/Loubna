@@ -44,15 +44,15 @@ export default function AProposPage() {
           style={{ background: "radial-gradient(circle, rgba(139,0,0,.22) 0%, transparent 70%)" }}
         />
         <div className="container-main relative z-10 pt-20 pb-12">
-          <nav className="text-[0.72rem] tracking-[0.14em] uppercase text-white/30 mb-5 flex gap-2">
-            <Link href="/" className="hover:text-white/60 transition-colors">Accueil</Link>
+          <nav className="text-[0.72rem] tracking-[0.14em] uppercase text-white/50 mb-5 flex gap-2">
+            <Link href="/" className="hover:text-white/80 transition-colors">Accueil</Link>
             <span>›</span>
             <span className="text-or-500">À propos</span>
           </nav>
           <h1 className="font-serif text-[clamp(2.4rem,5vw,3.8rem)] font-semibold text-white leading-[1.12] max-w-2xl">
             Loubna Abouz Manta
           </h1>
-          <p className="text-white/50 text-[1rem] max-w-[500px] mt-5 leading-[1.8]">
+          <p className="text-white/85 text-[1rem] max-w-[500px] mt-5 leading-[1.8]">
             Spécialisée en prévention des risques professionnels et en accompagnement des situations sensibles,
             j&apos;interviens en amont des procédures pour sécuriser les décisions et apporter de la clarté.
           </p>
@@ -94,15 +94,15 @@ export default function AProposPage() {
                 </p>
                 <div className="w-10 h-px bg-or-400 my-4" />
                 <div className="space-y-2.5">
-                  <p className="text-encre-300 text-xs flex items-center gap-2">
+                  <p className="text-white/80 text-xs flex items-center gap-2">
                     <span className="text-or-500">🎓</span>
                     Master 2 Droit &amp; Management
                   </p>
-                  <p className="text-encre-300 text-xs flex items-center gap-2">
+                  <p className="text-white/80 text-xs flex items-center gap-2">
                     <span className="text-or-500">⚠️</span>
                     Prévention des risques professionnels
                   </p>
-                  <p className="text-encre-300 text-xs flex items-center gap-2">
+                  <p className="text-white/80 text-xs flex items-center gap-2">
                     <span className="text-or-500">🌐</span>
                     Interventions 100% distanciel
                   </p>

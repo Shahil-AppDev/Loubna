@@ -463,17 +463,17 @@ export default function ServicePage({ params }: Props) {
       <section className="page-hero">
         <div className="hero-grid-bg" />
         <div className="container-main relative z-10 pt-20 pb-12">
-          <nav className="text-[0.72rem] tracking-[0.14em] uppercase text-white/30 mb-6 flex gap-2 flex-wrap">
-            <Link href="/" className="hover:text-white/60 transition-colors">Accueil</Link>
+          <nav className="text-[0.72rem] tracking-[0.14em] uppercase text-white/50 mb-6 flex gap-2 flex-wrap">
+            <Link href="/" className="hover:text-white/80 transition-colors">Accueil</Link>
             <span>›</span>
-            <Link href="/services" className="hover:text-white/60 transition-colors">Services</Link>
+            <Link href="/services" className="hover:text-white/80 transition-colors">Services</Link>
             <span>›</span>
             <span className="text-or-500">{service.h1}</span>
           </nav>
           <h1 className="font-serif text-[clamp(2rem,4vw,3.2rem)] text-white leading-[1.15] max-w-3xl mb-6">
             {service.h1}
           </h1>
-          <p className="text-white/55 text-[1rem] md:text-[1.05rem] max-w-[620px] leading-[1.85]">
+          <p className="text-white/85 text-[1rem] md:text-[1.05rem] max-w-[620px] leading-[1.85]">
             {content.intro}
           </p>
         </div>

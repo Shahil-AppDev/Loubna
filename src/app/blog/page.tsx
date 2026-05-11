@@ -19,8 +19,8 @@ export default function BlogPage() {
       <section className="page-hero">
         <div className="hero-grid-bg" />
         <div className="container-main relative z-10 pt-20 pb-12">
-          <nav className="text-[0.72rem] tracking-[0.14em] uppercase text-white/30 mb-5 flex gap-2">
-            <Link href="/" className="hover:text-white/60 transition-colors">
+          <nav className="text-[0.72rem] tracking-[0.14em] uppercase text-white/50 mb-5 flex gap-2">
+            <Link href="/" className="hover:text-white/80 transition-colors">
               Accueil
             </Link>
             <span>›</span>
@@ -29,7 +29,7 @@ export default function BlogPage() {
           <h1 className="font-serif text-[clamp(2.4rem,5vw,3.8rem)] font-semibold text-white leading-[1.12] max-w-2xl">
             Actualités juridiques
           </h1>
-          <p className="text-white/50 text-[1rem] max-w-[500px] mt-5 leading-[1.8]">
+          <p className="text-white/85 text-[1rem] max-w-[500px] mt-5 leading-[1.8]">
             Décryptages juridiques, guides pratiques et actualités en droit du travail pour salariés et employeurs.
           </p>
         </div>

@@ -107,15 +107,15 @@ export default function FormationsPage() {
           style={{ background: "radial-gradient(circle, rgba(139,0,0,.22) 0%, transparent 70%)" }}
         />
         <div className="container-main relative z-10 pt-20 pb-12">
-          <nav className="text-[0.72rem] tracking-[0.14em] uppercase text-white/30 mb-5 flex gap-2">
-            <Link href="/" className="hover:text-white/60 transition-colors">Accueil</Link>
+          <nav className="text-[0.72rem] tracking-[0.14em] uppercase text-white/50 mb-5 flex gap-2">
+            <Link href="/" className="hover:text-white/80 transition-colors">Accueil</Link>
             <span>›</span>
             <span className="text-or-500">Formations</span>
           </nav>
           <h1 className="font-serif text-[clamp(2.4rem,5vw,3.8rem)] font-semibold text-white leading-[1.12] max-w-2xl">
             Formations
           </h1>
-          <p className="text-white/50 text-[1rem] max-w-[520px] mt-5 leading-[1.8]">
+          <p className="text-white/85 text-[1rem] max-w-[520px] mt-5 leading-[1.8]">
             Formations concrètes et directement applicables en entreprise pour les employeurs, DRH, responsables RH et managers.
           </p>
         </div>
@@ -154,7 +154,7 @@ export default function FormationsPage() {
                           <span>⏱️</span>
                           <span>{formation.duration}</span>
                         </div>
-                        <div className="flex items-center gap-2 text-encre-300">
+                        <div className="flex items-center gap-2 text-white/75">
                           <span>👥</span>
                           <span>{formation.public}</span>
                         </div>

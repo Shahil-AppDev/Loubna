@@ -55,11 +55,11 @@ export default function HomePage() {
             </em>
           </h1>
 
-          <p className="text-[0.95rem] md:text-[1.05rem] text-white/60 max-w-[540px] leading-[1.7] md:leading-[1.8] mb-3 md:mb-4">
+          <p className="text-[0.95rem] md:text-[1.05rem] text-white/85 max-w-[540px] leading-[1.7] md:leading-[1.8] mb-3 md:mb-4">
             J&apos;accompagne salariés et entreprises dans la prévention des risques
             et la sécurisation professionnelles, en amont des procédures.
           </p>
-          <p className="text-[0.85rem] md:text-[0.9rem] text-or-400/80 max-w-[540px] leading-[1.6] mb-6 md:mb-10 font-medium">
+          <p className="text-[0.85rem] md:text-[0.9rem] text-or-400 max-w-[540px] leading-[1.6] mb-6 md:mb-10 font-medium">
             J&apos;interviens dans une démarche d&apos;accompagnement, d&apos;information et de prévention en droit du travail. · Accompagnement bilingue français / arabe
           </p>
 
@@ -88,7 +88,7 @@ export default function HomePage() {
                   <div className="font-serif text-[1.2rem] md:text-[1.8rem] font-bold text-white leading-none">
                     {stat.num}
                   </div>
-                  <div className="text-[0.6rem] md:text-[0.68rem] text-white/45 tracking-[0.08em] uppercase mt-1">
+                  <div className="text-[0.6rem] md:text-[0.68rem] text-white/65 tracking-[0.08em] uppercase mt-1">
                     {stat.label}
                   </div>
                 </div>
@@ -157,7 +157,7 @@ export default function HomePage() {
                   adaptée à chaque situation
                 </em>
               </h2>
-              <p className="text-white/55 text-[0.9rem] md:text-[0.95rem] leading-[1.75] md:leading-[1.85] mb-6 md:mb-9">
+              <p className="text-white/85 text-[0.9rem] md:text-[0.95rem] leading-[1.75] md:leading-[1.85] mb-6 md:mb-9">
                 En droit du travail, chaque situation est unique. Mon objectif est de vous apporter
                 un accompagnement rigoureux, accessible et adapté — que vous soyez salarié souhaitant
                 comprendre votre situation ou employeur cherchant à sécuriser vos pratiques.
@@ -180,7 +180,7 @@ export default function HomePage() {
                   </div>
                   <div>
                     <h4 className="font-serif text-[1rem] md:text-[1.1rem] text-white mb-2 md:mb-2.5">{title}</h4>
-                    <p className="text-[0.9rem] md:text-[0.93rem] text-white/50 leading-[1.75] max-w-[480px]">{desc}</p>
+                    <p className="text-[0.9rem] md:text-[0.93rem] text-white/80 leading-[1.75] max-w-[480px]">{desc}</p>
                   </div>
                 </div>
               ))}
@@ -284,7 +284,7 @@ export default function HomePage() {
             <br />
             un accompagnement sérieux.
           </h2>
-          <p className="text-white/70 text-[1rem] mb-10 max-w-[500px] mx-auto leading-[1.75]">
+          <p className="text-white/90 text-[1rem] mb-10 max-w-[500px] mx-auto leading-[1.75]">
             N&apos;attendez pas que la situation s&apos;aggrave. Prenez contact dès aujourd&apos;hui
             — première orientation sous 48h.
           </p>
@@ -304,11 +304,11 @@ export default function HomePage() {
       {/* ═══════════════════════════════════════════════════ */}
       <div className="bg-encre-900 border-t border-encre-800">
         <div className="container-main py-5">
-          <p className="text-encre-400 text-xs text-center leading-relaxed mb-1">
+          <p className="text-encre-200 text-xs text-center leading-relaxed mb-1">
             <span className="text-or-400 mr-1">ℹ</span>
-            <strong className="text-encre-300">Prestations d&apos;accompagnement, d&apos;information et de prévention – hors consultation juridique réglementée.</strong>
+            <strong className="text-encre-100">Prestations d&apos;accompagnement, d&apos;information et de prévention – hors consultation juridique réglementée.</strong>
           </p>
-          <p className="text-encre-400 text-xs text-center leading-relaxed">
+          <p className="text-encre-300 text-xs text-center leading-relaxed">
             Les prestations proposées relèvent de l&apos;information, de l&apos;accompagnement et de la prévention en droit du travail. Elles ne constituent pas une consultation juridique au sens de la réglementation applicable à la profession d&apos;avocat.
           </p>
         </div>

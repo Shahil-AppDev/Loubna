@@ -31,8 +31,8 @@ export default function FaqPage() {
           style={{ background: "radial-gradient(circle, rgba(139,0,0,.22) 0%, transparent 70%)" }}
         />
         <div className="container-main relative z-10 pt-20 pb-12">
-          <nav className="text-[0.72rem] tracking-[0.14em] uppercase text-white/30 mb-5 flex gap-2">
-            <Link href="/" className="hover:text-white/60 transition-colors">Accueil</Link>
+          <nav className="text-[0.72rem] tracking-[0.14em] uppercase text-white/50 mb-5 flex gap-2">
+            <Link href="/" className="hover:text-white/80 transition-colors">Accueil</Link>
             <span>›</span>
             <span className="text-or-500">FAQ</span>
           </nav>
@@ -43,7 +43,7 @@ export default function FaqPage() {
               fréquentes.
             </em>
           </h1>
-          <p className="text-white/50 text-[1rem] max-w-[500px] mt-5 leading-[1.8]">
+          <p className="text-white/85 text-[1rem] max-w-[500px] mt-5 leading-[1.8]">
             Retrouvez ici les réponses aux questions les plus courantes en droit du travail
             et prévention des risques. Votre situation est différente ? Contactez-moi directement.
           </p>

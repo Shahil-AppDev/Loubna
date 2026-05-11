@@ -30,8 +30,8 @@ export default function ServicesPage() {
           style={{ background: "radial-gradient(circle, rgba(139,0,0,.22) 0%, transparent 70%)" }}
         />
         <div className="container-main relative z-10 pt-20 pb-12">
-          <nav className="text-[0.72rem] tracking-[0.14em] uppercase text-white/30 mb-5 flex gap-2">
-            <Link href="/" className="hover:text-white/60 transition-colors">Accueil</Link>
+          <nav className="text-[0.72rem] tracking-[0.14em] uppercase text-white/50 mb-5 flex gap-2">
+            <Link href="/" className="hover:text-white/80 transition-colors">Accueil</Link>
             <span>›</span>
             <span className="text-or-500">Interventions</span>
           </nav>
@@ -42,7 +42,7 @@ export default function ServicesPage() {
               adaptées à chaque situation.
             </em>
           </h1>
-          <p className="text-white/50 text-[1rem] max-w-[520px] mt-5 leading-[1.8]">
+          <p className="text-white/85 text-[1rem] max-w-[520px] mt-5 leading-[1.8]">
             J&apos;interviens dans une démarche d&apos;accompagnement, d&apos;information et de prévention en droit du travail — afin de comprendre les situations de travail, identifier les risques et orienter salariés et entreprises dans une logique de prévention et de sécurisation des pratiques.
           </p>
         </div>

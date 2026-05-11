@@ -5,6 +5,12 @@
 /* ─── CSS Variables ─────────────────────────────────────── */
 :root {
   --nav-h: 64px;
+
+  /* Text on dark backgrounds (encre-900 / encre-950) */
+  --text-on-dark:        #EDE9E1; /* cream — main body copy */
+  --text-on-dark-muted:  #C8C2B6; /* warm grey — secondary copy */
+  --heading-on-dark:     #FFFFFF; /* pure white — headings */
+  --meta-on-dark:        #9E9890; /* subtle — breadcrumbs, captions */
 }
 
 @media (min-width: 768px) {
@@ -31,6 +37,14 @@
 
   p {
     @apply leading-relaxed;
+  }
+
+  /* Dark section utilities — apply to any section with a dark bg */
+  .dark-section-body {
+    color: var(--text-on-dark);
+  }
+  .dark-section-muted {
+    color: var(--text-on-dark-muted);
   }
 
   * {

@@ -106,7 +106,7 @@ export default function RendezVousPage() {
           <h1 className="font-serif text-[clamp(2.4rem,5vw,3.8rem)] font-semibold text-white leading-[1.12] max-w-2xl">
             Prendre rendez-vous
           </h1>
-          <p className="text-white/50 text-[1rem] max-w-[500px] mt-5 leading-[1.8]">
+          <p className="text-white/85 text-[1rem] max-w-[500px] mt-5 leading-[1.8]">
             Réservez votre consultation en ligne et payez de manière sécurisée.
           </p>
         </div>
