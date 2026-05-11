@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
+import { ensureCmsTables } from "@/lib/db/cms";
+import { query } from "@/lib/db/postgres";
 
 // ═══════════════════════════════════════════════════════════
 // API Route — /api/contact
@@ -12,6 +14,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
   try {
+    await ensureCmsTables();
     const body = await request.json();
 
     const {
@@ -84,9 +87,11 @@ export async function POST(request: NextRequest) {
     //   `,
     // });
 
-    // Simulation pour développement (à retirer en production)
-    console.log("📧 Form submission:", { nom, prenom, email, sujet, statut, typeDemande });
-    await new Promise((r) => setTimeout(r, 500));
+    await query(
+      `INSERT INTO leads (first_name, last_name, email, phone, demand_type, subject, message, source)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, 'contact_form')`,
+      [prenom.trim(), nom.trim(), email.trim().toLowerCase(), tel || null, typeDemande || null, sujet.trim(), message.trim()]
+    );
 
     return NextResponse.json(
       { success: true, message: "Votre message a bien été envoyé." },

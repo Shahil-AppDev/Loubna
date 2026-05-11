@@ -129,8 +129,15 @@ export default function ContactForm() {
       // if (!res.ok) throw new Error();
       // ─────────────────────────────────────────────────────
 
-      // Simulation (à retirer en production)
-      await new Promise((r) => setTimeout(r, 1400));
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data?.error || "Erreur de soumission");
+      }
 
       setSuccess(true);
       setForm(INITIAL_DATA);
@@ -237,6 +244,7 @@ export default function ContactForm() {
         <FormGroup label="Type de demande" error={errors.typeDemande}>
           <select
             id="typeDemande"
+            aria-label="Type de demande"
             value={form.typeDemande}
             onChange={(e) => handleChange("typeDemande", e.target.value)}
             className={cn("form-control appearance-none", !form.typeDemande && "text-encre-400")}
@@ -251,6 +259,7 @@ export default function ContactForm() {
         <FormGroup label="Vous êtes" error={errors.statut}>
           <select
             id="statut"
+            aria-label="Statut du demandeur"
             value={form.statut}
             onChange={(e) => handleChange("statut", e.target.value)}
             className={cn("form-control appearance-none", !form.statut && "text-encre-400")}
