@@ -70,6 +70,11 @@ jobs:
             package.json package-lock.json next.config.mjs public/ \
             ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/tmp/loubna-build-${{ github.sha }}/
 
+          # Transfer deployment script
+          rsync -avz -e "ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no -p ${{ secrets.VPS_PORT }}" \
+            scripts/deploy-nextjs.sh \
+            ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/tmp/loubna-build-${{ github.sha }}/
+
           # Cleanup
           rm -f ~/.ssh/deploy_key
 
@@ -107,13 +112,14 @@ jobs:
             echo "📦 Deploying new version"
             sudo mkdir -p "$DEPLOY_PATH/current"
             sudo cp -r "$TEMP_DIR"/* "$DEPLOY_PATH/current/"
-            sudo chown -R www-data:www-data "$DEPLOY_PATH/current"
+            sudo chown -R $USER:$USER "$DEPLOY_PATH/current"
 
             # Execute deployment script
-            if [ -f "$DEPLOY_PATH/current/deploy-server.sh" ]; then
+            if [ -f "$DEPLOY_PATH/current/deploy-nextjs.sh" ]; then
               echo "⚙️  Executing deployment script"
               cd "$DEPLOY_PATH/current"
-              sudo bash deploy-server.sh
+              chmod +x deploy-nextjs.sh
+              bash deploy-nextjs.sh
             fi
 
             # Cleanup temp directory
