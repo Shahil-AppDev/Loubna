@@ -1,17 +1,17 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import { ServiceRdv } from '@/types/database';
 import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 export default function RendezVousPage() {
-  const router = useRouter();
   const [services, setServices] = useState<ServiceRdv[]>([]);
   const [selectedService, setSelectedService] = useState<ServiceRdv | null>(null);
   const [selectedDate, setSelectedDate] = useState('');
   const [selectedTime, setSelectedTime] = useState('');
   const [formData, setFormData] = useState({
-    name: '',
+    firstName: '',
+    lastName: '',
     email: '',
     phone: '',
     notes: ''
@@ -44,12 +44,12 @@ export default function RendezVousPage() {
     try {
       // Créer le rendez-vous
       const appointmentDate = new Date(`${selectedDate}T${selectedTime}`);
-      
+
       const appointmentResponse = await fetch('/api/appointments', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          client_name: formData.name,
+          client_name: `${formData.firstName} ${formData.lastName}`.trim(),
           client_email: formData.email,
           client_phone: formData.phone,
           service_id: selectedService.id,
@@ -143,11 +143,10 @@ export default function RendezVousPage() {
                         setSelectedService(service);
                         setStep(2);
                       }}
-                      className={`border-2 rounded-lg p-6 cursor-pointer transition-all ${
-                        selectedService?.id === service.id
-                          ? 'border-or-500 bg-or-50'
-                          : 'border-encre-200 hover:border-or-300'
-                      }`}
+                      className={`border-2 rounded-lg p-6 cursor-pointer transition-all ${selectedService?.id === service.id
+                        ? 'border-or-500 bg-or-50'
+                        : 'border-encre-200 hover:border-or-300'
+                        }`}
                     >
                       <div className="flex items-start justify-between">
                         <div className="flex-1">
@@ -182,7 +181,7 @@ export default function RendezVousPage() {
                 <h2 className="font-serif text-2xl font-semibold text-encre-900 mb-6">
                   Choisissez la date et l&apos;heure
                 </h2>
-                
+
                 <div className="space-y-6">
                   <div>
                     <label className="block text-sm font-medium text-encre-700 mb-2">
@@ -193,7 +192,9 @@ export default function RendezVousPage() {
                       value={selectedDate}
                       onChange={(e) => setSelectedDate(e.target.value)}
                       min={new Date().toISOString().split('T')[0]}
-                      className="w-full px-4 py-3 border border-encre-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-or-500"
+                      className="w-full px-4 py-2 border border-encre-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-or-500"
+                      title="Sélectionner une date"
+                      placeholder="JJ/MM/AAAA"
                       required
                     />
                   </div>
@@ -209,11 +210,10 @@ export default function RendezVousPage() {
                             key={time}
                             type="button"
                             onClick={() => setSelectedTime(time)}
-                            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                              selectedTime === time
-                                ? 'bg-or-500 text-white'
-                                : 'bg-encre-100 text-encre-700 hover:bg-encre-200'
-                            }`}
+                            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${selectedTime === time
+                              ? 'bg-or-500 text-white'
+                              : 'bg-encre-100 text-encre-700 hover:bg-encre-200'
+                              }`}
                           >
                             {time}
                           </button>
@@ -252,13 +252,30 @@ export default function RendezVousPage() {
                 <div className="space-y-4">
                   <div>
                     <label className="block text-sm font-medium text-encre-700 mb-2">
-                      Nom complet *
+                      Prénom *
                     </label>
                     <input
                       type="text"
-                      value={formData.name}
-                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      className="w-full px-4 py-3 border border-encre-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-or-500"
+                      value={formData.firstName}
+                      onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
+                      className="w-full px-4 py-2 border border-encre-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-or-500"
+                      title="Prénom"
+                      placeholder="Votre prénom"
+                      required
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-encre-700 mb-2">
+                      Nom *
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.lastName}
+                      onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
+                      className="w-full px-4 py-2 border border-encre-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-or-500"
+                      title="Nom"
+                      placeholder="Votre nom"
                       required
                     />
                   </div>
@@ -271,7 +288,9 @@ export default function RendezVousPage() {
                       type="email"
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      className="w-full px-4 py-3 border border-encre-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-or-500"
+                      className="w-full px-4 py-2 border border-encre-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-or-500"
+                      title="Email"
+                      placeholder="votre@email.com"
                       required
                     />
                   </div>
@@ -321,9 +340,8 @@ export default function RendezVousPage() {
 function StepIndicator({ number, label, active }: { number: number; label: string; active: boolean }) {
   return (
     <div className="flex flex-col items-center gap-2">
-      <div className={`w-10 h-10 rounded-full flex items-center justify-center font-semibold ${
-        active ? 'bg-or-500 text-white' : 'bg-encre-200 text-encre-600'
-      }`}>
+      <div className={`w-10 h-10 rounded-full flex items-center justify-center font-semibold ${active ? 'bg-or-500 text-white' : 'bg-encre-200 text-encre-600'
+        }`}>
         {number}
       </div>
       <span className={`text-xs ${active ? 'text-encre-900 font-medium' : 'text-encre-500'}`}>

@@ -1,8 +1,7 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import { AppointmentWithService } from '@/types/database';
-import Link from 'next/link';
+import { useEffect, useState } from 'react';
 
 export default function AppointmentsPage() {
   const [appointments, setAppointments] = useState<AppointmentWithService[]>([]);
@@ -24,7 +23,7 @@ export default function AppointmentsPage() {
 
       const response = await fetch(`/api/appointments?${params.toString()}`);
       const data = await response.json();
-      
+
       if (data.appointments) {
         setAppointments(data.appointments);
       }
@@ -82,6 +81,7 @@ export default function AppointmentsPage() {
               value={filter.status || ''}
               onChange={(e) => setFilter({ ...filter, status: e.target.value || undefined })}
               className="px-4 py-2 border border-encre-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-or-500"
+              title="Filtrer par statut"
             >
               <option value="">Tous</option>
               <option value="pending">En attente</option>
@@ -99,6 +99,7 @@ export default function AppointmentsPage() {
               value={filter.payment_status || ''}
               onChange={(e) => setFilter({ ...filter, payment_status: e.target.value || undefined })}
               className="px-4 py-2 border border-encre-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-or-500"
+              title="Filtrer par statut de paiement"
             >
               <option value="">Tous</option>
               <option value="unpaid">Non payé</option>
@@ -177,15 +178,8 @@ export default function AppointmentsPage() {
                       <select
                         value={appointment.status}
                         onChange={(e) => updateAppointmentStatus(appointment.id, e.target.value)}
-                        className={`px-3 py-1 rounded-full text-xs font-medium border-0 ${
-                          appointment.status === 'confirmed' || appointment.status === 'paid'
-                            ? 'bg-blue-100 text-blue-800'
-                            : appointment.status === 'cancelled'
-                            ? 'bg-red-100 text-red-800'
-                            : appointment.status === 'completed'
-                            ? 'bg-green-100 text-green-800'
-                            : 'bg-gray-100 text-gray-800'
-                        }`}
+                        className="px-3 py-1 border border-encre-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-or-500"
+                        title="Modifier le statut du rendez-vous"
                       >
                         <option value="pending">En attente</option>
                         <option value="confirmed">Confirmé</option>
@@ -195,15 +189,14 @@ export default function AppointmentsPage() {
                       </select>
                     </td>
                     <td className="px-6 py-4">
-                      <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                        appointment.payment_status === 'paid'
-                          ? 'bg-green-100 text-green-800'
-                          : appointment.payment_status === 'refunded'
+                      <span className={`px-3 py-1 rounded-full text-xs font-medium ${appointment.payment_status === 'paid'
+                        ? 'bg-green-100 text-green-800'
+                        : appointment.payment_status === 'refunded'
                           ? 'bg-purple-100 text-purple-800'
                           : 'bg-orange-100 text-orange-800'
-                      }`}>
-                        {appointment.payment_status === 'paid' ? 'Payé' : 
-                         appointment.payment_status === 'refunded' ? 'Remboursé' : 'Non payé'}
+                        }`}>
+                        {appointment.payment_status === 'paid' ? 'Payé' :
+                          appointment.payment_status === 'refunded' ? 'Remboursé' : 'Non payé'}
                       </span>
                       {appointment.service && (
                         <div className="text-xs text-encre-600 mt-1">
@@ -237,6 +230,6 @@ export default function AppointmentsPage() {
           </div>
         )}
       </div>
-    </div>
+    </div >
   );
 }
