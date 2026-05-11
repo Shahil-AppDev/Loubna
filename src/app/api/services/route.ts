@@ -1,4 +1,5 @@
 import { query } from '@/lib/db/postgres';
+import { requireAdmin } from '@/lib/auth/require-admin';
 import { NextRequest, NextResponse } from 'next/server';
 
 // GET - Récupérer tous les services
@@ -6,6 +7,12 @@ export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const activeOnly = searchParams.get('active') === 'true';
+    const adminMode = searchParams.get('admin') === 'true';
+
+    if (adminMode) {
+      const auth = await requireAdmin();
+      if (!auth.authorized) return auth.response;
+    }
 
     let sql = 'SELECT * FROM services_rdv';
     const params: any[] = [];
@@ -29,6 +36,9 @@ export async function GET(request: NextRequest) {
 // POST - Créer un nouveau service
 export async function POST(request: NextRequest) {
   try {
+    const auth = await requireAdmin();
+    if (!auth.authorized) return auth.response;
+
     const body = await request.json();
     const { name, description, duration_minutes, price_cents, stripe_price_id, active } = body;
 

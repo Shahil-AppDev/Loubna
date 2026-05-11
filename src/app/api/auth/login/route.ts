@@ -1,5 +1,6 @@
 import { createSession } from '@/lib/auth/session';
 import { query } from '@/lib/db/postgres';
+import { checkRateLimit } from '@/lib/security/rate-limit';
 import bcrypt from 'bcrypt';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -7,9 +8,19 @@ export const dynamic = 'force-dynamic';
 
 export async function POST(request: NextRequest) {
   try {
-    const { email, password } = await request.json();
+    const ip = request.headers.get('x-forwarded-for') || 'unknown';
+    const rate = checkRateLimit(`admin-login:${ip}`, 10, 15 * 60 * 1000);
+    if (!rate.allowed) {
+      return NextResponse.json(
+        { error: 'Trop de tentatives. Reessayez plus tard.' },
+        { status: 429 }
+      );
+    }
 
-    if (!email || !password) {
+    const { email, password } = await request.json();
+    const normalizedEmail = String(email || '').trim().toLowerCase();
+
+    if (!normalizedEmail || !password) {
       return NextResponse.json(
         { error: 'Email et mot de passe requis' },
         { status: 400 }
@@ -17,10 +28,24 @@ export async function POST(request: NextRequest) {
     }
 
     // Récupérer l'utilisateur admin
-    const result = await query(
+    let result = await query(
       'SELECT * FROM admin_users WHERE email = $1',
-      [email]
+      [normalizedEmail]
     );
+
+    if (result.rows.length === 0 && process.env.ADMIN_EMAIL && process.env.ADMIN_PASSWORD) {
+      const envEmail = process.env.ADMIN_EMAIL.trim().toLowerCase();
+      if (normalizedEmail === envEmail) {
+        const hashed = await bcrypt.hash(process.env.ADMIN_PASSWORD, 12);
+        await query(
+          `INSERT INTO admin_users (email, password_hash, full_name, role, active)
+           VALUES ($1, $2, 'Administrateur principal', 'super_admin', true)
+           ON CONFLICT (email) DO NOTHING`,
+          [envEmail, hashed]
+        );
+        result = await query('SELECT * FROM admin_users WHERE email = $1', [envEmail]);
+      }
+    }
 
     if (result.rows.length === 0) {
       return NextResponse.json(

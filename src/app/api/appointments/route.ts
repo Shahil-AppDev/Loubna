@@ -1,9 +1,13 @@
 import { query } from '@/lib/db/postgres';
+import { requireAdmin } from '@/lib/auth/require-admin';
 import { NextRequest, NextResponse } from 'next/server';
 
 // GET - Récupérer tous les rendez-vous (admin only)
 export async function GET(request: NextRequest) {
   try {
+    const auth = await requireAdmin();
+    if (!auth.authorized) return auth.response;
+
     const { searchParams } = new URL(request.url);
     const status = searchParams.get('status');
     const paymentStatus = searchParams.get('payment_status');

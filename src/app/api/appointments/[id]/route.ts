@@ -1,4 +1,5 @@
 import { query } from '@/lib/db/postgres';
+import { requireAdmin } from '@/lib/auth/require-admin';
 import { NextRequest, NextResponse } from 'next/server';
 
 // GET - Récupérer un rendez-vous par ID
@@ -7,6 +8,9 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   try {
+    const auth = await requireAdmin();
+    if (!auth.authorized) return auth.response;
+
     const result = await query(
       `SELECT 
         a.*,
@@ -34,6 +38,9 @@ export async function PATCH(
   { params }: { params: { id: string } }
 ) {
   try {
+    const auth = await requireAdmin();
+    if (!auth.authorized) return auth.response;
+
     const body = await request.json();
     const allowedFields = ['status', 'payment_status', 'admin_notes', 'notes'];
     
@@ -73,6 +80,9 @@ export async function DELETE(
   { params }: { params: { id: string } }
 ) {
   try {
+    const auth = await requireAdmin();
+    if (!auth.authorized) return auth.response;
+
     await query('DELETE FROM appointments WHERE id = $1', [params.id]);
     return NextResponse.json({ message: 'Appointment deleted successfully' });
   } catch (error: any) {

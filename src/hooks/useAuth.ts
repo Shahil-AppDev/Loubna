@@ -24,7 +24,7 @@ export function useAuth() {
       
       if (response.ok && data.user) {
         setUser(data.user);
-        setIsAdmin(true);
+        setIsAdmin(data.user.role === 'admin' || data.user.role === 'super_admin');
       } else {
         setUser(null);
         setIsAdmin(false);
