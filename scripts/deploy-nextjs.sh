@@ -22,11 +22,9 @@ echo -e "${BLUE}  DÉPLOIEMENT NEXT.JS SERVEUR${NC}"
 echo -e "${BLUE}============================================${NC}"
 
 # Variables
-DEPLOY_PATH="/var/www/juriste-droit-du-travail/current"
+DEPLOY_PATH=$(pwd)
 APP_NAME="nextjs-loubna"
 PORT=3000
-
-cd "$DEPLOY_PATH"
 
 # ============================================================================
 # PHASE 1: INSTALLATION DÉPENDANCES
