@@ -417,7 +417,7 @@ function renderContent(text: string) {
       elements.push(
         <ul key={`ul-${keyCounter++}`} className="space-y-3 my-5 pl-0">
           {listItems.map((item, j) => (
-            <li key={j} className="flex gap-3 items-start text-[1rem] text-encre-600 leading-[1.8]">
+            <li key={j} className="flex gap-3 items-start text-[1rem] text-encre-700 leading-[1.8]">
               <span className="text-rouge-800 font-bold mt-0.5 flex-shrink-0">—</span>
               <span>{processInline(item)}</span>
             </li>
@@ -436,7 +436,7 @@ function renderContent(text: string) {
       flushList();
       if (trimmed) {
         elements.push(
-          <p key={keyCounter++} className="text-[1rem] text-encre-600 leading-[1.85] mb-4">
+          <p key={keyCounter++} className="text-[1rem] text-encre-700 leading-[1.85] mb-4">
             {processInline(trimmed)}
           </p>
         );
@@ -510,7 +510,7 @@ export default function ServicePage({ params }: Props) {
                       <h3 className="font-serif text-[1.08rem] font-semibold text-encre-800 mb-3">
                         {item.q}
                       </h3>
-                      <p className="text-[0.97rem] text-encre-600 leading-[1.8]">{item.a}</p>
+                      <p className="text-[0.97rem] text-encre-700 leading-[1.8]">{item.a}</p>
                     </div>
                   ))}
                 </div>
@@ -554,7 +554,7 @@ export default function ServicePage({ params }: Props) {
 
             {/* Legal disclaimer */}
             <div className="mt-8 p-5 bg-white border border-encre-100 border-l-[3px] border-l-or-500 rounded-sm">
-              <p className="text-[0.82rem] text-encre-500 leading-[1.8]">
+              <p className="text-[0.82rem] text-encre-700 leading-[1.8]">
                 <span className="font-semibold text-encre-700 block mb-1">Note importante</span>
                 Prestations d&apos;accompagnement, d&apos;information et de prévention — hors consultation juridique réglementée. Les prestations proposées ne constituent pas une consultation juridique au sens de la réglementation applicable à la profession d&apos;avocat.
               </p>
@@ -563,7 +563,7 @@ export default function ServicePage({ params }: Props) {
             {/* Related links */}
             {content.relatedLinks && content.relatedLinks.length > 0 && (
               <div className="mt-12 pt-8 border-t border-or-500/20">
-                <p className="text-[0.7rem] font-bold tracking-[0.16em] uppercase text-encre-400 mb-5">
+                <p className="text-[0.7rem] font-bold tracking-[0.16em] uppercase text-encre-600 mb-5">
                   Pour aller plus loin
                 </p>
                 <div className="flex flex-wrap gap-3">

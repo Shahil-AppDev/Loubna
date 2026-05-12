@@ -27,7 +27,7 @@ export default function SettingsPage() {
     <div>
       <div className="mb-8">
         <h1 className="font-serif text-3xl font-bold text-encre-900">Paramètres</h1>
-        <p className="text-encre-600 mt-2">Configuration de votre back office</p>
+        <p className="text-encre-700 mt-2">Configuration de votre back office</p>
       </div>
 
       <div className="bg-white rounded-lg border border-encre-200 p-6">
@@ -58,14 +58,14 @@ export default function SettingsPage() {
             <h3 className="font-serif text-xl font-semibold text-encre-900 mb-4">
               Horaires de disponibilité
             </h3>
-            <p className="text-encre-600 text-sm mb-4">
+            <p className="text-encre-700 text-sm mb-4">
               Configurez vos horaires de travail pour définir les créneaux disponibles à la réservation.
             </p>
             <div className="bg-encre-50 border border-encre-200 rounded-lg p-4">
               <p className="text-sm text-encre-700">
                 <strong>Par défaut :</strong> Lundi à Vendredi, 9h00 - 17h00
               </p>
-              <p className="text-xs text-encre-500 mt-2">
+              <p className="text-xs text-encre-700 mt-2">
                 Modifiez directement dans la base de données (table <code>availability_settings</code>)
               </p>
             </div>
@@ -75,7 +75,7 @@ export default function SettingsPage() {
             <h3 className="font-serif text-xl font-semibold text-encre-900 mb-4">
               Jours fériés et congés
             </h3>
-            <p className="text-encre-600 text-sm mb-4">
+            <p className="text-encre-700 text-sm mb-4">
               Bloquez des dates spécifiques pour vos congés ou jours fériés.
             </p>
             <div className="bg-encre-50 border border-encre-200 rounded-lg p-4">
@@ -100,14 +100,14 @@ export default function SettingsPage() {
             <h3 className="font-serif text-xl font-semibold text-encre-900 mb-4">
               Notifications
             </h3>
-            <p className="text-encre-600 text-sm mb-4">
+            <p className="text-encre-700 text-sm mb-4">
               Recevez des notifications par email pour les nouveaux rendez-vous.
             </p>
             <div className="bg-encre-50 border border-encre-200 rounded-lg p-4">
               <p className="text-sm text-encre-700">
                 Email admin : <strong>louamjuristeconseil@gmail.com</strong>
               </p>
-              <p className="text-xs text-encre-500 mt-2">
+              <p className="text-xs text-encre-700 mt-2">
                 Les notifications sont envoyées automatiquement via les webhooks Stripe
               </p>
             </div>
@@ -122,7 +122,7 @@ export default function SettingsPage() {
                 <p className="text-encre-700">
                   <strong>Mode :</strong> {process.env.NODE_ENV === 'production' ? 'Production' : 'Test'}
                 </p>
-                <p className="text-xs text-encre-500">
+                <p className="text-xs text-encre-700">
                   Configurez vos clés API Stripe dans les variables d&apos;environnement
                 </p>
               </div>

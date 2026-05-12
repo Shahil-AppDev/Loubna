@@ -87,7 +87,7 @@ export default function ContactPage() {
               <h2 className="font-serif text-[1.8rem] text-encre-800 mb-2">
                 Coordonnées
               </h2>
-              <p className="text-[0.9rem] text-encre-500 leading-[1.75] mb-10">
+              <p className="text-[0.9rem] text-encre-700 leading-[1.75] mb-10">
                 Toutes vos demandes sont traitées avec la plus stricte confidentialité.
                 Je réponds personnellement à chaque message.
               </p>
@@ -100,7 +100,7 @@ export default function ContactPage() {
                       {item.icon}
                     </div>
                     <div>
-                      <p className="text-[0.7rem] font-bold tracking-[0.12em] uppercase text-encre-400 mb-1">
+                      <p className="text-[0.7rem] font-bold tracking-[0.12em] uppercase text-encre-600 mb-1">
                         {item.label}
                       </p>
                       {item.href ? (
@@ -127,7 +127,7 @@ export default function ContactPage() {
                 <p className="text-[0.7rem] font-bold tracking-[0.12em] uppercase text-rouge-800 mb-2">
                   🔒 Confidentialité garantie
                 </p>
-                <p className="text-[0.85rem] text-encre-500 leading-[1.75]">
+                <p className="text-[0.85rem] text-encre-700 leading-[1.75]">
                   Toutes les informations que vous partagez sont strictement
                   confidentielles et traitées conformément au RGPD.
                   Aucune donnée n'est transmise à des tiers.
@@ -139,7 +139,7 @@ export default function ContactPage() {
                 <p className="text-[0.7rem] font-bold tracking-[0.12em] uppercase text-or-600 mb-2">
                   ⏱ Délai de réponse
                 </p>
-                <p className="text-[0.85rem] text-encre-500 leading-[1.75]">
+                <p className="text-[0.85rem] text-encre-700 leading-[1.75]">
                   Je m'engage à répondre à chaque demande sous{" "}
                   <strong className="text-encre-900">48h ouvrées</strong>.
                   Pour les situations urgentes, contactez-moi directement par téléphone.

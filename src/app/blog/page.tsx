@@ -54,7 +54,7 @@ export default function BlogPage() {
                   </div>
                 </div>
                 <div className="p-6">
-                  <div className="flex items-center gap-3 text-xs text-encre-500 mb-3">
+                  <div className="flex items-center gap-3 text-xs text-encre-700 mb-3">
                     <time dateTime={article.date}>
                       {new Date(article.date).toLocaleDateString('fr-FR', {
                         year: 'numeric',
@@ -70,7 +70,7 @@ export default function BlogPage() {
                       {article.title}
                     </Link>
                   </h2>
-                  <p className="text-encre-600 text-sm leading-relaxed mb-4 line-clamp-3">
+                  <p className="text-encre-700 text-sm leading-relaxed mb-4 line-clamp-3">
                     {article.description}
                   </p>
                   <Link
@@ -87,7 +87,7 @@ export default function BlogPage() {
 
           {articles.length === 0 && (
             <div className="text-center py-16">
-              <p className="text-encre-500 text-lg">
+              <p className="text-encre-700 text-lg">
                 Aucun article pour le moment. Revenez bientôt !
               </p>
             </div>
@@ -100,7 +100,7 @@ export default function BlogPage() {
           <h2 className="font-serif text-[2rem] text-encre-800 mb-4">
             Une question juridique spécifique ?
           </h2>
-          <p className="text-encre-600 max-w-[600px] mx-auto mb-8">
+          <p className="text-encre-700 max-w-[600px] mx-auto mb-8">
             Chaque situation est unique. Contactez-nous pour une analyse personnalisée de votre dossier.
           </p>
           <Link href="/contact" className="btn btn-primary">

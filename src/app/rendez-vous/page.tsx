@@ -154,7 +154,7 @@ export default function RendezVousPage() {
                             {service.name}
                           </h3>
                           {service.description && (
-                            <p className="text-sm text-encre-600 mb-3">{service.description}</p>
+                            <p className="text-sm text-encre-700 mb-3">{service.description}</p>
                           )}
                           <div className="flex gap-4 text-sm text-encre-700">
                             <span>⏱️ {service.duration_minutes} min</span>
@@ -174,7 +174,7 @@ export default function RendezVousPage() {
                 <button
                   type="button"
                   onClick={() => setStep(1)}
-                  className="text-sm text-encre-600 hover:text-encre-900 mb-4"
+                  className="text-sm text-encre-700 hover:text-encre-900 mb-4"
                 >
                   ← Retour
                 </button>
@@ -241,7 +241,7 @@ export default function RendezVousPage() {
                 <button
                   type="button"
                   onClick={() => setStep(2)}
-                  className="text-sm text-encre-600 hover:text-encre-900 mb-4"
+                  className="text-sm text-encre-700 hover:text-encre-900 mb-4"
                 >
                   ← Retour
                 </button>
@@ -340,11 +340,11 @@ export default function RendezVousPage() {
 function StepIndicator({ number, label, active }: { number: number; label: string; active: boolean }) {
   return (
     <div className="flex flex-col items-center gap-2">
-      <div className={`w-10 h-10 rounded-full flex items-center justify-center font-semibold ${active ? 'bg-or-500 text-white' : 'bg-encre-200 text-encre-600'
+      <div className={`w-10 h-10 rounded-full flex items-center justify-center font-semibold ${active ? 'bg-or-500 text-white' : 'bg-encre-200 text-encre-700'
         }`}>
         {number}
       </div>
-      <span className={`text-xs ${active ? 'text-encre-900 font-medium' : 'text-encre-500'}`}>
+      <span className={`text-xs ${active ? 'text-encre-900 font-medium' : 'text-encre-700'}`}>
         {label}
       </span>
     </div>

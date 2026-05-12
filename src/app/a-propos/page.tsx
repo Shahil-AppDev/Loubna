@@ -117,30 +117,30 @@ export default function AProposPage() {
               </h3>
 
               <div className="space-y-5 mb-12">
-                <p className="text-[0.95rem] text-encre-600 leading-[1.88]">
+                <p className="text-[0.95rem] text-encre-700 leading-[1.88]">
                   J&apos;accompagne à la fois les salariés et les employeurs dans la compréhension et la gestion de leurs situations professionnelles.
                 </p>
-                <p className="text-[0.95rem] text-encre-600 leading-[1.88]">
+                <p className="text-[0.95rem] text-encre-700 leading-[1.88]">
                   Titulaire d&apos;un Master en droit et management, j&apos;ai développé une approche globale des relations de travail, à la croisée du juridique et du fonctionnement concret des organisations.
                 </p>
-                <p className="text-[0.95rem] text-encre-600 leading-[1.88]">
+                <p className="text-[0.95rem] text-encre-700 leading-[1.88]">
                   Cette double compétence me permet d&apos;intervenir sur des situations réelles, souvent complexes, en prenant en compte :
                 </p>
                 <ul className="list-none space-y-2 ml-5">
-                  <li className="text-[0.95rem] text-encre-600 leading-[1.88] flex items-start gap-2">
+                  <li className="text-[0.95rem] text-encre-700 leading-[1.88] flex items-start gap-2">
                     <span className="text-or-500 mt-1">•</span>
                     <span>les règles juridiques applicables</span>
                   </li>
-                  <li className="text-[0.95rem] text-encre-600 leading-[1.88] flex items-start gap-2">
+                  <li className="text-[0.95rem] text-encre-700 leading-[1.88] flex items-start gap-2">
                     <span className="text-or-500 mt-1">•</span>
                     <span>les pratiques professionnelles</span>
                   </li>
-                  <li className="text-[0.95rem] text-encre-600 leading-[1.88] flex items-start gap-2">
+                  <li className="text-[0.95rem] text-encre-700 leading-[1.88] flex items-start gap-2">
                     <span className="text-or-500 mt-1">•</span>
                     <span>les conditions de travail</span>
                   </li>
                 </ul>
-                <p className="text-[0.95rem] text-encre-600 leading-[1.88] font-medium">
+                <p className="text-[0.95rem] text-encre-700 leading-[1.88] font-medium">
                   Mon objectif : apporter de la lisibilité, structurer les démarches et sécuriser les situations.
                 </p>
               </div>
@@ -150,7 +150,7 @@ export default function AProposPage() {
               </h3>
 
               <div className="space-y-6 mb-12">
-                <p className="text-[0.95rem] text-encre-600 leading-[1.88]">
+                <p className="text-[0.95rem] text-encre-700 leading-[1.88]">
                   J&apos;interviens principalement lorsque les situations deviennent difficiles à comprendre ou à gérer.
                 </p>
 
@@ -158,24 +158,24 @@ export default function AProposPage() {
                   <h4 className="font-serif text-[1.15rem] text-encre-800 mb-3 flex items-center gap-2">
                     <span>👤</span> Auprès des salariés
                   </h4>
-                  <p className="text-[0.9rem] text-encre-600 leading-[1.8] mb-3">
+                  <p className="text-[0.9rem] text-encre-700 leading-[1.8] mb-3">
                     J&apos;accompagne notamment dans :
                   </p>
                   <ul className="list-none space-y-2 ml-5">
-                    <li className="text-[0.9rem] text-encre-600 leading-[1.8] flex items-start gap-2">
+                    <li className="text-[0.9rem] text-encre-700 leading-[1.8] flex items-start gap-2">
                       <span className="text-or-500 mt-1">•</span>
                       <span>les démarches liées aux accidents du travail et maladies professionnelles (AT/MP)</span>
                     </li>
-                    <li className="text-[0.9rem] text-encre-600 leading-[1.8] flex items-start gap-2">
+                    <li className="text-[0.9rem] text-encre-700 leading-[1.8] flex items-start gap-2">
                       <span className="text-or-500 mt-1">•</span>
                       <span>les situations de licenciement, sanctions disciplinaires ou ruptures de contrat</span>
                     </li>
-                    <li className="text-[0.9rem] text-encre-600 leading-[1.8] flex items-start gap-2">
+                    <li className="text-[0.9rem] text-encre-700 leading-[1.8] flex items-start gap-2">
                       <span className="text-or-500 mt-1">•</span>
                       <span>les situations de mal-être au travail ou de harcèlement</span>
                     </li>
                   </ul>
-                  <p className="text-[0.85rem] text-encre-500 leading-[1.7] mt-3 italic">
+                  <p className="text-[0.85rem] text-encre-700 leading-[1.7] mt-3 italic">
                     → analyse, compréhension des documents et structuration des démarches
                   </p>
                 </div>
@@ -184,19 +184,19 @@ export default function AProposPage() {
                   <h4 className="font-serif text-[1.15rem] text-encre-800 mb-3 flex items-center gap-2">
                     <span>🏢</span> Auprès des employeurs
                   </h4>
-                  <p className="text-[0.9rem] text-encre-600 leading-[1.8] mb-3">
+                  <p className="text-[0.9rem] text-encre-700 leading-[1.8] mb-3">
                     J&apos;accompagne les entreprises dans la prévention des risques et la sécurisation de leurs pratiques :
                   </p>
                   <ul className="list-none space-y-2 ml-5">
-                    <li className="text-[0.9rem] text-encre-600 leading-[1.8] flex items-start gap-2">
+                    <li className="text-[0.9rem] text-encre-700 leading-[1.8] flex items-start gap-2">
                       <span className="text-or-500 mt-1">•</span>
                       <span>DUERP : rédaction, mise à jour et appropriation</span>
                     </li>
-                    <li className="text-[0.9rem] text-encre-600 leading-[1.8] flex items-start gap-2">
+                    <li className="text-[0.9rem] text-encre-700 leading-[1.8] flex items-start gap-2">
                       <span className="text-or-500 mt-1">•</span>
                       <span>Prévention des risques professionnels (RPS / TMS) : identification des situations à risque et mise en place d&apos;une démarche adaptée</span>
                     </li>
-                    <li className="text-[0.9rem] text-encre-600 leading-[1.8] flex items-start gap-2">
+                    <li className="text-[0.9rem] text-encre-700 leading-[1.8] flex items-start gap-2">
                       <span className="text-or-500 mt-1">•</span>
                       <span>Pratiques RH et situations sensibles : intervention en amont pour éviter les erreurs et sécuriser les décisions</span>
                     </li>
@@ -209,27 +209,27 @@ export default function AProposPage() {
               </h3>
 
               <div className="space-y-5 mb-12">
-                <p className="text-[0.95rem] text-encre-600 leading-[1.88]">
+                <p className="text-[0.95rem] text-encre-700 leading-[1.88]">
                   J&apos;accompagne également les professionnels à travers des formations concrètes et directement applicables en entreprise.
                 </p>
-                <p className="text-[0.95rem] text-encre-600 leading-[1.88] font-medium">
+                <p className="text-[0.95rem] text-encre-700 leading-[1.88] font-medium">
                   Thématiques principales :
                 </p>
                 <ul className="list-none space-y-2 ml-5">
-                  <li className="text-[0.95rem] text-encre-600 leading-[1.88] flex items-start gap-2">
+                  <li className="text-[0.95rem] text-encre-700 leading-[1.88] flex items-start gap-2">
                     <span className="text-or-500 mt-1">•</span>
                     <span>Prévention et gestion des accidents du travail</span>
                   </li>
-                  <li className="text-[0.95rem] text-encre-600 leading-[1.88] flex items-start gap-2">
+                  <li className="text-[0.95rem] text-encre-700 leading-[1.88] flex items-start gap-2">
                     <span className="text-or-500 mt-1">•</span>
                     <span>Gestion des procédures disciplinaires</span>
                   </li>
-                  <li className="text-[0.95rem] text-encre-600 leading-[1.88] flex items-start gap-2">
+                  <li className="text-[0.95rem] text-encre-700 leading-[1.88] flex items-start gap-2">
                     <span className="text-or-500 mt-1">•</span>
                     <span>Prud&apos;hommes : les clés pour gérer un contentieux efficacement</span>
                   </li>
                 </ul>
-                <p className="text-[0.95rem] text-encre-600 leading-[1.88]">
+                <p className="text-[0.95rem] text-encre-700 leading-[1.88]">
                   Ces formations sont construites à partir de situations réelles pour permettre une mise en pratique immédiate.
                 </p>
               </div>
@@ -239,13 +239,13 @@ export default function AProposPage() {
               </h3>
 
               <div className="space-y-5 mb-12">
-                <p className="text-[0.95rem] text-encre-600 leading-[1.88]">
+                <p className="text-[0.95rem] text-encre-700 leading-[1.88]">
                   J&apos;apporte de la méthode, de la clarté et une lecture structurée des situations pour permettre à chacun d&apos;agir avec plus de sécurité.
                 </p>
-                <p className="text-[0.95rem] text-encre-600 leading-[1.88]">
+                <p className="text-[0.95rem] text-encre-700 leading-[1.88]">
                   Mon rôle est d&apos;accompagner et d&apos;éclairer les décisions.
                 </p>
-                <p className="text-[0.95rem] text-encre-600 leading-[1.88] font-medium">
+                <p className="text-[0.95rem] text-encre-700 leading-[1.88] font-medium">
                   Je n&apos;interviens pas à la place des professions réglementées.
                 </p>
               </div>
@@ -282,7 +282,7 @@ export default function AProposPage() {
                 <div className="text-[2rem] flex-shrink-0 pt-1">{f.icon}</div>
                 <div>
                   <h4 className="font-serif text-[1.12rem] text-encre-800 mb-2">{f.title}</h4>
-                  <p className="text-[0.9rem] text-encre-500 leading-[1.8]">{f.desc}</p>
+                  <p className="text-[0.9rem] text-encre-700 leading-[1.8]">{f.desc}</p>
                 </div>
               </div>
             ))}

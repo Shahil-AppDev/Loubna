@@ -79,7 +79,7 @@ export default function FaqPage() {
 
             {/* ─── Disclaimer ──────────────────────── */}
             <div className="mt-10 bg-white border border-encre-200 border-l-[3px] border-l-or-500 rounded-sm p-5">
-              <p className="text-encre-500 text-[0.85rem] leading-[1.8]">
+              <p className="text-encre-700 text-[0.85rem] leading-[1.8]">
                 <span className="font-semibold text-encre-700 block mb-1">Note importante</span>
                 Les informations fournies ne constituent pas une consultation juridique
                 au sens de la réglementation applicable à la profession d&apos;avocat.
@@ -91,7 +91,7 @@ export default function FaqPage() {
               <h3 className="font-serif text-[1.8rem] text-encre-800 mb-3">
                 Vous ne trouvez pas la réponse ?
               </h3>
-              <p className="text-encre-500 text-[0.93rem] mb-8 max-w-md mx-auto leading-[1.75]">
+              <p className="text-encre-700 text-[0.93rem] mb-8 max-w-md mx-auto leading-[1.75]">
                 Vous ne trouvez pas l&apos;information recherchée, contactez-moi pour une réponse personnalisée sous 48 heures.
               </p>
               <Link href="/contact" className="btn btn-primary">

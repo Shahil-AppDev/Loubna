@@ -11,6 +11,11 @@
   --text-on-dark-muted:  #C8C2B6; /* warm grey — secondary copy */
   --heading-on-dark:     #FFFFFF; /* pure white — headings */
   --meta-on-dark:        #9E9890; /* subtle — breadcrumbs, captions */
+
+  /* Text on light backgrounds (encre-50 / white) */
+  --text-on-light:       #1F1F1F; /* near-black — headings */
+  --text-on-light-body:  #353230; /* encre-800 — main body copy */
+  --text-on-light-muted: #625D58; /* encre-700 — secondary copy (5.4:1 contrast) */
 }
 
 @media (min-width: 768px) {
@@ -209,7 +214,7 @@
     @apply font-serif text-3xl font-bold text-encre-900 leading-tight;
   }
   .admin-page-subtitle {
-    @apply font-sans text-sm text-encre-500 mt-1 leading-relaxed;
+    @apply font-sans text-sm text-encre-700 mt-1 leading-relaxed;
   }
 
   /* Stat cards on white background */
@@ -227,7 +232,7 @@
     @apply font-serif text-3xl font-bold text-encre-900;
   }
   .admin-stat-label {
-    @apply font-sans text-xs font-semibold tracking-[0.1em] uppercase text-encre-500 mt-1;
+    @apply font-sans text-xs font-semibold tracking-[0.1em] uppercase text-encre-700 mt-1;
   }
 
   /* Panels / cards */
@@ -261,7 +266,7 @@
     @apply bg-encre-200 text-encre-800;
   }
   .admin-badge-refunded {
-    @apply bg-encre-100 text-encre-600;
+    @apply bg-encre-100 text-encre-700;
   }
   .admin-badge-unpaid {
     @apply bg-rouge-800/10 text-rouge-700;
@@ -277,7 +282,7 @@
     @apply focus:border-or-500 focus:ring-2 focus:ring-or-500/15;
   }
   .admin-label {
-    @apply block font-sans text-[0.75rem] font-semibold tracking-[0.08em] uppercase text-encre-600 mb-1.5;
+    @apply block font-sans text-[0.75rem] font-semibold tracking-[0.08em] uppercase text-encre-700 mb-1.5;
   }
   .admin-label-dark {
     @apply block font-sans text-[0.75rem] font-semibold tracking-[0.08em] uppercase text-encre-400 mb-1.5;
@@ -285,13 +290,13 @@
 
   /* Admin table */
   .admin-th {
-    @apply px-5 py-3 text-left font-sans text-[0.7rem] font-bold tracking-[0.1em] uppercase text-encre-600;
+    @apply px-5 py-3 text-left font-sans text-[0.7rem] font-bold tracking-[0.1em] uppercase text-encre-700;
   }
   .admin-td {
     @apply px-5 py-4 text-sm text-encre-800 align-middle;
   }
   .admin-td-secondary {
-    @apply block text-xs text-encre-500 mt-0.5;
+    @apply block text-xs text-encre-700 mt-0.5;
   }
 
   /* Sidebar nav link */

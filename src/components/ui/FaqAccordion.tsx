@@ -52,7 +52,7 @@ export default function FaqAccordion({ items }: FaqAccordionProps) {
               openIndex === i ? "max-h-[400px] pb-6" : "max-h-0"
             )}
           >
-            <p className="text-[0.93rem] text-encre-600 leading-[1.85]">
+            <p className="text-[0.93rem] text-encre-700 leading-[1.85]">
               {item.answer}
             </p>
           </div>

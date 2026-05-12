@@ -53,7 +53,7 @@ export default function ServicesPage() {
         <div className="container-main">
           <div className="max-w-2xl mx-auto text-center">
             <span className="section-label">Droit du travail · Prévention</span>
-            <p className="text-[1.02rem] text-encre-500 leading-[1.85]">
+            <p className="text-[1.02rem] text-encre-700 leading-[1.85]">
               Chaque intervention est pensée pour répondre à une problématique précise.
               Que vous soyez salarié souhaitant comprendre votre situation ou employeur
               cherchant à sécuriser vos pratiques, vous trouverez ici un accompagnement
@@ -95,7 +95,7 @@ export default function ServicesPage() {
             <h4 className="font-serif text-[1.15rem] text-encre-800 mb-3">
               ℹ️ Note importante
             </h4>
-            <p className="text-[0.9rem] text-encre-500 leading-[1.85]">
+            <p className="text-[0.9rem] text-encre-700 leading-[1.85]">
               <strong>Prestations d&apos;accompagnement, d&apos;information et de prévention – hors consultation juridique réglementée.</strong> Les prestations proposées relèvent de l&apos;information, de l&apos;accompagnement et de la prévention en droit du travail. Elles ne constituent pas une consultation juridique au sens de la réglementation applicable à la profession d&apos;avocat. En tant que juriste (et non avocate inscrite au barreau), mon intervention se situe en amont : accompagnement préventif, information, rédaction de documents. Pour la représentation en justice, je vous oriente vers un avocat compétent si nécessaire.
             </p>
           </div>
@@ -148,7 +148,7 @@ function ServiceCard({
       <h3 className="font-serif text-[1.18rem] text-encre-800 mb-2.5">
         {service.title}
       </h3>
-      <p className="text-[0.87rem] text-encre-500 leading-[1.75] mb-6 flex-1">
+      <p className="text-[0.87rem] text-encre-700 leading-[1.75] mb-6 flex-1">
         {service.description}
       </p>
       <span className="text-[0.73rem] font-bold tracking-[0.08em] uppercase text-rouge-800 group-hover:tracking-[0.12em] transition-all inline-flex items-center gap-1.5">

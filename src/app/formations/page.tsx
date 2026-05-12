@@ -126,7 +126,7 @@ export default function FormationsPage() {
         <div className="container-main">
           <div className="max-w-2xl mx-auto text-center">
             <span className="section-label">Prévention · Droit du travail</span>
-            <p className="text-[1.02rem] text-encre-500 leading-[1.85]">
+            <p className="text-[1.02rem] text-encre-700 leading-[1.85]">
               Des formations pratiques et opérationnelles, conçues pour répondre aux besoins
               concrets des entreprises en matière de prévention des risques professionnels
               et de gestion des relations de travail.
@@ -178,7 +178,7 @@ export default function FormationsPage() {
                       <span>❓</span>
                       Pourquoi c&apos;est essentiel
                     </h4>
-                    <p className="text-[0.9rem] text-encre-600 leading-[1.8]">
+                    <p className="text-[0.9rem] text-encre-700 leading-[1.8]">
                       {formation.pourquoi}
                     </p>
                   </div>
@@ -191,7 +191,7 @@ export default function FormationsPage() {
                     </h3>
                     <ul className="space-y-2">
                       {formation.objectifs.map((obj, i) => (
-                        <li key={i} className="flex items-start gap-3 text-[0.9rem] text-encre-600">
+                        <li key={i} className="flex items-start gap-3 text-[0.9rem] text-encre-700">
                           <span className="text-or-500 mt-1 flex-shrink-0">•</span>
                           <span>{obj}</span>
                         </li>
@@ -211,7 +211,7 @@ export default function FormationsPage() {
                           <h4 className="font-semibold text-[0.95rem] text-encre-800 mb-1">
                             {module.titre}
                           </h4>
-                          <p className="text-[0.85rem] text-encre-500 leading-[1.7]">
+                          <p className="text-[0.85rem] text-encre-700 leading-[1.7]">
                             {module.contenu}
                           </p>
                         </div>
@@ -225,7 +225,7 @@ export default function FormationsPage() {
                       <span>💡</span>
                       Méthodes pédagogiques
                     </h4>
-                    <p className="text-[0.85rem] text-encre-600 leading-[1.7]">
+                    <p className="text-[0.85rem] text-encre-700 leading-[1.7]">
                       {formation.methodes}
                     </p>
                   </div>
@@ -233,7 +233,7 @@ export default function FormationsPage() {
                   {/* Tarif & CTA */}
                   <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pt-4 border-t border-encre-100">
                     <div>
-                      <p className="text-[0.8rem] text-encre-400 uppercase tracking-[0.08em] mb-1">
+                      <p className="text-[0.8rem] text-encre-600 uppercase tracking-[0.08em] mb-1">
                         Tarif
                       </p>
                       <p className="text-[0.95rem] text-encre-700 font-medium">
@@ -258,7 +258,7 @@ export default function FormationsPage() {
               <span>ℹ️</span>
               Modalités pratiques
             </h4>
-            <div className="space-y-2 text-[0.9rem] text-encre-600 leading-[1.8]">
+            <div className="space-y-2 text-[0.9rem] text-encre-700 leading-[1.8]">
               <p>
                 <strong>Format :</strong> Inter-entreprises ou intra-entreprise (dans vos locaux)
               </p>

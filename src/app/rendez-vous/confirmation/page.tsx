@@ -22,7 +22,7 @@ function ConfirmationContent() {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-encre-50">
-        <div className="text-encre-500">Vérification du paiement...</div>
+        <div className="text-encre-700">Vérification du paiement...</div>
       </div>
     );
   }
@@ -35,7 +35,7 @@ function ConfirmationContent() {
           <h1 className="font-serif text-2xl font-bold text-encre-900 mb-4">
             Paiement non confirmé
           </h1>
-          <p className="text-encre-600 mb-6">
+          <p className="text-encre-700 mb-6">
             Nous n&apos;avons pas pu confirmer votre paiement. Si vous avez été débité, veuillez nous contacter.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -59,7 +59,7 @@ function ConfirmationContent() {
           <h1 className="font-serif text-3xl font-bold text-encre-900 mb-4">
             Rendez-vous confirmé !
           </h1>
-          <p className="text-lg text-encre-600 mb-8">
+          <p className="text-lg text-encre-700 mb-8">
             Votre paiement a été accepté et votre rendez-vous est confirmé.
           </p>
 
@@ -101,7 +101,7 @@ export default function ConfirmationPage() {
   return (
     <Suspense fallback={
       <div className="min-h-screen flex items-center justify-center bg-encre-50">
-        <div className="text-encre-500">Chargement...</div>
+        <div className="text-encre-700">Chargement...</div>
       </div>
     }>
       <ConfirmationContent />

@@ -107,7 +107,7 @@ export default function AdminDashboard() {
         </div>
         <div className="p-6">
           {recentAppointments.length === 0 ? (
-            <p className="text-encre-500 text-sm text-center py-8">Aucun rendez-vous</p>
+            <p className="text-encre-700 text-sm text-center py-8">Aucun rendez-vous</p>
           ) : (
             <div className="divide-y divide-encre-100">
               {recentAppointments.map((appointment) => (

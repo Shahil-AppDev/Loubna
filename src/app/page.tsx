@@ -132,7 +132,7 @@ export default function HomePage() {
               <Link href="/services" key={i} className="expertise-card group block">
                 <span className="text-2xl md:text-3xl mb-4 md:mb-5 block">{card.icon}</span>
                 <h3 className="font-serif text-[1.1rem] md:text-[1.25rem] text-encre-800 mb-2 md:mb-3">{card.title}</h3>
-                <p className="text-[0.85rem] md:text-[0.88rem] text-encre-500 leading-[1.6] md:leading-[1.7] mb-4 md:mb-5">{card.desc}</p>
+                <p className="text-[0.85rem] md:text-[0.88rem] text-encre-700 leading-[1.6] md:leading-[1.7] mb-4 md:mb-5">{card.desc}</p>
                 <span className="text-[0.7rem] md:text-[0.75rem] font-bold tracking-[0.08em] uppercase text-rouge-800 group-hover:tracking-[0.12em] transition-all">
                   En savoir plus →
                 </span>
@@ -220,7 +220,7 @@ export default function HomePage() {
                   {n}
                 </div>
                 <h4 className="font-serif text-[1rem] md:text-[1.12rem] text-encre-800 mb-2 md:mb-3">{t}</h4>
-                <p className="text-[0.82rem] md:text-[0.86rem] text-encre-500 leading-[1.65] md:leading-[1.75]">{d}</p>
+                <p className="text-[0.82rem] md:text-[0.86rem] text-encre-700 leading-[1.65] md:leading-[1.75]">{d}</p>
               </div>
             ))}
           </div>
@@ -262,7 +262,7 @@ export default function HomePage() {
                     <span className="block font-semibold text-[0.9rem] text-encre-800">
                       {t.name}
                     </span>
-                    <span className="block text-[0.75rem] text-encre-400 tracking-[0.04em]">
+                    <span className="block text-[0.75rem] text-encre-600 tracking-[0.04em]">
                       {t.role}
                     </span>
                   </div>
