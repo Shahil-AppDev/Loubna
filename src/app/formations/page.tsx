@@ -1,10 +1,5 @@
-import FormationCard from "@/components/formations/FormationCard";
-import {
-  FORMATION_ACCIDENTS_BLOC,
-  FORMATION_ACCIDENTS_TITRE,
-  FORMATION_DISCIPLINAIRE_BLOC,
-  FORMATION_DISCIPLINAIRE_TITRE,
-} from "@/content/client-formations";
+import FormationBlock from "@/components/formations/FormationBlock";
+import { FORMATIONS_LIST } from "@/content/client-formations-data";
 import { SITE_CONFIG } from "@/lib/constants";
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -12,7 +7,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "Formations — Loubna Abouz Manta, Juriste en Droit du Travail",
   description:
-    "Formations en droit du travail et prévention des risques professionnels — textes conformes au document de référence.",
+    "Formations en droit du travail et prévention des risques professionnels — accidents du travail et pouvoir disciplinaire.",
   openGraph: {
     title: `Formations – ${SITE_CONFIG.name}`,
     description:
@@ -46,8 +41,8 @@ export default function FormationsPage() {
               Formations
             </h1>
             <p className="mt-5 text-[1rem] text-white/85 leading-[1.85] max-w-2xl">
-              Des parcours concrets pour sécuriser vos pratiques — prévention des accidents du travail et
-              exercice du pouvoir disciplinaire — adaptables à vos enjeux et à votre organisation.
+              Parcours en prévention des accidents du travail et en exercice du pouvoir disciplinaire —
+              formats adaptables, en présentiel ou à distance.
             </p>
           </div>
         </div>
@@ -62,13 +57,10 @@ export default function FormationsPage() {
           }}
           aria-hidden
         />
-        <div className="container-main relative max-w-[880px] space-y-10 md:space-y-14">
-          <FormationCard index={1} title={FORMATION_ACCIDENTS_TITRE}>
-            {FORMATION_ACCIDENTS_BLOC}
-          </FormationCard>
-          <FormationCard index={2} title={FORMATION_DISCIPLINAIRE_TITRE}>
-            {FORMATION_DISCIPLINAIRE_BLOC}
-          </FormationCard>
+        <div className="container-main relative max-w-[920px] space-y-12 md:space-y-16">
+          {FORMATIONS_LIST.map((formation, i) => (
+            <FormationBlock key={formation.id} data={formation} index={i + 1} />
+          ))}
         </div>
       </section>
 
@@ -79,10 +71,10 @@ export default function FormationsPage() {
               Prochaine étape
             </p>
             <h2 className="font-serif text-[clamp(1.65rem,4vw,2.25rem)] text-white leading-tight mb-4">
-              Besoin d&apos;une formation sur-mesure ?
+              Une autre thématique à aborder ?
             </h2>
             <p className="text-[0.95rem] text-white/65 leading-[1.8] mb-9">
-              Décrivez votre contexte : je vous réponds pour ajuster le format, le public et les modalités.
+              Contactez-moi pour adapter le contenu, la durée et le format à votre organisation.
             </p>
             <div className="flex flex-wrap gap-4 justify-center">
               <Link href="/contact" className="btn btn-primary">
