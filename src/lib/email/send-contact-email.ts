@@ -86,16 +86,35 @@ function buildContactEmailText(data: ContactEmailPayload): string {
   ].join("\n");
 }
 
+function readEnv(name: string): string | undefined {
+  const raw = process.env[name];
+  if (!raw) return undefined;
+  const trimmed = raw.trim();
+  if (
+    (trimmed.startsWith('"') && trimmed.endsWith('"')) ||
+    (trimmed.startsWith("'") && trimmed.endsWith("'"))
+  ) {
+    return trimmed.slice(1, -1).trim();
+  }
+  return trimmed;
+}
+
 export async function sendContactEmail(data: ContactEmailPayload): Promise<void> {
-  const apiKey = process.env.RESEND_API_KEY;
+  const apiKey = readEnv("RESEND_API_KEY");
   if (!apiKey) {
-    throw new Error("RESEND_API_KEY manquant — configurez l'envoi d'emails dans .env.local");
+    throw new Error("RESEND_API_KEY");
   }
 
-  const to = process.env.CONTACT_EMAIL_TO?.trim() || SITE_CONFIG.email;
+  const to = readEnv("CONTACT_EMAIL_TO") || SITE_CONFIG.email;
   const from =
-    process.env.CONTACT_EMAIL_FROM?.trim() ||
+    readEnv("CONTACT_EMAIL_FROM") ||
     `${SITE_CONFIG.name} <onboarding@resend.dev>`;
+
+  if (!from.includes("@")) {
+    throw new Error(
+      "CONTACT_EMAIL_FROM invalide — utilisez des guillemets, ex. \"Nom <onboarding@resend.dev>\""
+    );
+  }
 
   const resend = new Resend(apiKey);
   const { error } = await resend.emails.send({
