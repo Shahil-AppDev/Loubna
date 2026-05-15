@@ -49,10 +49,10 @@ export default function FaqAccordion({ items }: FaqAccordionProps) {
           <div
             className={cn(
               "overflow-hidden transition-all duration-500 ease-[cubic-bezier(.4,0,.2,1)]",
-              openIndex === i ? "max-h-[400px] pb-6" : "max-h-0"
+              openIndex === i ? "max-h-[5000px] pb-6" : "max-h-0"
             )}
           >
-            <p className="text-[0.93rem] text-encre-700 leading-[1.85]">
+            <p className="text-[0.93rem] text-encre-700 leading-[1.85] whitespace-pre-line">
               {item.answer}
             </p>
           </div>

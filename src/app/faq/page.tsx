@@ -1,6 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { FAQ_ITEMS, SITE_CONFIG } from "@/lib/constants";
+import {
+  FAQ_CTA_TEXTE,
+  FAQ_HERO_SOUS_TITRE,
+  FAQ_NOTE_IMPORTANTE,
+} from "@/lib/client-faq-items";
 import FaqAccordion from "@/components/ui/FaqAccordion";
 
 export const metadata: Metadata = {
@@ -15,9 +20,9 @@ export const metadata: Metadata = {
 };
 
 const FAQ_CATEGORIES = [
-  { key: "salarie",   label: "Pour les salariés" },
-  { key: "employeur", label: "Pour les employeurs" },
-  { key: "general",   label: "Questions générales" },
+  { key: "salarie", label: "👤 Pour les salariés" },
+  { key: "employeur", label: "🏢 Pour les employeurs" },
+  { key: "general", label: "🔎 Questions générales" },
 ];
 
 export default function FaqPage() {
@@ -43,9 +48,8 @@ export default function FaqPage() {
               fréquentes.
             </em>
           </h1>
-          <p className="text-white/85 text-[1rem] max-w-[500px] mt-5 leading-[1.8]">
-            Retrouvez ici les réponses aux questions les plus courantes en droit du travail
-            et prévention des risques. Votre situation est différente ? Contactez-moi directement.
+          <p className="text-white/85 text-[1rem] max-w-[500px] mt-5 leading-[1.8] whitespace-pre-line">
+            {FAQ_HERO_SOUS_TITRE}
           </p>
         </div>
       </section>
@@ -80,19 +84,18 @@ export default function FaqPage() {
             {/* ─── Disclaimer ──────────────────────── */}
             <div className="mt-10 bg-white border border-encre-200 border-l-[3px] border-l-or-500 rounded-sm p-5">
               <p className="text-encre-700 text-[0.85rem] leading-[1.8]">
-                <span className="font-semibold text-encre-700 block mb-1">Note importante</span>
-                Les informations fournies ne constituent pas une consultation juridique
-                au sens de la réglementation applicable à la profession d&apos;avocat.
+                <span className="font-semibold text-encre-700 block mb-1">ℹ️ Note importante</span>
+                {FAQ_NOTE_IMPORTANTE}
               </p>
             </div>
 
             {/* ─── CTA card ────────────────────────── */}
             <div className="mt-14 text-center p-12 bg-white border border-encre-100 rounded-sm shadow-sm">
               <h3 className="font-serif text-[1.8rem] text-encre-800 mb-3">
-                Vous ne trouvez pas la réponse ?
+                📩 Vous ne trouvez pas la réponse ?
               </h3>
               <p className="text-encre-700 text-[0.93rem] mb-8 max-w-md mx-auto leading-[1.75]">
-                Vous ne trouvez pas l&apos;information recherchée, contactez-moi pour une réponse personnalisée sous 48 heures.
+                {FAQ_CTA_TEXTE}
               </p>
               <Link href="/contact" className="btn btn-primary">
                 Poser ma question

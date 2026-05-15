@@ -4,10 +4,12 @@ import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Blog Droit du Travail & RSE | Loubna Abouz Manta",
-  description: "Retrouvez nos articles, décryptages et conseils juridiques en droit du travail, ressources humaines et obligations RSE pour salariés et employeurs.",
+  description:
+    "Actualités juridiques en droit du travail, ressources humaines et obligations RSE pour salariés et employeurs.",
   openGraph: {
     title: "Blog Droit du Travail & RSE | Loubna Abouz Manta",
-    description: "Retrouvez nos articles, décryptages et conseils juridiques en droit du travail, ressources humaines et obligations RSE pour salariés et employeurs.",
+    description:
+      "Actualités juridiques en droit du travail, ressources humaines et obligations RSE pour salariés et employeurs.",
   },
 };
 
@@ -29,9 +31,6 @@ export default function BlogPage() {
           <h1 className="font-serif text-[clamp(2.4rem,5vw,3.8rem)] font-semibold text-white leading-[1.12] max-w-2xl">
             Actualités juridiques
           </h1>
-          <p className="text-white/85 text-[1rem] max-w-[500px] mt-5 leading-[1.8]">
-            Décryptages juridiques, guides pratiques et actualités en droit du travail pour salariés et employeurs.
-          </p>
         </div>
       </section>
 
@@ -97,12 +96,6 @@ export default function BlogPage() {
 
       <section className="section-pad bg-white">
         <div className="container-main text-center">
-          <h2 className="font-serif text-[2rem] text-encre-800 mb-4">
-            Une question juridique spécifique ?
-          </h2>
-          <p className="text-encre-700 max-w-[600px] mx-auto mb-8">
-            Chaque situation est unique. Contactez-nous pour une analyse personnalisée de votre dossier.
-          </p>
           <Link href="/contact" className="btn btn-primary">
             Prendre contact
           </Link>

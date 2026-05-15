@@ -19,17 +19,17 @@ const FORMATION = [
   {
     icon: "🎓",
     title: "Master en Droit et Management",
-    desc: "Double approche à l'intersection du droit du travail et du management des organisations, permettant de comprendre les situations professionnelles en tenant compte à la fois du cadre juridique et de la réalité du terrain.",
+    desc: "Approche à l'intersection du droit du travail et du management des organisations.",
   },
   {
     icon: "⚠️",
     title: "Spécialisation en prévention des risques professionnels",
-    desc: "Spécialisation en identification et évaluation des risques (RPS, accidents du travail, maladies professionnelles), rédaction du DUERP, et accompagnement des entreprises dans leur démarche de prévention.",
+    desc: "Identification et évaluation des risques (RPS / TMS, AT/MP), rédaction du DUERP, accompagnement des entreprises.",
   },
   {
     icon: "📚",
     title: "Formation continue",
-    desc: "Dans une démarche d'amélioration continue, je maintiens mes connaissances à jour via des formations régulières en droit du travail, santé-sécurité au travail et management des risques professionnels.",
+    desc: "Actualisation régulière des connaissances en droit du travail, santé-sécurité et management des risques.",
   },
 ];
 
@@ -52,9 +52,8 @@ export default function AProposPage() {
           <h1 className="font-serif text-[clamp(2.4rem,5vw,3.8rem)] font-semibold text-white leading-[1.12] max-w-2xl">
             Loubna Abouz Manta
           </h1>
-          <p className="text-white/85 text-[1rem] max-w-[500px] mt-5 leading-[1.8]">
-            Spécialisée en prévention des risques professionnels et en accompagnement des situations sensibles,
-            j&apos;interviens en amont des procédures pour sécuriser les décisions et apporter de la clarté.
+          <p className="text-white/85 text-[1rem] max-w-[500px] mt-5 leading-[1.8] whitespace-pre-line">
+            {`Spécialisée en prévention des risques professionnels et en accompagnement des situations sensibles, j'interviens en amont des procédures pour sécuriser les décisions et apporter de la clarté. J'accompagne à la fois les salariés et les employeurs dans la compréhension et la gestion de leurs situations professionnelles.`}
           </p>
         </div>
       </section>
@@ -172,12 +171,9 @@ export default function AProposPage() {
                     </li>
                     <li className="text-[0.9rem] text-encre-700 leading-[1.8] flex items-start gap-2">
                       <span className="text-or-500 mt-1">•</span>
-                      <span>les situations de mal-être au travail ou de harcèlement</span>
+                      <span>les situations de mal-être au travail ou de harcèlement→ analyse, compréhension des documents et structuration des démarches</span>
                     </li>
                   </ul>
-                  <p className="text-[0.85rem] text-encre-700 leading-[1.7] mt-3 italic">
-                    → analyse, compréhension des documents et structuration des démarches
-                  </p>
                 </div>
 
                 <div className="bg-encre-50 border border-encre-200 rounded-sm p-6">
@@ -232,6 +228,36 @@ export default function AProposPage() {
                 <p className="text-[0.95rem] text-encre-700 leading-[1.88]">
                   Ces formations sont construites à partir de situations réelles pour permettre une mise en pratique immédiate.
                 </p>
+
+                <div className="mt-8 space-y-5 text-[0.95rem] text-encre-700 leading-[1.88] whitespace-pre-line">
+                  {`Objectifs :
+
+Prévenir les risques professionnels
+
+Adopter les bons réflexes dès la survenance d'un accident
+
+Sécuriser les pratiques et les décisions
+
+Éviter les erreurs à risque, notamment en cas de contentieux
+
+Pourquoi c'est essentiel
+
+Même lorsqu'un employeur a mis en place les mesures nécessaires, un accident peut survenir.
+
+Dans ces moments, les premières réactions sont déterminantes.Elles conditionnent la suite de la gestion et peuvent avoir des conséquences importantes.
+
+La formation permet notamment de :
+
+Comprendre les obligations en matière de prévention
+
+Maîtriser le rôle du DUERP
+
+Adopter les bons réflexes immédiatement
+
+Éviter les erreurs fréquentes
+
+Sécuriser les premières démarches administratives`}
+                </div>
               </div>
 
               <h3 className="font-serif text-[1.5rem] text-encre-800 mb-6">
