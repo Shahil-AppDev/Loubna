@@ -1,6 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
+import {
+  CONTACT_ACCEPT_ATTRIBUTE,
+  CONTACT_MAX_ATTACHMENTS_BYTES,
+  CONTACT_MAX_FILES,
+  formatBytes,
+  validateContactFiles,
+} from "@/lib/contact/attachments";
 import { DEMAND_TYPES, STATUTS } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
@@ -38,9 +45,11 @@ const TEL_REGEX   = /^[\d\s+\-().]{8,20}$/;
 
 export default function ContactForm() {
   const [form, setForm]     = useState<FormData>(INITIAL_DATA);
+  const [attachments, setAttachments] = useState<File[]>([]);
   const [errors, setErrors] = useState<FormErrors>({});
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   // ─── Validation ──────────────────────────────────────────
   const validateField = (name: string, value: string | boolean): string => {
@@ -76,8 +85,28 @@ export default function ContactForm() {
       const err = validateField(field, form[field]);
       if (err) errs[field] = err;
     });
+    const attachErr = validateContactFiles(attachments);
+    if (attachErr) errs.piecesJointes = attachErr;
     return errs;
   };
+
+  const handleFilesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const picked = Array.from(e.target.files ?? []);
+    const merged = [...attachments, ...picked];
+    const attachErr = validateContactFiles(merged);
+    setErrors((prev) => ({ ...prev, piecesJointes: attachErr || "" }));
+    if (!attachErr) setAttachments(merged);
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  };
+
+  const removeAttachment = (index: number) => {
+    const next = attachments.filter((_, i) => i !== index);
+    setAttachments(next);
+    const attachErr = validateContactFiles(next);
+    setErrors((prev) => ({ ...prev, piecesJointes: attachErr || "" }));
+  };
+
+  const attachmentsTotal = attachments.reduce((sum, f) => sum + f.size, 0);
 
   // ─── Handlers ────────────────────────────────────────────
   const handleChange = (name: keyof FormData, value: string | boolean) => {
@@ -129,10 +158,20 @@ export default function ContactForm() {
       // if (!res.ok) throw new Error();
       // ─────────────────────────────────────────────────────
 
+      const body = new FormData();
+      body.append("nom", form.nom);
+      body.append("prenom", form.prenom);
+      body.append("email", form.email);
+      body.append("tel", form.tel);
+      body.append("typeDemande", form.typeDemande);
+      body.append("statut", form.statut);
+      body.append("sujet", form.sujet);
+      body.append("message", form.message);
+      attachments.forEach((file) => body.append("piecesJointes", file));
+
       const res = await fetch("/api/contact/", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body,
       });
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
@@ -141,8 +180,13 @@ export default function ContactForm() {
 
       setSuccess(true);
       setForm(INITIAL_DATA);
-    } catch {
-      setErrors({ global: "Une erreur est survenue. Veuillez réessayer ou nous contacter directement." });
+      setAttachments([]);
+    } catch (err) {
+      const message =
+        err instanceof Error && err.message
+          ? err.message
+          : "Une erreur est survenue. Veuillez réessayer ou nous contacter directement.";
+      setErrors({ global: message });
     } finally {
       setLoading(false);
     }
@@ -297,6 +341,71 @@ export default function ContactForm() {
           onBlur={() => handleBlur("message")}
           className={cn("form-control resize-y min-h-[140px]", errors.message && "error")}
         />
+      </FormGroup>
+
+      {/* ─── PIÈCES JOINTES ─── */}
+      <FormGroup label="Pièces jointes" error={errors.piecesJointes}>
+        <div
+          className={cn(
+            "rounded-sm border border-dashed border-encre-200 bg-white px-4 py-5 transition-colors",
+            errors.piecesJointes && "border-red-300 bg-red-50/40"
+          )}
+        >
+          <input
+            ref={fileInputRef}
+            type="file"
+            id="piecesJointes"
+            multiple
+            accept={CONTACT_ACCEPT_ATTRIBUTE}
+            onChange={handleFilesChange}
+            className="sr-only"
+            aria-describedby="pieces-jointes-help"
+          />
+          <label
+            htmlFor="piecesJointes"
+            className="flex cursor-pointer flex-col items-center gap-2 text-center"
+          >
+            <span className="text-2xl" aria-hidden>
+              📎
+            </span>
+            <span className="text-[0.88rem] font-medium text-encre-800">
+              Ajouter des fichiers
+            </span>
+            <span
+              id="pieces-jointes-help"
+              className="text-[0.75rem] leading-relaxed text-encre-600 max-w-md"
+            >
+              PDF, Word, Excel, images ou texte — max. {CONTACT_MAX_FILES} fichiers,{" "}
+              {formatBytes(CONTACT_MAX_ATTACHMENTS_BYTES)} au total
+            </span>
+          </label>
+
+          {attachments.length > 0 && (
+            <ul className="mt-4 space-y-2 border-t border-encre-100 pt-4">
+              {attachments.map((file, index) => (
+                <li
+                  key={`${file.name}-${file.size}-${index}`}
+                  className="flex items-center justify-between gap-3 text-[0.82rem] text-encre-800"
+                >
+                  <span className="truncate">
+                    {file.name}{" "}
+                    <span className="text-encre-500">({formatBytes(file.size)})</span>
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => removeAttachment(index)}
+                    className="shrink-0 text-rouge-800 hover:text-rouge-900 text-xs font-semibold uppercase tracking-wide"
+                  >
+                    Retirer
+                  </button>
+                </li>
+              ))}
+              <li className="text-[0.72rem] text-encre-500 pt-1">
+                Total : {formatBytes(attachmentsTotal)} / {formatBytes(CONTACT_MAX_ATTACHMENTS_BYTES)}
+              </li>
+            </ul>
+          )}
+        </div>
       </FormGroup>
 
       {/* ─── RGPD ─── */}

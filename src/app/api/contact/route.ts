@@ -1,26 +1,82 @@
+import { parseContactAttachments } from "@/lib/contact/attachments";
 import { sendContactEmail } from "@/lib/email/send-contact-email";
 import { ensureCmsTables } from "@/lib/db/cms";
 import { query } from "@/lib/db/postgres";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function POST(request: NextRequest) {
+export const runtime = "nodejs";
+
+type ContactFields = {
+  nom: string;
+  prenom: string;
+  email: string;
+  tel: string | null;
+  typeDemande: string | null;
+  statut: string | null;
+  sujet: string;
+  message: string;
+};
+
+async function parseContactRequest(
+  request: NextRequest
+): Promise<
+  | { ok: true; fields: ContactFields; attachments: Awaited<ReturnType<typeof parseContactAttachments>>["attachments"] }
+  | { ok: false; response: NextResponse }
+> {
+  const contentType = request.headers.get("content-type") || "";
+
+  if (contentType.includes("multipart/form-data")) {
+    const formData = await request.formData();
+    const { attachments, error: attachError } = await parseContactAttachments(formData);
+    if (attachError) {
+      return {
+        ok: false,
+        response: NextResponse.json({ error: attachError }, { status: 400 }),
+      };
+    }
+
+    const fields: ContactFields = {
+      nom: String(formData.get("nom") ?? "").trim(),
+      prenom: String(formData.get("prenom") ?? "").trim(),
+      email: String(formData.get("email") ?? "").trim().toLowerCase(),
+      tel: formData.get("tel") ? String(formData.get("tel")).trim() : null,
+      typeDemande: formData.get("typeDemande")
+        ? String(formData.get("typeDemande")).trim()
+        : null,
+      statut: formData.get("statut") ? String(formData.get("statut")).trim() : null,
+      sujet: String(formData.get("sujet") ?? "").trim(),
+      message: String(formData.get("message") ?? "").trim(),
+    };
+
+    return { ok: true, fields, attachments };
+  }
+
   let body: Record<string, unknown>;
   try {
     body = await request.json();
   } catch {
-    return NextResponse.json({ error: "Corps de requête invalide." }, { status: 400 });
+    return {
+      ok: false,
+      response: NextResponse.json({ error: "Corps de requête invalide." }, { status: 400 }),
+    };
   }
 
-  const {
-    nom,
-    prenom,
-    email,
-    tel,
-    typeDemande,
-    statut,
-    sujet,
-    message,
-  } = body;
+  const fields: ContactFields = {
+    nom: String(body.nom ?? "").trim(),
+    prenom: String(body.prenom ?? "").trim(),
+    email: String(body.email ?? "").trim().toLowerCase(),
+    tel: body.tel ? String(body.tel).trim() : null,
+    typeDemande: body.typeDemande ? String(body.typeDemande).trim() : null,
+    statut: body.statut ? String(body.statut).trim() : null,
+    sujet: String(body.sujet ?? "").trim(),
+    message: String(body.message ?? "").trim(),
+  };
+
+  return { ok: true, fields, attachments: [] };
+}
+
+function validateContactFields(fields: ContactFields): NextResponse | null {
+  const { nom, prenom, email, sujet, message } = fields;
 
   if (!nom || !prenom || !email || !sujet || !message) {
     return NextResponse.json(
@@ -30,32 +86,35 @@ export async function POST(request: NextRequest) {
   }
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!emailRegex.test(String(email))) {
+  if (!emailRegex.test(email)) {
     return NextResponse.json(
       { error: "Adresse email invalide." },
       { status: 400 }
     );
   }
 
-  if (String(message).trim().length < 20) {
+  if (message.length < 20) {
     return NextResponse.json(
       { error: "Message trop court." },
       { status: 400 }
     );
   }
 
+  return null;
+}
+
+export async function POST(request: NextRequest) {
+  const parsed = await parseContactRequest(request);
+  if (!parsed.ok) return parsed.response;
+
+  const validationError = validateContactFields(parsed.fields);
+  if (validationError) return validationError;
+
   const payload = {
-    nom: String(nom).trim(),
-    prenom: String(prenom).trim(),
-    email: String(email).trim().toLowerCase(),
-    tel: tel ? String(tel).trim() : null,
-    typeDemande: typeDemande ? String(typeDemande).trim() : null,
-    statut: statut ? String(statut).trim() : null,
-    sujet: String(sujet).trim(),
-    message: String(message).trim(),
+    ...parsed.fields,
+    attachments: parsed.attachments,
   };
 
-  // Enregistrement en base (optionnel — ne bloque pas l'email)
   try {
     await ensureCmsTables();
     await query(
@@ -110,6 +169,9 @@ function contactEmailErrorMessage(detail: string): string {
   }
   if (lower.includes("invalid") && lower.includes("from")) {
     return "Adresse expéditeur invalide dans la configuration Resend.";
+  }
+  if (lower.includes("attachment") || lower.includes("too large")) {
+    return "Les pièces jointes sont trop volumineuses ou non acceptées. Taille totale max. : 30 Mo.";
   }
   return "L'envoi du message a échoué. Réessayez ou écrivez-nous directement par email.";
 }

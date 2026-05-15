@@ -1,3 +1,4 @@
+import type { ContactAttachment } from "@/lib/contact/attachments";
 import { SITE_CONFIG } from "@/lib/constants";
 import { Resend } from "resend";
 
@@ -12,6 +13,7 @@ export type ContactEmailPayload = {
   statut?: string | null;
   sujet: string;
   message: string;
+  attachments?: ContactAttachment[];
 };
 
 function escapeHtml(value: string): string {
@@ -62,6 +64,11 @@ function buildContactEmailHtml(data: ContactEmailPayload): string {
         <hr style="margin: 24px 0; border: none; border-top: 1px solid #e8e5e0;" />
         <h2 style="color: #8B1A1A; font-size: 1.05rem; margin: 0 0 12px;">Message</h2>
         <p style="margin: 0; line-height: 1.75; white-space: pre-wrap;">${escapeHtml(data.message)}</p>
+        ${
+          data.attachments?.length
+            ? `<p style="margin: 16px 0 0; font-size: 0.9rem; color: #625d58;"><strong>Pièces jointes :</strong> ${data.attachments.map((a) => escapeHtml(a.filename)).join(", ")}</p>`
+            : ""
+        }
       </div>
       <p style="text-align: center; color: #918a7f; font-size: 0.75rem; margin: 16px 0 0;">
         ${escapeHtml(SITE_CONFIG.name)} — ${escapeHtml(SITE_CONFIG.url)}
@@ -83,6 +90,9 @@ function buildContactEmailText(data: ContactEmailPayload): string {
     "",
     "Message :",
     data.message,
+    ...(data.attachments?.length
+      ? ["", `Pièces jointes : ${data.attachments.map((a) => a.filename).join(", ")}`]
+      : []),
   ].join("\n");
 }
 
@@ -124,6 +134,10 @@ export async function sendContactEmail(data: ContactEmailPayload): Promise<void>
     subject: CONTACT_EMAIL_SUBJECT,
     html: buildContactEmailHtml(data),
     text: buildContactEmailText(data),
+    attachments: data.attachments?.map((file) => ({
+      filename: file.filename,
+      content: file.content,
+    })),
   });
 
   if (error) {
