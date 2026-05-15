@@ -22,7 +22,7 @@ function BulletList({ items }: { items: string[] }) {
     <ul className="space-y-2 list-none pl-0">
       {items.map((item, i) => (
         <li key={i} className="flex gap-3 text-[0.9375rem] leading-[1.75] text-encre-950">
-          <span className="mt-[0.55rem] h-1.5 w-1.5 shrink-0 rounded-full bg-or-500" aria-hidden />
+          <span className="mt-[0.55rem] h-1.5 w-1.5 shrink-0 rounded-full bg-rouge-800" aria-hidden />
           <span>{item}</span>
         </li>
       ))}
@@ -41,11 +41,11 @@ function MetaRow({
 }) {
   return (
     <div className="flex gap-4">
-      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-or-500/10 text-or-600">
+      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-rouge-800/10 text-rouge-800">
         <Icon className="w-5 h-5" />
       </div>
       <div>
-        <p className="text-[0.68rem] font-bold uppercase tracking-[0.14em] text-or-600 mb-0.5">{label}</p>
+        <p className="text-[0.68rem] font-bold uppercase tracking-[0.14em] text-rouge-800 mb-0.5">{label}</p>
         <p className="text-[0.9rem] leading-[1.65] text-encre-950">{value}</p>
       </div>
     </div>
@@ -82,15 +82,15 @@ export default function FormationBlock({ data, index }: { data: FormationData; i
       id={data.id}
       className="scroll-mt-24 rounded-2xl border border-encre-200/80 bg-white shadow-[0_28px_56px_-24px_rgba(10,10,10,0.14)] overflow-hidden"
     >
-      <div className="h-1 bg-gradient-to-r from-or-500 via-rouge-800 to-or-500" aria-hidden />
+      <div className="h-1 bg-gradient-to-r from-rouge-800 via-rouge-800 to-rouge-800" aria-hidden />
 
       {/* Carte produit — style maquette client */}
       <div className="border-b border-encre-100 bg-gradient-to-b from-encre-50/80 to-white px-6 py-10 md:px-10 md:py-12">
         <div className="flex flex-col items-center text-center max-w-2xl mx-auto">
-          <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-or-500/15 text-or-600">
+          <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-rouge-800/15 text-rouge-800">
             <IconGraduation className="w-7 h-7" />
           </div>
-          <p className="text-[0.68rem] font-bold uppercase tracking-[0.22em] text-or-600 mb-3">
+          <p className="text-[0.68rem] font-bold uppercase tracking-[0.22em] text-rouge-800 mb-3">
             {data.label}
           </p>
           <h2 className="font-serif text-[1.35rem] md:text-[1.55rem] font-semibold text-encre-950 leading-snug mb-4">
@@ -112,12 +112,12 @@ export default function FormationBlock({ data, index }: { data: FormationData; i
           )}
 
           {data.productMeta?.tarif && (
-            <div className="w-full rounded-xl border border-or-500/25 bg-or-500/[0.08] px-6 py-5 mb-8 flex items-center gap-4">
-              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-or-500/20 text-or-700">
+            <div className="w-full rounded-xl border border-rouge-800/25 bg-rouge-800/[0.08] px-6 py-5 mb-8 flex items-center gap-4">
+              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-rouge-800/20 text-rouge-800">
                 <IconTag />
               </div>
               <div className="text-left">
-                <p className="text-[0.68rem] font-bold uppercase tracking-[0.14em] text-or-700">
+                <p className="text-[0.68rem] font-bold uppercase tracking-[0.14em] text-rouge-800">
                   {data.productMeta.tarifLabel ?? "Tarif par participant"}
                 </p>
                 <p className="font-serif text-[1.35rem] font-semibold text-encre-950 mt-0.5">
@@ -133,7 +133,7 @@ export default function FormationBlock({ data, index }: { data: FormationData; i
                 const Icon = HIGHLIGHT_ICONS[i] ?? IconTarget;
                 return (
                   <div key={i} className="flex flex-col items-center gap-3 px-2">
-                    <div className="flex h-11 w-11 items-center justify-center rounded-full bg-encre-950/5 text-or-600">
+                    <div className="flex h-11 w-11 items-center justify-center rounded-full bg-encre-950/5 text-rouge-800">
                       <Icon />
                     </div>
                     <p className="text-[0.8rem] leading-[1.55] text-encre-950 text-center">{text}</p>
@@ -150,14 +150,14 @@ export default function FormationBlock({ data, index }: { data: FormationData; i
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Link
                 href={contactHref}
-                className="inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-or-500 text-encre-950 text-xs font-bold uppercase tracking-widest rounded-sm border-2 border-or-500 hover:bg-or-400 hover:border-or-400 transition-colors"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-rouge-800 text-white text-xs font-bold uppercase tracking-widest rounded-sm border-2 border-rouge-800 hover:bg-rouge-900 hover:border-rouge-900 transition-colors"
               >
                 <IconCalendar />
                 S&apos;inscrire à la formation
               </Link>
               <Link
                 href={`${contactHref}&devis=1`}
-                className="inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-white text-or-600 text-xs font-bold uppercase tracking-widest rounded-sm border-2 border-or-500 hover:bg-or-500/5 transition-colors"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-white text-rouge-800 text-xs font-bold uppercase tracking-widest rounded-sm border-2 border-rouge-800 hover:bg-rouge-800/5 transition-colors"
               >
                 <IconDocument />
                 Demander un devis
@@ -174,7 +174,7 @@ export default function FormationBlock({ data, index }: { data: FormationData; i
       {/* Contenu détaillé */}
       <div className="px-6 py-10 md:px-10 md:py-12 space-y-10">
         <div className="flex items-center gap-3 pb-6 border-b border-encre-100">
-          <span className="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-encre-950 font-sans text-[0.65rem] font-bold tracking-widest text-or-400">
+          <span className="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-encre-950 font-sans text-[0.65rem] font-bold tracking-widest text-rouge-300">
             {n}
           </span>
           <p className="text-[0.72rem] font-semibold uppercase tracking-[0.12em] text-encre-950 leading-snug">
@@ -206,7 +206,7 @@ export default function FormationBlock({ data, index }: { data: FormationData; i
                   className="rounded-xl border border-encre-100 bg-encre-50/60 p-5 md:p-6"
                 >
                   <h4 className="font-serif text-[1.02rem] font-semibold text-rouge-800 mb-4 flex gap-3">
-                    <span className="text-or-500 font-sans text-[0.8rem] font-bold tracking-wider mt-0.5 shrink-0">
+                    <span className="text-rouge-800 font-sans text-[0.8rem] font-bold tracking-wider mt-0.5 shrink-0">
                       {String(i + 1).padStart(2, "0")}
                     </span>
                     {mod.title.replace(/^\d+\.\s*/, "")}
@@ -219,8 +219,8 @@ export default function FormationBlock({ data, index }: { data: FormationData; i
         )}
 
         {data.demarche && (
-          <div className="rounded-xl border-l-[3px] border-l-or-500 bg-encre-50/80 px-5 py-5">
-            <p className="text-[0.68rem] font-bold uppercase tracking-[0.14em] text-or-600 mb-2">
+          <div className="rounded-xl border-l-[3px] border-l-rouge-800 bg-encre-50/80 px-5 py-5">
+            <p className="text-[0.68rem] font-bold uppercase tracking-[0.14em] text-rouge-800 mb-2">
               Ma démarche
             </p>
             <p className="text-[0.9375rem] leading-[1.85] text-encre-950">{data.demarche}</p>

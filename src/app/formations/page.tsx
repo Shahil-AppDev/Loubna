@@ -30,11 +30,11 @@ export default function FormationsPage() {
               Accueil
             </Link>
             <span>›</span>
-            <span className="text-or-500">Formations</span>
+            <span className="text-rouge-800">Formations</span>
           </nav>
           <div className="max-w-3xl">
-            <p className="mb-4 inline-flex items-center gap-2 text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-or-500">
-              <span className="h-px w-8 bg-or-500/80" aria-hidden />
+            <p className="mb-4 inline-flex items-center gap-2 text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-rouge-800">
+              <span className="h-px w-8 bg-rouge-800/80" aria-hidden />
               Entreprise &amp; RH
             </p>
             <h1 className="font-serif text-[clamp(2.4rem,5vw,3.8rem)] font-semibold text-white leading-[1.1]">
@@ -67,7 +67,7 @@ export default function FormationsPage() {
       <section className="section-pad bg-encre-950 border-t border-white/5">
         <div className="container-main">
           <div className="mx-auto max-w-2xl text-center">
-            <p className="text-[0.68rem] font-bold uppercase tracking-[0.2em] text-or-500 mb-4">
+            <p className="text-[0.68rem] font-bold uppercase tracking-[0.2em] text-rouge-800 mb-4">
               Prochaine étape
             </p>
             <h2 className="font-serif text-[clamp(1.65rem,4vw,2.25rem)] text-white leading-tight mb-4">

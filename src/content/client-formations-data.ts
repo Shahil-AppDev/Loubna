@@ -179,6 +179,8 @@ export const FORMATION_ACCIDENTS_DATA: FormationData = {
     duree: "Adaptable selon les besoins de l'entreprise",
     public:
       "Employeurs, responsables RH, managers, référents sécurité et toute personne amenée à intervenir dans la gestion ou la prévention des accidents du travail",
+    tarifLabel: "Tarif par groupe",
+    tarif: "À partir de 999 € HT par groupe de 5 participants",
   },
   highlights: [
     "Formation basée sur des situations concrètes",
