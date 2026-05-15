@@ -1,16 +1,7 @@
-import { NextRequest, NextResponse } from "next/server";
+import { sendContactEmail } from "@/lib/email/send-contact-email";
 import { ensureCmsTables } from "@/lib/db/cms";
 import { query } from "@/lib/db/postgres";
-
-// ═══════════════════════════════════════════════════════════
-// API Route — /api/contact
-// Gestion des soumissions du formulaire de contact
-//
-// Pour activer cette route avec Resend :
-// 1. npm install resend
-// 2. Ajouter RESEND_API_KEY dans .env.local
-// 3. Décommenter le code ci-dessous
-// ═══════════════════════════════════════════════════════════
+import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
   try {
@@ -28,7 +19,6 @@ export async function POST(request: NextRequest) {
       message,
     } = body;
 
-    // ─── Validation serveur ────────────────────────────────
     if (!nom || !prenom || !email || !sujet || !message) {
       return NextResponse.json(
         { error: "Champs obligatoires manquants." },
@@ -51,47 +41,32 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // ─── Envoi avec Resend ────────────────────────────────
-    // Décommentez et installez : npm install resend
-    //
-    // import { Resend } from "resend";
-    // const resend = new Resend(process.env.RESEND_API_KEY);
-    //
-    // await resend.emails.send({
-    //   from: "Site web <noreply@loubna-abouz-manta.fr>",
-    //   to: [process.env.CONTACT_EMAIL_TO!],
-    //   replyTo: email,
-    //   subject: `[Contact] ${sujet} — ${prenom} ${nom}`,
-    //   html: `
-    //     <div style="font-family: Georgia, serif; max-width: 600px; margin: 0 auto;">
-    //       <div style="background: #8B0000; padding: 24px; text-align: center;">
-    //         <h1 style="color: white; margin: 0; font-size: 1.4rem;">Nouvelle demande de contact</h1>
-    //       </div>
-    //       <div style="padding: 32px; background: #fff; border: 1px solid #eee;">
-    //         <table style="width: 100%; border-collapse: collapse;">
-    //           <tr><td style="padding: 8px 0; color: #666; font-size: 0.85rem; width: 140px;"><strong>Nom</strong></td><td style="padding: 8px 0;">${prenom} ${nom}</td></tr>
-    //           <tr><td style="padding: 8px 0; color: #666; font-size: 0.85rem;"><strong>Email</strong></td><td style="padding: 8px 0;"><a href="mailto:${email}">${email}</a></td></tr>
-    //           <tr><td style="padding: 8px 0; color: #666; font-size: 0.85rem;"><strong>Téléphone</strong></td><td style="padding: 8px 0;">${tel || "Non renseigné"}</td></tr>
-    //           <tr><td style="padding: 8px 0; color: #666; font-size: 0.85rem;"><strong>Statut</strong></td><td style="padding: 8px 0;">${statut || "Non précisé"}</td></tr>
-    //           <tr><td style="padding: 8px 0; color: #666; font-size: 0.85rem;"><strong>Type</strong></td><td style="padding: 8px 0;">${typeDemande || "Non précisé"}</td></tr>
-    //           <tr><td style="padding: 8px 0; color: #666; font-size: 0.85rem;"><strong>Sujet</strong></td><td style="padding: 8px 0;">${sujet}</td></tr>
-    //         </table>
-    //         <hr style="margin: 24px 0; border: none; border-top: 1px solid #eee;" />
-    //         <h3 style="color: #8B0000; margin-bottom: 12px;">Message</h3>
-    //         <p style="color: #333; line-height: 1.7; white-space: pre-wrap;">${message}</p>
-    //       </div>
-    //       <div style="padding: 16px; text-align: center; color: #999; font-size: 0.75rem;">
-    //         Loubna Abouz Manta — Juriste en droit du travail
-    //       </div>
-    //     </div>
-    //   `,
-    // });
+    const payload = {
+      nom: String(nom).trim(),
+      prenom: String(prenom).trim(),
+      email: String(email).trim().toLowerCase(),
+      tel: tel ? String(tel).trim() : null,
+      typeDemande: typeDemande ? String(typeDemande).trim() : null,
+      statut: statut ? String(statut).trim() : null,
+      sujet: String(sujet).trim(),
+      message: String(message).trim(),
+    };
 
     await query(
       `INSERT INTO leads (first_name, last_name, email, phone, demand_type, subject, message, source)
        VALUES ($1, $2, $3, $4, $5, $6, $7, 'contact_form')`,
-      [prenom.trim(), nom.trim(), email.trim().toLowerCase(), tel || null, typeDemande || null, sujet.trim(), message.trim()]
+      [
+        payload.prenom,
+        payload.nom,
+        payload.email,
+        payload.tel,
+        payload.typeDemande,
+        payload.sujet,
+        payload.message,
+      ]
     );
+
+    await sendContactEmail(payload);
 
     return NextResponse.json(
       { success: true, message: "Votre message a bien été envoyé." },
@@ -99,14 +74,14 @@ export async function POST(request: NextRequest) {
     );
   } catch (error) {
     console.error("Contact API error:", error);
-    return NextResponse.json(
-      { error: "Une erreur interne est survenue. Veuillez réessayer." },
-      { status: 500 }
-    );
+    const message =
+      error instanceof Error && error.message.includes("RESEND_API_KEY")
+        ? "L'envoi par email n'est pas configuré sur le serveur. Contactez-nous directement par email."
+        : "Une erreur interne est survenue. Veuillez réessayer.";
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }
 
-// Bloquer les méthodes non autorisées
 export async function GET() {
   return NextResponse.json({ error: "Méthode non autorisée." }, { status: 405 });
 }
