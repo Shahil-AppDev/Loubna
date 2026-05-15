@@ -36,12 +36,13 @@ function WhatsAppFloatingButton() {
       className="fixed bottom-5 right-5 md:bottom-6 md:right-6 z-40 w-14 h-14 rounded-full overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 hover:opacity-95 group"
     >
       <Image
-        src="/whatsapp-fab.svg"
+        src="/whatsapp-fab.png"
         alt=""
         width={56}
         height={56}
-        className="h-full w-full"
+        className="h-full w-full object-cover"
         aria-hidden
+        priority
       />
       <span className="absolute -top-12 right-0 bg-gray-800 text-white text-xs px-3 py-2 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap shadow-lg">
         Échanger sur WhatsApp
