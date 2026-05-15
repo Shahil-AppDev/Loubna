@@ -34,7 +34,7 @@ export const BLOG_ARTICLES = {
     metaTitle: "Rédiger un contrat de travail en CDI : clauses obligatoires et pièges à éviter",
     description:
       "Le contrat de travail à durée indéterminée (CDI) constitue la forme normale et générale de la relation de travail, conformément à l'article Code du travail (art. L1221-2).",
-    date: "2026-05-22",
+    date: "2026-05-12",
     category: "Employeurs",
     readTime: "10 min",
     image: "/images/blog/contrat-cdi.jpg",
@@ -44,7 +44,7 @@ export const BLOG_ARTICLES = {
     metaTitle: "RSE ET DROIT DU TRAVAIL : LES OBLIGATIONS DE L'EMPLOYEUR",
     description:
       "Responsabilité sociétale des entreprises (RSE) : obligations et prévention des risques en 2026",
-    date: "2026-05-29",
+    date: "2026-05-10",
     category: "RSE & Prévention",
     readTime: "8 min",
     image: "/images/blog/rse-obligations.jpg",
