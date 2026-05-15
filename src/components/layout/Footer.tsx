@@ -1,6 +1,7 @@
 import SocialLinks from "@/components/layout/SocialLinks";
 import { SERVICE_NOTE_IMPORTANTE } from "@/lib/client-service-note";
 import { SITE_CONFIG } from "@/lib/constants";
+import Image from "next/image";
 import Link from "next/link";
 
 const NAV_LINKS = [
@@ -32,12 +33,16 @@ function WhatsAppFloatingButton() {
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Contacter via WhatsApp"
-      className="fixed bottom-5 right-5 md:bottom-6 md:right-6 z-40 w-14 h-14 bg-[#25D366] hover:bg-[#128C7E] text-white rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group"
+      className="fixed bottom-5 right-5 md:bottom-6 md:right-6 z-40 w-14 h-14 rounded-full overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 hover:opacity-95 group"
     >
-      <svg className="w-8 h-8" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
-        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.976-.272-.109-.467-.109-.658.109-.191.219-1.128.867-1.371.976-.243.109-.566.042-.896-.219-.33-.26-2.03-.497-2.751-1.045-.72-.548-1.509-1.179-1.509-1.179s-1.233-.382-2.03.497c-.797.88-1.233 1.617-1.233 1.617s-.329 1.179-.329 2.59c0 1.411.865 2.591 1.233 3.421.368.83 1.459 2.591 2.751 3.421 1.292.83 2.473 1.179 3.421 1.179.948 0 2.03-.329 2.751-1.179.72-.848 1.233-1.617 1.233-1.617s.329-1.179.329-2.59c0-1.411-.865-2.591-1.233-3.421-.368-.83-1.459-2.591-2.751-3.421-1.292-.83-2.473-1.179-3.421-1.179-.948 0-2.03.329-2.751 1.179-.72.848-1.233 1.617-1.233 1.617s-.329 1.179-.329 2.59z" />
-        <path d="M12.031 0C5.558 0 .121 5.428.121 12.012c0 2.117.553 4.142 1.604 5.945L0 24l6.305-1.654a11.88 11.88 0 005.726 1.459h.005c6.473 0 11.91-5.428 11.91-12.012C23.941 5.428 18.504 0 12.031 0zm0 21.975h-.004a9.93 9.93 0 01-5.072-1.378l-.363-.216-3.741.98 1-3.648-.237-.374a9.86 9.86 0 01-1.51-5.26c0-5.459 4.488-9.906 10.005-9.906 2.67 0 5.177 1.038 7.062 2.921a9.82 9.82 0 012.93 7.038c-.003 5.459-4.488 9.906-10.005 9.906z" />
-      </svg>
+      <Image
+        src="/whatsapp-fab.svg"
+        alt=""
+        width={56}
+        height={56}
+        className="h-full w-full"
+        aria-hidden
+      />
       <span className="absolute -top-12 right-0 bg-gray-800 text-white text-xs px-3 py-2 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap shadow-lg">
         Échanger sur WhatsApp
       </span>
