@@ -18,7 +18,7 @@ const map = {
   "rediger-contrat-travail-cdi-clauses-obligatoires": sliceDoc(589, 684),
   "comment-contester-sanction-disciplinaire-avertissement": sliceDoc(685, 802),
   "recrutement-salarie-etranger-demarches-employeur": sliceDoc(803, 950),
-  "rupture-conventionnelle-procedure-indemnites-2024": sliceDoc(951, 1175),
+  "rupture-conventionnelle-procedure-indemnites-2026": sliceDoc(951, 1175),
 };
 
 let out = `/** Contenu article blog — extrait mot pour mot de _docx_extract/extracted_text.txt (document client). */\n\n`;

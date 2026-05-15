@@ -194,7 +194,7 @@ const SERVICES_DATA = {
   },
   "rupture-conventionnelle": {
     title: "Information et Accompagnement en Rupture Conventionnelle | Juriste",
-    description: "Sécurisez votre rupture conventionnelle en 2024. Accompagnement pour le calcul des indemnités, la négociation et le respect des délais.",
+    description: "Sécurisez votre rupture conventionnelle en 2026. Accompagnement pour le calcul des indemnités, la négociation et le respect des délais.",
     h1: "Accompagnement Complet en Rupture Conventionnelle",
     content: {
       intro: "La rupture conventionnelle est le seul mode de rupture amiable du CDI. Elle permet aux deux parties de se séparer d'un commun accord, en garantissant au salarié le bénéfice des allocations chômage. Toutefois, un formalisme strict et des délais incompressibles doivent être respectés sous peine de nullité.",
@@ -223,7 +223,7 @@ const SERVICES_DATA = {
       ctaSalarie: "Calculer mon indemnité et négocier mon départ",
       ctaEmployeur: "Sécuriser la procédure d'homologation",
       relatedLinks: [
-        { href: "/blog/rupture-conventionnelle-procedure-indemnites-2024", label: "Guide : Rupture conventionnelle 2024" },
+        { href: "/blog/rupture-conventionnelle-procedure-indemnites-2026", label: "Guide : Rupture conventionnelle 2026" },
         { href: "/services/negociation-accord-transactionnel", label: "Négociation amiable" }
       ]
     }
