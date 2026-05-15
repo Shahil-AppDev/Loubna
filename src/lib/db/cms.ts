@@ -23,6 +23,8 @@ export function editorialHint() {
 export async function ensureCmsTables() {
   if (initialized) return;
 
+  await query(`CREATE EXTENSION IF NOT EXISTS "pgcrypto";`);
+
   await query(`
     CREATE TABLE IF NOT EXISTS cms_pages (
       id UUID PRIMARY KEY DEFAULT gen_random_uuid(),

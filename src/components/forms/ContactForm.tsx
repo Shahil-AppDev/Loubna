@@ -129,7 +129,7 @@ export default function ContactForm() {
       // if (!res.ok) throw new Error();
       // ─────────────────────────────────────────────────────
 
-      const res = await fetch("/api/contact", {
+      const res = await fetch("/api/contact/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
