@@ -1,7 +1,8 @@
 'use client';
 
+import AttachmentField from '@/components/forms/AttachmentField';
+import { validateContactFiles } from '@/lib/contact/attachments';
 import { ServiceRdv } from '@/types/database';
-import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 export default function RendezVousPage() {
@@ -18,6 +19,8 @@ export default function RendezVousPage() {
   });
   const [loading, setLoading] = useState(false);
   const [step, setStep] = useState(1);
+  const [attachments, setAttachments] = useState<File[]>([]);
+  const [attachError, setAttachError] = useState('');
 
   useEffect(() => {
     loadServices();
@@ -39,24 +42,31 @@ export default function RendezVousPage() {
     e.preventDefault();
     if (!selectedService || !selectedDate || !selectedTime) return;
 
+    const fileError = validateContactFiles(attachments);
+    if (fileError) {
+      setAttachError(fileError);
+      return;
+    }
+
     setLoading(true);
+    setAttachError('');
 
     try {
-      // Créer le rendez-vous
       const appointmentDate = new Date(`${selectedDate}T${selectedTime}`);
 
-      const appointmentResponse = await fetch('/api/appointments', {
+      const body = new FormData();
+      body.append('client_name', `${formData.firstName} ${formData.lastName}`.trim());
+      body.append('client_email', formData.email);
+      body.append('client_phone', formData.phone);
+      body.append('service_id', selectedService.id);
+      body.append('appointment_date', appointmentDate.toISOString());
+      body.append('duration_minutes', String(selectedService.duration_minutes));
+      body.append('notes', formData.notes);
+      attachments.forEach((file) => body.append('piecesJointes', file));
+
+      const appointmentResponse = await fetch('/api/appointments/', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          client_name: `${formData.firstName} ${formData.lastName}`.trim(),
-          client_email: formData.email,
-          client_phone: formData.phone,
-          service_id: selectedService.id,
-          appointment_date: appointmentDate.toISOString(),
-          duration_minutes: selectedService.duration_minutes,
-          notes: formData.notes
-        })
+        body,
       });
 
       const appointmentData = await appointmentResponse.json();
@@ -318,6 +328,23 @@ export default function RendezVousPage() {
                       className="w-full px-4 py-3 border border-encre-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-or-500"
                       placeholder="Décrivez brièvement votre situation..."
                     />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-encre-700 mb-2">
+                      Pièces jointes (optionnel)
+                    </label>
+                    <AttachmentField
+                      id="rdv-piecesJointes"
+                      files={attachments}
+                      onChange={setAttachments}
+                      onValidationError={setAttachError}
+                      error={attachError}
+                      helpId="rdv-pieces-jointes-help"
+                    />
+                    {attachError && (
+                      <p className="text-[0.75rem] text-red-500 mt-2">⚠ {attachError}</p>
+                    )}
                   </div>
 
                   <button
