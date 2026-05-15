@@ -44,9 +44,9 @@ export default function FaqPage() {
           <h1 className="font-serif text-[clamp(2.4rem,5vw,3.8rem)] font-semibold text-white leading-[1.12] max-w-2xl">
             Questions
             <br />
-            <em className="text-or-500 font-light" style={{ fontStyle: "italic" }}>
+            <span className="text-or-500 font-light">
               fréquentes.
-            </em>
+            </span>
           </h1>
           <p className="text-white/85 text-[1rem] max-w-[500px] mt-5 leading-[1.8] whitespace-pre-line">
             {FAQ_HERO_SOUS_TITRE}

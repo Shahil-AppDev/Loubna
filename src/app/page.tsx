@@ -51,9 +51,9 @@ export default function HomePage() {
           <h1 className="font-serif text-[clamp(2rem,7vw,4.6rem)] font-semibold text-white leading-[1.1] mb-4 md:mb-6 max-w-3xl">
             Juriste en droit du travail,
             <br />
-            <em className="font-light text-or-500 not-italic" style={{ fontStyle: "italic" }}>
+            <span className="font-light text-or-500">
               prévention des risques professionnels.
-            </em>
+            </span>
           </h1>
 
           <p className="text-[0.95rem] md:text-[1.05rem] text-white/85 max-w-[540px] leading-[1.7] md:leading-[1.8] mb-6 md:mb-10 whitespace-pre-line">
@@ -91,9 +91,9 @@ export default function HomePage() {
             <h2 className="font-serif text-[clamp(1.6rem,5vw,2.8rem)] text-encre-800 leading-[1.2]">
               Un accompagnement centré
               <br />
-              <em className="text-rouge-800 font-light not-italic" style={{ fontStyle: "italic" }}>
+              <span className="text-rouge-800 font-light">
                 sur la prévention
-              </em>
+              </span>
             </h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5">

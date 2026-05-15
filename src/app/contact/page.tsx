@@ -66,9 +66,9 @@ export default function ContactPage() {
           <h1 className="font-serif text-[clamp(2.4rem,5vw,3.8rem)] font-semibold text-white leading-[1.12] max-w-2xl">
             Parlons de
             <br />
-            <em className="text-or-500 font-light" style={{ fontStyle: "italic" }}>
+            <span className="text-or-500 font-light">
               votre situation.
-            </em>
+            </span>
           </h1>
           <p className="text-white/85 text-[1rem] max-w-[510px] mt-5 leading-[1.8]">
             Décrivez-moi votre situation. Je vous réponds personnellement sous 48h ouvrées,

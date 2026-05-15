@@ -332,6 +332,36 @@
   .reveal.visible {
     @apply opacity-100 translate-y-0;
   }
+
+  /*
+   * Texte sur fond blanc : noir (encre-950), pas gris.
+   * :not(...) évite d’écraser les libellés sur pastilles (or, rouge, fond sombre).
+   */
+  .bg-white .text-encre-500,
+  .bg-white .text-encre-600,
+  .bg-white .text-encre-700,
+  .bg-white.text-encre-500,
+  .bg-white.text-encre-600,
+  .bg-white.text-encre-700,
+  .service-card .text-encre-500,
+  .service-card .text-encre-600,
+  .service-card .text-encre-700,
+  .expertise-card .text-encre-500,
+  .expertise-card .text-encre-600,
+  .expertise-card .text-encre-700,
+  .testimonial-card .text-encre-500,
+  .testimonial-card .text-encre-600,
+  .testimonial-card .text-encre-700 {
+    @apply text-encre-950;
+  }
+
+  .bg-white .text-encre-800:not(.bg-or-500):not(.bg-or-400):not(.bg-rouge-800):not(.bg-encre-900):not(.bg-encre-950),
+  .bg-white.text-encre-800:not(.bg-or-500):not(.bg-or-400):not(.bg-rouge-800):not(.bg-encre-900):not(.bg-encre-950),
+  .service-card .text-encre-800,
+  .expertise-card .text-encre-800,
+  .testimonial-card .text-encre-800 {
+    @apply text-encre-950;
+  }
 }
 
 /* ─── Animations ─────────────────────────────────────────── */

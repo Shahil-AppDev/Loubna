@@ -310,9 +310,9 @@ Sécuriser les premières démarches administratives`}
             <h2 className="font-serif text-[clamp(1.9rem,3vw,2.6rem)] text-encre-800 leading-[1.2]">
               Une double approche
               <br />
-              <em className="text-rouge-800 font-light" style={{ fontStyle: "italic" }}>
+              <span className="text-rouge-800 font-light">
                 droit du travail et management
-              </em>
+              </span>
             </h2>
           </div>
           <div className="max-w-[700px] mx-auto space-y-0 divide-y divide-encre-200">

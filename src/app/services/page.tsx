@@ -39,9 +39,9 @@ export default function ServicesPage() {
           <h1 className="font-serif text-[clamp(2.4rem,5vw,3.8rem)] font-semibold text-white leading-[1.12] max-w-2xl">
             Des interventions
             <br />
-            <em className="text-or-500 font-light" style={{ fontStyle: "italic" }}>
+            <span className="text-or-500 font-light">
               adaptées à chaque situation.
-            </em>
+            </span>
           </h1>
           <p className="text-white/85 text-[1rem] max-w-[520px] mt-5 leading-[1.8] whitespace-pre-line">
             {`J'interviens dans une démarche de prévention, d'accompagnement et de sécurisation des situations en droit du travail.`}
