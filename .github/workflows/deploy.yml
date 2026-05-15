@@ -99,7 +99,7 @@ jobs:
                 printf 'RESEND_API_KEY=%s\n' "$RESEND_API_KEY"
                 printf 'CONTACT_EMAIL_TO=%s\n' "${CONTACT_EMAIL_TO:-louamjuristeconseil@gmail.com}"
                 # Guillemets obligatoires : la valeur contient des espaces et <>
-                printf 'CONTACT_EMAIL_FROM="%s"\n' "${CONTACT_EMAIL_FROM:-Loubna Abouz Manta <onboarding@resend.dev>}"
+                printf 'CONTACT_EMAIL_FROM="%s"\n' "${CONTACT_EMAIL_FROM:-Loubna Abouz Manta <contact@juriste-droit-du-travail.com>}"
               } >> "$ENV_FILE"
               echo "✓ Resend variables written to .env.local"
             fi

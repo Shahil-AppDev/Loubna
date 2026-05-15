@@ -108,7 +108,7 @@ export async function sendContactEmail(data: ContactEmailPayload): Promise<void>
   const to = readEnv("CONTACT_EMAIL_TO") || SITE_CONFIG.email;
   const from =
     readEnv("CONTACT_EMAIL_FROM") ||
-    `${SITE_CONFIG.name} <onboarding@resend.dev>`;
+    `${SITE_CONFIG.name} <contact@juriste-droit-du-travail.com>`;
 
   if (!from.includes("@")) {
     throw new Error(
