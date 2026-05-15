@@ -66,13 +66,13 @@ export default function AProposPage() {
             {/* Identité */}
             <div className="lg:sticky lg:top-24">
               <div className="relative">
-                <div className="aspect-[3/4] rounded-sm border border-or-500/20 overflow-hidden max-w-sm bg-white">
+                <div className="relative aspect-[3/4] max-w-sm rounded-sm border border-or-500/20 bg-encre-950 p-6 sm:p-8 md:p-10 overflow-hidden">
                   <Image
                     src="/logo.png"
                     alt="Loubna Abouz Manta - Juriste en droit du travail"
-                    width={400}
-                    height={533}
-                    className="w-full h-full object-cover"
+                    fill
+                    sizes="(max-width: 1024px) 90vw, 384px"
+                    className="object-contain object-center"
                     priority
                   />
                 </div>
@@ -104,6 +104,19 @@ export default function AProposPage() {
                   <p className="text-white/80 text-xs flex items-center gap-2">
                     <span className="text-or-500">🌐</span>
                     Interventions 100% distanciel
+                  </p>
+                  <p className="text-white/80 text-xs flex items-center gap-2">
+                    <span className="text-or-500 shrink-0" aria-hidden>
+                      🔗
+                    </span>
+                    <a
+                      href={SITE_CONFIG.linkedin}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-or-400 hover:text-or-300 underline underline-offset-2 break-all"
+                    >
+                      Profil LinkedIn
+                    </a>
                   </p>
                 </div>
               </div>
