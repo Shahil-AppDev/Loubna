@@ -59,11 +59,16 @@ jobs:
 
       - name: Build and deploy on server
         uses: appleboy/ssh-action@v1.0.3
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          CONTACT_EMAIL_TO: ${{ secrets.CONTACT_EMAIL_TO }}
+          CONTACT_EMAIL_FROM: ${{ secrets.CONTACT_EMAIL_FROM }}
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_SSH_KEY }}
           port: ${{ secrets.VPS_PORT }}
+          envs: RESEND_API_KEY,CONTACT_EMAIL_TO,CONTACT_EMAIL_FROM
           command_timeout: "10m"
           script: |
             set -euo pipefail
@@ -79,7 +84,23 @@ jobs:
               cp "$DEPLOY_PATH/current/.env.local" "$TEMP/.env.local"
               echo "✓ .env.local copied to build dir"
             else
-              echo "⚠ No .env.local found in current — skipping"
+              touch "$TEMP/.env.local"
+              echo "⚠ No .env.local found in current — created empty file"
+            fi
+
+            echo "=== [1b/5] Inject Resend secrets from GitHub ==="
+            if [ -z "${RESEND_API_KEY:-}" ]; then
+              echo "⚠ RESEND_API_KEY secret not set — contact emails may fail"
+            else
+              ENV_FILE="$TEMP/.env.local"
+              grep -v -E '^(RESEND_API_KEY|CONTACT_EMAIL_TO|CONTACT_EMAIL_FROM)=' "$ENV_FILE" > "${ENV_FILE}.tmp" || true
+              mv "${ENV_FILE}.tmp" "$ENV_FILE"
+              {
+                printf 'RESEND_API_KEY=%s\n' "$RESEND_API_KEY"
+                printf 'CONTACT_EMAIL_TO=%s\n' "${CONTACT_EMAIL_TO:-louamjuristeconseil@gmail.com}"
+                printf 'CONTACT_EMAIL_FROM=%s\n' "${CONTACT_EMAIL_FROM:-Loubna Abouz Manta <onboarding@resend.dev>}"
+              } >> "$ENV_FILE"
+              echo "✓ Resend variables written to .env.local"
             fi
 
             echo "=== [2/5] Install dependencies on server ==="
