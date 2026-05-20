@@ -10,7 +10,7 @@ const NAV_LINKS = [
   { href: "/", label: "Accueil" },
   { href: "/a-propos", label: "À propos" },
   { href: "/services", label: "Services" },
-  { href: "/tarifs", label: "Tarifs" },
+  { href: "/tarifs", label: "Modalités et Tarifs" },
   { href: "/formations", label: "Formations" },
   { href: "/blog", label: "Blog" },
   { href: "/faq", label: "FAQ" },
