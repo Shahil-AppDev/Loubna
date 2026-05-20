@@ -14,15 +14,15 @@ export default function MentionsLegalesPage() {
       <section className="page-hero">
         <div className="hero-grid-bg" />
         <div className="container-main relative z-10 pt-20 pb-12">
-          <nav className="text-[0.72rem] tracking-[0.14em] uppercase text-white/30 mb-5 flex gap-2">
-            <Link href="/" className="hover:text-white/60 transition-colors">Accueil</Link>
+          <nav className="text-[0.72rem] tracking-[0.14em] uppercase text-white/50 mb-5 flex gap-2">
+            <Link href="/" className="hover:text-white/80 transition-colors">Accueil</Link>
             <span>›</span>
             <span className="text-or-500">Mentions légales</span>
           </nav>
           <h1 className="font-serif text-[clamp(2rem,4vw,3rem)] text-white leading-tight">
             Mentions légales
           </h1>
-          <p className="text-white/40 mt-3 text-sm">
+          <p className="text-white/65 mt-3 text-sm">
             Dernière mise à jour : {new Date().getFullYear()}
           </p>
         </div>
@@ -72,9 +72,9 @@ export default function MentionsLegalesPage() {
             <h2>4. Limitation de responsabilité</h2>
             <p>
               Les informations contenues sur ce site sont fournies à titre indicatif. Elles ne
-              constituent pas un conseil juridique personnalisé et ne sauraient engager la responsabilité
+              constituent pas un accompagnement personnalisé et ne sauraient engager la responsabilité
               de {SITE_CONFIG.name}. Chaque situation étant unique, il convient de prendre contact
-              directement pour obtenir un conseil adapté.
+              directement pour obtenir un accompagnement adapté.
             </p>
             <p>
               {SITE_CONFIG.name} ne saurait être tenu responsable des dommages directs ou indirects

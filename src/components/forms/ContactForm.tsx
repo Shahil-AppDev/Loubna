@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import AttachmentField from "@/components/forms/AttachmentField";
+import { validateContactFiles } from "@/lib/contact/attachments";
 import { DEMAND_TYPES, STATUTS } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
@@ -38,6 +40,7 @@ const TEL_REGEX   = /^[\d\s+\-().]{8,20}$/;
 
 export default function ContactForm() {
   const [form, setForm]     = useState<FormData>(INITIAL_DATA);
+  const [attachments, setAttachments] = useState<File[]>([]);
   const [errors, setErrors] = useState<FormErrors>({});
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -76,6 +79,8 @@ export default function ContactForm() {
       const err = validateField(field, form[field]);
       if (err) errs[field] = err;
     });
+    const attachErr = validateContactFiles(attachments);
+    if (attachErr) errs.piecesJointes = attachErr;
     return errs;
   };
 
@@ -129,13 +134,35 @@ export default function ContactForm() {
       // if (!res.ok) throw new Error();
       // ─────────────────────────────────────────────────────
 
-      // Simulation (à retirer en production)
-      await new Promise((r) => setTimeout(r, 1400));
+      const body = new FormData();
+      body.append("nom", form.nom);
+      body.append("prenom", form.prenom);
+      body.append("email", form.email);
+      body.append("tel", form.tel);
+      body.append("typeDemande", form.typeDemande);
+      body.append("statut", form.statut);
+      body.append("sujet", form.sujet);
+      body.append("message", form.message);
+      attachments.forEach((file) => body.append("piecesJointes", file));
+
+      const res = await fetch("/api/contact/", {
+        method: "POST",
+        body,
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data?.error || "Erreur de soumission");
+      }
 
       setSuccess(true);
       setForm(INITIAL_DATA);
-    } catch {
-      setErrors({ global: "Une erreur est survenue. Veuillez réessayer ou nous contacter directement." });
+      setAttachments([]);
+    } catch (err) {
+      const message =
+        err instanceof Error && err.message
+          ? err.message
+          : "Une erreur est survenue. Veuillez réessayer ou nous contacter directement.";
+      setErrors({ global: message });
     } finally {
       setLoading(false);
     }
@@ -147,7 +174,7 @@ export default function ContactForm() {
       <div className="text-center py-16">
         <div className="text-5xl mb-6">✅</div>
         <h3 className="font-serif text-3xl text-encre-800 mb-3">Message envoyé !</h3>
-        <p className="text-encre-500 text-[0.95rem] leading-7 mb-8">
+        <p className="text-encre-700 text-[0.95rem] leading-7 mb-8">
           Merci pour votre message. Je vous réponds personnellement
           <br />
           sous <strong className="text-encre-700">48h ouvrées</strong>.
@@ -165,7 +192,7 @@ export default function ContactForm() {
   return (
     <form onSubmit={handleSubmit} noValidate>
       <h3 className="font-serif text-2xl text-encre-800 mb-1.5">Votre demande</h3>
-      <p className="text-xs text-encre-400 mb-9">
+      <p className="text-xs text-encre-600 mb-9">
         Les champs marqués <span className="text-rouge-800">*</span> sont obligatoires.
       </p>
 
@@ -237,9 +264,10 @@ export default function ContactForm() {
         <FormGroup label="Type de demande" error={errors.typeDemande}>
           <select
             id="typeDemande"
+            aria-label="Type de demande"
             value={form.typeDemande}
             onChange={(e) => handleChange("typeDemande", e.target.value)}
-            className={cn("form-control appearance-none", !form.typeDemande && "text-encre-400")}
+            className={cn("form-control appearance-none", !form.typeDemande && "text-encre-600")}
             style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236B6B6B' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E\")", backgroundRepeat: "no-repeat", backgroundPosition: "right 14px center", paddingRight: "40px" }}
           >
             <option value="">Choisissez…</option>
@@ -251,9 +279,10 @@ export default function ContactForm() {
         <FormGroup label="Vous êtes" error={errors.statut}>
           <select
             id="statut"
+            aria-label="Statut du demandeur"
             value={form.statut}
             onChange={(e) => handleChange("statut", e.target.value)}
-            className={cn("form-control appearance-none", !form.statut && "text-encre-400")}
+            className={cn("form-control appearance-none", !form.statut && "text-encre-600")}
             style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236B6B6B' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E\")", backgroundRepeat: "no-repeat", backgroundPosition: "right 14px center", paddingRight: "40px" }}
           >
             <option value="">Votre statut…</option>
@@ -290,6 +319,18 @@ export default function ContactForm() {
         />
       </FormGroup>
 
+      {/* ─── PIÈCES JOINTES ─── */}
+      <FormGroup label="Pièces jointes" error={errors.piecesJointes}>
+        <AttachmentField
+          files={attachments}
+          onChange={setAttachments}
+          onValidationError={(msg) =>
+            setErrors((prev) => ({ ...prev, piecesJointes: msg }))
+          }
+          error={errors.piecesJointes}
+        />
+      </FormGroup>
+
       {/* ─── RGPD ─── */}
       <div className="flex gap-3 items-start mb-7 mt-1">
         <input
@@ -300,7 +341,7 @@ export default function ContactForm() {
           className="w-[17px] h-[17px] flex-shrink-0 mt-0.5 accent-rouge-800 cursor-pointer"
         />
         <div>
-          <label htmlFor="rgpd" className="text-[0.83rem] text-encre-500 leading-relaxed cursor-pointer">
+          <label htmlFor="rgpd" className="text-[0.83rem] text-encre-700 leading-relaxed cursor-pointer">
             J'accepte que mes données personnelles soient utilisées pour traiter ma demande,
             conformément à la{" "}
             <Link href="/politique-de-confidentialite" className="text-rouge-800 underline" target="_blank">
@@ -330,7 +371,7 @@ export default function ContactForm() {
         {loading ? "Envoi en cours…" : "Envoyer ma demande"}
       </button>
 
-      <p className="text-center text-[0.72rem] text-encre-400 mt-4 leading-relaxed">
+      <p className="text-center text-[0.72rem] text-encre-600 mt-4 leading-relaxed">
         🔒 Vos données sont traitées de manière strictement confidentielle et sécurisée.
       </p>
     </form>

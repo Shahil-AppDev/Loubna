@@ -1,107 +1,181 @@
+import { parseContactAttachments } from "@/lib/contact/attachments";
+import { sendContactEmail } from "@/lib/email/send-contact-email";
+import { ensureCmsTables } from "@/lib/db/cms";
+import { query } from "@/lib/db/postgres";
 import { NextRequest, NextResponse } from "next/server";
 
-// ═══════════════════════════════════════════════════════════
-// API Route — /api/contact
-// Gestion des soumissions du formulaire de contact
-//
-// Pour activer cette route avec Resend :
-// 1. npm install resend
-// 2. Ajouter RESEND_API_KEY dans .env.local
-// 3. Décommenter le code ci-dessous
-// ═══════════════════════════════════════════════════════════
+export const runtime = "nodejs";
+
+type ContactFields = {
+  nom: string;
+  prenom: string;
+  email: string;
+  tel: string | null;
+  typeDemande: string | null;
+  statut: string | null;
+  sujet: string;
+  message: string;
+};
+
+async function parseContactRequest(
+  request: NextRequest
+): Promise<
+  | { ok: true; fields: ContactFields; attachments: Awaited<ReturnType<typeof parseContactAttachments>>["attachments"] }
+  | { ok: false; response: NextResponse }
+> {
+  const contentType = request.headers.get("content-type") || "";
+
+  if (contentType.includes("multipart/form-data")) {
+    const formData = await request.formData();
+    const { attachments, error: attachError } = await parseContactAttachments(formData);
+    if (attachError) {
+      return {
+        ok: false,
+        response: NextResponse.json({ error: attachError }, { status: 400 }),
+      };
+    }
+
+    const fields: ContactFields = {
+      nom: String(formData.get("nom") ?? "").trim(),
+      prenom: String(formData.get("prenom") ?? "").trim(),
+      email: String(formData.get("email") ?? "").trim().toLowerCase(),
+      tel: formData.get("tel") ? String(formData.get("tel")).trim() : null,
+      typeDemande: formData.get("typeDemande")
+        ? String(formData.get("typeDemande")).trim()
+        : null,
+      statut: formData.get("statut") ? String(formData.get("statut")).trim() : null,
+      sujet: String(formData.get("sujet") ?? "").trim(),
+      message: String(formData.get("message") ?? "").trim(),
+    };
+
+    return { ok: true, fields, attachments };
+  }
+
+  let body: Record<string, unknown>;
+  try {
+    body = await request.json();
+  } catch {
+    return {
+      ok: false,
+      response: NextResponse.json({ error: "Corps de requête invalide." }, { status: 400 }),
+    };
+  }
+
+  const fields: ContactFields = {
+    nom: String(body.nom ?? "").trim(),
+    prenom: String(body.prenom ?? "").trim(),
+    email: String(body.email ?? "").trim().toLowerCase(),
+    tel: body.tel ? String(body.tel).trim() : null,
+    typeDemande: body.typeDemande ? String(body.typeDemande).trim() : null,
+    statut: body.statut ? String(body.statut).trim() : null,
+    sujet: String(body.sujet ?? "").trim(),
+    message: String(body.message ?? "").trim(),
+  };
+
+  return { ok: true, fields, attachments: [] };
+}
+
+function validateContactFields(fields: ContactFields): NextResponse | null {
+  const { nom, prenom, email, sujet, message } = fields;
+
+  if (!nom || !prenom || !email || !sujet || !message) {
+    return NextResponse.json(
+      { error: "Champs obligatoires manquants." },
+      { status: 400 }
+    );
+  }
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    return NextResponse.json(
+      { error: "Adresse email invalide." },
+      { status: 400 }
+    );
+  }
+
+  if (message.length < 20) {
+    return NextResponse.json(
+      { error: "Message trop court." },
+      { status: 400 }
+    );
+  }
+
+  return null;
+}
 
 export async function POST(request: NextRequest) {
+  const parsed = await parseContactRequest(request);
+  if (!parsed.ok) return parsed.response;
+
+  const validationError = validateContactFields(parsed.fields);
+  if (validationError) return validationError;
+
+  const payload = {
+    ...parsed.fields,
+    attachments: parsed.attachments,
+  };
+
   try {
-    const body = await request.json();
+    await ensureCmsTables();
+    await query(
+      `INSERT INTO leads (first_name, last_name, email, phone, demand_type, subject, message, source)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, 'contact_form')`,
+      [
+        payload.prenom,
+        payload.nom,
+        payload.email,
+        payload.tel,
+        payload.typeDemande,
+        payload.sujet,
+        payload.message,
+      ]
+    );
+  } catch (dbError) {
+    console.error("Contact API — base de données (non bloquant):", dbError);
+  }
 
-    const {
-      nom,
-      prenom,
-      email,
-      tel,
-      typeDemande,
-      statut,
-      sujet,
-      message,
-    } = body;
-
-    // ─── Validation serveur ────────────────────────────────
-    if (!nom || !prenom || !email || !sujet || !message) {
-      return NextResponse.json(
-        { error: "Champs obligatoires manquants." },
-        { status: 400 }
-      );
-    }
-
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      return NextResponse.json(
-        { error: "Adresse email invalide." },
-        { status: 400 }
-      );
-    }
-
-    if (message.trim().length < 20) {
-      return NextResponse.json(
-        { error: "Message trop court." },
-        { status: 400 }
-      );
-    }
-
-    // ─── Envoi avec Resend ────────────────────────────────
-    // Décommentez et installez : npm install resend
-    //
-    // import { Resend } from "resend";
-    // const resend = new Resend(process.env.RESEND_API_KEY);
-    //
-    // await resend.emails.send({
-    //   from: "Site web <noreply@loubna-abouz-manta.fr>",
-    //   to: [process.env.CONTACT_EMAIL_TO!],
-    //   replyTo: email,
-    //   subject: `[Contact] ${sujet} — ${prenom} ${nom}`,
-    //   html: `
-    //     <div style="font-family: Georgia, serif; max-width: 600px; margin: 0 auto;">
-    //       <div style="background: #8B0000; padding: 24px; text-align: center;">
-    //         <h1 style="color: white; margin: 0; font-size: 1.4rem;">Nouvelle demande de contact</h1>
-    //       </div>
-    //       <div style="padding: 32px; background: #fff; border: 1px solid #eee;">
-    //         <table style="width: 100%; border-collapse: collapse;">
-    //           <tr><td style="padding: 8px 0; color: #666; font-size: 0.85rem; width: 140px;"><strong>Nom</strong></td><td style="padding: 8px 0;">${prenom} ${nom}</td></tr>
-    //           <tr><td style="padding: 8px 0; color: #666; font-size: 0.85rem;"><strong>Email</strong></td><td style="padding: 8px 0;"><a href="mailto:${email}">${email}</a></td></tr>
-    //           <tr><td style="padding: 8px 0; color: #666; font-size: 0.85rem;"><strong>Téléphone</strong></td><td style="padding: 8px 0;">${tel || "Non renseigné"}</td></tr>
-    //           <tr><td style="padding: 8px 0; color: #666; font-size: 0.85rem;"><strong>Statut</strong></td><td style="padding: 8px 0;">${statut || "Non précisé"}</td></tr>
-    //           <tr><td style="padding: 8px 0; color: #666; font-size: 0.85rem;"><strong>Type</strong></td><td style="padding: 8px 0;">${typeDemande || "Non précisé"}</td></tr>
-    //           <tr><td style="padding: 8px 0; color: #666; font-size: 0.85rem;"><strong>Sujet</strong></td><td style="padding: 8px 0;">${sujet}</td></tr>
-    //         </table>
-    //         <hr style="margin: 24px 0; border: none; border-top: 1px solid #eee;" />
-    //         <h3 style="color: #8B0000; margin-bottom: 12px;">Message</h3>
-    //         <p style="color: #333; line-height: 1.7; white-space: pre-wrap;">${message}</p>
-    //       </div>
-    //       <div style="padding: 16px; text-align: center; color: #999; font-size: 0.75rem;">
-    //         Loubna Abouz Manta — Juriste en droit du travail
-    //       </div>
-    //     </div>
-    //   `,
-    // });
-
-    // Simulation pour développement (à retirer en production)
-    console.log("📧 Form submission:", { nom, prenom, email, sujet, statut, typeDemande });
-    await new Promise((r) => setTimeout(r, 500));
-
+  try {
+    await sendContactEmail(payload);
     return NextResponse.json(
       { success: true, message: "Votre message a bien été envoyé." },
       { status: 200 }
     );
-  } catch (error) {
-    console.error("Contact API error:", error);
+  } catch (emailError) {
+    console.error("Contact API — Resend:", emailError);
+    const detail =
+      emailError instanceof Error ? emailError.message : "unknown";
     return NextResponse.json(
-      { error: "Une erreur interne est survenue. Veuillez réessayer." },
-      { status: 500 }
+      { error: contactEmailErrorMessage(detail) },
+      { status: 502 }
     );
   }
 }
 
-// Bloquer les méthodes non autorisées
+function contactEmailErrorMessage(detail: string): string {
+  const lower = detail.toLowerCase();
+  if (detail === "RESEND_API_KEY" || lower.includes("resend_api_key")) {
+    return "L'envoi par email n'est pas configuré sur le serveur. Contactez-nous directement par email.";
+  }
+  if (detail.includes("CONTACT_EMAIL_FROM invalide")) {
+    return "Configuration email incorrecte sur le serveur (expéditeur).";
+  }
+  if (
+    lower.includes("only send") ||
+    lower.includes("testing") ||
+    lower.includes("verified") ||
+    lower.includes("not authorized")
+  ) {
+    return "L'email de notification n'est pas encore autorisé chez Resend. Vérifiez le domaine ou l'adresse destinataire de test.";
+  }
+  if (lower.includes("invalid") && lower.includes("from")) {
+    return "Adresse expéditeur invalide dans la configuration Resend.";
+  }
+  if (lower.includes("attachment") || lower.includes("too large")) {
+    return "Les pièces jointes sont trop volumineuses ou non acceptées. Taille totale max. : 30 Mo.";
+  }
+  return "L'envoi du message a échoué. Réessayez ou écrivez-nous directement par email.";
+}
+
 export async function GET() {
   return NextResponse.json({ error: "Méthode non autorisée." }, { status: 405 });
 }

@@ -1,11 +1,10 @@
 #!/bin/bash
 
 # ============================================================================
-# SCRIPT DE DÉPLOIEMENT SERVEUR - SITE LOUBNA (Fichiers Statiques)
+# SCRIPT DE DÉPLOIEMENT SERVEUR - SITE LOUBNA (Nginx → Next.js / PM2)
 # ============================================================================
 # Domaine: juriste-droit-du-travail.com
-# Type: Site statique Next.js (export)
-# Serveur: Nginx uniquement (pas de PM2 nécessaire)
+# Type: Next.js mode serveur (reverse proxy vers le port de l’app, ex. 3000)
 # ============================================================================
 
 set -euo pipefail
@@ -41,18 +40,14 @@ if [ -f "$NGINX_CONFIG" ]; then
     echo -e "${GREEN}✓ Sauvegarde: ${NGINX_CONFIG}.bak-${TIMESTAMP}${NC}"
 fi
 
-# Créer la configuration Nginx pour site statique avec HTTPS
+# Créer la configuration Nginx (reverse proxy vers Next.js sur 127.0.0.1:3000)
 sudo tee "$NGINX_CONFIG" > /dev/null << 'EOF'
-# Configuration Nginx pour juriste-droit-du-travail.com
-# Site statique Next.js
-# Créé automatiquement par GitHub Actions
+# juriste-droit-du-travail.com — Next.js via PM2
 
 server {
     listen 80;
     listen [::]:80;
     server_name juriste-droit-du-travail.com www.juriste-droit-du-travail.com;
-    
-    # Redirection HTTPS
     return 301 https://$host$request_uri;
 }
 
@@ -61,54 +56,55 @@ server {
     listen [::]:443 ssl http2;
     server_name juriste-droit-du-travail.com www.juriste-droit-du-travail.com;
 
-    # Certificats SSL
     ssl_certificate /etc/letsencrypt/live/juriste-droit-du-travail.com/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/juriste-droit-du-travail.com/privkey.pem;
-    
-    # Protocoles et ciphers SSL
+
     ssl_protocols TLSv1.2 TLSv1.3;
     ssl_ciphers HIGH:!aNULL:!MD5;
     ssl_prefer_server_ciphers on;
     ssl_session_cache shared:SSL:10m;
     ssl_session_timeout 10m;
 
-    # Logs dédiés
     access_log /var/log/nginx/loubna-access.log;
     error_log /var/log/nginx/loubna-error.log;
 
-    # Root directory pour fichiers statiques
-    root /var/www/loubna-site/current;
-    index index.html;
-
-    # Gestion des trailing slashes (Next.js export)
     location / {
-        try_files $uri $uri.html $uri/ =404;
+        proxy_pass http://127.0.0.1:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_cache_bypass $http_upgrade;
     }
 
-    # Cache pour les assets statiques
     location ~* \.(jpg|jpeg|png|gif|ico|css|js|svg|woff|woff2|ttf|eot)$ {
+        proxy_pass http://127.0.0.1:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
         expires 1y;
         add_header Cache-Control "public, immutable";
     }
 
-    # Désactiver les logs pour les fichiers statiques courants
     location = /favicon.ico {
+        proxy_pass http://127.0.0.1:3000;
         log_not_found off;
         access_log off;
     }
 
     location = /robots.txt {
+        proxy_pass http://127.0.0.1:3000;
         log_not_found off;
         access_log off;
     }
 
-    # Sécurité
     add_header X-Frame-Options "SAMEORIGIN" always;
     add_header X-Content-Type-Options "nosniff" always;
     add_header X-XSS-Protection "1; mode=block" always;
     add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
 
-    # Compression
     gzip on;
     gzip_vary on;
     gzip_min_length 1024;
@@ -153,18 +149,18 @@ fi
 
 echo -e "\n${YELLOW}[3/3] Vérifications${NC}"
 
-# Vérifier que les fichiers existent
-if [ -f "index.html" ]; then
-    echo -e "${GREEN}✓ Fichiers statiques présents${NC}"
+# Vérifier que l’app Next répond (PM2 / npm start sur le port 3000)
+if curl -sf -o /dev/null http://127.0.0.1:3000; then
+    echo -e "${GREEN}✓ Backend Next.js joignable sur le port 3000${NC}"
 else
-    echo -e "${RED}❌ index.html non trouvé${NC}"
+    echo -e "${RED}❌ Rien ne répond sur http://127.0.0.1:3000 — démarrez l’app (ex. deploy-nextjs.sh / PM2)${NC}"
     exit 1
 fi
 
-# Vérifier les permissions
+# Permissions (éviter 777 ; 755 récursif conserve l’exécutable sur les scripts déjà +x)
 echo -e "${YELLOW}Vérification des permissions...${NC}"
-sudo chown -R www-data:www-data /var/www/loubna-site/current
-sudo chmod -R 755 /var/www/loubna-site/current
+sudo chown -R www-data:www-data /var/www/loubna-site/current 2>/dev/null || true
+sudo chmod -R 755 /var/www/loubna-site/current 2>/dev/null || true
 echo -e "${GREEN}✓ Permissions configurées${NC}"
 
 # Vérifier que Nginx est actif
@@ -197,5 +193,5 @@ echo "2. Installer le certificat SSL avec:"
 echo "   sudo certbot --nginx -d $DOMAIN -d $WWW_DOMAIN"
 echo "3. La section HTTPS sera automatiquement activée par Certbot"
 
-echo -e "\n${GREEN}✅ Site statique déployé avec succès${NC}"
+echo -e "\n${GREEN}✅ Nginx configuré en reverse proxy (Next.js)${NC}"
 echo -e "${BLUE}============================================${NC}"

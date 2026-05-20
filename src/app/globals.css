@@ -5,6 +5,17 @@
 /* ─── CSS Variables ─────────────────────────────────────── */
 :root {
   --nav-h: 64px;
+
+  /* Text on dark backgrounds (encre-900 / encre-950) */
+  --text-on-dark:        #EDE9E1; /* cream — main body copy */
+  --text-on-dark-muted:  #C8C2B6; /* warm grey — secondary copy */
+  --heading-on-dark:     #FFFFFF; /* pure white — headings */
+  --meta-on-dark:        #9E9890; /* subtle — breadcrumbs, captions */
+
+  /* Text on light backgrounds (encre-50 / white) */
+  --text-on-light:       #1F1F1F; /* near-black — headings */
+  --text-on-light-body:  #353230; /* encre-800 — main body copy */
+  --text-on-light-muted: #625D58; /* encre-700 — secondary copy (5.4:1 contrast) */
 }
 
 @media (min-width: 768px) {
@@ -31,6 +42,14 @@
 
   p {
     @apply leading-relaxed;
+  }
+
+  /* Dark section utilities — apply to any section with a dark bg */
+  .dark-section-body {
+    color: var(--text-on-dark);
+  }
+  .dark-section-muted {
+    color: var(--text-on-dark-muted);
   }
 
   * {
@@ -187,6 +206,106 @@
   .footer-nav-title {
     @apply text-[0.75rem] font-bold tracking-[0.18em] uppercase text-or-500 mb-5;
   }
+
+  /* ── Admin shared ──────────────────────────────────────── */
+
+  /* Page header used across all admin pages */
+  .admin-page-title {
+    @apply font-serif text-3xl font-bold text-encre-900 leading-tight;
+  }
+  .admin-page-subtitle {
+    @apply font-sans text-sm text-encre-700 mt-1 leading-relaxed;
+  }
+
+  /* Stat cards on white background */
+  .admin-stat-card {
+    @apply bg-white border border-encre-200 rounded-sm p-6 relative overflow-hidden;
+    border-top: 3px solid theme('colors.encre.200');
+  }
+  .admin-stat-card-accent {
+    border-top-color: theme('colors.rouge.800');
+  }
+  .admin-stat-card-gold {
+    border-top-color: theme('colors.or.500');
+  }
+  .admin-stat-value {
+    @apply font-serif text-3xl font-bold text-encre-900;
+  }
+  .admin-stat-label {
+    @apply font-sans text-xs font-semibold tracking-[0.1em] uppercase text-encre-700 mt-1;
+  }
+
+  /* Panels / cards */
+  .admin-panel {
+    @apply bg-white border border-encre-200 rounded-sm;
+  }
+  .admin-panel-header {
+    @apply px-6 py-4 border-b border-encre-100;
+  }
+  .admin-panel-title {
+    @apply font-serif text-lg font-semibold text-encre-900;
+  }
+
+  /* Status badges — brand-consistent, no generic Tailwind colors */
+  .admin-badge {
+    @apply inline-flex items-center px-2.5 py-0.5 text-[0.7rem] font-semibold tracking-wide rounded-sm;
+  }
+  .admin-badge-paid {
+    @apply bg-or-500/10 text-or-700;
+  }
+  .admin-badge-confirmed {
+    @apply bg-encre-900 text-white;
+  }
+  .admin-badge-pending {
+    @apply bg-encre-100 text-encre-700;
+  }
+  .admin-badge-cancelled {
+    @apply bg-rouge-800/10 text-rouge-800;
+  }
+  .admin-badge-completed {
+    @apply bg-encre-200 text-encre-800;
+  }
+  .admin-badge-refunded {
+    @apply bg-encre-100 text-encre-700;
+  }
+  .admin-badge-unpaid {
+    @apply bg-rouge-800/10 text-rouge-700;
+  }
+
+  /* Admin form inputs (dark-friendly, consistent with .form-control) */
+  .admin-input {
+    @apply w-full px-4 py-2.5 font-sans text-sm text-encre-950 bg-encre-50 border border-encre-200 rounded-sm outline-none transition-all duration-200;
+    @apply focus:border-or-500 focus:bg-white focus:ring-2 focus:ring-or-500/10;
+  }
+  .admin-input-dark {
+    @apply w-full px-4 py-2.5 font-sans text-sm text-white bg-encre-950 border border-encre-700 rounded-sm outline-none transition-all duration-200 placeholder:text-encre-500;
+    @apply focus:border-or-500 focus:ring-2 focus:ring-or-500/15;
+  }
+  .admin-label {
+    @apply block font-sans text-[0.75rem] font-semibold tracking-[0.08em] uppercase text-encre-700 mb-1.5;
+  }
+  .admin-label-dark {
+    @apply block font-sans text-[0.75rem] font-semibold tracking-[0.08em] uppercase text-encre-400 mb-1.5;
+  }
+
+  /* Admin table */
+  .admin-th {
+    @apply px-5 py-3 text-left font-sans text-[0.7rem] font-bold tracking-[0.1em] uppercase text-encre-700;
+  }
+  .admin-td {
+    @apply px-5 py-4 text-sm text-encre-800 align-middle;
+  }
+  .admin-td-secondary {
+    @apply block text-xs text-encre-700 mt-0.5;
+  }
+
+  /* Sidebar nav link */
+  .admin-nav-link {
+    @apply flex items-center gap-3 px-6 py-3 font-sans text-sm text-encre-300 hover:bg-encre-900 hover:text-white transition-colors duration-150;
+  }
+  .admin-nav-link-active {
+    @apply bg-encre-900 text-white border-l-2 border-l-or-500 pl-[22px];
+  }
 }
 
 /* ─── Utilities ──────────────────────────────────────────── */
@@ -212,6 +331,36 @@
 
   .reveal.visible {
     @apply opacity-100 translate-y-0;
+  }
+
+  /*
+   * Texte sur fond blanc : noir (encre-950), pas gris.
+   * :not(...) évite d’écraser les libellés sur pastilles (or, rouge, fond sombre).
+   */
+  .bg-white .text-encre-500,
+  .bg-white .text-encre-600,
+  .bg-white .text-encre-700,
+  .bg-white.text-encre-500,
+  .bg-white.text-encre-600,
+  .bg-white.text-encre-700,
+  .service-card .text-encre-500,
+  .service-card .text-encre-600,
+  .service-card .text-encre-700,
+  .expertise-card .text-encre-500,
+  .expertise-card .text-encre-600,
+  .expertise-card .text-encre-700,
+  .testimonial-card .text-encre-500,
+  .testimonial-card .text-encre-600,
+  .testimonial-card .text-encre-700 {
+    @apply text-encre-950;
+  }
+
+  .bg-white .text-encre-800:not(.bg-or-500):not(.bg-or-400):not(.bg-rouge-800):not(.bg-encre-900):not(.bg-encre-950),
+  .bg-white.text-encre-800:not(.bg-or-500):not(.bg-or-400):not(.bg-rouge-800):not(.bg-encre-900):not(.bg-encre-950),
+  .service-card .text-encre-800,
+  .expertise-card .text-encre-800,
+  .testimonial-card .text-encre-800 {
+    @apply text-encre-950;
   }
 }
 

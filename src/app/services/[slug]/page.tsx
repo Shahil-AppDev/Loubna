@@ -76,7 +76,7 @@ const SERVICES_DATA = {
       ctaEmployeur: "Sécuriser une procédure disciplinaire",
       relatedLinks: [
         { href: "/blog/comment-contester-sanction-disciplinaire-avertissement", label: "Guide : Contester une sanction" },
-        { href: "/services/conseil-licenciement", label: "Accompagnement licenciement" }
+        { href: "/services/licenciement", label: "Accompagnement licenciement" }
       ]
     }
   },
@@ -117,7 +117,7 @@ const SERVICES_DATA = {
       ]
     }
   },
-  "conseil-licenciement": {
+  "licenciement": {
     title: "Accompagnement dans les Procédures de Licenciement | Juriste",
     description: "Licenciement économique, pour faute ou inaptitude : bénéficiez d'un accompagnement en droit du travail pour sécuriser la procédure ou comprendre vos droits.",
     h1: "Accompagnement dans les Procédures de Licenciement",
@@ -187,14 +187,14 @@ const SERVICES_DATA = {
       ],
       cta: "Évaluer le montant d'une transaction amiable",
       relatedLinks: [
-        { href: "/services/conseil-licenciement", label: "Accompagnement licenciement" },
+        { href: "/services/licenciement", label: "Accompagnement licenciement" },
         { href: "/services/rupture-conventionnelle", label: "Rupture conventionnelle" }
       ]
     }
   },
   "rupture-conventionnelle": {
     title: "Information et Accompagnement en Rupture Conventionnelle | Juriste",
-    description: "Sécurisez votre rupture conventionnelle en 2024. Accompagnement pour le calcul des indemnités, la négociation et le respect des délais.",
+    description: "Sécurisez votre rupture conventionnelle en 2026. Accompagnement pour le calcul des indemnités, la négociation et le respect des délais.",
     h1: "Accompagnement Complet en Rupture Conventionnelle",
     content: {
       intro: "La rupture conventionnelle est le seul mode de rupture amiable du CDI. Elle permet aux deux parties de se séparer d'un commun accord, en garantissant au salarié le bénéfice des allocations chômage. Toutefois, un formalisme strict et des délais incompressibles doivent être respectés sous peine de nullité.",
@@ -223,7 +223,7 @@ const SERVICES_DATA = {
       ctaSalarie: "Calculer mon indemnité et négocier mon départ",
       ctaEmployeur: "Sécuriser la procédure d'homologation",
       relatedLinks: [
-        { href: "/blog/rupture-conventionnelle-procedure-indemnites-2024", label: "Guide : Rupture conventionnelle 2024" },
+        { href: "/blog/rupture-conventionnelle-procedure-indemnites-2026", label: "Guide : Rupture conventionnelle 2026" },
         { href: "/services/negociation-accord-transactionnel", label: "Négociation amiable" }
       ]
     }
@@ -417,7 +417,7 @@ function renderContent(text: string) {
       elements.push(
         <ul key={`ul-${keyCounter++}`} className="space-y-3 my-5 pl-0">
           {listItems.map((item, j) => (
-            <li key={j} className="flex gap-3 items-start text-[1rem] text-encre-600 leading-[1.8]">
+            <li key={j} className="flex gap-3 items-start text-[1rem] text-encre-700 leading-[1.8]">
               <span className="text-rouge-800 font-bold mt-0.5 flex-shrink-0">—</span>
               <span>{processInline(item)}</span>
             </li>
@@ -436,7 +436,7 @@ function renderContent(text: string) {
       flushList();
       if (trimmed) {
         elements.push(
-          <p key={keyCounter++} className="text-[1rem] text-encre-600 leading-[1.85] mb-4">
+          <p key={keyCounter++} className="text-[1rem] text-encre-700 leading-[1.85] mb-4">
             {processInline(trimmed)}
           </p>
         );
@@ -463,17 +463,17 @@ export default function ServicePage({ params }: Props) {
       <section className="page-hero">
         <div className="hero-grid-bg" />
         <div className="container-main relative z-10 pt-20 pb-12">
-          <nav className="text-[0.72rem] tracking-[0.14em] uppercase text-white/30 mb-6 flex gap-2 flex-wrap">
-            <Link href="/" className="hover:text-white/60 transition-colors">Accueil</Link>
+          <nav className="text-[0.72rem] tracking-[0.14em] uppercase text-white/50 mb-6 flex gap-2 flex-wrap">
+            <Link href="/" className="hover:text-white/80 transition-colors">Accueil</Link>
             <span>›</span>
-            <Link href="/services" className="hover:text-white/60 transition-colors">Services</Link>
+            <Link href="/services" className="hover:text-white/80 transition-colors">Services</Link>
             <span>›</span>
             <span className="text-or-500">{service.h1}</span>
           </nav>
           <h1 className="font-serif text-[clamp(2rem,4vw,3.2rem)] text-white leading-[1.15] max-w-3xl mb-6">
             {service.h1}
           </h1>
-          <p className="text-white/55 text-[1rem] md:text-[1.05rem] max-w-[620px] leading-[1.85]">
+          <p className="text-white/85 text-[1rem] md:text-[1.05rem] max-w-[620px] leading-[1.85]">
             {content.intro}
           </p>
         </div>
@@ -510,7 +510,7 @@ export default function ServicePage({ params }: Props) {
                       <h3 className="font-serif text-[1.08rem] font-semibold text-encre-800 mb-3">
                         {item.q}
                       </h3>
-                      <p className="text-[0.97rem] text-encre-600 leading-[1.8]">{item.a}</p>
+                      <p className="text-[0.97rem] text-encre-700 leading-[1.8]">{item.a}</p>
                     </div>
                   ))}
                 </div>
@@ -554,7 +554,7 @@ export default function ServicePage({ params }: Props) {
 
             {/* Legal disclaimer */}
             <div className="mt-8 p-5 bg-white border border-encre-100 border-l-[3px] border-l-or-500 rounded-sm">
-              <p className="text-[0.82rem] text-encre-500 leading-[1.8]">
+              <p className="text-[0.82rem] text-encre-700 leading-[1.8]">
                 <span className="font-semibold text-encre-700 block mb-1">Note importante</span>
                 Prestations d&apos;accompagnement, d&apos;information et de prévention — hors consultation juridique réglementée. Les prestations proposées ne constituent pas une consultation juridique au sens de la réglementation applicable à la profession d&apos;avocat.
               </p>
@@ -563,7 +563,7 @@ export default function ServicePage({ params }: Props) {
             {/* Related links */}
             {content.relatedLinks && content.relatedLinks.length > 0 && (
               <div className="mt-12 pt-8 border-t border-or-500/20">
-                <p className="text-[0.7rem] font-bold tracking-[0.16em] uppercase text-encre-400 mb-5">
+                <p className="text-[0.7rem] font-bold tracking-[0.16em] uppercase text-encre-600 mb-5">
                   Pour aller plus loin
                 </p>
                 <div className="flex flex-wrap gap-3">

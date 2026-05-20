@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { SERVICES, SITE_CONFIG } from "@/lib/constants";
+import { SERVICE_NOTE_IMPORTANTE } from "@/lib/client-service-note";
 
 export const metadata: Metadata = {
   title: "Interventions — Loubna Abouz Manta, Juriste en Droit du Travail",
@@ -30,20 +31,20 @@ export default function ServicesPage() {
           style={{ background: "radial-gradient(circle, rgba(139,0,0,.22) 0%, transparent 70%)" }}
         />
         <div className="container-main relative z-10 pt-20 pb-12">
-          <nav className="text-[0.72rem] tracking-[0.14em] uppercase text-white/30 mb-5 flex gap-2">
-            <Link href="/" className="hover:text-white/60 transition-colors">Accueil</Link>
+          <nav className="text-[0.72rem] tracking-[0.14em] uppercase text-white/50 mb-5 flex gap-2">
+            <Link href="/" className="hover:text-white/80 transition-colors">Accueil</Link>
             <span>›</span>
             <span className="text-or-500">Interventions</span>
           </nav>
           <h1 className="font-serif text-[clamp(2.4rem,5vw,3.8rem)] font-semibold text-white leading-[1.12] max-w-2xl">
             Des interventions
             <br />
-            <em className="text-or-500 font-light" style={{ fontStyle: "italic" }}>
+            <span className="text-or-500 font-light">
               adaptées à chaque situation.
-            </em>
+            </span>
           </h1>
-          <p className="text-white/50 text-[1rem] max-w-[520px] mt-5 leading-[1.8]">
-            J&apos;interviens dans une démarche d&apos;accompagnement, d&apos;information et de prévention en droit du travail — afin de comprendre les situations de travail, identifier les risques et orienter salariés et entreprises dans une logique de prévention et de sécurisation des pratiques.
+          <p className="text-white/85 text-[1rem] max-w-[520px] mt-5 leading-[1.8] whitespace-pre-line">
+            {`J'interviens dans une démarche de prévention, d'accompagnement et de sécurisation des situations en droit du travail.`}
           </p>
         </div>
       </section>
@@ -53,11 +54,8 @@ export default function ServicesPage() {
         <div className="container-main">
           <div className="max-w-2xl mx-auto text-center">
             <span className="section-label">Droit du travail · Prévention</span>
-            <p className="text-[1.02rem] text-encre-500 leading-[1.85]">
-              Chaque intervention est pensée pour répondre à une problématique précise.
-              Que vous soyez salarié souhaitant comprendre votre situation ou employeur
-              cherchant à sécuriser vos pratiques, vous trouverez ici un accompagnement
-              adapté à votre contexte.
+            <p className="text-[1.02rem] text-encre-700 leading-[1.85] whitespace-pre-line">
+              {`J'interviens dans une démarche de prévention, d'accompagnement et de sécurisation des situations en droit du travail.`}
             </p>
           </div>
         </div>
@@ -95,9 +93,17 @@ export default function ServicesPage() {
             <h4 className="font-serif text-[1.15rem] text-encre-800 mb-3">
               ℹ️ Note importante
             </h4>
-            <p className="text-[0.9rem] text-encre-500 leading-[1.85]">
-              <strong>Prestations d&apos;accompagnement, d&apos;information et de prévention – hors consultation juridique réglementée.</strong> Les prestations proposées relèvent de l&apos;information, de l&apos;accompagnement et de la prévention en droit du travail. Elles ne constituent pas une consultation juridique au sens de la réglementation applicable à la profession d&apos;avocat. En tant que juriste (et non avocate inscrite au barreau), mon intervention se situe en amont : accompagnement préventif, information, rédaction de documents. Pour la représentation en justice, je vous oriente vers un avocat compétent si nécessaire.
-            </p>
+            <div className="text-[0.9rem] text-encre-700 leading-[1.85] space-y-3 whitespace-pre-line">
+              {SERVICE_NOTE_IMPORTANTE[0]}
+              {"\n\n"}
+              {SERVICE_NOTE_IMPORTANTE[1]}
+              {"\n\n"}
+              {SERVICE_NOTE_IMPORTANTE.slice(2, 5).join("\n")}
+              {"\n\n"}
+              {SERVICE_NOTE_IMPORTANTE[5]}
+              {"\n\n"}
+              {SERVICE_NOTE_IMPORTANTE[6]}
+            </div>
           </div>
         </div>
       </section>
@@ -148,7 +154,7 @@ function ServiceCard({
       <h3 className="font-serif text-[1.18rem] text-encre-800 mb-2.5">
         {service.title}
       </h3>
-      <p className="text-[0.87rem] text-encre-500 leading-[1.75] mb-6 flex-1">
+      <p className="text-[0.87rem] text-encre-700 leading-[1.75] mb-6 flex-1 whitespace-pre-line">
         {service.description}
       </p>
       <span className="text-[0.73rem] font-bold tracking-[0.08em] uppercase text-rouge-800 group-hover:tracking-[0.12em] transition-all inline-flex items-center gap-1.5">

@@ -7,7 +7,8 @@ on:
   workflow_dispatch:
 
 concurrency:
-  group: "vps-deployment"
+  # Nouveau groupe pour ne pas rester bloqué derrière d'anciens runs "queued" GitHub
+  group: vps-deployment-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -30,98 +31,121 @@ jobs:
       - name: Run linter
         run: npm run lint
 
-      - name: Build Next.js static site
-        run: npm run build
-
-      - name: Deploy to VPS via rsync
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.VPS_HOST }}
-          username: ${{ secrets.VPS_USER }}
-          key: ${{ secrets.VPS_SSH_KEY }}
-          port: ${{ secrets.VPS_PORT }}
-          script: |
-            # Create temp directory
-            mkdir -p /tmp/loubna-build-${{ github.sha }}
-
-      - name: Transfer files via rsync
+      - name: Transfer source to VPS
         run: |
-          # Install rsync if needed
-          sudo apt-get update && sudo apt-get install -y rsync
+          sudo apt-get update -qq && sudo apt-get install -y -qq rsync
 
-          # Create SSH key file
           mkdir -p ~/.ssh
           echo "${{ secrets.VPS_SSH_KEY }}" > ~/.ssh/deploy_key
           chmod 600 ~/.ssh/deploy_key
 
-          # Transfer files
-          rsync -avz -e "ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no -p ${{ secrets.VPS_PORT }}" \
-            out/ \
-            ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/tmp/loubna-build-${{ github.sha }}/
+          REMOTE="${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}"
+          PORT="${{ secrets.VPS_PORT }}"
+          TEMP="/tmp/loubna-build-${{ github.sha }}"
 
-          # Transfer deployment script
-          rsync -avz -e "ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no -p ${{ secrets.VPS_PORT }}" \
-            scripts/deploy-server.sh \
-            ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/tmp/loubna-build-${{ github.sha }}/
+          # Create temp dir on server
+          ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no -p $PORT $REMOTE "mkdir -p $TEMP"
 
-          # Cleanup
+          # Transfer entire source tree (no build, no node_modules)
+          rsync -az --delete \
+            -e "ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no -p $PORT" \
+            --exclude 'node_modules' \
+            --exclude '.git' \
+            --exclude '.next' \
+            --exclude '.env*' \
+            . \
+            $REMOTE:$TEMP/
+
           rm -f ~/.ssh/deploy_key
 
-      - name: Execute deployment on server
+      - name: Build and deploy on server
         uses: appleboy/ssh-action@v1.0.3
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          CONTACT_EMAIL_TO: ${{ secrets.CONTACT_EMAIL_TO }}
+          CONTACT_EMAIL_FROM: ${{ secrets.CONTACT_EMAIL_FROM }}
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_SSH_KEY }}
           port: ${{ secrets.VPS_PORT }}
+          envs: RESEND_API_KEY,CONTACT_EMAIL_TO,CONTACT_EMAIL_FROM
+          command_timeout: "10m"
           script: |
             set -euo pipefail
 
-            echo "🚀 Starting deployment for juriste-droit-du-travail.com"
-
-            # Variables
             DEPLOY_PATH="${{ secrets.DEPLOY_PATH }}"
-            TEMP_DIR="/tmp/loubna-build-${{ github.sha }}"
+            TEMP="/tmp/loubna-build-${{ github.sha }}"
             TIMESTAMP=$(date +%Y%m%d-%H%M%S)
+            APP_NAME="nextjs-loubna"
+            PORT=3000
 
-            # Create deploy directory if not exists
-            if [ ! -d "$DEPLOY_PATH" ]; then
-              echo "📁 Creating deployment directory: $DEPLOY_PATH"
-              sudo mkdir -p "$DEPLOY_PATH"
-              sudo chown -R $USER:$USER "$DEPLOY_PATH"
+            echo "=== [1/5] Restore .env.local from previous deploy ==="
+            if [ -f "$DEPLOY_PATH/current/.env.local" ]; then
+              cp "$DEPLOY_PATH/current/.env.local" "$TEMP/.env.local"
+              echo "✓ .env.local copied to build dir"
+            else
+              touch "$TEMP/.env.local"
+              echo "⚠ No .env.local found in current — created empty file"
             fi
 
-            # Backup current version
+            echo "=== [1b/5] Inject Resend secrets from GitHub ==="
+            if [ -z "${RESEND_API_KEY:-}" ]; then
+              echo "⚠ RESEND_API_KEY secret not set — contact emails may fail"
+            else
+              ENV_FILE="$TEMP/.env.local"
+              grep -v -E '^(RESEND_API_KEY|CONTACT_EMAIL_TO|CONTACT_EMAIL_FROM)=' "$ENV_FILE" > "${ENV_FILE}.tmp" || true
+              mv "${ENV_FILE}.tmp" "$ENV_FILE"
+              {
+                printf 'RESEND_API_KEY=%s\n' "$RESEND_API_KEY"
+                printf 'CONTACT_EMAIL_TO=%s\n' "${CONTACT_EMAIL_TO:-louamjuristeconseil@gmail.com}"
+                # Guillemets obligatoires : la valeur contient des espaces et <>
+                printf 'CONTACT_EMAIL_FROM="%s"\n' "${CONTACT_EMAIL_FROM:-Loubna Abouz Manta <contact@juriste-droit-du-travail.com>}"
+              } >> "$ENV_FILE"
+              echo "✓ Resend variables written to .env.local"
+            fi
+
+            echo "=== [2/5] Install dependencies on server ==="
+            cd "$TEMP"
+            npm ci
+
+            echo "=== [3/5] Build Next.js on server ==="
+            npm run build
+
+            echo "=== [4/5] Atomic swap current → backup, new build → current ==="
             if [ -d "$DEPLOY_PATH/current" ]; then
-              echo "💾 Backing up current version"
-              sudo mv "$DEPLOY_PATH/current" "$DEPLOY_PATH/backup-$TIMESTAMP" || true
+              mv "$DEPLOY_PATH/current" "$DEPLOY_PATH/backup-$TIMESTAMP"
             fi
-
-            # Deploy new version
-            echo "📦 Deploying new version"
-            sudo mkdir -p "$DEPLOY_PATH/current"
-            sudo cp -r "$TEMP_DIR"/* "$DEPLOY_PATH/current/"
-            sudo chown -R www-data:www-data "$DEPLOY_PATH/current"
-
-            # Execute deployment script
-            if [ -f "$DEPLOY_PATH/current/deploy-server.sh" ]; then
-              echo "⚙️  Executing deployment script"
-              cd "$DEPLOY_PATH/current"
-              sudo bash deploy-server.sh
-            fi
-
-            # Cleanup temp directory
-            echo "🧹 Cleaning up temporary files"
-            rm -rf "$TEMP_DIR"
+            mv "$TEMP" "$DEPLOY_PATH/current"
 
             # Keep only last 3 backups
             cd "$DEPLOY_PATH"
-            ls -t | grep "^backup-" | tail -n +4 | xargs -r sudo rm -rf
+            ls -dt backup-* 2>/dev/null | tail -n +4 | xargs -r rm -rf
 
-            echo "✅ Deployment completed successfully"
-            echo "🌐 Site URL: https://www.juriste-droit-du-travail.com"
+            echo "=== [5/5] Restart PM2 ==="
+            cd "$DEPLOY_PATH/current"
+            if pm2 list | grep -q "$APP_NAME"; then
+              pm2 restart "$APP_NAME"
+            else
+              PORT=$PORT pm2 start npm --name "$APP_NAME" -- start
+            fi
+            pm2 save
 
-      - name: Verify deployment
+            sleep 5
+
+            echo "=== Validation ==="
+            HTTP=$(curl -so /dev/null -w "%{http_code}" http://127.0.0.1:$PORT)
+            if [ "$HTTP" = "200" ] || [ "$HTTP" = "307" ] || [ "$HTTP" = "301" ]; then
+              echo "✅ App responds HTTP $HTTP on port $PORT"
+            else
+              echo "❌ App returned HTTP $HTTP — check pm2 logs $APP_NAME"
+              pm2 logs "$APP_NAME" --lines 40 --nostream
+              exit 1
+            fi
+
+            echo "✅ Deployment complete — https://www.juriste-droit-du-travail.com"
+
+      - name: Verify HTTPS
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.VPS_HOST }}
@@ -129,29 +153,11 @@ jobs:
           key: ${{ secrets.VPS_SSH_KEY }}
           port: ${{ secrets.VPS_PORT }}
           script: |
-            echo "🔍 Verifying deployment"
-
-            # Check if files exist
-            if [ -d "${{ secrets.DEPLOY_PATH }}/current" ]; then
-              echo "✅ Deployment directory exists"
-              ls -lh "${{ secrets.DEPLOY_PATH }}/current" | head -10
+            nginx -t 2>&1 | tail -2
+            HTTP=$(curl -so /dev/null -w "%{http_code}" -L https://www.juriste-droit-du-travail.com 2>/dev/null || echo "000")
+            echo "HTTPS check: $HTTP"
+            if [ "$HTTP" != "200" ]; then
+              echo "⚠ HTTPS returned $HTTP (may be a redirect chain — check manually)"
             else
-              echo "❌ Deployment directory not found"
-              exit 1
+              echo "✅ Site is live"
             fi
-
-            # Check Nginx status
-            if sudo nginx -t 2>&1 | grep -q "successful"; then
-              echo "✅ Nginx configuration is valid"
-            else
-              echo "⚠️  Nginx configuration has issues"
-            fi
-
-            # Test site response
-            if curl -s -o /dev/null -w "%{http_code}" http://localhost | grep -q "200\|301\|302"; then
-              echo "✅ Site is responding"
-            else
-              echo "⚠️  Site may not be responding correctly"
-            fi
-
-            echo "✅ Verification completed"

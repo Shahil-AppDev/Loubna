@@ -1,6 +1,8 @@
-import type { Metadata } from "next";
-import Link from "next/link";
+import SocialLinks from "@/components/layout/SocialLinks";
 import { SITE_CONFIG } from "@/lib/constants";
+import type { Metadata } from "next";
+import Image from "next/image";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "À propos — Loubna Abouz Manta, Juriste en Droit du Travail",
@@ -13,54 +15,22 @@ export const metadata: Metadata = {
   },
 };
 
-const VALUES = [
-  {
-    icon: "⚖️",
-    title: "Rigueur",
-    desc: "Chaque situation est étudiée avec précision, en tenant compte du cadre applicable et de la réalité concrète du terrain.",
-  },
-  {
-    icon: "👂",
-    title: "Écoute",
-    desc: "Comprendre votre situation dans sa globalité est la condition d'un accompagnement réellement adapté.",
-  },
-  {
-    icon: "🔒",
-    title: "Confidentialité",
-    desc: "Vos informations restent strictement confidentielles. La discrétion est un engagement non négociable.",
-  },
-  {
-    icon: "💡",
-    title: "Clarté",
-    desc: "Je m'engage à vous expliquer les enjeux en langage accessible, sans jargon inutile.",
-  },
-  {
-    icon: "🛡️",
-    title: "Prévention",
-    desc: "Mon approche est résolument préventive : j'interviens en amont pour éviter l'escalade des situations.",
-  },
-  {
-    icon: "🎯",
-    title: "Pragmatisme",
-    desc: "Mon objectif n'est pas de théoriser, mais de vous apporter des réponses concrètes, adaptées à votre réalité.",
-  },
-];
 
 const FORMATION = [
   {
     icon: "🎓",
     title: "Master en Droit et Management",
-    desc: "Double approche à l'intersection du droit du travail et du management des organisations, permettant de comprendre les situations professionnelles en tenant compte à la fois du cadre juridique et de la réalité du terrain.",
+    desc: "Approche à l'intersection du droit du travail et du management des organisations.",
   },
   {
     icon: "⚠️",
     title: "Spécialisation en prévention des risques professionnels",
-    desc: "Spécialisation en identification et évaluation des risques (RPS, accidents du travail, maladies professionnelles), rédaction du DUERP, et accompagnement des entreprises dans leur démarche de prévention.",
+    desc: "Identification et évaluation des risques (RPS / TMS, AT/MP), rédaction du DUERP, accompagnement des entreprises.",
   },
   {
     icon: "📚",
     title: "Formation continue",
-    desc: "Dans une démarche d'amélioration continue, je maintiens mes connaissances à jour via des formations régulières en droit du travail, santé-sécurité au travail et management des risques professionnels.",
+    desc: "Actualisation régulière des connaissances en droit du travail, santé-sécurité et management des risques.",
   },
 ];
 
@@ -75,18 +45,16 @@ export default function AProposPage() {
           style={{ background: "radial-gradient(circle, rgba(139,0,0,.22) 0%, transparent 70%)" }}
         />
         <div className="container-main relative z-10 pt-20 pb-12">
-          <nav className="text-[0.72rem] tracking-[0.14em] uppercase text-white/30 mb-5 flex gap-2">
-            <Link href="/" className="hover:text-white/60 transition-colors">Accueil</Link>
+          <nav className="text-[0.72rem] tracking-[0.14em] uppercase text-white/50 mb-5 flex gap-2">
+            <Link href="/" className="hover:text-white/80 transition-colors">Accueil</Link>
             <span>›</span>
             <span className="text-or-500">À propos</span>
           </nav>
           <h1 className="font-serif text-[clamp(2.4rem,5vw,3.8rem)] font-semibold text-white leading-[1.12] max-w-2xl">
             Loubna Abouz Manta
           </h1>
-          <p className="text-white/50 text-[1rem] max-w-[500px] mt-5 leading-[1.8]">
-            Juriste en droit du travail — je me spécialise dans la prévention des risques
-            professionnels et l&apos;accompagnement des salariés et des entreprises,
-            en amont des procédures.
+          <p className="text-white/85 text-[1rem] max-w-[500px] mt-5 leading-[1.8] whitespace-pre-line">
+            {`Spécialisée en prévention des risques professionnels et en accompagnement des situations sensibles, j'interviens en amont des procédures pour sécuriser les décisions et apporter de la clarté. J'accompagne à la fois les salariés et les employeurs dans la compréhension et la gestion de leurs situations professionnelles.`}
           </p>
         </div>
       </section>
@@ -99,15 +67,15 @@ export default function AProposPage() {
             {/* Identité */}
             <div className="lg:sticky lg:top-24">
               <div className="relative">
-                <div
-                  className="aspect-[3/4] rounded-sm border border-or-500/20 flex flex-col items-center justify-center gap-4 text-white/25 max-w-sm"
-                  style={{ background: "linear-gradient(135deg, #1a1a1a, #2a2a2a)" }}
-                >
-                  <span className="text-5xl">⚖️</span>
-                  <span className="text-[0.75rem] tracking-[0.1em] uppercase">Photo professionnelle</span>
-                  <span className="text-[0.65rem] tracking-[0.08em] opacity-60">
-                    À remplacer dans /public/
-                  </span>
+                <div className="relative aspect-[3/4] max-w-sm rounded-sm border border-or-500/20 bg-encre-950 p-6 sm:p-8 md:p-10 overflow-hidden">
+                  <Image
+                    src="/logo.png"
+                    alt="Loubna Abouz Manta - Juriste en droit du travail"
+                    fill
+                    sizes="(max-width: 1024px) 90vw, 384px"
+                    className="object-contain object-center"
+                    priority
+                  />
                 </div>
                 <div className="absolute -bottom-5 -right-5 bg-rouge-800 text-white p-5 rounded-sm shadow-rouge-lg text-center">
                   <strong className="block font-serif text-[1.4rem] leading-none">Master</strong>
@@ -126,93 +94,193 @@ export default function AProposPage() {
                 </p>
                 <div className="w-10 h-px bg-or-400 my-4" />
                 <div className="space-y-2.5">
-                  <p className="text-encre-300 text-xs flex items-center gap-2">
+                  <p className="text-white/80 text-xs flex items-center gap-2">
                     <span className="text-or-500">🎓</span>
                     Master 2 Droit &amp; Management
                   </p>
-                  <p className="text-encre-300 text-xs flex items-center gap-2">
+                  <p className="text-white/80 text-xs flex items-center gap-2">
                     <span className="text-or-500">⚠️</span>
                     Prévention des risques professionnels
                   </p>
-                  <p className="text-encre-300 text-xs flex items-center gap-2">
+                  <p className="text-white/80 text-xs flex items-center gap-2">
                     <span className="text-or-500">🌐</span>
                     Interventions 100% distanciel
                   </p>
+                </div>
+                <div className="mt-6 pt-5 border-t border-white/10">
+                  <p className="text-[0.65rem] font-semibold uppercase tracking-[0.14em] text-white/70 mb-3">
+                    Réseaux sociaux
+                  </p>
+                  <SocialLinks />
                 </div>
               </div>
             </div>
 
             {/* Content */}
             <div className="pt-2">
-              <span className="section-label">Mon parcours</span>
-
-              <blockquote className="font-serif text-[1.3rem] italic text-encre-800 leading-[1.65] mb-7 border-l-[3px] border-rouge-800 pl-5">
-                « Mon objectif est d&apos;apporter un accompagnement rigoureux, accessible
-                et adapté à chaque situation, dans une logique de prévention et de
-                sécurisation des pratiques professionnelles. »
-              </blockquote>
+              <h3 className="font-serif text-[1.5rem] text-encre-950 mb-6">
+                Mon parcours
+              </h3>
 
               <div className="space-y-5 mb-12">
-                <p className="text-[0.95rem] text-encre-600 leading-[1.88]">
-                  Titulaire d&apos;un Master en droit et management, orienté notamment vers la santé
-                  et la sécurité au travail ainsi que la responsabilité sociale des entreprises,
-                  j&apos;ai développé une expertise à l&apos;intersection du droit du travail et du
-                  management des organisations. Cette double approche me permet d&apos;appréhender
-                  les situations professionnelles avec précision, en tenant compte à la fois du
-                  cadre juridique et de la réalité du terrain.
+                <p className="text-[0.95rem] text-encre-950 leading-[1.88]">
+                  J&apos;accompagne à la fois les salariés et les employeurs dans la compréhension et la gestion de leurs situations professionnelles.
                 </p>
-                <p className="text-[0.95rem] text-encre-600 leading-[1.88]">
-                  J&apos;interviens en droit du travail auprès des entreprises comme des salariés,
-                  avec une attention particulière portée à la santé et à la sécurité au travail
-                  ainsi qu&apos;à la prévention des risques professionnels.
+                <p className="text-[0.95rem] text-encre-950 leading-[1.88]">
+                  Titulaire d&apos;un Master en droit et management, j&apos;ai développé une approche globale des relations de travail, à la croisée du juridique et du fonctionnement concret des organisations.
                 </p>
-                <p className="text-[0.95rem] text-encre-600 leading-[1.88]">
-                  J&apos;accompagne les entreprises dans l&apos;identification et l&apos;évaluation des risques,
-                  notamment à travers la réalisation d&apos;audits et la mise à jour du Document
-                  Unique d&apos;Évaluation des Risques Professionnels (DUERP), ainsi que sur les
-                  problématiques liées aux accidents du travail et maladies professionnelles
-                  (AT/MP). J&apos;assiste également les salariés dans la compréhension de leurs droits
-                  et dans l&apos;étude de leur situation professionnelle.
+                <p className="text-[0.95rem] text-encre-950 leading-[1.88]">
+                  Cette double compétence me permet d&apos;intervenir sur des situations réelles, souvent complexes, en prenant en compte :
                 </p>
-                <p className="text-[0.95rem] text-encre-600 leading-[1.88]">
-                  Mon approche repose sur une compréhension concrète des situations de travail,
-                  afin d&apos;agir en amont et de prévenir les difficultés.
+                <ul className="list-none space-y-2 ml-5">
+                  <li className="text-[0.95rem] text-encre-950 leading-[1.88] flex items-start gap-2">
+                    <span className="text-or-500 mt-1">•</span>
+                    <span>les règles juridiques applicables</span>
+                  </li>
+                  <li className="text-[0.95rem] text-encre-950 leading-[1.88] flex items-start gap-2">
+                    <span className="text-or-500 mt-1">•</span>
+                    <span>les pratiques professionnelles</span>
+                  </li>
+                  <li className="text-[0.95rem] text-encre-950 leading-[1.88] flex items-start gap-2">
+                    <span className="text-or-500 mt-1">•</span>
+                    <span>les conditions de travail</span>
+                  </li>
+                </ul>
+                <p className="text-[0.95rem] text-encre-950 leading-[1.88] font-medium">
+                  Mon objectif : apporter de la lisibilité, structurer les démarches et sécuriser les situations.
                 </p>
               </div>
 
-              {/* Information importante */}
-              <div className="bg-encre-950 border border-encre-700 rounded-sm p-6 mb-10">
-                <div className="flex items-start gap-3">
-                  <span className="text-or-400 text-lg flex-shrink-0 mt-0.5">ℹ️</span>
-                  <div>
-                    <h4 className="text-white font-serif text-sm font-semibold mb-2">
-                      Information importante
-                    </h4>
-                    <p className="text-encre-300 text-xs leading-relaxed">
-                      Les informations fournies ne constituent pas une consultation
-                      juridique au sens de la réglementation applicable à la profession
-                      d&apos;avocat. Lorsqu&apos;une situation nécessite une représentation en
-                      justice ou une procédure judiciaire, une orientation vers un avocat
-                      compétent est proposée.
-                    </p>
-                  </div>
+              <h3 className="font-serif text-[1.5rem] text-encre-950 mb-6">
+                Ce que je fais au quotidien
+              </h3>
+
+              <div className="space-y-6 mb-12">
+                <p className="text-[0.95rem] text-encre-950 leading-[1.88]">
+                  J&apos;interviens principalement lorsque les situations deviennent difficiles à comprendre ou à gérer.
+                </p>
+
+                <div className="bg-encre-50 border border-encre-200 rounded-sm p-6">
+                  <h4 className="font-serif text-[1.15rem] text-encre-950 mb-3 flex items-center gap-2">
+                    <span>👤</span> Auprès des salariés
+                  </h4>
+                  <p className="text-[0.9rem] text-encre-950 leading-[1.8] mb-3">
+                    J&apos;accompagne notamment dans :
+                  </p>
+                  <ul className="list-none space-y-2 ml-5">
+                    <li className="text-[0.9rem] text-encre-950 leading-[1.8] flex items-start gap-2">
+                      <span className="text-or-500 mt-1">•</span>
+                      <span>les démarches liées aux accidents du travail et maladies professionnelles (AT/MP)</span>
+                    </li>
+                    <li className="text-[0.9rem] text-encre-950 leading-[1.8] flex items-start gap-2">
+                      <span className="text-or-500 mt-1">•</span>
+                      <span>les situations de licenciement, sanctions disciplinaires ou ruptures de contrat</span>
+                    </li>
+                    <li className="text-[0.9rem] text-encre-950 leading-[1.8] flex items-start gap-2">
+                      <span className="text-or-500 mt-1">•</span>
+                      <span>les situations de mal-être au travail ou de harcèlement→ analyse, compréhension des documents et structuration des démarches</span>
+                    </li>
+                  </ul>
+                </div>
+
+                <div className="bg-encre-50 border border-encre-200 rounded-sm p-6">
+                  <h4 className="font-serif text-[1.15rem] text-encre-950 mb-3 flex items-center gap-2">
+                    <span>🏢</span> Auprès des employeurs
+                  </h4>
+                  <p className="text-[0.9rem] text-encre-950 leading-[1.8] mb-3">
+                    J&apos;accompagne les entreprises dans la prévention des risques et la sécurisation de leurs pratiques :
+                  </p>
+                  <ul className="list-none space-y-2 ml-5">
+                    <li className="text-[0.9rem] text-encre-950 leading-[1.8] flex items-start gap-2">
+                      <span className="text-or-500 mt-1">•</span>
+                      <span>DUERP : rédaction, mise à jour et appropriation</span>
+                    </li>
+                    <li className="text-[0.9rem] text-encre-950 leading-[1.8] flex items-start gap-2">
+                      <span className="text-or-500 mt-1">•</span>
+                      <span>Prévention des risques professionnels (RPS / TMS) : identification des situations à risque et mise en place d&apos;une démarche adaptée</span>
+                    </li>
+                    <li className="text-[0.9rem] text-encre-950 leading-[1.8] flex items-start gap-2">
+                      <span className="text-or-500 mt-1">•</span>
+                      <span>Pratiques RH et situations sensibles : intervention en amont pour éviter les erreurs et sécuriser les décisions</span>
+                    </li>
+                  </ul>
                 </div>
               </div>
 
-              {/* Values */}
-              <span className="section-label">Mes valeurs</span>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-2">
-                {VALUES.map((v, i) => (
-                  <div
-                    key={i}
-                    className="bg-encre-100 border border-encre-200/50 border-l-[3px] border-l-rouge-800 p-6 rounded-sm"
-                  >
-                    <h4 className="font-serif text-[1.05rem] text-encre-800 mb-2">
-                      {v.icon} {v.title}
-                    </h4>
-                    <p className="text-[0.84rem] text-encre-500 leading-[1.7]">{v.desc}</p>
-                  </div>
-                ))}
+              <h3 className="font-serif text-[1.5rem] text-encre-950 mb-6">
+                Formation & transmission
+              </h3>
+
+              <div className="space-y-5 mb-12">
+                <p className="text-[0.95rem] text-encre-950 leading-[1.88]">
+                  J&apos;accompagne également les professionnels à travers des formations concrètes et directement applicables en entreprise.
+                </p>
+                <p className="text-[0.95rem] text-encre-950 leading-[1.88] font-medium">
+                  Thématiques principales :
+                </p>
+                <ul className="list-none space-y-2 ml-5">
+                  <li className="text-[0.95rem] text-encre-950 leading-[1.88] flex items-start gap-2">
+                    <span className="text-or-500 mt-1">•</span>
+                    <span>Prévention et gestion des accidents du travail</span>
+                  </li>
+                  <li className="text-[0.95rem] text-encre-950 leading-[1.88] flex items-start gap-2">
+                    <span className="text-or-500 mt-1">•</span>
+                    <span>Gestion des procédures disciplinaires</span>
+                  </li>
+                  <li className="text-[0.95rem] text-encre-950 leading-[1.88] flex items-start gap-2">
+                    <span className="text-or-500 mt-1">•</span>
+                    <span>Prud&apos;hommes : les clés pour gérer un contentieux efficacement</span>
+                  </li>
+                </ul>
+                <p className="text-[0.95rem] text-encre-950 leading-[1.88]">
+                  Ces formations sont construites à partir de situations réelles pour permettre une mise en pratique immédiate.
+                </p>
+
+                <div className="mt-8 space-y-5 text-[0.95rem] text-encre-950 leading-[1.88] whitespace-pre-line">
+                  {`Objectifs :
+
+Prévenir les risques professionnels
+
+Adopter les bons réflexes dès la survenance d'un accident
+
+Sécuriser les pratiques et les décisions
+
+Éviter les erreurs à risque, notamment en cas de contentieux
+
+Pourquoi c'est essentiel
+
+Même lorsqu'un employeur a mis en place les mesures nécessaires, un accident peut survenir.
+
+Dans ces moments, les premières réactions sont déterminantes.Elles conditionnent la suite de la gestion et peuvent avoir des conséquences importantes.
+
+La formation permet notamment de :
+
+Comprendre les obligations en matière de prévention
+
+Maîtriser le rôle du DUERP
+
+Adopter les bons réflexes immédiatement
+
+Éviter les erreurs fréquentes
+
+Sécuriser les premières démarches administratives`}
+                </div>
+              </div>
+
+              <h3 className="font-serif text-[1.5rem] text-encre-950 mb-6">
+                Ma démarche
+              </h3>
+
+              <div className="space-y-5 mb-12">
+                <p className="text-[0.95rem] text-encre-950 leading-[1.88]">
+                  J&apos;apporte de la méthode, de la clarté et une lecture structurée des situations pour permettre à chacun d&apos;agir avec plus de sécurité.
+                </p>
+                <p className="text-[0.95rem] text-encre-950 leading-[1.88]">
+                  Mon rôle est d&apos;accompagner et d&apos;éclairer les décisions.
+                </p>
+                <p className="text-[0.95rem] text-encre-950 leading-[1.88] font-medium">
+                  Je n&apos;interviens pas à la place des professions réglementées.
+                </p>
               </div>
 
               <div className="mt-10 flex flex-wrap gap-4">
@@ -233,12 +301,12 @@ export default function AProposPage() {
         <div className="container-main">
           <div className="text-center mb-14">
             <span className="section-label">Formation &amp; spécialisation</span>
-            <h2 className="font-serif text-[clamp(1.9rem,3vw,2.6rem)] text-encre-800 leading-[1.2]">
+            <h2 className="font-serif text-[clamp(1.9rem,3vw,2.6rem)] text-encre-950 leading-[1.2]">
               Une double approche
               <br />
-              <em className="text-rouge-800 font-light" style={{ fontStyle: "italic" }}>
+              <span className="text-rouge-800 font-light">
                 droit du travail et management
-              </em>
+              </span>
             </h2>
           </div>
           <div className="max-w-[700px] mx-auto space-y-0 divide-y divide-encre-200">
@@ -246,8 +314,8 @@ export default function AProposPage() {
               <div key={i} className="flex gap-7 py-8">
                 <div className="text-[2rem] flex-shrink-0 pt-1">{f.icon}</div>
                 <div>
-                  <h4 className="font-serif text-[1.12rem] text-encre-800 mb-2">{f.title}</h4>
-                  <p className="text-[0.9rem] text-encre-500 leading-[1.8]">{f.desc}</p>
+                  <h4 className="font-serif text-[1.12rem] text-encre-950 mb-2">{f.title}</h4>
+                  <p className="text-[0.9rem] text-encre-950 leading-[1.8]">{f.desc}</p>
                 </div>
               </div>
             ))}
