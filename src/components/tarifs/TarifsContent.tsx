@@ -263,6 +263,24 @@ export default function TarifsContent() {
         </div>
       </section>
 
+      {/* ─── INTRO ÉDITORIALE ─────────────────────────── */}
+      <section className="bg-encre-50 border-b border-encre-200">
+        <div className="container-main py-14">
+          <div className="max-w-2xl mx-auto text-center">
+            <p className="font-serif text-[clamp(1.15rem,2.2vw,1.45rem)] text-encre-800 leading-[1.65] mb-5">
+              Beaucoup de dossiers accident du travail ou maladie professionnelle
+              rencontrent des difficultés dès le départ.
+            </p>
+            <p className="text-[1rem] font-semibold text-rouge-800 mb-4">Pourquoi ?</p>
+            <p className="text-[0.95rem] text-encre-600 leading-[1.85] max-w-xl mx-auto">
+              Pas parce que la situation n&apos;est pas réelle, mais parce que certains
+              éléments essentiels du dossier n&apos;ont pas été correctement préparés,
+              expliqués ou structurés.
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* ─── INTRO STRIP ──────────────────────────────── */}
       <section className="bg-encre-950 border-b border-or-500/15">
         <div className="container-main py-8">
