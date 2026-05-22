@@ -196,7 +196,7 @@ function RendezVousForm() {
                             <li className="flex items-center gap-2"><span className="text-or-500 font-bold">✓</span> Orientation vers la démarche adaptée</li>
                             <li className="flex items-center gap-2"><span className="text-or-500 font-bold">✓</span> Sans engagement pour la suite</li>
                           </ul>
-                          <span className="text-sm font-semibold text-encre-700">💰 20,00 € — règlement sécurisé en ligne</span>
+                          <span className="text-sm font-semibold text-encre-700">💰 59,00 € — règlement sécurisé en ligne</span>
                         </div>
                       </div>
                     ) : service.is_quote_only ? (

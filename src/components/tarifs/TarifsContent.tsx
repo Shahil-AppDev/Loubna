@@ -47,7 +47,7 @@ const ENTREE: Section[] = [
         title: "Dépôt et analyse de dossier",
         description:
           "Transmettez vos documents (contrat, courriers, convocations, certificats...) et recevez une analyse écrite claire et personnalisée de votre situation, avec une orientation vers les démarches adaptées.",
-        price: "20 €",
+        price: "59 €",
         featured: true,
         serviceKey: "depot_dossier",
         bullets: [
