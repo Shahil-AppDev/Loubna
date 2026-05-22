@@ -4,8 +4,13 @@ import AttachmentField from '@/components/forms/AttachmentField';
 import { validateContactFiles } from '@/lib/contact/attachments';
 import { ServiceRdv } from '@/types/database';
 import { useEffect, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
+import { Suspense } from 'react';
 
-export default function RendezVousPage() {
+function RendezVousForm() {
+  const searchParams = useSearchParams();
+  const preselectedServiceId = searchParams.get('service');
+
   const [services, setServices] = useState<ServiceRdv[]>([]);
   const [selectedService, setSelectedService] = useState<ServiceRdv | null>(null);
   const [selectedDate, setSelectedDate] = useState('');
@@ -25,6 +30,16 @@ export default function RendezVousPage() {
   useEffect(() => {
     loadServices();
   }, []);
+
+  // Pré-sélection depuis un lien externe (?service=ID)
+  useEffect(() => {
+    if (!preselectedServiceId || services.length === 0) return;
+    const found = services.find(s => s.id === preselectedServiceId);
+    if (found) {
+      setSelectedService(found);
+      setStep(2);
+    }
+  }, [preselectedServiceId, services]);
 
   async function loadServices() {
     try {
@@ -381,5 +396,17 @@ function StepIndicator({ number, label, active }: { number: number; label: strin
         {label}
       </span>
     </div>
+  );
+}
+
+export default function RendezVousPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center bg-encre-50">
+        <div className="text-encre-700">Chargement…</div>
+      </div>
+    }>
+      <RendezVousForm />
+    </Suspense>
   );
 }

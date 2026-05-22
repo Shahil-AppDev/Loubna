@@ -4,13 +4,25 @@ import Link from "next/link";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 
+// IDs fixes correspondant aux services insérés en DB
+const SERVICE_IDS = {
+  atmp_entretien:       'a1000001-0000-0000-0000-000000000001',
+  atmp_accompagnement:  'a1000001-0000-0000-0000-000000000002',
+  harcelement_analyse:  'a1000001-0000-0000-0000-000000000003',
+  disciplinaire_analyse:'a1000001-0000-0000-0000-000000000004',
+  employeur_analyse:    'a1000001-0000-0000-0000-000000000005',
+  duerp_analyse:        'a1000001-0000-0000-0000-000000000006',
+} as const;
+
+type ServiceKey = keyof typeof SERVICE_IDS;
+
 type PriceItem = {
   title: string;
   description: string;
   price: string;
   priceNote?: string;
   featured?: boolean;
-  bookable?: boolean;
+  serviceKey?: ServiceKey;
   contactLabel?: string;
 };
 
@@ -31,7 +43,7 @@ const SALARIES: Section[] = [
           "Séance d'information d'1 heure pour comprendre vos droits AT/MP, la procédure de reconnaissance et les démarches à entreprendre.",
         price: "70 €",
         priceNote: "séance de 1h",
-        bookable: true,
+        serviceKey: "atmp_entretien",
       },
       {
         title: "Accompagnement complet",
@@ -39,7 +51,7 @@ const SALARIES: Section[] = [
           "Suivi personnalisé de votre dossier AT/MP : compréhension de la procédure, préparation des échanges avec votre employeur et les organismes, orientation vers les démarches appropriées.",
         price: "120 €",
         featured: true,
-        bookable: true,
+        serviceKey: "atmp_accompagnement",
       },
     ],
   },
@@ -52,7 +64,7 @@ const SALARIES: Section[] = [
         description:
           "Éclairage sur votre situation : identification des faits, compréhension des mécanismes juridiques, orientation vers les démarches adaptées.",
         price: "59 €",
-        bookable: true,
+        serviceKey: "harcelement_analyse",
       },
       {
         title: "Accompagnement personnalisé",
@@ -72,7 +84,7 @@ const SALARIES: Section[] = [
         description:
           "Compréhension de la procédure disciplinaire engagée (avertissement, mise à pied, convocation), de vos droits et des étapes à venir.",
         price: "59 €",
-        bookable: true,
+        serviceKey: "disciplinaire_analyse",
       },
       {
         title: "Accompagnement personnalisé",
@@ -96,7 +108,7 @@ const EMPLOYEURS: Section[] = [
           "Éclairage complet sur une situation RH spécifique : litige salarié, procédure disciplinaire, rupture de contrat. Compréhension des enjeux et orientation vers les démarches appropriées.",
         price: "199 €",
         featured: true,
-        bookable: true,
+        serviceKey: "employeur_analyse",
       },
       {
         title: "Mise en conformité & audit RH",
@@ -127,7 +139,7 @@ const DUERP: Section[] = [
           "Examen de votre Document Unique d'Évaluation des Risques Professionnels : vérification de la conformité, identification des lacunes et recommandations de mise à jour.",
         price: "199 €",
         featured: true,
-        bookable: true,
+        serviceKey: "duerp_analyse",
       },
       {
         title: "Rédaction / refonte du DUERP",
@@ -156,6 +168,10 @@ const TABS = [
 type TabId = (typeof TABS)[number]["id"];
 
 function PricingCard({ item }: { item: PriceItem }) {
+  const bookUrl = item.serviceKey
+    ? `/rendez-vous?service=${SERVICE_IDS[item.serviceKey]}`
+    : null;
+
   return (
     <div
       className={cn(
@@ -193,9 +209,9 @@ function PricingCard({ item }: { item: PriceItem }) {
             )}
           </div>
 
-          {item.bookable ? (
+          {bookUrl ? (
             <Link
-              href="/rendez-vous"
+              href={bookUrl}
               className="btn btn-primary w-full text-center block text-[0.82rem] py-2.5"
             >
               Réserver cette prestation →
