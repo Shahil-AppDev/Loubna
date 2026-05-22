@@ -67,12 +67,13 @@ jobs:
           SUMUP_API_KEY: ${{ secrets.SUMUP_API_KEY }}
           SUMUP_MERCHANT_CODE: ${{ secrets.SUMUP_MERCHANT_CODE }}
           SUMUP_WEBHOOK_SECRET: ${{ secrets.SUMUP_WEBHOOK_SECRET }}
+          NEXT_PUBLIC_SUMUP_PUBLIC_KEY: ${{ secrets.NEXT_PUBLIC_SUMUP_PUBLIC_KEY }}
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_SSH_KEY }}
           port: ${{ secrets.VPS_PORT }}
-          envs: RESEND_API_KEY,CONTACT_EMAIL_TO,CONTACT_EMAIL_FROM,SUMUP_API_KEY,SUMUP_MERCHANT_CODE,SUMUP_WEBHOOK_SECRET
+          envs: RESEND_API_KEY,CONTACT_EMAIL_TO,CONTACT_EMAIL_FROM,SUMUP_API_KEY,SUMUP_MERCHANT_CODE,SUMUP_WEBHOOK_SECRET,NEXT_PUBLIC_SUMUP_PUBLIC_KEY
           command_timeout: "10m"
           script: |
             set -euo pipefail
@@ -122,6 +123,7 @@ jobs:
                 printf 'SUMUP_BASE_URL=https://api.sumup.com\n'
                 printf 'SUMUP_CURRENCY=EUR\n'
                 printf 'NEXT_PUBLIC_PAYMENT_PROVIDER=sumup\n'
+                printf 'NEXT_PUBLIC_SUMUP_PUBLIC_KEY=%s\n' "${NEXT_PUBLIC_SUMUP_PUBLIC_KEY:-}"
               } >> "$ENV_FILE"
               echo "✓ SumUp variables written"
             fi
