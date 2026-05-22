@@ -6,7 +6,7 @@ const pool = new Pool({
   port: parseInt(process.env.POSTGRES_PORT || '5432'),
   database: process.env.POSTGRES_DATABASE || 'loubna_db',
   user: process.env.POSTGRES_USER || 'postgres',
-  password: process.env.POSTGRES_PASSWORD,
+  password: process.env.POSTGRES_PASSWORD ?? '',
   max: 20,
   idleTimeoutMillis: 30000,
   connectionTimeoutMillis: 2000,
