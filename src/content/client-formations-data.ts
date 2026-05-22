@@ -195,7 +195,7 @@ export const FORMATION_ACCIDENTS_DATA: FormationData = {
 export const FORMATION_DISCIPLINAIRE_DATA: FormationData = {
   id: "pouvoir-disciplinaire",
   label: "FORMATION",
-  titre: "FORMATION – EXERCICE DU POUVOIR DISCIPLINAIRE DE L'EMPLOYEUR",
+  titre: "FORMATION – EXERCER ET SÉCURISER LE POUVOIR DISCIPLINAIRE DE L'EMPLOYEUR",
   carteTitre: "EXERCER ET SÉCURISER LE POUVOIR DISCIPLINAIRE DE L'EMPLOYEUR",
   intro: [
     "Je propose une formation dédiée à la gestion des procédures disciplinaires, centrée sur les situations concrètes rencontrées en entreprise.",
@@ -309,7 +309,7 @@ export const FORMATION_DISCIPLINAIRE_DATA: FormationData = {
     ],
   },
   productMeta: {
-    format: "Distanciel (visioconférence)",
+    format: "Distanciel et présentiel",
     duree: "1/2 journée ou 1 journée (adaptable selon vos besoins)",
     public:
       "Employeurs, responsables RH, managers et toute personne amenée à exercer un pouvoir disciplinaire",

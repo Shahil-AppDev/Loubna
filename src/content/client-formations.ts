@@ -156,7 +156,7 @@ Ma démarche consiste à aider les entreprises à identifier les zones de risque
 Je n'interviens pas à la place des professions réglementées.`;
 
 export const FORMATION_DISCIPLINAIRE_TITRE =
-  "FORMATION – EXERCICE DU POUVOIR DISCIPLINAIRE DE L'EMPLOYEUR";
+  "FORMATION – EXERCER ET SÉCURISER LE POUVOIR DISCIPLINAIRE DE L'EMPLOYEUR";
 
 export const FORMATION_DISCIPLINAIRE_BLOC = `Je propose une formation dédiée à la gestion des procédures disciplinaires, centrée sur les situations concrètes rencontrées en entreprise.
 
