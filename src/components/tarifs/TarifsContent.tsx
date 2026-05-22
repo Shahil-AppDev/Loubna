@@ -6,12 +6,16 @@ import { cn } from "@/lib/utils";
 
 // IDs fixes correspondant aux services insérés en DB
 const SERVICE_IDS = {
-  atmp_entretien:       'a1000001-0000-0000-0000-000000000001',
-  atmp_accompagnement:  'a1000001-0000-0000-0000-000000000002',
-  harcelement_analyse:  'a1000001-0000-0000-0000-000000000003',
-  disciplinaire_analyse:'a1000001-0000-0000-0000-000000000004',
-  employeur_analyse:    'a1000001-0000-0000-0000-000000000005',
-  duerp_analyse:        'a1000001-0000-0000-0000-000000000006',
+  atmp_entretien:             'a1000001-0000-0000-0000-000000000001',
+  atmp_accompagnement:        'a1000001-0000-0000-0000-000000000002',
+  harcelement_analyse:        'a1000001-0000-0000-0000-000000000003',
+  disciplinaire_analyse:      'a1000001-0000-0000-0000-000000000004',
+  employeur_analyse:          'a1000001-0000-0000-0000-000000000005',
+  duerp_analyse:              'a1000001-0000-0000-0000-000000000006',
+  harcelement_accompagnement: 'a1000001-0000-0000-0000-000000000007',
+  disciplinaire_accompagnement:'a1000001-0000-0000-0000-000000000008',
+  duerp_accompagnement:       'a1000001-0000-0000-0000-000000000009',
+  employeur_accompagnement:   'a1000001-0000-0000-0000-000000000010',
 } as const;
 
 type ServiceKey = keyof typeof SERVICE_IDS;
@@ -71,6 +75,7 @@ const SALARIES: Section[] = [
         description:
           "Accompagnement dans la structuration des éléments, l'analyse des échanges et la préparation des démarches liées à la situation rencontrée.",
         price: "À partir de 129 €",
+        serviceKey: "harcelement_accompagnement",
         contactLabel: "Demander un devis",
       },
     ],
@@ -97,6 +102,7 @@ const SALARIES: Section[] = [
           "Identification des points de vigilance",
           "Retour synthétique et orientations adaptées à la situation",
         ],
+        serviceKey: "disciplinaire_accompagnement",
         contactLabel: "Demander un devis",
       },
     ],
@@ -119,8 +125,15 @@ const EMPLOYEURS: Section[] = [
       {
         title: "Accompagnement et interventions",
         description:
-          "Toute intervention nécessitant un accompagnement approfondi, plusieurs échanges, une analyse complémentaire ou un suivi spécifique fait l'objet d'un devis personnalisé selon la complexité et le volume documentaire.",
+          "Toute intervention nécessitant un accompagnement approfondi, plusieurs échanges, une analyse complémentaire ou un suivi spécifique fera l'objet d'un devis personnalisé selon la complexité de la situation et le volume documentaire.",
         price: "Sur devis",
+        bullets: [
+          "Analyse de la situation",
+          "Étude des documents transmis",
+          "Identification des points de vigilance",
+          "Réponse écrite synthétique et orientations adaptées à la situation",
+        ],
+        serviceKey: "employeur_accompagnement",
         contactLabel: "Demander un devis",
       },
     ],
@@ -143,8 +156,9 @@ const DUERP: Section[] = [
       {
         title: "Accompagnement DUERP et prévention des risques",
         description:
-          "Toute intervention nécessitant une reprise complète du document ou un accompagnement approfondi fait l'objet d'un devis personnalisé selon l'activité, l'effectif, le nombre d'unités de travail et le niveau d'accompagnement nécessaire.",
+          "Toute intervention nécessitant une reprise complète du document, un accompagnement approfondi ou une analyse spécifique fera l'objet d'un devis personnalisé selon : l'activité, l'effectif, le nombre d'unités de travail et le niveau d'accompagnement nécessaire.",
         price: "Sur devis",
+        serviceKey: "duerp_accompagnement",
         contactLabel: "Demander un devis",
       },
     ],
@@ -160,7 +174,8 @@ const TABS = [
 type TabId = (typeof TABS)[number]["id"];
 
 function PricingCard({ item }: { item: PriceItem }) {
-  const bookUrl = item.serviceKey
+  // Les items avec contactLabel sont toujours sur devis → /contact
+  const bookUrl = item.serviceKey && !item.contactLabel
     ? `/rendez-vous?service=${SERVICE_IDS[item.serviceKey]}`
     : null;
 
