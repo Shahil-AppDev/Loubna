@@ -93,7 +93,7 @@ export default function FormationBlock({ data, index }: { data: FormationData; i
           <p className="text-[0.68rem] font-bold uppercase tracking-[0.22em] text-rouge-800 mb-3">
             {data.label}
           </p>
-          <h2 className="font-serif text-[1.35rem] md:text-[1.55rem] font-semibold text-encre-950 leading-snug mb-4">
+          <h2 className="font-serif text-[clamp(1.2rem,2.8vw,1.55rem)] md:text-[clamp(1.35rem,3vw,1.75rem)] font-semibold text-encre-950 leading-[1.2] mb-4 uppercase tracking-tight">
             {displayTitle}
           </h2>
           {data.tagline && (

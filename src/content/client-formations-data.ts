@@ -196,7 +196,7 @@ export const FORMATION_DISCIPLINAIRE_DATA: FormationData = {
   id: "pouvoir-disciplinaire",
   label: "FORMATION",
   titre: "FORMATION – EXERCICE DU POUVOIR DISCIPLINAIRE DE L'EMPLOYEUR",
-  carteTitre: "Exercer et sécuriser le pouvoir disciplinaire de l'employeur",
+  carteTitre: "EXERCER ET SÉCURISER LE POUVOIR DISCIPLINAIRE DE L'EMPLOYEUR",
   intro: [
     "Je propose une formation dédiée à la gestion des procédures disciplinaires, centrée sur les situations concrètes rencontrées en entreprise.",
   ],
