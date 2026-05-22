@@ -96,7 +96,7 @@ export default function BlogPage() {
 
       <section className="section-pad bg-white">
         <div className="container-main text-center">
-          <Link href="/contact" className="btn btn-primary">
+          <Link href="/rendez-vous/?service=a1000001-0000-0000-0000-000000000001" className="btn btn-primary">
             Prendre contact
           </Link>
         </div>

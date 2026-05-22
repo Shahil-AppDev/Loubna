@@ -72,11 +72,8 @@ export default function Header() {
             </Link>
           ))}
           <Link
-            href="/contact"
-            className={cn(
-              "ml-3 btn btn-primary text-[0.75rem] py-2.5 px-5",
-              pathname === "/contact" && "opacity-90"
-            )}
+            href="/rendez-vous/?service=a1000001-0000-0000-0000-000000000001"
+            className="ml-3 btn btn-primary text-[0.75rem] py-2.5 px-5"
           >
             Prendre contact
           </Link>

@@ -284,7 +284,7 @@ Sécuriser les premières démarches administratives`}
               </div>
 
               <div className="mt-10 flex flex-wrap gap-4">
-                <Link href="/contact" className="btn btn-primary">
+                <Link href="/rendez-vous/?service=a1000001-0000-0000-0000-000000000001" className="btn btn-primary">
                   Prendre contact →
                 </Link>
                 <Link href="/services" className="btn btn-ghost">
@@ -333,7 +333,7 @@ Sécuriser les premières démarches administratives`}
             Contactez-moi pour un premier échange sur votre situation professionnelle.
           </p>
           <div className="flex flex-wrap gap-4 justify-center">
-            <Link href="/contact" className="btn btn-white">
+            <Link href="/rendez-vous/?service=a1000001-0000-0000-0000-000000000001" className="btn btn-white">
               Prendre contact
             </Link>
             <Link href="/services" className="btn btn-ghost-white">

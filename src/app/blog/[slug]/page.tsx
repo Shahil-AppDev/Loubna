@@ -114,7 +114,7 @@ export default function BlogArticlePage({ params }: Props) {
               </div>
 
               <div className="mt-12 text-center">
-                <Link href="/contact" className="btn btn-primary">
+                <Link href="/rendez-vous/?service=a1000001-0000-0000-0000-000000000001" className="btn btn-primary">
                   Prendre contact
                 </Link>
               </div>

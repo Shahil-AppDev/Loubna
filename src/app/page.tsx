@@ -62,7 +62,7 @@ export default function HomePage() {
 
           {/* CTAs */}
           <div className="flex flex-col sm:flex-row flex-wrap gap-3 md:gap-4 mb-10 md:mb-16">
-            <Link href="/contact" className="btn btn-primary text-center justify-center">
+            <Link href="/rendez-vous/?service=a1000001-0000-0000-0000-000000000001" className="btn btn-primary text-center justify-center">
               Prendre contact
             </Link>
             <Link href="/services" className="btn btn-ghost text-center justify-center">
@@ -119,7 +119,7 @@ export default function HomePage() {
       <section className="section-pad bg-rouge-800">
         <div className="container-main text-center">
           <div className="flex flex-wrap gap-4 justify-center">
-            <Link href="/contact" className="btn btn-white">
+            <Link href="/rendez-vous/?service=a1000001-0000-0000-0000-000000000001" className="btn btn-white">
               Prendre contact
             </Link>
             <a href={`tel:${SITE_CONFIG.phone.replace(/\s/g, "")}`} className="btn btn-ghost-white">

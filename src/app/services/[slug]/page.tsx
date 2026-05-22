@@ -530,22 +530,22 @@ export default function ServicePage({ params }: Props) {
               </p>
               <div className="flex flex-wrap gap-4">
                 {'ctaSalarie' in content && content.ctaSalarie && (
-                  <Link href="/contact" className="btn btn-white">
+                  <Link href="/rendez-vous/?service=a1000001-0000-0000-0000-000000000001" className="btn btn-white">
                     {content.ctaSalarie}
                   </Link>
                 )}
                 {'ctaEmployeur' in content && content.ctaEmployeur && (
-                  <Link href="/contact" className="btn btn-ghost-white">
+                  <Link href="/rendez-vous/?service=a1000001-0000-0000-0000-000000000001" className="btn btn-ghost-white">
                     {content.ctaEmployeur}
                   </Link>
                 )}
                 {'cta' in content && content.cta && !('ctaSalarie' in content) && !('ctaEmployeur' in content) && (
-                  <Link href="/contact" className="btn btn-white">
+                  <Link href="/rendez-vous/?service=a1000001-0000-0000-0000-000000000001" className="btn btn-white">
                     {content.cta}
                   </Link>
                 )}
                 {!('ctaSalarie' in content) && !('ctaEmployeur' in content) && !('cta' in content) && (
-                  <Link href="/contact" className="btn btn-white">
+                  <Link href="/rendez-vous/?service=a1000001-0000-0000-0000-000000000001" className="btn btn-white">
                     Me contacter →
                   </Link>
                 )}

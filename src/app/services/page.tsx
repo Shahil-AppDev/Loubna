@@ -118,7 +118,7 @@ export default function ServicesPage() {
             Chaque situation est unique. Prenez contact pour un accompagnement personnalisé.
           </p>
           <div className="flex flex-wrap gap-4 justify-center">
-            <Link href="/contact" className="btn btn-white">
+            <Link href="/rendez-vous/?service=a1000001-0000-0000-0000-000000000001" className="btn btn-white">
               Prendre contact
             </Link>
             <Link href="/faq" className="btn btn-ghost-white">
@@ -143,7 +143,7 @@ function ServiceCard({
   service: (typeof SERVICES)[number];
 }) {
   const hasDetailPage = SLUGS_WITH_DETAIL_PAGE.has(service.slug);
-  const href = hasDetailPage ? `/services/${service.slug}` : "/contact";
+  const href = hasDetailPage ? `/services/${service.slug}` : "/rendez-vous/?service=a1000001-0000-0000-0000-000000000001";
 
   return (
     <Link
