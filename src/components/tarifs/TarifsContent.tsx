@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 
 // IDs fixes correspondant aux services insérés en DB
 const SERVICE_IDS = {
+  depot_dossier:              'a1000001-0000-0000-0000-000000000000',
   atmp_entretien:             'a1000001-0000-0000-0000-000000000001',
   atmp_accompagnement:        'a1000001-0000-0000-0000-000000000002',
   harcelement_analyse:        'a1000001-0000-0000-0000-000000000003',
@@ -36,6 +37,29 @@ type Section = {
   icon: string;
   items: PriceItem[];
 };
+
+const ENTREE: Section[] = [
+  {
+    heading: "Vous ne savez pas encore par où commencer ?",
+    icon: "📂",
+    items: [
+      {
+        title: "Dépôt et analyse de dossier",
+        description:
+          "Transmettez vos documents (contrat, courriers, convocations, certificats...) et recevez une analyse écrite claire et personnalisée de votre situation, avec une orientation vers les démarches adaptées.",
+        price: "20 €",
+        featured: true,
+        serviceKey: "depot_dossier",
+        bullets: [
+          "Lecture professionnelle de vos pièces",
+          "Réponse écrite claire et structurée",
+          "Orientation vers la démarche la plus adaptée",
+          "Sans engagement pour la suite",
+        ],
+      },
+    ],
+  },
+];
 
 const SALARIES: Section[] = [
   {
@@ -166,6 +190,7 @@ const DUERP: Section[] = [
 ];
 
 const TABS = [
+  { id: "entree", label: "Par où commencer ?", sections: ENTREE },
   { id: "salaries", label: "Salariés", sections: SALARIES },
   { id: "employeurs", label: "Employeurs", sections: EMPLOYEURS },
   { id: "duerp", label: "DUERP & Prévention", sections: DUERP },
@@ -249,7 +274,7 @@ function PricingCard({ item }: { item: PriceItem }) {
 }
 
 export default function TarifsContent() {
-  const [activeTab, setActiveTab] = useState<TabId>("salaries");
+  const [activeTab, setActiveTab] = useState<TabId>("entree");
 
   const activeSections =
     TABS.find((t) => t.id === activeTab)?.sections ?? [];

@@ -168,7 +168,38 @@ function RendezVousForm() {
                 </h2>
                 <div className="grid gap-4">
                   {services.map(service => (
-                    service.is_quote_only ? (
+                    service.id === 'a1000001-0000-0000-0000-000000000000' ? (
+                      /* Service d'entrée — Dépôt et analyse de dossier */
+                      <div
+                        key={service.id}
+                        onClick={() => { setSelectedService(service); setStep(2); }}
+                        className={`relative border-2 rounded-lg p-6 cursor-pointer transition-all overflow-hidden ${
+                          selectedService?.id === service.id
+                            ? 'border-or-500 bg-or-50'
+                            : 'border-or-400 bg-gradient-to-r from-or-50 to-white hover:border-or-500'
+                        }`}
+                      >
+                        <div className="absolute top-0 right-0 bg-or-500 text-white text-[0.65rem] font-bold uppercase tracking-widest px-4 py-1 rounded-bl-lg">
+                          Commencez ici
+                        </div>
+                        <div className="flex-1 pr-24">
+                          <h3 className="font-serif text-lg font-semibold text-encre-900 mb-1">
+                            {service.name}
+                          </h3>
+                          <p className="text-sm text-encre-600 mb-3 leading-relaxed">
+                            Vous ne savez pas encore quelle prestation vous correspond ?<br />
+                            <span className="font-medium text-encre-800">Déposez vos documents et obtenez une analyse écrite personnalisée</span> de votre situation — avec les orientations adaptées.
+                          </p>
+                          <ul className="text-sm text-encre-700 space-y-1 mb-3">
+                            <li className="flex items-center gap-2"><span className="text-or-500 font-bold">✓</span> Lecture professionnelle de vos pièces</li>
+                            <li className="flex items-center gap-2"><span className="text-or-500 font-bold">✓</span> Réponse écrite claire et structurée</li>
+                            <li className="flex items-center gap-2"><span className="text-or-500 font-bold">✓</span> Orientation vers la démarche adaptée</li>
+                            <li className="flex items-center gap-2"><span className="text-or-500 font-bold">✓</span> Sans engagement pour la suite</li>
+                          </ul>
+                          <span className="text-sm font-semibold text-encre-700">💰 20,00 € — règlement sécurisé en ligne</span>
+                        </div>
+                      </div>
+                    ) : service.is_quote_only ? (
                       <a
                         key={service.id}
                         href={`/contact?sujet=${encodeURIComponent(service.name)}`}

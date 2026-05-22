@@ -22,7 +22,7 @@ export async function GET(request: NextRequest) {
       params.push(true);
     }
 
-    sql += ' ORDER BY created_at ASC';
+    sql += ' ORDER BY is_quote_only ASC, price_cents ASC';
 
     const result = await query(sql, params);
 
