@@ -14,6 +14,7 @@ export interface ServiceRdv {
   price_cents: number;
   price_label: string | null;
   is_quote_only: boolean;
+  sort_order: number;
   active: boolean;
   created_at: string;
   updated_at: string;
