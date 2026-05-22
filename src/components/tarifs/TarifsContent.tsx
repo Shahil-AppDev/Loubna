@@ -4,23 +4,13 @@ import Link from "next/link";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 
-// Replace these with real Stripe Payment Link URLs once created in the Stripe dashboard
-const STRIPE_LINKS = {
-  atmp_entretien: "https://buy.stripe.com/TODO_atmp_entretien_70",
-  atmp_accompagnement: "https://buy.stripe.com/TODO_atmp_accompagnement_120",
-  harcelement_analyse: "https://buy.stripe.com/TODO_harcelement_analyse_59",
-  disciplinaire_analyse: "https://buy.stripe.com/TODO_disciplinaire_analyse_59",
-  employeur_analyse: "https://buy.stripe.com/TODO_employeur_analyse_199",
-  duerp_analyse: "https://buy.stripe.com/TODO_duerp_analyse_199",
-};
-
 type PriceItem = {
   title: string;
   description: string;
   price: string;
   priceNote?: string;
   featured?: boolean;
-  stripeKey?: keyof typeof STRIPE_LINKS;
+  bookable?: boolean;
   contactLabel?: string;
 };
 
@@ -41,7 +31,7 @@ const SALARIES: Section[] = [
           "Séance d'information d'1 heure pour comprendre vos droits AT/MP, la procédure de reconnaissance et les démarches à entreprendre.",
         price: "70 €",
         priceNote: "séance de 1h",
-        stripeKey: "atmp_entretien",
+        bookable: true,
       },
       {
         title: "Accompagnement complet",
@@ -49,7 +39,7 @@ const SALARIES: Section[] = [
           "Suivi personnalisé de votre dossier AT/MP : compréhension de la procédure, préparation des échanges avec votre employeur et les organismes, orientation vers les démarches appropriées.",
         price: "120 €",
         featured: true,
-        stripeKey: "atmp_accompagnement",
+        bookable: true,
       },
     ],
   },
@@ -62,7 +52,7 @@ const SALARIES: Section[] = [
         description:
           "Éclairage sur votre situation : identification des faits, compréhension des mécanismes juridiques, orientation vers les démarches adaptées.",
         price: "59 €",
-        stripeKey: "harcelement_analyse",
+        bookable: true,
       },
       {
         title: "Accompagnement personnalisé",
@@ -82,7 +72,7 @@ const SALARIES: Section[] = [
         description:
           "Compréhension de la procédure disciplinaire engagée (avertissement, mise à pied, convocation), de vos droits et des étapes à venir.",
         price: "59 €",
-        stripeKey: "disciplinaire_analyse",
+        bookable: true,
       },
       {
         title: "Accompagnement personnalisé",
@@ -106,7 +96,7 @@ const EMPLOYEURS: Section[] = [
           "Éclairage complet sur une situation RH spécifique : litige salarié, procédure disciplinaire, rupture de contrat. Compréhension des enjeux et orientation vers les démarches appropriées.",
         price: "199 €",
         featured: true,
-        stripeKey: "employeur_analyse",
+        bookable: true,
       },
       {
         title: "Mise en conformité & audit RH",
@@ -137,7 +127,7 @@ const DUERP: Section[] = [
           "Examen de votre Document Unique d'Évaluation des Risques Professionnels : vérification de la conformité, identification des lacunes et recommandations de mise à jour.",
         price: "199 €",
         featured: true,
-        stripeKey: "duerp_analyse",
+        bookable: true,
       },
       {
         title: "Rédaction / refonte du DUERP",
@@ -166,10 +156,6 @@ const TABS = [
 type TabId = (typeof TABS)[number]["id"];
 
 function PricingCard({ item }: { item: PriceItem }) {
-  const hasStripe = !!item.stripeKey;
-  const isDevis = !hasStripe;
-  const stripeUrl = item.stripeKey ? STRIPE_LINKS[item.stripeKey] : "#";
-
   return (
     <div
       className={cn(
@@ -207,15 +193,13 @@ function PricingCard({ item }: { item: PriceItem }) {
             )}
           </div>
 
-          {hasStripe ? (
-            <a
-              href={stripeUrl}
-              target="_blank"
-              rel="noopener noreferrer"
+          {item.bookable ? (
+            <Link
+              href="/rendez-vous"
               className="btn btn-primary w-full text-center block text-[0.82rem] py-2.5"
             >
               Réserver cette prestation →
-            </a>
+            </Link>
           ) : (
             <Link
               href="/contact"
@@ -286,7 +270,7 @@ export default function TarifsContent() {
         <div className="container-main py-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[
-              { icon: "💳", label: "Paiement sécurisé", desc: "Par carte bancaire via Stripe (paiement 100% sécurisé)" },
+              { icon: "💳", label: "Paiement sécurisé", desc: "Par carte bancaire via SumUp (paiement 100% sécurisé)" },
               { icon: "📧", label: "Confirmation immédiate", desc: "Reçu par e-mail dès la commande validée" },
               { icon: "🔒", label: "Confidentialité garantie", desc: "Vos informations sont traitées avec la plus stricte discrétion" },
             ].map((item) => (
@@ -359,7 +343,7 @@ export default function TarifsContent() {
               </h3>
               <ul className="space-y-2.5">
                 {[
-                  "Paiement en ligne sécurisé par carte bancaire (Stripe)",
+                  "Paiement en ligne sécurisé par carte bancaire (SumUp)",
                   "Facturation envoyée par e-mail après chaque prestation",
                   "Devis personnalisé sous 48h pour les prestations sur mesure",
                 ].map((line) => (
