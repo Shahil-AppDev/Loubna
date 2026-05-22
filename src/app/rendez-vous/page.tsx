@@ -186,10 +186,7 @@ function RendezVousForm() {
                               <p className="text-sm text-encre-700 mb-3">{service.description}</p>
                             )}
                             <div className="flex items-center justify-between">
-                              <div className="flex gap-4 text-sm text-encre-700">
-                                <span>⏱️ {service.duration_minutes} min</span>
-                                <span>💰 {service.price_label ?? `${(service.price_cents / 100).toFixed(2)} €`}</span>
-                              </div>
+                              <span className="text-sm text-encre-700">💰 {service.price_label ?? `${(service.price_cents / 100).toFixed(2)} €`}</span>
                               <span className="text-xs text-or-600 font-medium group-hover:underline">Demander un devis →</span>
                             </div>
                           </div>
@@ -215,10 +212,7 @@ function RendezVousForm() {
                             {service.description && (
                               <p className="text-sm text-encre-700 mb-3">{service.description}</p>
                             )}
-                            <div className="flex gap-4 text-sm text-encre-700">
-                              <span>⏱️ {service.duration_minutes} min</span>
-                              <span>💰 {(service.price_cents / 100).toFixed(2)} €</span>
-                            </div>
+                            <span className="text-sm text-encre-700">💰 {(service.price_cents / 100).toFixed(2)} €</span>
                           </div>
                         </div>
                       </div>
