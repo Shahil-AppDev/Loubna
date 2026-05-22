@@ -237,7 +237,7 @@ function PricingCard({ item }: { item: PriceItem }) {
           ) : (
             <Link
               href="/contact"
-              className="btn btn-ghost w-full text-center block text-[0.82rem] py-2.5"
+              className="w-full text-center block text-[0.82rem] py-2.5 rounded-sm border-2 border-encre-800 text-encre-800 font-semibold hover:bg-encre-800 hover:text-white transition-colors"
             >
               {item.contactLabel ?? "Demander un devis"} →
             </Link>
