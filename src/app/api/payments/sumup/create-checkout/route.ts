@@ -69,16 +69,16 @@ export async function POST(request: NextRequest) {
 
   const amountEuros = appointment.service.price_cents / 100;
   const checkoutReference = buildCheckoutReference(String(appointment_id));
-  const returnUrl = `${process.env.NEXT_PUBLIC_SITE_URL}/rendez-vous/confirmation?checkout_reference=${checkoutReference}&appointment_id=${appointment_id}`;
+  const redirectUrl = `${process.env.NEXT_PUBLIC_SITE_URL}/rendez-vous/confirmation?checkout_reference=${checkoutReference}&appointment_id=${appointment_id}`;
 
-  // --- Créer le checkout SumUp ---
+  // --- Créer le checkout SumUp (hosted checkout) ---
   let checkout;
   try {
     checkout = await createSumUpCheckout({
       checkoutReference,
       amount: amountEuros,
       description: appointment.service.name,
-      returnUrl,
+      redirectUrl,
     });
   } catch (sumupErr) {
     const msg = sumupErr instanceof Error ? sumupErr.message : "unknown";
@@ -95,7 +95,7 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const hostedUrl = getSumUpHostedCheckoutUrl(checkout.id);
+  const hostedUrl = getSumUpHostedCheckoutUrl(checkout);
 
   // --- Stocker la référence checkout dans appointments ---
   try {

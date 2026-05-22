@@ -22,6 +22,7 @@ export type SumUpCheckout = {
   description: string;
   return_url: string | null;
   redirect_url: string | null;
+  hosted_checkout?: { enabled: boolean };
   hosted_checkout_url?: string;
   valid_until: string | null;
   date: string;
@@ -39,8 +40,8 @@ export type CreateSumUpCheckoutInput = {
   amount: number;
   currency?: string;
   description: string;
-  /** URL the user is returned to after payment */
-  returnUrl: string;
+  /** URL the user is returned to after payment (shown as button on SumUp success page) */
+  redirectUrl: string;
 };
 
 function getSumUpApiKey(): string {
@@ -110,7 +111,8 @@ export async function createSumUpCheckout(
     currency: input.currency || SUMUP_CURRENCY,
     merchant_code: merchantCode,
     description: input.description,
-    return_url: input.returnUrl,
+    redirect_url: input.redirectUrl,
+    hosted_checkout: { enabled: true },
   };
 
   const checkout = await sumupFetch<SumUpCheckout>("/v0.1/checkouts", {
@@ -184,10 +186,15 @@ export function mapSumUpStatusToAppointmentStatus(
 }
 
 /**
- * Build the hosted checkout redirect URL from a checkout ID.
+ * Extract the hosted checkout URL from a checkout response.
+ * Falls back to the documented URL format if not provided.
  */
-export function getSumUpHostedCheckoutUrl(checkoutId: string): string {
-  return `https://pay.sumup.com/b2c/${checkoutId}`;
+export function getSumUpHostedCheckoutUrl(checkout: SumUpCheckout): string {
+  if (checkout.hosted_checkout_url) {
+    return checkout.hosted_checkout_url;
+  }
+  // Fallback (should not happen when hosted_checkout.enabled = true)
+  return `https://checkout.sumup.com/pay/${checkout.id}`;
 }
 
 /**
