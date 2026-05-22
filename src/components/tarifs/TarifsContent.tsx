@@ -38,17 +38,16 @@ const SALARIES: Section[] = [
     icon: "⚠️",
     items: [
       {
-        title: "Entretien d'information",
+        title: "Entretien d'analyse AT/MP",
         description:
-          "Séance d'information d'1 heure pour comprendre vos droits AT/MP, la procédure de reconnaissance et les démarches à entreprendre.",
+          "Analyse initiale de votre situation AT/MP : identification des difficultés liées au dossier, étude des premiers éléments médicaux et administratifs, compréhension de l'état d'avancement de la procédure et détermination des démarches adaptées.",
         price: "70 €",
-        priceNote: "séance de 1h",
         serviceKey: "atmp_entretien",
       },
       {
-        title: "Accompagnement complet",
+        title: "Analyse et accompagnement démarches AT/MP",
         description:
-          "Suivi personnalisé de votre dossier AT/MP : compréhension de la procédure, préparation des échanges avec votre employeur et les organismes, orientation vers les démarches appropriées.",
+          "Accompagnement dans la préparation et la structuration du dossier : analyse des documents, étude des réserves employeur, aide à la préparation du questionnaire CPAM, analyse des éléments d'exposition (MP), clarification et structuration du dossier.",
         price: "120 €",
         featured: true,
         serviceKey: "atmp_accompagnement",
@@ -62,14 +61,14 @@ const SALARIES: Section[] = [
       {
         title: "Analyse de situation",
         description:
-          "Éclairage sur votre situation : identification des faits, compréhension des mécanismes juridiques, orientation vers les démarches adaptées.",
+          "Échange permettant d'analyser votre situation professionnelle, d'identifier les difficultés rencontrées et de déterminer les actions ou orientations adaptées.",
         price: "59 €",
         serviceKey: "harcelement_analyse",
       },
       {
-        title: "Accompagnement personnalisé",
+        title: "Analyse approfondie & accompagnement",
         description:
-          "Suivi approfondi et personnalisé adapté à la complexité de votre situation. Tarif établi selon l'ampleur et la durée de l'accompagnement.",
+          "Accompagnement dans la structuration des éléments, l'analyse des échanges et la préparation des démarches liées à la situation rencontrée. Tarif selon la complexité.",
         price: "À partir de 129 €",
         contactLabel: "Demander un devis",
       },
@@ -80,16 +79,16 @@ const SALARIES: Section[] = [
     icon: "⚡",
     items: [
       {
-        title: "Analyse de situation",
+        title: "Analyse de situation disciplinaire",
         description:
-          "Compréhension de la procédure disciplinaire engagée (avertissement, mise à pied, convocation), de vos droits et des étapes à venir.",
+          "Analyse de la situation et compréhension de la procédure engagée par l'employeur : avertissement, mise à pied, convocation à entretien préalable.",
         price: "59 €",
         serviceKey: "disciplinaire_analyse",
       },
       {
-        title: "Accompagnement personnalisé",
+        title: "Analyse et accompagnement procédure disciplinaire",
         description:
-          "Préparation et suivi de la procédure : aide à la rédaction de vos réponses, préparation à l'entretien préalable, orientation. Tarif selon la complexité.",
+          "Accompagnement dans la préparation des éléments, des écrits et des démarches liés à la procédure disciplinaire. Étude des documents, identification des points de vigilance, orientations adaptées.",
         price: "À partir de 130 €",
         contactLabel: "Demander un devis",
       },
@@ -103,24 +102,17 @@ const EMPLOYEURS: Section[] = [
     icon: "🏢",
     items: [
       {
-        title: "Analyse de situation professionnelle",
+        title: "Analyse de situation",
         description:
-          "Éclairage complet sur une situation RH spécifique : litige salarié, procédure disciplinaire, rupture de contrat. Compréhension des enjeux et orientation vers les démarches appropriées.",
+          "Analyse des problématiques rencontrées en matière d'AT/MP, de procédure disciplinaire, de DUERP, de prévention des risques ou de gestion de situation sensible. Étude des documents, identification des points de vigilance, retour synthétique et orientations adaptées.",
         price: "199 €",
         featured: true,
         serviceKey: "employeur_analyse",
       },
       {
-        title: "Mise en conformité & audit RH",
+        title: "Accompagnement et interventions",
         description:
-          "Audit de vos pratiques RH et de vos documents contractuels. Identification des points de non-conformité, préconisations et accompagnement à la mise en conformité.",
-        price: "Sur devis",
-        contactLabel: "Demander un devis",
-      },
-      {
-        title: "Formation & sensibilisation des équipes",
-        description:
-          "Interventions de sensibilisation sur la prévention des risques professionnels, la gestion des situations conflictuelles ou les obligations légales de l'employeur.",
+          "Toute intervention nécessitant un accompagnement approfondi, plusieurs échanges, une analyse complémentaire ou un suivi spécifique fait l'objet d'un devis personnalisé selon la complexité et le volume documentaire.",
         price: "Sur devis",
         contactLabel: "Demander un devis",
       },
@@ -134,24 +126,17 @@ const DUERP: Section[] = [
     icon: "📋",
     items: [
       {
-        title: "Analyse d'un DUERP existant",
+        title: "Analyse DUERP et mise à jour",
         description:
-          "Examen de votre Document Unique d'Évaluation des Risques Professionnels : vérification de la conformité, identification des lacunes et recommandations de mise à jour.",
+          "Analyse du Document Unique d'Évaluation des Risques Professionnels et identification des points nécessitant une mise à jour ou une clarification : analyse du document existant, identification des points de vigilance, vérification de la cohérence, analyse des risques mentionnés, recommandations.",
         price: "199 €",
         featured: true,
         serviceKey: "duerp_analyse",
       },
       {
-        title: "Rédaction / refonte du DUERP",
+        title: "Accompagnement DUERP et prévention des risques",
         description:
-          "Réalisation complète ou refonte de votre DUERP : audit terrain, identification et évaluation des risques, rédaction du document en collaboration avec vos équipes.",
-        price: "Sur devis",
-        contactLabel: "Demander un devis",
-      },
-      {
-        title: "Plan de prévention & suivi",
-        description:
-          "Élaboration d'un plan de prévention adapté à vos risques identifiés, mise en place de mesures correctives et suivi de leur application dans la durée.",
+          "Toute intervention nécessitant une reprise complète du document ou un accompagnement approfondi fait l'objet d'un devis personnalisé selon l'activité, l'effectif, le nombre d'unités de travail et le niveau d'accompagnement nécessaire.",
         price: "Sur devis",
         contactLabel: "Demander un devis",
       },
