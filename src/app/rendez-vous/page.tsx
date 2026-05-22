@@ -168,32 +168,61 @@ function RendezVousForm() {
                 </h2>
                 <div className="grid gap-4">
                   {services.map(service => (
-                    <div
-                      key={service.id}
-                      onClick={() => {
-                        setSelectedService(service);
-                        setStep(2);
-                      }}
-                      className={`border-2 rounded-lg p-6 cursor-pointer transition-all ${selectedService?.id === service.id
-                        ? 'border-or-500 bg-or-50'
-                        : 'border-encre-200 hover:border-or-300'
-                        }`}
-                    >
-                      <div className="flex items-start justify-between">
-                        <div className="flex-1">
-                          <h3 className="font-serif text-lg font-semibold text-encre-900 mb-2">
-                            {service.name}
-                          </h3>
-                          {service.description && (
-                            <p className="text-sm text-encre-700 mb-3">{service.description}</p>
-                          )}
-                          <div className="flex gap-4 text-sm text-encre-700">
-                            <span>⏱️ {service.duration_minutes} min</span>
-                            <span>💰 {(service.price_cents / 100).toFixed(2)} €</span>
+                    service.is_quote_only ? (
+                      <a
+                        key={service.id}
+                        href={`/contact?sujet=${encodeURIComponent(service.name)}`}
+                        className="border-2 border-dashed border-encre-300 rounded-lg p-6 hover:border-or-400 hover:bg-or-50/30 transition-all block group"
+                      >
+                        <div className="flex items-start justify-between">
+                          <div className="flex-1">
+                            <div className="flex items-center gap-2 mb-2">
+                              <h3 className="font-serif text-lg font-semibold text-encre-900">
+                                {service.name}
+                              </h3>
+                              <span className="text-xs bg-encre-100 text-encre-600 px-2 py-0.5 rounded-full font-medium">Sur devis</span>
+                            </div>
+                            {service.description && (
+                              <p className="text-sm text-encre-700 mb-3">{service.description}</p>
+                            )}
+                            <div className="flex items-center justify-between">
+                              <div className="flex gap-4 text-sm text-encre-700">
+                                <span>⏱️ {service.duration_minutes} min</span>
+                                <span>💰 {service.price_label ?? `${(service.price_cents / 100).toFixed(2)} €`}</span>
+                              </div>
+                              <span className="text-xs text-or-600 font-medium group-hover:underline">Demander un devis →</span>
+                            </div>
+                          </div>
+                        </div>
+                      </a>
+                    ) : (
+                      <div
+                        key={service.id}
+                        onClick={() => {
+                          setSelectedService(service);
+                          setStep(2);
+                        }}
+                        className={`border-2 rounded-lg p-6 cursor-pointer transition-all ${selectedService?.id === service.id
+                          ? 'border-or-500 bg-or-50'
+                          : 'border-encre-200 hover:border-or-300'
+                          }`}
+                      >
+                        <div className="flex items-start justify-between">
+                          <div className="flex-1">
+                            <h3 className="font-serif text-lg font-semibold text-encre-900 mb-2">
+                              {service.name}
+                            </h3>
+                            {service.description && (
+                              <p className="text-sm text-encre-700 mb-3">{service.description}</p>
+                            )}
+                            <div className="flex gap-4 text-sm text-encre-700">
+                              <span>⏱️ {service.duration_minutes} min</span>
+                              <span>💰 {(service.price_cents / 100).toFixed(2)} €</span>
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
+                    )
                   ))}
                 </div>
               </div>

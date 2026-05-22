@@ -12,6 +12,8 @@ export interface ServiceRdv {
   description: string | null;
   duration_minutes: number;
   price_cents: number;
+  price_label: string | null;
+  is_quote_only: boolean;
   active: boolean;
   created_at: string;
   updated_at: string;
