@@ -1,8 +1,9 @@
-// Types TypeScript pour la base de données Supabase
+// Types TypeScript pour la base de données
 
 export type AppointmentStatus = 'pending' | 'confirmed' | 'paid' | 'cancelled' | 'completed';
 export type PaymentStatus = 'unpaid' | 'paid' | 'refunded';
 export type PaymentStatusType = 'pending' | 'succeeded' | 'failed' | 'refunded';
+export type PaymentProvider = 'sumup' | 'stripe';
 export type AdminRole = 'admin' | 'super_admin';
 
 export interface ServiceRdv {
@@ -11,7 +12,6 @@ export interface ServiceRdv {
   description: string | null;
   duration_minutes: number;
   price_cents: number;
-  stripe_price_id: string | null;
   active: boolean;
   created_at: string;
   updated_at: string;
@@ -27,6 +27,11 @@ export interface Appointment {
   duration_minutes: number;
   status: AppointmentStatus;
   payment_status: PaymentStatus;
+  // SumUp
+  sumup_checkout_id: string | null;
+  sumup_checkout_reference: string | null;
+  sumup_transaction_id: string | null;
+  // Legacy Stripe (conservés pour historique)
   stripe_payment_intent_id: string | null;
   stripe_session_id: string | null;
   notes: string | null;
@@ -39,10 +44,15 @@ export interface Payment {
   id: string;
   appointment_id: string | null;
   amount_cents: number;
+  provider: PaymentProvider;
+  checkout_reference: string | null;
+  checkout_id: string | null;
+  transaction_id: string | null;
+  // Legacy Stripe
   stripe_payment_intent_id: string | null;
   stripe_session_id: string | null;
   status: PaymentStatusType;
-  metadata: Record<string, any> | null;
+  metadata: Record<string, unknown> | null;
   created_at: string;
   updated_at: string;
 }

@@ -40,7 +40,7 @@ export async function POST(request: NextRequest) {
     if (!auth.authorized) return auth.response;
 
     const body = await request.json();
-    const { name, description, duration_minutes, price_cents, stripe_price_id, active } = body;
+    const { name, description, duration_minutes, price_cents, active } = body;
 
     if (!name || !duration_minutes || price_cents === undefined) {
       return NextResponse.json(
@@ -50,10 +50,10 @@ export async function POST(request: NextRequest) {
     }
 
     const result = await query(
-      `INSERT INTO services_rdv (name, description, duration_minutes, price_cents, stripe_price_id, active)
-       VALUES ($1, $2, $3, $4, $5, $6)
+      `INSERT INTO services_rdv (name, description, duration_minutes, price_cents, active)
+       VALUES ($1, $2, $3, $4, $5)
        RETURNING *`,
-      [name, description, duration_minutes, price_cents, stripe_price_id, active !== undefined ? active : true]
+      [name, description, duration_minutes, price_cents, active !== undefined ? active : true]
     );
 
     return NextResponse.json({ service: result.rows[0] }, { status: 201 });

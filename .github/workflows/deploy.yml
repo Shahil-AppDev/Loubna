@@ -64,12 +64,15 @@ jobs:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           CONTACT_EMAIL_TO: ${{ secrets.CONTACT_EMAIL_TO }}
           CONTACT_EMAIL_FROM: ${{ secrets.CONTACT_EMAIL_FROM }}
+          SUMUP_API_KEY: ${{ secrets.SUMUP_API_KEY }}
+          SUMUP_MERCHANT_CODE: ${{ secrets.SUMUP_MERCHANT_CODE }}
+          SUMUP_WEBHOOK_SECRET: ${{ secrets.SUMUP_WEBHOOK_SECRET }}
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_SSH_KEY }}
           port: ${{ secrets.VPS_PORT }}
-          envs: RESEND_API_KEY,CONTACT_EMAIL_TO,CONTACT_EMAIL_FROM
+          envs: RESEND_API_KEY,CONTACT_EMAIL_TO,CONTACT_EMAIL_FROM,SUMUP_API_KEY,SUMUP_MERCHANT_CODE,SUMUP_WEBHOOK_SECRET
           command_timeout: "10m"
           script: |
             set -euo pipefail
@@ -89,20 +92,38 @@ jobs:
               echo "⚠ No .env.local found in current — created empty file"
             fi
 
-            echo "=== [1b/5] Inject Resend secrets from GitHub ==="
+            echo "=== [1b/5] Inject secrets from GitHub ==="
+            ENV_FILE="$TEMP/.env.local"
+
+            # Resend
             if [ -z "${RESEND_API_KEY:-}" ]; then
-              echo "⚠ RESEND_API_KEY secret not set — contact emails may fail"
+              echo "⚠ RESEND_API_KEY not set — contact emails may fail"
             else
-              ENV_FILE="$TEMP/.env.local"
               grep -v -E '^(RESEND_API_KEY|CONTACT_EMAIL_TO|CONTACT_EMAIL_FROM)=' "$ENV_FILE" > "${ENV_FILE}.tmp" || true
               mv "${ENV_FILE}.tmp" "$ENV_FILE"
               {
                 printf 'RESEND_API_KEY=%s\n' "$RESEND_API_KEY"
                 printf 'CONTACT_EMAIL_TO=%s\n' "${CONTACT_EMAIL_TO:-louamjuristeconseil@gmail.com}"
-                # Guillemets obligatoires : la valeur contient des espaces et <>
                 printf 'CONTACT_EMAIL_FROM="%s"\n' "${CONTACT_EMAIL_FROM:-Loubna Abouz Manta <contact@juriste-droit-du-travail.com>}"
               } >> "$ENV_FILE"
-              echo "✓ Resend variables written to .env.local"
+              echo "✓ Resend variables written"
+            fi
+
+            # SumUp
+            if [ -z "${SUMUP_API_KEY:-}" ]; then
+              echo "⚠ SUMUP_API_KEY not set — payments will not work"
+            else
+              grep -v -E '^(SUMUP_API_KEY|SUMUP_MERCHANT_CODE|SUMUP_WEBHOOK_SECRET|NEXT_PUBLIC_PAYMENT_PROVIDER)=' "$ENV_FILE" > "${ENV_FILE}.tmp" || true
+              mv "${ENV_FILE}.tmp" "$ENV_FILE"
+              {
+                printf 'SUMUP_API_KEY=%s\n' "$SUMUP_API_KEY"
+                printf 'SUMUP_MERCHANT_CODE=%s\n' "${SUMUP_MERCHANT_CODE:-}"
+                printf 'SUMUP_WEBHOOK_SECRET=%s\n' "${SUMUP_WEBHOOK_SECRET:-}"
+                printf 'SUMUP_BASE_URL=https://api.sumup.com\n'
+                printf 'SUMUP_CURRENCY=EUR\n'
+                printf 'NEXT_PUBLIC_PAYMENT_PROVIDER=sumup\n'
+              } >> "$ENV_FILE"
+              echo "✓ SumUp variables written"
             fi
 
             echo "=== [2/5] Install dependencies on server ==="

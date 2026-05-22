@@ -47,7 +47,7 @@ nginx -t && systemctl reload nginx
 - **Frontend** : Next.js 14 (mode serveur)
 - **Backend** : PostgreSQL + API Routes Next.js
 - **Auth** : bcrypt + iron-session
-- **Paiement** : Stripe
+- **Paiement** : SumUp (Online Payments / Hosted Checkout)
 - **Process Manager** : PM2
 - **Web Server** : Nginx (reverse proxy)
 - **Serveur** : Hetzner VPS Ubuntu
@@ -190,13 +190,16 @@ POSTGRES_PASSWORD=VOTRE_MOT_DE_PASSE
 # Session (générer avec: node -e "console.log(require('crypto').randomBytes(32).toString('hex'))")
 SESSION_SECRET=VOTRE_CLE_ALEATOIRE_32_CARACTERES_MINIMUM
 
-# Stripe
-STRIPE_SECRET_KEY=sk_live_VOTRE_CLE
-STRIPE_WEBHOOK_SECRET=whsec_VOTRE_SECRET
-NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_live_VOTRE_CLE
+# SumUp Paiements (https://developer.sumup.com)
+SUMUP_API_KEY=sup_sk_VOTRE_CLE_API
+SUMUP_MERCHANT_CODE=MXXXXXXXX
+SUMUP_BASE_URL=https://api.sumup.com
+SUMUP_CURRENCY=EUR
+SUMUP_WEBHOOK_SECRET=VOTRE_SECRET_WEBHOOK
 
 # Site
 NEXT_PUBLIC_SITE_URL=https://www.juriste-droit-du-travail.com
+NEXT_PUBLIC_PAYMENT_PROVIDER=sumup
 ```
 
 ### 6. Créer un Compte Admin
@@ -231,6 +234,12 @@ Configurer dans **Settings → Secrets and variables → Actions** :
 | `VPS_PORT` | Port SSH | `22` |
 | `VPS_SSH_KEY` | Clé privée SSH | Contenu de `~/.ssh/id_rsa` |
 | `DEPLOY_PATH` | Chemin de déploiement | `/var/www/juriste-droit-du-travail` |
+| `SUMUP_API_KEY` | Clé API SumUp | `sup_sk_...` |
+| `SUMUP_MERCHANT_CODE` | Code marchand SumUp | `MXXXXXXXX` |
+| `SUMUP_WEBHOOK_SECRET` | Secret webhook SumUp (optionnel) | — |
+| `RESEND_API_KEY` | Clé API Resend | `re_...` |
+| `CONTACT_EMAIL_TO` | Email destinataire | `you@example.com` |
+| `CONTACT_EMAIL_FROM` | Email expéditeur | `"Nom <email@domain.com>"` |
 
 ---
 

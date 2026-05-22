@@ -4,30 +4,96 @@ import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { Suspense, useEffect, useState } from 'react';
 
+type PaymentState = 'loading' | 'paid' | 'pending' | 'failed';
+
 function ConfirmationContent() {
   const searchParams = useSearchParams();
-  const sessionId = searchParams.get('session_id');
-  const [loading, setLoading] = useState(true);
-  const [success, setSuccess] = useState(false);
+  const checkoutReference = searchParams.get('checkout_reference');
+  const appointmentId = searchParams.get('appointment_id');
+
+  const [state, setState] = useState<PaymentState>('loading');
+  const [attempts, setAttempts] = useState(0);
 
   useEffect(() => {
-    if (sessionId) {
-      setSuccess(true);
-      setLoading(false);
-    } else {
-      setLoading(false);
+    if (!checkoutReference) {
+      setState('failed');
+      return;
     }
-  }, [sessionId]);
 
-  if (loading) {
+    const MAX_ATTEMPTS = 6;
+    const INTERVAL_MS = 3000;
+
+    async function checkStatus() {
+      try {
+        const params = new URLSearchParams({ checkout_reference: checkoutReference! });
+        if (appointmentId) params.set('appointment_id', appointmentId);
+
+        const res = await fetch(`/api/payments/sumup/status/?${params.toString()}`);
+        if (!res.ok) {
+          setState('failed');
+          return;
+        }
+
+        const data = await res.json();
+
+        if (data.status === 'PAID') {
+          setState('paid');
+        } else if (data.status === 'FAILED' || data.status === 'EXPIRED') {
+          setState('failed');
+        } else {
+          // PENDING — réessayer
+          setAttempts((prev) => prev + 1);
+        }
+      } catch {
+        setState('failed');
+      }
+    }
+
+    checkStatus();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [checkoutReference]);
+
+  // Polling si PENDING
+  useEffect(() => {
+    if (state !== 'loading' || attempts === 0) return;
+    if (attempts >= 6) {
+      setState('pending');
+      return;
+    }
+
+    const timer = setTimeout(async () => {
+      try {
+        const params = new URLSearchParams({ checkout_reference: checkoutReference! });
+        if (appointmentId) params.set('appointment_id', appointmentId);
+
+        const res = await fetch(`/api/payments/sumup/status/?${params.toString()}`);
+        if (!res.ok) { setState('failed'); return; }
+
+        const data = await res.json();
+        if (data.status === 'PAID') setState('paid');
+        else if (data.status === 'FAILED' || data.status === 'EXPIRED') setState('failed');
+        else setAttempts((prev) => prev + 1);
+      } catch {
+        setState('failed');
+      }
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [attempts, state]);
+
+  if (state === 'loading') {
     return (
       <div className="min-h-screen flex items-center justify-center bg-encre-50">
-        <div className="text-encre-700">Vérification du paiement...</div>
+        <div className="text-center">
+          <div className="animate-spin text-4xl mb-4">⏳</div>
+          <p className="text-encre-700">Vérification du paiement en cours…</p>
+        </div>
       </div>
     );
   }
 
-  if (!success) {
+  if (state === 'failed') {
     return (
       <div className="min-h-screen flex items-center justify-center bg-encre-50 px-4">
         <div className="max-w-md w-full bg-white rounded-lg shadow-lg p-8 text-center">
@@ -51,6 +117,32 @@ function ConfirmationContent() {
     );
   }
 
+  if (state === 'pending') {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-encre-50 px-4">
+        <div className="max-w-md w-full bg-white rounded-lg shadow-lg p-8 text-center">
+          <div className="text-6xl mb-4">🕐</div>
+          <h1 className="font-serif text-2xl font-bold text-encre-900 mb-4">
+            Paiement en cours de traitement
+          </h1>
+          <p className="text-encre-700 mb-6">
+            Votre paiement est en cours de validation. Vous recevrez un email de confirmation sous peu.
+            Si le problème persiste, contactez-nous.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link href="/" className="btn btn-primary">
+              Retour à l&apos;accueil
+            </Link>
+            <Link href="/contact" className="btn btn-secondary">
+              Nous contacter
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // state === 'paid'
   return (
     <div className="min-h-screen flex items-center justify-center bg-encre-50 px-4">
       <div className="max-w-2xl w-full bg-white rounded-lg shadow-lg p-8">
@@ -101,7 +193,7 @@ export default function ConfirmationPage() {
   return (
     <Suspense fallback={
       <div className="min-h-screen flex items-center justify-center bg-encre-50">
-        <div className="text-encre-700">Chargement...</div>
+        <div className="text-encre-700">Chargement…</div>
       </div>
     }>
       <ConfirmationContent />

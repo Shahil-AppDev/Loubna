@@ -77,8 +77,8 @@ export default function RendezVousPage() {
         return;
       }
 
-      // Créer la session Stripe
-      const checkoutResponse = await fetch('/api/stripe/checkout', {
+      // Créer le checkout SumUp
+      const checkoutResponse = await fetch('/api/payments/sumup/create-checkout/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -89,8 +89,14 @@ export default function RendezVousPage() {
 
       const checkoutData = await checkoutResponse.json();
 
+      if (!checkoutResponse.ok) {
+        alert(checkoutData.error || 'Erreur lors de la création du paiement');
+        setLoading(false);
+        return;
+      }
+
       if (checkoutData.url) {
-        // Rediriger vers Stripe Checkout
+        // Redirection vers la page de paiement SumUp
         window.location.href = checkoutData.url;
       }
     } catch (error) {

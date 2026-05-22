@@ -16,7 +16,6 @@ CREATE TABLE IF NOT EXISTS services_rdv (
   description TEXT,
   duration_minutes INTEGER NOT NULL DEFAULT 30,
   price_cents INTEGER NOT NULL,
-  stripe_price_id TEXT,
   active BOOLEAN DEFAULT true,
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
@@ -39,8 +38,13 @@ CREATE TABLE IF NOT EXISTS appointments (
   duration_minutes INTEGER NOT NULL,
   status appointment_status DEFAULT 'pending',
   payment_status payment_status DEFAULT 'unpaid',
+  -- SumUp
+  sumup_checkout_id        TEXT,
+  sumup_checkout_reference TEXT,
+  sumup_transaction_id     TEXT,
+  -- Legacy Stripe (conservé pour historique)
   stripe_payment_intent_id TEXT,
-  stripe_session_id TEXT,
+  stripe_session_id        TEXT,
   notes TEXT,
   admin_notes TEXT,
   created_at TIMESTAMPTZ DEFAULT NOW(),
@@ -57,7 +61,12 @@ CREATE TABLE IF NOT EXISTS payments (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   appointment_id UUID REFERENCES appointments(id) ON DELETE CASCADE,
   amount_cents INTEGER NOT NULL,
-  stripe_payment_intent_id TEXT UNIQUE,
+  provider TEXT NOT NULL DEFAULT 'sumup',
+  checkout_reference TEXT UNIQUE,
+  checkout_id TEXT,
+  transaction_id TEXT,
+  -- Legacy Stripe
+  stripe_payment_intent_id TEXT,
   stripe_session_id TEXT,
   status payment_status_type DEFAULT 'pending',
   metadata JSONB,
