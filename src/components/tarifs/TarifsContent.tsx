@@ -24,6 +24,7 @@ type PriceItem = {
   featured?: boolean;
   serviceKey?: ServiceKey;
   contactLabel?: string;
+  bullets?: string[];
 };
 
 type Section = {
@@ -68,7 +69,7 @@ const SALARIES: Section[] = [
       {
         title: "Analyse approfondie & accompagnement",
         description:
-          "Accompagnement dans la structuration des éléments, l'analyse des échanges et la préparation des démarches liées à la situation rencontrée. Tarif selon la complexité.",
+          "Accompagnement dans la structuration des éléments, l'analyse des échanges et la préparation des démarches liées à la situation rencontrée.",
         price: "À partir de 129 €",
         contactLabel: "Demander un devis",
       },
@@ -88,8 +89,14 @@ const SALARIES: Section[] = [
       {
         title: "Analyse et accompagnement procédure disciplinaire",
         description:
-          "Accompagnement dans la préparation des éléments, des écrits et des démarches liés à la procédure disciplinaire. Étude des documents, identification des points de vigilance, orientations adaptées.",
+          "Accompagnement dans la préparation des éléments, des écrits et des démarches liés à la procédure disciplinaire.",
         price: "À partir de 130 €",
+        bullets: [
+          "Étude des documents transmis",
+          "Analyse des éléments administratifs et procéduraux",
+          "Identification des points de vigilance",
+          "Retour synthétique et orientations adaptées à la situation",
+        ],
         contactLabel: "Demander un devis",
       },
     ],
@@ -178,9 +185,20 @@ function PricingCard({ item }: { item: PriceItem }) {
         <h4 className="font-serif text-[1.05rem] text-encre-800 font-semibold mb-2">
           {item.title}
         </h4>
-        <p className="text-[0.84rem] text-encre-500 leading-[1.72] flex-1 mb-5">
+        <p className="text-[0.84rem] text-encre-500 leading-[1.72] mb-3">
           {item.description}
         </p>
+        {item.bullets && (
+          <ul className="flex-1 mb-5 space-y-1.5">
+            {item.bullets.map((b) => (
+              <li key={b} className="flex items-start gap-2 text-[0.82rem] text-encre-600">
+                <span className="text-or-500 mt-0.5 flex-shrink-0">✔</span>
+                {b}
+              </li>
+            ))}
+          </ul>
+        )}
+        {!item.bullets && <div className="flex-1 mb-5" />}
 
         <div className="mt-auto">
           <div className="mb-4">
