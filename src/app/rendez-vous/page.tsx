@@ -31,13 +31,24 @@ function RendezVousForm() {
     loadServices();
   }, []);
 
+  const DEPOT_DOSSIER_ID = 'a1000001-0000-0000-0000-000000000000';
+
   // Pré-sélection depuis un lien externe (?service=ID)
   useEffect(() => {
     if (!preselectedServiceId || services.length === 0) return;
     const found = services.find(s => s.id === preselectedServiceId);
     if (found) {
       setSelectedService(found);
-      setStep(2);
+      // "Dépôt et analyse de dossier" : pas de créneau — passer directement à l'étape 3
+      if (found.id === DEPOT_DOSSIER_ID) {
+        const tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        setSelectedDate(tomorrow.toISOString().split('T')[0]);
+        setSelectedTime('09:00');
+        setStep(3);
+      } else {
+        setStep(2);
+      }
     }
   }, [preselectedServiceId, services]);
 
@@ -172,7 +183,14 @@ function RendezVousForm() {
                       /* Service d'entrée — Dépôt et analyse de dossier */
                       <div
                         key={service.id}
-                        onClick={() => { setSelectedService(service); setStep(2); }}
+                        onClick={() => {
+                          setSelectedService(service);
+                          const tomorrow = new Date();
+                          tomorrow.setDate(tomorrow.getDate() + 1);
+                          setSelectedDate(tomorrow.toISOString().split('T')[0]);
+                          setSelectedTime('09:00');
+                          setStep(3);
+                        }}
                         className={`relative border-2 rounded-lg p-6 cursor-pointer transition-all overflow-hidden ${
                           selectedService?.id === service.id
                             ? 'border-or-500 bg-or-50'
@@ -228,7 +246,15 @@ function RendezVousForm() {
                         key={service.id}
                         onClick={() => {
                           setSelectedService(service);
-                          setStep(2);
+                          if (service.id === DEPOT_DOSSIER_ID) {
+                            const tomorrow = new Date();
+                            tomorrow.setDate(tomorrow.getDate() + 1);
+                            setSelectedDate(tomorrow.toISOString().split('T')[0]);
+                            setSelectedTime('09:00');
+                            setStep(3);
+                          } else {
+                            setStep(2);
+                          }
                         }}
                         className={`border-2 rounded-lg p-6 cursor-pointer transition-all ${selectedService?.id === service.id
                           ? 'border-or-500 bg-or-50'

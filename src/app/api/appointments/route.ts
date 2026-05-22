@@ -151,7 +151,7 @@ export async function POST(request: NextRequest) {
       notes,
     } = parsed.body;
 
-    if (!client_name || !client_email || !service_id || !appointment_date || !duration_minutes) {
+    if (!client_name || !client_email || !service_id || !appointment_date || duration_minutes === undefined || duration_minutes === null) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
 
