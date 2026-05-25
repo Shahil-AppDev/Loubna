@@ -140,6 +140,16 @@ export const SERVICES = [
     slug: "information",
     tags: ["Information", "Éclairage", "Droit du travail"],
   },
+  {
+    id: "droit-travail-suisse",
+    icon: "🇨🇭",
+    title: "Droit du travail suisse",
+    description:
+      "Accompagnement rédactionnel pour vos courriers liés au travail en Suisse\n\nJe vous accompagne dans la préparation, la reformulation et la mise en forme de vos courriers professionnels liés au travail en Suisse, sans conseil juridique suisse.",
+    category: "all",
+    slug: "droit-travail-suisse",
+    tags: ["Suisse", "Rédaction", "Courriers"],
+  },
 ];
 
 export { FAQ_ITEMS } from "./client-faq-items";
@@ -189,6 +199,7 @@ export const NAV_LINKS = [
   { href: "/", label: "Accueil" },
   { href: "/a-propos", label: "À propos" },
   { href: "/services", label: "Interventions" },
+  { href: "/droit-travail-suisse", label: "Suisse" },
   { href: "/formations", label: "Formations" },
   { href: "/faq", label: "FAQ" },
   { href: "/contact", label: "Contact" },

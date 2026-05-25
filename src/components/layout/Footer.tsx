@@ -8,6 +8,7 @@ const NAV_LINKS = [
   { href: "/", label: "Accueil" },
   { href: "/a-propos", label: "À propos" },
   { href: "/services", label: "Interventions" },
+  { href: "/droit-travail-suisse", label: "Suisse" },
   { href: "/formations", label: "Formations" },
   { href: "/faq", label: "FAQ" },
   { href: "/contact", label: "Contact" },
@@ -19,6 +20,7 @@ const SERVICE_LINKS = [
   { href: "/services", label: "Prévention des risques" },
   { href: "/services", label: "Accompagnement – fin de contrat" },
   { href: "/services", label: "Information en droit du travail" },
+  { href: "/droit-travail-suisse", label: "Droit du travail suisse" },
 ];
 
 const WHATSAPP_URL = `https://wa.me/33${SITE_CONFIG.phone.replace(/\D/g, "").replace(/^0/, "")}?text=${encodeURIComponent(
