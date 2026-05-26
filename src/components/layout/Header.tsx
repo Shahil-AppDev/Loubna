@@ -5,17 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useMobileMenu } from "./MobileMenuProvider";
-
-const NAV_LINKS = [
-  { href: "/", label: "Accueil" },
-  { href: "/a-propos", label: "À propos" },
-  { href: "/services", label: "Services" },
-  { href: "/droit-travail-suisse", label: "Suisse" },
-  { href: "/tarifs", label: "Modalités et Tarifs" },
-  { href: "/formations", label: "Formations" },
-  { href: "/blog", label: "Blog" },
-  { href: "/faq", label: "FAQ" },
-];
+import { MAIN_NAV_LINKS } from "@/data/navigation";
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
@@ -60,7 +50,7 @@ export default function Header() {
 
         {/* ─── DESKTOP LINKS ────────────────────────── */}
         <div className="hidden md:flex items-center gap-1">
-          {NAV_LINKS.map((link) => (
+          {MAIN_NAV_LINKS.map((link) => (
             <Link
               key={link.href}
               href={link.href}

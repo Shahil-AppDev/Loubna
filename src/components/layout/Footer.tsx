@@ -1,27 +1,7 @@
 import SocialLinks from "@/components/layout/SocialLinks";
-import { SERVICE_NOTE_IMPORTANTE } from "@/lib/client-service-note";
 import { SITE_CONFIG } from "@/lib/constants";
 import Image from "next/image";
 import Link from "next/link";
-
-const NAV_LINKS = [
-  { href: "/", label: "Accueil" },
-  { href: "/a-propos", label: "À propos" },
-  { href: "/services", label: "Interventions" },
-  { href: "/droit-travail-suisse", label: "Suisse" },
-  { href: "/formations", label: "Formations" },
-  { href: "/faq", label: "FAQ" },
-  { href: "/contact", label: "Contact" },
-];
-
-const SERVICE_LINKS = [
-  { href: "/services", label: "Compréhension de situation" },
-  { href: "/services", label: "DUERP" },
-  { href: "/services", label: "Prévention des risques" },
-  { href: "/services", label: "Accompagnement – fin de contrat" },
-  { href: "/services", label: "Information en droit du travail" },
-  { href: "/droit-travail-suisse", label: "Droit du travail suisse" },
-];
 
 const WHATSAPP_URL = `https://wa.me/33${SITE_CONFIG.phone.replace(/\D/g, "").replace(/^0/, "")}?text=${encodeURIComponent(
   "Bonjour, je souhaite obtenir des informations concernant un accompagnement en droit du travail."
@@ -94,7 +74,7 @@ export default function Footer() {
             <div>
               <h5 className="footer-nav-title">Navigation</h5>
               <ul className="flex flex-col gap-2.5">
-                {NAV_LINKS.map((link) => (
+                {FOOTER_NAV_LINKS.map((link) => (
                   <li key={link.label}>
                     <Link
                       href={link.href}
@@ -111,7 +91,7 @@ export default function Footer() {
             <div>
               <h5 className="footer-nav-title">Interventions</h5>
               <ul className="flex flex-col gap-2.5">
-                {SERVICE_LINKS.map((link, i) => (
+                {FOOTER_SERVICE_LINKS.map((link, i) => (
                   <li key={i}>
                     <Link
                       href={link.href}
@@ -157,7 +137,7 @@ export default function Footer() {
               </ul>
 
               <div className="mt-6 p-4 border border-encre-800 rounded-sm space-y-2 text-[0.8rem] text-white/90 leading-relaxed whitespace-pre-line">
-                {SERVICE_NOTE_IMPORTANTE.join("\n\n")}
+                {LEGAL_DISCLAIMERS.services.join("\n\n")}
               </div>
             </div>
           </div>

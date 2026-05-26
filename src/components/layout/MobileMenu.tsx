@@ -6,20 +6,6 @@ import { usePathname } from "next/navigation";
 import { useEffect } from "react";
 import { useMobileMenu } from "./MobileMenuProvider";
 
-const NAV_LINKS = [
-  { href: "/", label: "Accueil" },
-  { href: "/a-propos", label: "À propos" },
-  { href: "/services", label: "Interventions" },
-  { href: "/droit-travail-suisse", label: "Suisse" },
-  { href: "/tarifs", label: "Modalités et Tarifs" },
-  { href: "/formations", label: "Formations" },
-  { href: "/blog", label: "Blog" },
-  { href: "/faq", label: "FAQ" },
-  { href: "/contact", label: "Contact" },
-  { href: "/mentions-legales", label: "Mentions légales" },
-  { href: "/politique-de-confidentialite", label: "Politique de confidentialité" },
-];
-
 export default function MobileMenu() {
   const pathname = usePathname();
   const { isOpen, close } = useMobileMenu();
@@ -97,7 +83,7 @@ export default function MobileMenu() {
       {/* ─── NAVIGATION SIMPLE ──────────────────────── */}
       <nav className="flex-1 px-6 py-8">
         <ul className="space-y-1">
-          {NAV_LINKS.map((link) => (
+          {MOBILE_NAV_LINKS.map((link) => (
             <li key={link.href}>
               <Link
                 href={link.href}
