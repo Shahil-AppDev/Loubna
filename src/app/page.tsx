@@ -57,7 +57,7 @@ export default function HomePage() {
           </h1>
 
           <p className="text-[0.95rem] md:text-[1.05rem] text-white/85 max-w-[540px] leading-[1.7] md:leading-[1.8] mb-6 md:mb-10 whitespace-pre-line">
-            {`Spécialisée en prévention des risques professionnels et en accompagnement des situations sensibles, j'interviens en amont des procédures pour sécuriser les décisions et apporter de la clarté. J'accompagne à la fois les salariés et les employeurs dans la compréhension et la gestion de leurs situations professionnelles.`}
+            {`Spécialisée en prévention des risques professionnels et en accompagnement des situations sensibles, j'interviens en amont des procédures en apportant de la clarté. J'accompagne à la fois les salariés et les employeurs dans la compréhension et la gestion de leurs situations professionnelles.`}
           </p>
 
           {/* CTAs */}
