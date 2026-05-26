@@ -1,5 +1,6 @@
-import { FAQ_NOTE_IMPORTANTE } from "@/lib/client-faq-items";
-import { SITE_CONFIG } from "@/lib/constants";
+import { HOMEPAGE_CONTENT } from "@/data/homepage";
+import { LEGAL_DISCLAIMERS } from "@/data/legal";
+import { SITE_CONFIG } from "@/data/site-config";
 import type { Metadata } from "next";
 import Link from "next/link";
 
@@ -42,22 +43,22 @@ export default function HomePage() {
           <div className="flex items-center gap-2 md:gap-4 mb-5 md:mb-7">
             <span className="block w-6 md:w-8 h-px bg-or-500 opacity-60" />
             <span className="text-[0.6rem] md:text-[0.7rem] font-bold tracking-[0.18em] md:tracking-[0.22em] uppercase text-or-500">
-              Accompagnement &amp; information en droit du travail (FR/AR)
+              {HOMEPAGE_CONTENT.hero.badge}
             </span>
             <span className="block w-6 md:w-8 h-px bg-or-500 opacity-60" />
           </div>
 
           {/* H1 */}
           <h1 className="font-serif text-[clamp(2rem,7vw,4.6rem)] font-semibold text-white leading-[1.1] mb-4 md:mb-6 max-w-3xl">
-            Juriste en droit du travail,
+            {HOMEPAGE_CONTENT.hero.title}
             <br />
             <span className="font-light text-or-500">
-              prévention des risques professionnels.
+              {HOMEPAGE_CONTENT.hero.titleAccent}
             </span>
           </h1>
 
-          <p className="text-[0.95rem] md:text-[1.05rem] text-white/85 max-w-[540px] leading-[1.7] md:leading-[1.8] mb-6 md:mb-10 whitespace-pre-line">
-            {`Spécialisée en prévention des risques professionnels et en accompagnement des situations sensibles, j'interviens en amont des procédures en apportant de la clarté. J'accompagne à la fois les salariés et les employeurs dans la compréhension et la gestion de leurs situations professionnelles.`}
+          <p className="text-[0.95rem] md:text-[1.05rem] text-white/85 max-w-[540px] leading-[1.7] md:leading-[1.8] mb-6 md:mb-10">
+            {HOMEPAGE_CONTENT.hero.description}
           </p>
 
           {/* CTAs */}
@@ -87,26 +88,21 @@ export default function HomePage() {
       <section className="section-pad bg-encre-50">
         <div className="container-main">
           <div className="text-center mb-10 md:mb-14">
-            <span className="section-label">Domaines d&apos;intervention</span>
+            <span className="section-label">{HOMEPAGE_CONTENT.domainesSection.label}</span>
             <h2 className="font-serif text-[clamp(1.6rem,5vw,2.8rem)] text-encre-800 leading-[1.2]">
-              Un accompagnement centré
+              {HOMEPAGE_CONTENT.domainesSection.title}
               <br />
               <span className="text-rouge-800 font-light">
-                sur la prévention
+                {HOMEPAGE_CONTENT.domainesSection.titleAccent}
               </span>
             </h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5">
-            {[
-              { icon: "🔍", title: "Salariés", desc: "J'accompagne salariés et entreprises en droit du travail, en apportant une analyse des situations professionnelles, une identification des risques et des solutions visant à sécuriser les pratiques." },
-              { icon: "🏢", title: "Employeurs", desc: "J'interviens pour analyser les situations de travail, identifier les risques et orienter salariés et entreprises vers des pratiques sécurisées." },
-              { icon: "⚠️", title: "Prévention des risques", desc: "J'interviens pour comprendre les situations de travail, identifier les risques et orienter salariés et entreprises vers des pratiques sécurisées, dans une démarche d'accompagnement, d'information et de prévention." },
-              { icon: "📋", title: "DUERP", desc: "J'accompagne les entreprises dans la réalisation et la mise à jour du document unique d'évaluation des risques professionnels (DUERP), afin d'identifier les risques, d'analyser les situations de travail et de sécuriser leurs pratiques." },
-            ].map((card, i) => (
+            {HOMEPAGE_CONTENT.domainesSection.cards.map((card, i) => (
               <Link href="/services" key={i} className="expertise-card group block">
                 <span className="text-2xl md:text-3xl mb-4 md:mb-5 block">{card.icon}</span>
                 <h3 className="font-serif text-[1.1rem] md:text-[1.25rem] text-encre-800 mb-2 md:mb-3">{card.title}</h3>
-                <p className="text-[0.85rem] md:text-[0.88rem] text-encre-700 leading-[1.6] md:leading-[1.7] mb-4 md:mb-5 whitespace-pre-line">{card.desc}</p>
+                <p className="text-[0.85rem] md:text-[0.88rem] text-encre-700 leading-[1.6] md:leading-[1.7] mb-4 md:mb-5">{card.description}</p>
                 <span className="text-[0.7rem] md:text-[0.75rem] font-bold tracking-[0.08em] uppercase text-rouge-800 group-hover:tracking-[0.12em] transition-all">
                   En savoir plus →
                 </span>
@@ -133,7 +129,7 @@ export default function HomePage() {
         <div className="container-main py-5">
           <p className="text-encre-200 text-xs text-center leading-relaxed">
             <span className="text-or-400 mr-1">ℹ️</span>
-            <span className="text-encre-100">{FAQ_NOTE_IMPORTANTE}</span>
+            <span className="text-encre-100">{LEGAL_DISCLAIMERS.general}</span>
           </p>
         </div>
       </div>

@@ -1,6 +1,6 @@
-import type { Metadata } from "next";
+import LegalNotice from "@/components/ui/LegalNotice";
+import { SUISSE_CONTENT } from "@/data/suisse";
 import Link from "next/link";
-import { SITE_CONFIG } from "@/lib/constants";
 
 export const metadata: Metadata = {
   title: "Droit du travail suisse | Accompagnement rédactionnel — Loubna Abouz Manta",
@@ -13,68 +13,6 @@ export const metadata: Metadata = {
   },
 };
 
-const COURRIERS_EXEMPLES = [
-  "demande d'explications à l'employeur",
-  "réponse à un avertissement",
-  "courrier RH",
-  "demande de paiement de salaire",
-  "demande de documents",
-  "courrier lié à un arrêt maladie",
-  "mise en demeure simple",
-  "réponse écrite après une consultation juridique",
-  "préparation d'un dossier avant rendez-vous avec un avocat ou un syndicat",
-];
-
-const ACCOMPAGNEMENT_ITEMS = [
-  "rédiger vos courriers professionnels",
-  "reformuler vos écrits de manière claire et structurée",
-  "retranscrire par écrit des éléments déjà validés par un professionnel du droit suisse",
-  "préparer des réponses à un employeur ou aux ressources humaines",
-  "organiser vos idées et vos documents",
-  "améliorer la présentation et la compréhension de vos écrits",
-  "mettre en forme des demandes, réponses ou explications liées à votre situation professionnelle",
-];
-
-const POURQUOI_ITEMS = [
-  "de trouver les bons mots",
-  "de structurer ses idées",
-  "de rédiger un courrier clair et professionnel",
-  "ou de retranscrire correctement ce qui a été expliqué lors d'une consultation",
-];
-
-const TARIFS = [
-  {
-    title: "Reformulation ou courrier simple",
-    price: "À partir de 99 €",
-    features: [
-      "la reformulation d'un texte existant",
-      "la rédaction d'un courrier simple",
-      "l'amélioration de la clarté et de la structure",
-      "la mise en forme professionnelle de vos écrits",
-    ],
-  },
-  {
-    title: "Accompagnement rédactionnel approfondi",
-    price: "À partir de 170 €",
-    features: [
-      "plusieurs échanges",
-      "l'étude de plusieurs documents",
-      "une chronologie des faits",
-      "un travail rédactionnel plus développé",
-      "ou un litige installé dans la durée",
-    ],
-  },
-  {
-    title: "Dossiers volumineux ou situations particulières",
-    price: "Tarif sur demande",
-    features: [
-      "le volume du dossier",
-      "le nombre de documents",
-      "le temps de traitement nécessaire",
-      "et la complexité de la situation exposée",
-    ],
-  },
-];
 
 export default function DroitTravailSuissePage() {
   return (
@@ -93,10 +31,10 @@ export default function DroitTravailSuissePage() {
             <span className="text-or-500">Suisse</span>
           </nav>
           <h1 className="font-serif text-[clamp(2.4rem,5vw,3.8rem)] font-semibold text-white leading-[1.12] max-w-3xl">
-            Droit du travail suisse
+            {SUISSE_CONTENT.hero.title}
           </h1>
           <p className="text-or-500 text-[1.05rem] md:text-[1.15rem] max-w-[600px] mt-4 leading-[1.8]">
-            Accompagnement rédactionnel pour vos courriers liés au travail en Suisse
+            {SUISSE_CONTENT.hero.subtitle}
           </p>
           <div className="flex flex-wrap gap-4 mt-8">
             <Link href="/contact" className="btn btn-primary">
@@ -114,14 +52,7 @@ export default function DroitTravailSuissePage() {
         <div className="container-main">
           <div className="max-w-[760px] mx-auto">
             <p className="text-[1.05rem] md:text-[1.08rem] text-encre-700 leading-[1.85] whitespace-pre-line mb-10">
-              {`Je vous accompagne dans la rédaction et la reformulation de vos courriers liés au travail en Suisse.
-
-Vous avez déjà consulté un avocat, un syndicat, une assurance protection juridique, une permanence juridique ou un professionnel du droit suisse, mais vous avez besoin d'aide pour rédiger vos écrits de manière claire, structurée et compréhensible ?
-
-Je vous accompagne dans la préparation, la reformulation et la mise en forme de vos courriers professionnels, sur la base :
-• de vos explications ;
-• de vos documents ;
-• ou d'éléments déjà validés lors d'une consultation juridique en Suisse.`}
+              {SUISSE_CONTENT.intro}
             </p>
           </div>
         </div>
@@ -136,7 +67,7 @@ Je vous accompagne dans la préparation, la reformulation et la mise en forme de
               Mon accompagnement
             </h2>
             <div className="grid gap-4 sm:grid-cols-2">
-              {ACCOMPAGNEMENT_ITEMS.map((item, i) => (
+              {SUISSE_CONTENT.accompagnementItems.map((item, i) => (
                 <div
                   key={i}
                   className="flex items-start gap-3 p-5 bg-encre-50 border border-encre-100 rounded-sm"
@@ -159,7 +90,7 @@ Je vous accompagne dans la préparation, la reformulation et la mise en forme de
               Exemples de courriers
             </h2>
             <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              {COURRIERS_EXEMPLES.map((item, i) => (
+              {SUISSE_CONTENT.courriersExemples.map((item, i) => (
                 <div
                   key={i}
                   className="flex items-center gap-3 p-4 bg-white border border-encre-100 rounded-sm"
@@ -177,17 +108,7 @@ Je vous accompagne dans la préparation, la reformulation et la mise en forme de
       <section className="section-pad bg-white">
         <div className="container-main">
           <div className="max-w-[760px] mx-auto">
-            <div className="p-8 md:p-10 border border-rouge-800/20 rounded-sm bg-rouge-50/40">
-              <h3 className="font-serif text-[1.3rem] text-encre-800 mb-5 flex items-center gap-2">
-                <span className="text-rouge-800">ℹ️</span>
-                Important
-              </h3>
-              <div className="text-[0.97rem] text-encre-700 leading-[1.85] space-y-4 whitespace-pre-line">
-                <p>Je n'exerce pas comme avocate en Suisse et je ne fournis aucun conseil juridique suisse.</p>
-                <p>Mon rôle consiste exclusivement à vous accompagner dans la rédaction et la reformulation de vos écrits, à partir des éléments que vous me transmettez ou d'informations déjà validées par un professionnel compétent en Suisse.</p>
-                <p>Pour toute analyse juridique, stratégie de défense ou représentation devant une autorité ou un tribunal, il convient de consulter un avocat, un juriste suisse ou une organisation compétente.</p>
-              </div>
-            </div>
+            <LegalNotice variant="suisse" />
           </div>
         </div>
       </section>
@@ -204,7 +125,7 @@ Je vous accompagne dans la préparation, la reformulation et la mise en forme de
               Parce qu'il n'est pas toujours facile :
             </p>
             <ul className="space-y-3 mb-8">
-              {POURQUOI_ITEMS.map((item, i) => (
+              {SUISSE_CONTENT.pourquoiItems.map((item, i) => (
                 <li key={i} className="flex items-start gap-3 text-[0.97rem] text-encre-700 leading-[1.7]">
                   <span className="text-rouge-800 font-bold mt-0.5 flex-shrink-0">—</span>
                   {item}
@@ -212,7 +133,7 @@ Je vous accompagne dans la préparation, la reformulation et la mise en forme de
               ))}
             </ul>
             <p className="text-[1rem] text-encre-700 leading-[1.85]">
-              Je vous aide à mettre vos demandes par écrit avec clarté, sérieux, discrétion et rigueur rédactionnelle.
+              {SUISSE_CONTENT.pourquoiConclusion}
             </p>
           </div>
         </div>
@@ -227,14 +148,13 @@ Je vous accompagne dans la préparation, la reformulation et la mise en forme de
               Tarifs
             </h2>
             <div className="grid gap-6 md:grid-cols-3">
-              {TARIFS.map((tarif, i) => (
+              {SUISSE_CONTENT.tarifs.map((tarif, i) => (
                 <div
                   key={i}
-                  className={`p-6 md:p-8 border rounded-sm flex flex-col ${
-                    i === 1
+                  className={`p-6 md:p-8 border rounded-sm flex flex-col ${i === 1
                       ? "border-rouge-800/30 bg-rouge-50/30"
                       : "border-encre-100 bg-encre-50/50"
-                  }`}
+                    }`}
                 >
                   <h3 className="font-serif text-[1.15rem] text-encre-800 mb-2 leading-[1.3]">
                     {tarif.title}
@@ -243,11 +163,7 @@ Je vous accompagne dans la préparation, la reformulation et la mise en forme de
                     {tarif.price}
                   </p>
                   <p className="text-[0.82rem] text-encre-600 mb-4 leading-[1.7]">
-                    {i === 0
-                      ? "Cette formule comprend notamment :"
-                      : i === 1
-                      ? "Pour les situations nécessitant :"
-                      : "Un tarif adapté pourra être proposé selon :"}
+                    {tarif.description}
                   </p>
                   <ul className="space-y-2.5 flex-1">
                     {tarif.features.map((f, j) => (
@@ -268,7 +184,7 @@ Je vous accompagne dans la préparation, la reformulation et la mise en forme de
             <div className="mt-10 p-6 bg-encre-50 border border-encre-100 rounded-sm">
               <h4 className="font-serif text-[1.05rem] text-encre-800 mb-3">Important</h4>
               <p className="text-[0.92rem] text-encre-700 leading-[1.8]">
-                Chaque situation étant différente, un premier échange permet d'évaluer vos besoins et de vous orienter vers la formule la plus adaptée.
+                {SUISSE_CONTENT.tarifsNote}
               </p>
             </div>
           </div>
