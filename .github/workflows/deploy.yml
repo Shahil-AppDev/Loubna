@@ -7,7 +7,6 @@ on:
   workflow_dispatch:
 
 concurrency:
-  # Nouveau groupe pour ne pas rester bloqué derrière d'anciens runs "queued" GitHub
   group: vps-deployment-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
@@ -31,7 +30,44 @@ jobs:
       - name: Run linter
         run: npm run lint
 
-      - name: Transfer source to VPS
+      - name: Build Next.js
+        run: npm run build
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          CONTACT_EMAIL_TO: ${{ secrets.CONTACT_EMAIL_TO }}
+          CONTACT_EMAIL_FROM: ${{ secrets.CONTACT_EMAIL_FROM }}
+          SUMUP_API_KEY: ${{ secrets.SUMUP_API_KEY }}
+          SUMUP_MERCHANT_CODE: ${{ secrets.SUMUP_MERCHANT_CODE }}
+          SUMUP_WEBHOOK_SECRET: ${{ secrets.SUMUP_WEBHOOK_SECRET }}
+          NEXT_PUBLIC_SUMUP_PUBLIC_KEY: ${{ secrets.NEXT_PUBLIC_SUMUP_PUBLIC_KEY }}
+
+      - name: Write .env.local from secrets
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          CONTACT_EMAIL_TO: ${{ secrets.CONTACT_EMAIL_TO }}
+          CONTACT_EMAIL_FROM: ${{ secrets.CONTACT_EMAIL_FROM }}
+          SUMUP_API_KEY: ${{ secrets.SUMUP_API_KEY }}
+          SUMUP_MERCHANT_CODE: ${{ secrets.SUMUP_MERCHANT_CODE }}
+          SUMUP_WEBHOOK_SECRET: ${{ secrets.SUMUP_WEBHOOK_SECRET }}
+          NEXT_PUBLIC_SUMUP_PUBLIC_KEY: ${{ secrets.NEXT_PUBLIC_SUMUP_PUBLIC_KEY }}
+        run: |
+          cat > .env.local << 'ENVEOF'
+          ENVEOF
+          # Resend
+          [ -n "$RESEND_API_KEY" ] && printf 'RESEND_API_KEY=%s\n' "$RESEND_API_KEY" >> .env.local || echo "⚠ RESEND_API_KEY not set"
+          [ -n "$CONTACT_EMAIL_TO" ] && printf 'CONTACT_EMAIL_TO=%s\n' "$CONTACT_EMAIL_TO" >> .env.local
+          [ -n "$CONTACT_EMAIL_FROM" ] && printf 'CONTACT_EMAIL_FROM=%s\n' "$CONTACT_EMAIL_FROM" >> .env.local
+          # SumUp
+          [ -n "$SUMUP_API_KEY" ] && printf 'SUMUP_API_KEY=%s\n' "$SUMUP_API_KEY" >> .env.local || echo "⚠ SUMUP_API_KEY not set"
+          [ -n "$SUMUP_MERCHANT_CODE" ] && printf 'SUMUP_MERCHANT_CODE=%s\n' "$SUMUP_MERCHANT_CODE" >> .env.local
+          [ -n "$SUMUP_WEBHOOK_SECRET" ] && printf 'SUMUP_WEBHOOK_SECRET=%s\n' "$SUMUP_WEBHOOK_SECRET" >> .env.local
+          printf 'SUMUP_BASE_URL=https://api.sumup.com\n' >> .env.local
+          printf 'SUMUP_CURRENCY=EUR\n' >> .env.local
+          printf 'NEXT_PUBLIC_PAYMENT_PROVIDER=sumup\n' >> .env.local
+          [ -n "$NEXT_PUBLIC_SUMUP_PUBLIC_KEY" ] && printf 'NEXT_PUBLIC_SUMUP_PUBLIC_KEY=%s\n' "$NEXT_PUBLIC_SUMUP_PUBLIC_KEY" >> .env.local
+          echo "✓ .env.local written ($(wc -l < .env.local) lines)"
+
+      - name: Transfer build artifact to VPS
         run: |
           sudo apt-get update -qq && sudo apt-get install -y -qq rsync
 
@@ -44,44 +80,29 @@ jobs:
           TEMP="/tmp/loubna-build-${{ github.sha }}"
 
           # Create temp dir on server
-          ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no -p $PORT $REMOTE "mkdir -p $TEMP"
+          ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no -p "$PORT" "$REMOTE" "mkdir -p $TEMP"
 
-          # Transfer entire source tree (no build, no node_modules)
+          # Transfer everything needed for production runtime:
+          # source, .next (build), node_modules, .env.local, public
           rsync -az --delete \
             -e "ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no -p $PORT" \
-            --exclude 'node_modules' \
             --exclude '.git' \
-            --exclude '.next' \
-            --exclude '.env*' \
+            --exclude '*.log' \
             . \
-            $REMOTE:$TEMP/
+            "$REMOTE:$TEMP/"
 
           rm -f ~/.ssh/deploy_key
 
-      - name: Build and deploy on server
+      - name: Swap and restart on VPS
         uses: appleboy/ssh-action@v1.0.3
-        env:
-          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
-          CONTACT_EMAIL_TO: ${{ secrets.CONTACT_EMAIL_TO }}
-          CONTACT_EMAIL_FROM: ${{ secrets.CONTACT_EMAIL_FROM }}
-          SUMUP_API_KEY: ${{ secrets.SUMUP_API_KEY }}
-          SUMUP_MERCHANT_CODE: ${{ secrets.SUMUP_MERCHANT_CODE }}
-          SUMUP_WEBHOOK_SECRET: ${{ secrets.SUMUP_WEBHOOK_SECRET }}
-          NEXT_PUBLIC_SUMUP_PUBLIC_KEY: ${{ secrets.NEXT_PUBLIC_SUMUP_PUBLIC_KEY }}
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_SSH_KEY }}
           port: ${{ secrets.VPS_PORT }}
-          envs: RESEND_API_KEY,CONTACT_EMAIL_TO,CONTACT_EMAIL_FROM,SUMUP_API_KEY,SUMUP_MERCHANT_CODE,SUMUP_WEBHOOK_SECRET,NEXT_PUBLIC_SUMUP_PUBLIC_KEY
-          command_timeout: "10m"
+          command_timeout: "5m"
           script: |
             set -euo pipefail
-
-            # Load NVM for non-interactive SSH sessions
-            export NVM_DIR="${HOME}/.nvm"
-            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-            node --version || { echo "❌ Node.js not found — install it on the VPS"; exit 1; }
 
             DEPLOY_PATH="${{ secrets.DEPLOY_PATH }}"
             TEMP="/tmp/loubna-build-${{ github.sha }}"
@@ -89,58 +110,7 @@ jobs:
             APP_NAME="nextjs-loubna"
             PORT=3000
 
-            echo "=== [1/5] Restore .env.local from previous deploy ==="
-            if [ -f "$DEPLOY_PATH/current/.env.local" ]; then
-              cp "$DEPLOY_PATH/current/.env.local" "$TEMP/.env.local"
-              echo "✓ .env.local copied to build dir"
-            else
-              touch "$TEMP/.env.local"
-              echo "⚠ No .env.local found in current — created empty file"
-            fi
-
-            echo "=== [1b/5] Inject secrets from GitHub ==="
-            ENV_FILE="$TEMP/.env.local"
-
-            # Resend
-            if [ -z "${RESEND_API_KEY:-}" ]; then
-              echo "⚠ RESEND_API_KEY not set — contact emails may fail"
-            else
-              grep -v -E '^(RESEND_API_KEY|CONTACT_EMAIL_TO|CONTACT_EMAIL_FROM)=' "$ENV_FILE" > "${ENV_FILE}.tmp" || true
-              mv "${ENV_FILE}.tmp" "$ENV_FILE"
-              {
-                printf 'RESEND_API_KEY=%s\n' "$RESEND_API_KEY"
-                printf 'CONTACT_EMAIL_TO=%s\n' "${CONTACT_EMAIL_TO:-louamjuristeconseil@gmail.com}"
-                printf 'CONTACT_EMAIL_FROM="%s"\n' "${CONTACT_EMAIL_FROM:-Loubna Abouz Manta <contact@juriste-droit-du-travail.com>}"
-              } >> "$ENV_FILE"
-              echo "✓ Resend variables written"
-            fi
-
-            # SumUp
-            if [ -z "${SUMUP_API_KEY:-}" ]; then
-              echo "⚠ SUMUP_API_KEY not set — payments will not work"
-            else
-              grep -v -E '^(SUMUP_API_KEY|SUMUP_MERCHANT_CODE|SUMUP_WEBHOOK_SECRET|NEXT_PUBLIC_PAYMENT_PROVIDER)=' "$ENV_FILE" > "${ENV_FILE}.tmp" || true
-              mv "${ENV_FILE}.tmp" "$ENV_FILE"
-              {
-                printf 'SUMUP_API_KEY=%s\n' "$SUMUP_API_KEY"
-                printf 'SUMUP_MERCHANT_CODE=%s\n' "${SUMUP_MERCHANT_CODE:-}"
-                printf 'SUMUP_WEBHOOK_SECRET=%s\n' "${SUMUP_WEBHOOK_SECRET:-}"
-                printf 'SUMUP_BASE_URL=https://api.sumup.com\n'
-                printf 'SUMUP_CURRENCY=EUR\n'
-                printf 'NEXT_PUBLIC_PAYMENT_PROVIDER=sumup\n'
-                printf 'NEXT_PUBLIC_SUMUP_PUBLIC_KEY=%s\n' "${NEXT_PUBLIC_SUMUP_PUBLIC_KEY:-}"
-              } >> "$ENV_FILE"
-              echo "✓ SumUp variables written"
-            fi
-
-            echo "=== [2/5] Install dependencies on server ==="
-            cd "$TEMP"
-            npm ci
-
-            echo "=== [3/5] Build Next.js on server ==="
-            npm run build
-
-            echo "=== [4/5] Atomic swap current → backup, new build → current ==="
+            echo "=== Atomic swap current → backup, new build → current ==="
             if [ -d "$DEPLOY_PATH/current" ]; then
               mv "$DEPLOY_PATH/current" "$DEPLOY_PATH/backup-$TIMESTAMP"
             fi
@@ -150,7 +120,7 @@ jobs:
             cd "$DEPLOY_PATH"
             ls -dt backup-* 2>/dev/null | tail -n +4 | xargs -r rm -rf
 
-            echo "=== [5/5] Restart PM2 ==="
+            echo "=== Restart PM2 ==="
             cd "$DEPLOY_PATH/current"
             if pm2 list | grep -q "$APP_NAME"; then
               pm2 restart "$APP_NAME"
