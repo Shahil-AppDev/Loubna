@@ -78,6 +78,11 @@ jobs:
           script: |
             set -euo pipefail
 
+            # Load NVM for non-interactive SSH sessions
+            export NVM_DIR="${HOME}/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+            node --version || { echo "❌ Node.js not found — install it on the VPS"; exit 1; }
+
             DEPLOY_PATH="${{ secrets.DEPLOY_PATH }}"
             TEMP="/tmp/loubna-build-${{ github.sha }}"
             TIMESTAMP=$(date +%Y%m%d-%H%M%S)
