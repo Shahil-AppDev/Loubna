@@ -47,7 +47,7 @@ const ENTREE: Section[] = [
         title: "Dépôt et analyse de dossier",
         description:
           "Transmettez vos documents (contrat, courriers, convocations, certificats...) et recevez une analyse écrite claire et personnalisée de votre situation, avec une orientation vers les démarches adaptées.",
-        price: "80 €",
+        price: "À partir de 80 €",
         featured: true,
         serviceKey: "depot_dossier",
         bullets: [
@@ -70,14 +70,14 @@ const SALARIES: Section[] = [
         title: "Entretien d'analyse AT/MP",
         description:
           "Analyse initiale de votre situation AT/MP : identification des difficultés liées au dossier, étude des premiers éléments médicaux et administratifs, compréhension de l'état d'avancement de la procédure et détermination des démarches adaptées.",
-        price: "70 €",
+        price: "À partir de 70 €",
         serviceKey: "atmp_entretien",
       },
       {
         title: "Analyse et accompagnement démarches AT/MP",
         description:
           "Accompagnement dans la préparation et la structuration du dossier : analyse des documents, étude des réserves employeur, aide à la préparation du questionnaire CPAM, analyse des éléments d'exposition (MP), clarification et structuration du dossier.",
-        price: "120 €",
+        price: "À partir de 120 €",
         featured: true,
         serviceKey: "atmp_accompagnement",
       },
@@ -91,7 +91,7 @@ const SALARIES: Section[] = [
         title: "Analyse de situation",
         description:
           "Échange permettant d'analyser votre situation professionnelle, d'identifier les difficultés rencontrées et de déterminer les actions ou orientations adaptées.",
-        price: "59 €",
+        price: "À partir de 59 €",
         serviceKey: "harcelement_analyse",
       },
       {
@@ -112,7 +112,7 @@ const SALARIES: Section[] = [
         title: "Analyse de situation disciplinaire",
         description:
           "Analyse de la situation et compréhension de la procédure engagée par l'employeur : avertissement, mise à pied, convocation à entretien préalable.",
-        price: "59 €",
+        price: "À partir de 59 €",
         serviceKey: "disciplinaire_analyse",
       },
       {
@@ -142,7 +142,7 @@ const EMPLOYEURS: Section[] = [
         title: "Analyse de situation",
         description:
           "Analyse des problématiques rencontrées en matière d'AT/MP, de procédure disciplinaire, de DUERP, de prévention des risques ou de gestion de situation sensible. Étude des documents, identification des points de vigilance, retour synthétique et orientations adaptées.",
-        price: "199 €",
+        price: "À partir de 199 €",
         featured: true,
         serviceKey: "employeur_analyse",
       },
@@ -173,7 +173,7 @@ const DUERP: Section[] = [
         title: "Analyse DUERP et mise à jour",
         description:
           "Analyse du Document Unique d'Évaluation des Risques Professionnels et identification des points nécessitant une mise à jour ou une clarification : analyse du document existant, identification des points de vigilance, vérification de la cohérence, analyse des risques mentionnés, recommandations.",
-        price: "199 €",
+        price: "À partir de 199 €",
         featured: true,
         serviceKey: "duerp_analyse",
       },
