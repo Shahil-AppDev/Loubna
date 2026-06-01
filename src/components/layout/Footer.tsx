@@ -1,4 +1,6 @@
 import SocialLinks from "@/components/layout/SocialLinks";
+import { FOOTER_NAV_LINKS, FOOTER_SERVICE_LINKS } from "@/data/navigation";
+import { LEGAL_DISCLAIMERS } from "@/data/legal";
 import { SITE_CONFIG } from "@/lib/constants";
 import Image from "next/image";
 import Link from "next/link";

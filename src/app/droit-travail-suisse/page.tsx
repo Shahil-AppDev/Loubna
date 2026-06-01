@@ -1,5 +1,6 @@
 import LegalNotice from "@/components/ui/LegalNotice";
 import { SUISSE_CONTENT } from "@/data/suisse";
+import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {

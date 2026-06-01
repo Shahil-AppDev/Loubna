@@ -1,4 +1,3 @@
-import ServiceCard from "@/components/ui/ServiceCard";
 import { LEGAL_DISCLAIMERS } from "@/data/legal";
 import { SERVICES, SERVICE_CATEGORIES } from "@/data/services";
 import { SITE_CONFIG } from "@/data/site-config";
