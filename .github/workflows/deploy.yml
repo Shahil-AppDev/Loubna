@@ -97,27 +97,55 @@ jobs:
           port: ${{ secrets.VPS_PORT }}
           command_timeout: "10m"
           script: |
-            set -euo pipefail
+            set -eo pipefail
 
             setup_node() {
-              set +u
+              if command -v node >/dev/null 2>&1; then
+                echo "✓ Node $(node -v) — npm $(npm -v)"
+                return 0
+              fi
               export NVM_DIR="${NVM_DIR:-$HOME/.nvm}"
-              [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
-              set -u
-              if ! command -v node >/dev/null 2>&1; then
-                for node_bin in /usr/local/bin/node /usr/bin/node "$HOME"/.nvm/versions/node/*/bin/node; do
-                  if [ -x "$node_bin" ]; then
-                    export PATH="$(dirname "$node_bin"):$PATH"
-                    break
-                  fi
-                done
+              if [ -s "$NVM_DIR/nvm.sh" ]; then
+                # shellcheck disable=SC1090
+                . "$NVM_DIR/nvm.sh"
               fi
-              if ! command -v node >/dev/null 2>&1; then
-                echo "❌ Node.js introuvable sur le serveur (PATH=$PATH)"
-                exit 1
+              if command -v node >/dev/null 2>&1; then
+                echo "✓ Node $(node -v) — npm $(npm -v)"
+                return 0
               fi
-              echo "✓ Node $(node -v) — npm $(npm -v)"
+              NODE_BIN=$(find "$HOME" /usr/local /opt -path '*/bin/node' -type f 2>/dev/null | head -1 || true)
+              if [ -n "$NODE_BIN" ] && [ -x "$NODE_BIN" ]; then
+                export PATH="$(dirname "$NODE_BIN"):$PATH"
+                echo "✓ Node $(node -v) — npm $(npm -v)"
+                return 0
+              fi
+              if bash -lc 'command -v node' >/dev/null 2>&1; then
+                NODE_BIN=$(bash -lc 'command -v node')
+                export PATH="$(dirname "$NODE_BIN"):$PATH"
+                echo "✓ Node $(node -v) (login shell) — npm $(npm -v)"
+                return 0
+              fi
+              if command -v sudo >/dev/null 2>&1; then
+                echo "⚠ Node absent — tentative installation Node.js 20 (nodesource)..."
+                curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+                sudo apt-get install -y nodejs
+              fi
+              if command -v node >/dev/null 2>&1; then
+                echo "✓ Node $(node -v) installé — npm $(npm -v)"
+                return 0
+              fi
+              echo "❌ Node.js introuvable sur le serveur (PATH=$PATH)"
+              exit 1
             }
+
+            pm2_cmd() {
+              if command -v pm2 >/dev/null 2>&1; then
+                pm2 "$@"
+                return $?
+              fi
+              bash -lc "pm2 $*"
+            }
+
             setup_node
 
             DEPLOY_PATH="${{ secrets.DEPLOY_PATH }}"
@@ -138,12 +166,12 @@ jobs:
             echo "=== Restart PM2 ==="
             setup_node
             cd "$DEPLOY_PATH/current"
-            if pm2 list 2>/dev/null | grep -q "$APP_NAME"; then
-              pm2 restart "$APP_NAME" --update-env
+            if pm2_cmd list 2>/dev/null | grep -q "$APP_NAME"; then
+              pm2_cmd restart "$APP_NAME" --update-env
             else
-              PORT=$PORT pm2 start npm --name "$APP_NAME" -- start
+              PORT=$PORT pm2_cmd start npm --name "$APP_NAME" -- start
             fi
-            pm2 save
+            pm2_cmd save
 
             sleep 8
 
@@ -153,7 +181,7 @@ jobs:
               echo "✅ App responds HTTP $HTTP on port $PORT"
             else
               echo "❌ App returned HTTP $HTTP — check pm2 logs $APP_NAME"
-              pm2 logs "$APP_NAME" --lines 40 --nostream || true
+              pm2_cmd logs "$APP_NAME" --lines 40 --nostream || true
               exit 1
             fi
 
