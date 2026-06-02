@@ -2,6 +2,7 @@
 
 import AttachmentField from '@/components/forms/AttachmentField';
 import { validateContactFiles } from '@/lib/contact/attachments';
+import { formatFromPrice } from '@/lib/utils';
 import { ServiceRdv } from '@/types/database';
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
@@ -214,7 +215,7 @@ function RendezVousForm() {
                             <li className="flex items-center gap-2"><span className="text-or-500 font-bold">✓</span> Orientation vers la démarche adaptée</li>
                             <li className="flex items-center gap-2"><span className="text-or-500 font-bold">✓</span> Sans engagement pour la suite</li>
                           </ul>
-                          <span className="text-sm font-semibold text-encre-700">💰 80,00 € — règlement sécurisé en ligne</span>
+                          <span className="text-sm font-semibold text-encre-700">💰 À partir de 80,00 € — règlement sécurisé en ligne</span>
                         </div>
                       </div>
                     ) : service.is_quote_only ? (
@@ -235,7 +236,7 @@ function RendezVousForm() {
                               <p className="text-sm text-encre-700 mb-3">{service.description}</p>
                             )}
                             <div className="flex items-center justify-between">
-                              <span className="text-sm text-encre-700">💰 {service.price_label ?? `${(service.price_cents / 100).toFixed(2)} €`}</span>
+                              <span className="text-sm text-encre-700">💰 {formatFromPrice(service.price_label ?? `${(service.price_cents / 100).toFixed(2)} €`)}</span>
                               <span className="text-xs text-or-600 font-medium group-hover:underline">Demander un devis →</span>
                             </div>
                           </div>
@@ -269,7 +270,7 @@ function RendezVousForm() {
                             {service.description && (
                               <p className="text-sm text-encre-700 mb-3">{service.description}</p>
                             )}
-                            <span className="text-sm text-encre-700">💰 {(service.price_cents / 100).toFixed(2)} €</span>
+                            <span className="text-sm text-encre-700">💰 {formatFromPrice(`${(service.price_cents / 100).toFixed(2)} €`)}</span>
                           </div>
                         </div>
                       </div>
