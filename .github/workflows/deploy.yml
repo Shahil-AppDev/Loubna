@@ -100,10 +100,10 @@ jobs:
             set -euo pipefail
 
             setup_node() {
+              set +u
               export NVM_DIR="${NVM_DIR:-$HOME/.nvm}"
               [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
-              [ -s "$HOME/.profile" ] && . "$HOME/.profile" || true
-              [ -s "$HOME/.bashrc" ] && . "$HOME/.bashrc" || true
+              set -u
               if ! command -v node >/dev/null 2>&1; then
                 for node_bin in /usr/local/bin/node /usr/bin/node "$HOME"/.nvm/versions/node/*/bin/node; do
                   if [ -x "$node_bin" ]; then
