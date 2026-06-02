@@ -1,6 +1,5 @@
-import { LEGAL_DISCLAIMERS } from "@/data/legal";
-import { SERVICES, SERVICE_CATEGORIES } from "@/data/services";
-import { SITE_CONFIG } from "@/data/site-config";
+import { SERVICE_NOTE_IMPORTANTE } from "@/lib/client-service-note";
+import { SERVICES, SITE_CONFIG } from "@/lib/constants";
 import type { Metadata } from "next";
 import Link from "next/link";
 
@@ -15,6 +14,11 @@ export const metadata: Metadata = {
   },
 };
 
+const CATEGORIES = [
+  { key: "salarie", label: "Pour les salariés" },
+  { key: "employeur", label: "Pour les employeurs" },
+  { key: "all", label: "Salariés & employeurs" },
+];
 
 export default function ServicesPage() {
   return (
@@ -60,7 +64,7 @@ export default function ServicesPage() {
       {/* ─── SERVICES ──────────────────────────────────── */}
       <section className="section-pad bg-encre-50">
         <div className="container-main">
-          {SERVICE_CATEGORIES.map((cat) => {
+          {CATEGORIES.map((cat) => {
             const items = SERVICES.filter((s) => s.category === cat.key);
             if (items.length === 0) return null;
             return (
@@ -89,10 +93,16 @@ export default function ServicesPage() {
             <h4 className="font-serif text-[1.15rem] text-encre-800 mb-3">
               ℹ️ Note importante
             </h4>
-            <div className="text-[0.9rem] text-encre-700 leading-[1.85] space-y-3">
-              {LEGAL_DISCLAIMERS.services.map((text, i) => (
-                <p key={i}>{text}</p>
-              ))}
+            <div className="text-[0.9rem] text-encre-700 leading-[1.85] space-y-3 whitespace-pre-line">
+              {SERVICE_NOTE_IMPORTANTE[0]}
+              {"\n\n"}
+              {SERVICE_NOTE_IMPORTANTE[1]}
+              {"\n\n"}
+              {SERVICE_NOTE_IMPORTANTE.slice(2, 5).join("\n")}
+              {"\n\n"}
+              {SERVICE_NOTE_IMPORTANTE[5]}
+              {"\n\n"}
+              {SERVICE_NOTE_IMPORTANTE[6]}
             </div>
           </div>
         </div>

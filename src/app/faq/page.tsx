@@ -1,12 +1,12 @@
-import type { Metadata } from "next";
-import Link from "next/link";
-import { FAQ_ITEMS, SITE_CONFIG } from "@/lib/constants";
+import FaqAccordion from "@/components/ui/FaqAccordion";
 import {
   FAQ_CTA_TEXTE,
   FAQ_HERO_SOUS_TITRE,
   FAQ_NOTE_IMPORTANTE,
 } from "@/lib/client-faq-items";
-import FaqAccordion from "@/components/ui/FaqAccordion";
+import { FAQ_ITEMS, SITE_CONFIG } from "@/lib/constants";
+import type { Metadata } from "next";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "FAQ — Loubna Abouz Manta, Juriste en Droit du Travail",

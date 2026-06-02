@@ -1,7 +1,7 @@
+import ContactForm from "@/components/forms/ContactForm";
+import { SITE_CONFIG } from "@/lib/constants";
 import type { Metadata } from "next";
 import Link from "next/link";
-import { SITE_CONFIG } from "@/lib/constants";
-import ContactForm from "@/components/forms/ContactForm";
 
 export const metadata: Metadata = {
   title: "Contact",
