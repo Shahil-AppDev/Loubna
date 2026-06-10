@@ -89,6 +89,6 @@ Mon rôle est d'apporter de la clarté, de la méthode et de la sécurité dans 
 
 Je n'interviens pas à la place des professions réglementées.
 
-Lorsque la situation nécessite une action contentieuse ou une représentation en justice, je vous oriente vers un avocat compétent.`,
+Lorsque la situation nécessite une action contentieuse ou une représentation en justice, je vous oriente vers Maître Lahlouh, avocate à Paris, partenaire de confiance.`,
   },
 } as const;

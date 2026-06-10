@@ -145,6 +145,23 @@ export default function ContactPage() {
                   Pour les situations urgentes, contactez-moi directement par téléphone.
                 </p>
               </div>
+
+              {/* Partenariat avocat */}
+              <div className="mt-4 bg-encre-950 border border-or-500/25 border-l-[3px] border-l-or-500 p-5 rounded-sm">
+                <p className="text-[0.7rem] font-bold tracking-[0.12em] uppercase text-or-500 mb-2">
+                  ⚖️ Partenariat juridique
+                </p>
+                <p className="text-[0.85rem] text-white/80 leading-[1.75] mb-3">
+                  Pour les situations nécessitant une{" "}
+                  <strong className="text-white">représentation en justice</strong>{" "}
+                  ou une procédure contentieuse, je travaille en partenariat avec{" "}
+                  <strong className="text-or-400">Maître Lahlouh, avocate à Paris</strong>.
+                </p>
+                <p className="text-[0.82rem] text-white/55 leading-[1.7]">
+                  Signalez-le dans votre message — je transmettrai votre demande
+                  directement après un premier échange sur votre situation.
+                </p>
+              </div>
             </div>
 
             {/* ─── Form column ───────────────────────── */}
