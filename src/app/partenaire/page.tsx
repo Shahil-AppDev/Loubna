@@ -1,42 +1,49 @@
 import type { Metadata } from "next";
 import { SITE_CONFIG } from "@/lib/constants";
+import Image from "next/image";
 import Link from "next/link";
 
 export const metadata: Metadata = {
   title: `Maître Lahlouh, Avocate à Paris — Partenaire juridique | ${SITE_CONFIG.name}`,
   description:
-    "Maître Lahlouh, avocate au barreau de Paris, partenaire de Loubna Abouz Manta pour les situations nécessitant une représentation en justice en droit du travail.",
+    "Maître Lahlouh, avocate au barreau de Paris depuis 2016, spécialisée en droit de la propriété intellectuelle, droit numérique et conseil aux entreprises. Partenaire de Loubna Abouz Manta pour les situations nécessitant une représentation en justice.",
   openGraph: {
     title: "Maître Lahlouh — Avocate à Paris, partenaire juridique",
     description:
-      "Avocate spécialisée en droit du travail, partenaire de confiance pour les dossiers nécessitant une représentation en justice.",
+      "Avocate spécialisée en droit de la propriété intellectuelle et droit numérique, partenaire de confiance pour les dossiers nécessitant une représentation en justice.",
   },
 };
 
-// ─────────────────────────────────────────────────────────────
-// CONTENU À COMPLÉTER avec les informations réelles de l'avocate
-// ─────────────────────────────────────────────────────────────
-
 const SPECIALITES = [
   {
+    icon: "™️",
+    title: "Droit des marques & droit d'auteur",
+    desc: "Protection et défense des créations, marques, œuvres artistiques et droits de propriété intellectuelle pour artistes et entreprises.",
+  },
+  {
+    icon: "💻",
+    title: "Droit numérique & New Tech",
+    desc: "Accompagnement sur les enjeux juridiques du numérique, des nouvelles technologies et de l'économie digitale.",
+  },
+  {
+    icon: "📝",
+    title: "Contrats & négociations",
+    desc: "Rédaction, révision et négociation de contrats commerciaux, secrets commerciaux et accords de confidentialité.",
+  },
+  {
     icon: "⚖️",
-    title: "Droit du travail",
-    desc: "Représentation et défense des salariés et employeurs devant le Conseil de prud'hommes et les juridictions d'appel.",
-  },
-  {
-    icon: "🔴",
-    title: "Harcèlement & discrimination",
-    desc: "Défense des victimes de harcèlement moral, sexuel ou de discrimination dans le cadre professionnel.",
-  },
-  {
-    icon: "🚫",
-    title: "Licenciement & rupture",
-    desc: "Contestation de licenciements abusifs, négociation et contentieux liés aux fins de contrat.",
+    title: "Défense des intérêts & conflits",
+    desc: "Représentation et défense des clients devant les juridictions compétentes, résolution des conflits commerciaux et concurrentiels.",
   },
   {
     icon: "🏢",
     title: "Conseil aux entreprises",
-    desc: "Accompagnement juridique des employeurs dans la gestion de leurs relations sociales et la sécurisation de leurs procédures.",
+    desc: "Accompagnement juridique global des startups et entreprises dans toutes les facettes de leurs opérations.",
+  },
+  {
+    icon: "🌐",
+    title: "Droit de la concurrence",
+    desc: "Conseil et défense en matière de droit de la concurrence, pratiques anticoncurrentielles et réglementation des marchés.",
   },
 ];
 
@@ -71,7 +78,7 @@ export default function PartenairePage() {
           </p>
           <p className="text-white/50 text-[1rem] max-w-[520px] leading-[1.8]">
             Partenaire de confiance pour les situations nécessitant une représentation
-            en justice ou une procédure contentieuse en droit du travail.
+            en justice ou une procédure contentieuse.
           </p>
         </div>
       </section>
@@ -124,16 +131,15 @@ export default function PartenairePage() {
             {/* Identité */}
             <div className="lg:sticky lg:top-24">
               <div className="relative">
-                {/* Photo placeholder */}
-                <div
-                  className="aspect-[3/4] rounded-sm border border-or-500/20 flex flex-col items-center justify-center gap-4 text-white/25 max-w-sm"
-                  style={{ background: "linear-gradient(135deg, #1a1a1a, #2a2a2a)" }}
-                >
-                  <span className="text-5xl">⚖️</span>
-                  <span className="text-[0.75rem] tracking-[0.1em] uppercase">Photo professionnelle</span>
-                  <span className="text-[0.65rem] tracking-[0.08em] opacity-60">
-                    À remplacer dans /public/
-                  </span>
+                <div className="aspect-[3/4] rounded-sm overflow-hidden border border-or-500/20 max-w-sm">
+                  <Image
+                    src="/maitre-lahlouh.webp"
+                    alt="Maître Lahlouh, avocate au Barreau de Paris"
+                    width={400}
+                    height={533}
+                    className="w-full h-full object-cover object-top grayscale"
+                    priority
+                  />
                 </div>
                 <div className="absolute -bottom-5 -right-5 bg-rouge-800 text-white p-5 rounded-sm shadow-rouge-lg text-center">
                   <strong className="block font-serif text-[1.2rem] leading-none">Barreau</strong>
@@ -148,7 +154,7 @@ export default function PartenairePage() {
                   Maître Lahlouh
                 </p>
                 <p className="text-or-500 text-[0.65rem] tracking-[0.15em] uppercase font-medium">
-                  Avocate · Droit du travail
+                  Avocate · Propriété intellectuelle & Digital
                 </p>
                 <div className="w-10 h-px bg-or-400 my-4" />
                 <div className="space-y-2.5">
@@ -158,7 +164,15 @@ export default function PartenairePage() {
                   </p>
                   <p className="text-encre-300 text-xs flex items-center gap-2">
                     <span className="text-or-500">⚖️</span>
-                    Barreau de Paris
+                    Barreau de Paris depuis 2016
+                  </p>
+                  <p className="text-encre-300 text-xs flex items-center gap-2">
+                    <span className="text-or-500">🎓</span>
+                    Master Droit International des Affaires — Univ. Jean Moulin
+                  </p>
+                  <p className="text-encre-300 text-xs flex items-center gap-2">
+                    <span className="text-or-500">🏛️</span>
+                    Cabinet fondé en 2018
                   </p>
                   <p className="text-encre-300 text-xs flex items-center gap-2">
                     <span className="text-or-500">🌐</span>
@@ -179,26 +193,27 @@ export default function PartenairePage() {
             <div className="pt-2">
               <span className="section-label">À propos</span>
 
-              {/* NOTE: Remplacer ce texte par la vraie biographie de Maître Lahlouh */}
               <blockquote className="font-serif text-[1.3rem] italic text-encre-800 leading-[1.65] mb-7 border-l-[3px] border-rouge-800 pl-5">
-                « À compléter avec la citation ou le positionnement de Maître Lahlouh. »
+                « Facilitez votre parcours juridique avec mes services personnalisés, incluant des conseils experts, des négociations avisées et une défense intransigeante de vos intérêts. »
               </blockquote>
 
               <div className="space-y-5 mb-12">
-                {/* NOTE: Remplacer par la vraie biographie */}
                 <p className="text-[0.95rem] text-encre-600 leading-[1.88]">
-                  Maître Lahlouh est avocate au Barreau de Paris, spécialisée en droit du travail.
-                  {/* → À compléter avec son parcours, ses formations, ses années d'expérience */}
+                  Diplômée d&apos;un Master en Droit International des Affaires de l&apos;université
+                  Jean Moulin, je suis avocate au Barreau de Paris depuis Mars 2016. Passionnée
+                  par le droit de la propriété intellectuelle et le droit numérique, j&apos;ai
+                  perfectionné mes compétences en collaborant avec les meilleurs experts de ces
+                  domaines avant de fonder mon propre cabinet en 2018.
                 </p>
                 <p className="text-[0.95rem] text-encre-600 leading-[1.88]">
-                  {/* → À compléter avec sa spécialisation et ses domaines d'intervention */}
-                  Elle intervient aussi bien pour les salariés que pour les employeurs, en
-                  conseil comme en contentieux devant les juridictions compétentes.
+                  Fortement ancrée dans le conseil juridique, ma méthode de travail repose sur
+                  l&apos;écoute, la rigueur, et le pragmatisme. J&apos;accompagne mes clients,
+                  particulièrement des artistes et des startups, en les conseillant dans toutes
+                  les facettes de leurs opérations.
                 </p>
                 <p className="text-[0.95rem] text-encre-600 leading-[1.88]">
-                  {/* → À compléter avec sa philosophie, son approche */}
-                  Son approche combine rigueur juridique et écoute des situations concrètes,
-                  en recherchant la solution la plus adaptée à chaque dossier.
+                  Mon réseau étendu en France et à l&apos;étranger, forgé au fil de mes expériences,
+                  me permet de collaborer étroitement avec des confrères dans des dossiers complexes.
                 </p>
               </div>
 
