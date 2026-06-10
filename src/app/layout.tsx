@@ -1,13 +1,7 @@
-'use client';
-
-import Footer from "@/components/layout/Footer";
-import Header from "@/components/layout/Header";
-import MobileMenu from "@/components/layout/MobileMenu";
-import { MobileMenuProvider } from "@/components/layout/MobileMenuProvider";
+import LayoutShell from "@/components/layout/LayoutShell";
 import { getAssetPath } from "@/lib/basePath";
 import { SITE_CONFIG } from "@/lib/constants";
 import { DM_Sans, Playfair_Display } from "next/font/google";
-import { usePathname } from "next/navigation";
 import "./globals.css";
 
 const playfair = Playfair_Display({
@@ -31,9 +25,6 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const pathname = usePathname();
-  const isAdminRoute = pathname?.startsWith('/admin');
-
   const jsonLd = {
     "@context": "https://schema.org",
     "@graph": [
@@ -106,16 +97,7 @@ export default function RootLayout({
         />
       </head>
       <body className="font-sans bg-encre-50 text-encre-800 antialiased" suppressHydrationWarning>
-        {isAdminRoute ? (
-          <>{children}</>
-        ) : (
-          <MobileMenuProvider>
-            <Header />
-            <main>{children}</main>
-            <Footer />
-            <MobileMenu />
-          </MobileMenuProvider>
-        )}
+        <LayoutShell>{children}</LayoutShell>
       </body>
     </html>
   );
