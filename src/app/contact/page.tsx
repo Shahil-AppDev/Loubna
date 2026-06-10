@@ -157,10 +157,16 @@ export default function ContactPage() {
                   ou une procédure contentieuse, je travaille en partenariat avec{" "}
                   <strong className="text-or-400">Maître Lahlouh, avocate à Paris</strong>.
                 </p>
-                <p className="text-[0.82rem] text-white/55 leading-[1.7]">
+                <p className="text-[0.82rem] text-white/55 leading-[1.7] mb-3">
                   Signalez-le dans votre message — je transmettrai votre demande
                   directement après un premier échange sur votre situation.
                 </p>
+                <Link
+                  href="/partenaire"
+                  className="inline-block text-[0.78rem] font-semibold text-or-400 hover:text-or-300 transition-colors"
+                >
+                  En savoir plus sur Maître Lahlouh →
+                </Link>
               </div>
             </div>
 
