@@ -30,7 +30,7 @@ jobs:
       - name: Run linter
         run: npm run lint
 
-      - name: Build Next.js
+      - name: Build Next.js (CI gate)
         run: npm run build
         env:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
@@ -53,11 +53,9 @@ jobs:
         run: |
           cat > .env.local << 'ENVEOF'
           ENVEOF
-          # Resend
           [ -n "$RESEND_API_KEY" ] && printf 'RESEND_API_KEY=%s\n' "$RESEND_API_KEY" >> .env.local || echo "⚠ RESEND_API_KEY not set"
           [ -n "$CONTACT_EMAIL_TO" ] && printf 'CONTACT_EMAIL_TO=%s\n' "$CONTACT_EMAIL_TO" >> .env.local
           [ -n "$CONTACT_EMAIL_FROM" ] && printf 'CONTACT_EMAIL_FROM=%s\n' "$CONTACT_EMAIL_FROM" >> .env.local
-          # SumUp
           [ -n "$SUMUP_API_KEY" ] && printf 'SUMUP_API_KEY=%s\n' "$SUMUP_API_KEY" >> .env.local || echo "⚠ SUMUP_API_KEY not set"
           [ -n "$SUMUP_MERCHANT_CODE" ] && printf 'SUMUP_MERCHANT_CODE=%s\n' "$SUMUP_MERCHANT_CODE" >> .env.local
           [ -n "$SUMUP_WEBHOOK_SECRET" ] && printf 'SUMUP_WEBHOOK_SECRET=%s\n' "$SUMUP_WEBHOOK_SECRET" >> .env.local
@@ -79,11 +77,8 @@ jobs:
           PORT="${{ secrets.VPS_PORT }}"
           TEMP="/tmp/loubna-build-${{ github.sha }}"
 
-          # Create temp dir on server
           ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no -p "$PORT" "$REMOTE" "mkdir -p $TEMP"
 
-          # Transfer everything needed for production runtime:
-          # source, .next (build), node_modules, .env.local, public
           rsync -az --delete \
             -e "ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no -p $PORT" \
             --exclude '.git' \
@@ -100,9 +95,58 @@ jobs:
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_SSH_KEY }}
           port: ${{ secrets.VPS_PORT }}
-          command_timeout: "5m"
+          command_timeout: "10m"
           script: |
-            set -euo pipefail
+            set -eo pipefail
+
+            setup_node() {
+              if command -v node >/dev/null 2>&1; then
+                echo "✓ Node $(node -v) — npm $(npm -v)"
+                return 0
+              fi
+              export NVM_DIR="${NVM_DIR:-$HOME/.nvm}"
+              if [ -s "$NVM_DIR/nvm.sh" ]; then
+                # shellcheck disable=SC1090
+                . "$NVM_DIR/nvm.sh"
+              fi
+              if command -v node >/dev/null 2>&1; then
+                echo "✓ Node $(node -v) — npm $(npm -v)"
+                return 0
+              fi
+              NODE_BIN=$(find "$HOME" /usr/local /opt -path '*/bin/node' -type f 2>/dev/null | head -1 || true)
+              if [ -n "$NODE_BIN" ] && [ -x "$NODE_BIN" ]; then
+                export PATH="$(dirname "$NODE_BIN"):$PATH"
+                echo "✓ Node $(node -v) — npm $(npm -v)"
+                return 0
+              fi
+              if bash -lc 'command -v node' >/dev/null 2>&1; then
+                NODE_BIN=$(bash -lc 'command -v node')
+                export PATH="$(dirname "$NODE_BIN"):$PATH"
+                echo "✓ Node $(node -v) (login shell) — npm $(npm -v)"
+                return 0
+              fi
+              if command -v sudo >/dev/null 2>&1; then
+                echo "⚠ Node absent — tentative installation Node.js 20 (nodesource)..."
+                curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+                sudo apt-get install -y nodejs
+              fi
+              if command -v node >/dev/null 2>&1; then
+                echo "✓ Node $(node -v) installé — npm $(npm -v)"
+                return 0
+              fi
+              echo "❌ Node.js introuvable sur le serveur (PATH=$PATH)"
+              exit 1
+            }
+
+            pm2_cmd() {
+              if command -v pm2 >/dev/null 2>&1; then
+                pm2 "$@"
+                return $?
+              fi
+              bash -lc "pm2 $*"
+            }
+
+            setup_node
 
             DEPLOY_PATH="${{ secrets.DEPLOY_PATH }}"
             TEMP="/tmp/loubna-build-${{ github.sha }}"
@@ -116,46 +160,56 @@ jobs:
             fi
             mv "$TEMP" "$DEPLOY_PATH/current"
 
-            # Keep only last 3 backups
             cd "$DEPLOY_PATH"
             ls -dt backup-* 2>/dev/null | tail -n +4 | xargs -r rm -rf
 
             echo "=== Restart PM2 ==="
+            setup_node
             cd "$DEPLOY_PATH/current"
-            if pm2 list | grep -q "$APP_NAME"; then
-              pm2 restart "$APP_NAME"
+            if pm2_cmd list 2>/dev/null | grep -q "$APP_NAME"; then
+              pm2_cmd restart "$APP_NAME" --update-env
             else
-              PORT=$PORT pm2 start npm --name "$APP_NAME" -- start
+              PORT=$PORT pm2_cmd start npm --name "$APP_NAME" -- start
             fi
-            pm2 save
+            pm2_cmd save
 
-            sleep 5
+            sleep 8
 
-            echo "=== Validation ==="
-            HTTP=$(curl -so /dev/null -w "%{http_code}" http://127.0.0.1:$PORT)
+            echo "=== Validation (localhost) ==="
+            HTTP=$(curl -so /dev/null -w "%{http_code}" "http://127.0.0.1:$PORT" || echo "000")
             if [ "$HTTP" = "200" ] || [ "$HTTP" = "307" ] || [ "$HTTP" = "301" ]; then
               echo "✅ App responds HTTP $HTTP on port $PORT"
             else
               echo "❌ App returned HTTP $HTTP — check pm2 logs $APP_NAME"
-              pm2 logs "$APP_NAME" --lines 40 --nostream
+              pm2_cmd logs "$APP_NAME" --lines 40 --nostream || true
               exit 1
             fi
 
-            echo "✅ Deployment complete — https://www.juriste-droit-du-travail.com"
+            echo "✅ Deployment complete"
 
-      - name: Verify HTTPS
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.VPS_HOST }}
-          username: ${{ secrets.VPS_USER }}
-          key: ${{ secrets.VPS_SSH_KEY }}
-          port: ${{ secrets.VPS_PORT }}
-          script: |
-            nginx -t 2>&1 | tail -2
-            HTTP=$(curl -so /dev/null -w "%{http_code}" -L https://www.juriste-droit-du-travail.com 2>/dev/null || echo "000")
-            echo "HTTPS check: $HTTP"
-            if [ "$HTTP" != "200" ]; then
-              echo "⚠ HTTPS returned $HTTP (may be a redirect chain — check manually)"
-            else
-              echo "✅ Site is live"
+      - name: Health check (public HTTPS)
+        run: |
+          set -euo pipefail
+          URLS=(
+            "https://juriste-droit-du-travail.com"
+            "https://www.juriste-droit-du-travail.com"
+          )
+          for URL in "${URLS[@]}"; do
+            echo "Checking $URL ..."
+            OK=0
+            for attempt in 1 2 3 4 5 6; do
+              CODE=$(curl -sS -o /dev/null -w "%{http_code}" -L --max-time 30 "$URL" || echo "000")
+              echo "  attempt $attempt: HTTP $CODE"
+              if [ "$CODE" = "200" ]; then
+                OK=1
+                break
+              fi
+              sleep 10
+            done
+            if [ "$OK" -ne 1 ]; then
+              echo "❌ Health check failed for $URL"
+              curl -sSI --max-time 30 "$URL" || true
+              exit 1
             fi
+            echo "✅ $URL is live (HTTP 200)"
+          done

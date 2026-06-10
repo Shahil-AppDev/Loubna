@@ -1,5 +1,5 @@
-import type { ContactAttachment } from "@/lib/contact/attachments";
 import { SITE_CONFIG } from "@/lib/constants";
+import type { ContactAttachment } from "@/lib/contact/attachments";
 import { Resend } from "resend";
 
 export const CONTACT_EMAIL_SUBJECT = "Demande reçu via site";

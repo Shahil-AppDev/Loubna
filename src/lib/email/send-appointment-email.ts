@@ -1,5 +1,5 @@
-import type { ContactAttachment } from "@/lib/contact/attachments";
 import { SITE_CONFIG } from "@/lib/constants";
+import type { ContactAttachment } from "@/lib/contact/attachments";
 import { Resend } from "resend";
 
 export const APPOINTMENT_EMAIL_SUBJECT = "Nouveau rendez-vous via site";

@@ -1,11 +1,11 @@
 "use client";
 
-import { useState } from "react";
 import AttachmentField from "@/components/forms/AttachmentField";
-import { validateContactFiles } from "@/lib/contact/attachments";
 import { DEMAND_TYPES, STATUTS } from "@/lib/constants";
+import { validateContactFiles } from "@/lib/contact/attachments";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import { useState } from "react";
 
 interface FormData {
   nom: string;
@@ -36,10 +36,10 @@ const INITIAL_DATA: FormData = {
 };
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const TEL_REGEX   = /^[\d\s+\-().]{8,20}$/;
+const TEL_REGEX = /^[\d\s+\-().]{8,20}$/;
 
 export default function ContactForm() {
-  const [form, setForm]     = useState<FormData>(INITIAL_DATA);
+  const [form, setForm] = useState<FormData>(INITIAL_DATA);
   const [attachments, setAttachments] = useState<File[]>([]);
   const [errors, setErrors] = useState<FormErrors>({});
   const [success, setSuccess] = useState(false);
