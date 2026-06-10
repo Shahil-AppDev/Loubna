@@ -7,5 +7,5 @@ export const SERVICE_NOTE_IMPORTANTE = [
   "la structuration des démarches",
   "la sécurisation des pratiques et des documents (notamment contrats de travail)",
   "Elles ne constituent pas une consultation juridique au sens de la réglementation applicable à la profession d'avocat.",
-  "En tant que juriste, mon intervention se situe en amont des procédures.Lorsque la situation nécessite une action contentieuse ou une représentation en justice, je vous oriente vers un avocat compétent.",
+  "En tant que juriste, mon intervention se situe en amont des procédures. Lorsque la situation nécessite une action contentieuse ou une représentation en justice, je vous oriente vers Maître Lahlouh, avocate à Paris, partenaire de confiance.",
 ] as const;

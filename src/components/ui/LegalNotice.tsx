@@ -35,7 +35,7 @@ export default function LegalNotice({ variant = "default", className = "" }: Leg
             <li className="list-disc">la sécurisation des pratiques et des documents (notamment contrats de travail)</li>
           </ul>
           <p>Elles ne constituent pas une consultation juridique au sens de la réglementation applicable à la profession d'avocat.</p>
-          <p>En tant que juriste, mon intervention se situe en amont des procédures. Lorsque la situation nécessite une action contentieuse ou une représentation en justice, je vous oriente vers un avocat compétent.</p>
+          <p>En tant que juriste, mon intervention se situe en amont des procédures. Lorsque la situation nécessite une action contentieuse ou une représentation en justice, je vous oriente vers Maître Lahlouh, avocate à Paris, partenaire de confiance.</p>
         </div>
       </div>
     );

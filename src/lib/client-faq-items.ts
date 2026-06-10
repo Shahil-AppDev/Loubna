@@ -151,7 +151,7 @@ Le juriste intervient en amont, dans une logique de compréhension, de structura
 
 L'avocat est habilité à représenter et défendre les intérêts d'une personne dans le cadre d'une procédure contentieuse (tribunal).
 
-Les deux approches sont complémentaires.Lorsque la situation nécessite une action en justice, une orientation vers un avocat est proposée.`,
+Les deux approches sont complémentaires. Lorsque la situation nécessite une action en justice, je vous oriente vers Maître Lahlouh, avocate à Paris, partenaire de confiance — contactez-moi via le formulaire en précisant votre situation.`,
     category: "general" as const,
   },
   {

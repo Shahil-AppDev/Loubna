@@ -323,6 +323,49 @@ Sécuriser les premières démarches administratives`}
         </div>
       </section>
 
+      {/* ─── PARTENARIAT ───────────────────────────────── */}
+      <section className="section-pad bg-encre-950">
+        <div className="container-main">
+          <div className="max-w-2xl mx-auto text-center">
+            <span className="section-label">Partenariat juridique</span>
+            <h2 className="font-serif text-[clamp(1.7rem,3vw,2.3rem)] text-white leading-[1.25] mb-6">
+              Quand la situation nécessite
+              <br />
+              <em className="text-or-400 font-light" style={{ fontStyle: "italic" }}>
+                une représentation en justice
+              </em>
+            </h2>
+            <p className="text-white/65 text-[0.95rem] leading-[1.85] mb-8 max-w-xl mx-auto">
+              Mon rôle est d&apos;accompagner et de prévenir en amont des procédures.
+              Lorsqu&apos;une situation évolue vers le contentieux ou nécessite une
+              représentation devant les juridictions, je vous oriente vers mon
+              partenaire de confiance.
+            </p>
+            <div className="bg-encre-900 border border-or-500/20 rounded-sm p-7 text-left flex gap-5 items-start max-w-lg mx-auto">
+              <span className="text-[2rem] flex-shrink-0">⚖️</span>
+              <div>
+                <p className="font-serif text-white font-semibold text-[1.05rem] mb-1">
+                  Maître Lahlouh
+                </p>
+                <p className="text-or-400 text-[0.7rem] tracking-[0.12em] uppercase font-semibold mb-3">
+                  Avocate · Paris
+                </p>
+                <p className="text-white/60 text-[0.84rem] leading-[1.72]">
+                  Pour les dossiers nécessitant une procédure judiciaire, contactez-moi
+                  via le formulaire en précisant votre situation — je transmettrai
+                  directement votre demande après un premier échange.
+                </p>
+              </div>
+            </div>
+            <div className="mt-8">
+              <Link href="/contact" className="btn btn-primary">
+                Prendre contact →
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ─── CTA ───────────────────────────────────────── */}
       <section className="section-pad bg-rouge-800">
         <div className="container-main text-center">
