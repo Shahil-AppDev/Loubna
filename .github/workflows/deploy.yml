@@ -188,11 +188,14 @@ jobs:
             echo "=== [3/5] npm run build sur le serveur ==="
             npm run build 2>&1 | tail -15
 
-            # ── Atomic swap (keep no backup to save disk) ──────────────────
-            echo "=== [4/5] Swap — suppression current + installation ==="
+            # ── Atomic swap via mv (instant) — old dir deleted later ───────
+            echo "=== [4/5] Swap atomique ==="
             mkdir -p "$DEPLOY_PATH"
             cd "$DEPLOY_PATH"
-            rm -rf current
+            TRASH="trash-$(date +%s)"
+            if [ -d current ]; then
+              mv current "$TRASH"
+            fi
             mv "$TEMP" "$DEPLOY_PATH/current"
             echo "✓ Swap effectué"
 
@@ -210,6 +213,11 @@ jobs:
             # ── Reload nginx (flush stale static-file config) ──────────────
             echo "=== Reload nginx ==="
             nginx -t 2>/dev/null && { systemctl reload nginx 2>/dev/null || service nginx reload 2>/dev/null || true; echo "✓ nginx rechargé"; } || echo "⚠ nginx -t a échoué"
+
+            # ── Delete old build(s) in background (avoid OOM-killing deploy) ─
+            cd "$DEPLOY_PATH"
+            nohup nice -n 19 ionice -c 3 rm -rf trash-* >/dev/null 2>&1 &
+            echo "✓ Nettoyage anciens builds lancé en arrière-plan"
 
             sleep 8
 
