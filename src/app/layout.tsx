@@ -2,7 +2,10 @@ import LayoutShell from "@/components/layout/LayoutShell";
 import { getAssetPath } from "@/lib/basePath";
 import { SITE_CONFIG } from "@/lib/constants";
 import { DM_Sans, Playfair_Display } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
+
+const GTM_ID = "GTM-WCG3KTXK";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -91,12 +94,27 @@ export default function RootLayout({
   return (
     <html lang="fr" className={`${playfair.variable} ${dmSans.variable}`} suppressHydrationWarning>
       <head>
+        <Script id="gtm" strategy="afterInteractive">
+          {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','${GTM_ID}');`}
+        </Script>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
       <body className="font-sans bg-encre-50 text-encre-800 antialiased" suppressHydrationWarning>
+        <noscript>
+          <iframe
+            src={`https://www.googletagmanager.com/ns.html?id=${GTM_ID}`}
+            height="0"
+            width="0"
+            style={{ display: "none", visibility: "hidden" }}
+          />
+        </noscript>
         <LayoutShell>{children}</LayoutShell>
       </body>
     </html>
