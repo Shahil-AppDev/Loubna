@@ -8,7 +8,7 @@ export const SEO_CONFIG = {
   defaultTitle: "Loubna Abouz Manta — Juriste en Droit du Travail · Prévention des Risques",
   titleTemplate: "%s | Loubna Abouz Manta",
   defaultDescription: "J'interviens dans une démarche de prévention, d'accompagnement et de sécurisation des situations en droit du travail.",
-  siteUrl: "https://www.juriste-droit-du-travail.com",
+  siteUrl: "https://juriste-droit-du-travail.com",
   siteName: "Loubna Abouz Manta - Juriste en Droit du Travail",
   locale: "fr_FR",
   type: "website",

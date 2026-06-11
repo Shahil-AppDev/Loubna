@@ -5,7 +5,7 @@
 export const SITE_CONFIG = {
   name: "Loubna Abouz Manta",
   title: "Juriste en droit du travail – Prévention des risques professionnels",
-  url: "https://www.juriste-droit-du-travail.com",
+  url: "https://juriste-droit-du-travail.com",
   email: "louamjuristeconseil@gmail.com",
   phone: "06 59 11 11 08",
   address: "45 rue des Mines, 25400 Audincourt",
