@@ -150,21 +150,17 @@ jobs:
 
             DEPLOY_PATH="${{ secrets.DEPLOY_PATH }}"
             TEMP="/tmp/loubna-build-${{ github.sha }}"
-            TIMESTAMP=$(date +%Y%m%d-%H%M%S)
             APP_NAME="nextjs-loubna"
             PORT=3000
 
-            echo "=== Free disk space: remove old backups before swap ==="
+            echo "=== Free disk: remove all old backups and current ==="
+            mkdir -p "$DEPLOY_PATH"
             cd "$DEPLOY_PATH"
-            ls -dt backup-* 2>/dev/null | while IFS= read -r old_backup; do
-              echo "  Removing: $old_backup"
-              rm -rf "$old_backup" || echo "  Warning: could not remove $old_backup"
+            for old in backup-* current; do
+              [ -e "$old" ] && { echo "  Removing $old ..."; rm -rf "$old"; } || true
             done
 
-            echo "=== Atomic swap current → backup, new build → current ==="
-            if [ -d "$DEPLOY_PATH/current" ]; then
-              mv "$DEPLOY_PATH/current" "$DEPLOY_PATH/backup-$TIMESTAMP"
-            fi
+            echo "=== Install new build ==="
             mv "$TEMP" "$DEPLOY_PATH/current"
 
             echo "=== Restart PM2 ==="
