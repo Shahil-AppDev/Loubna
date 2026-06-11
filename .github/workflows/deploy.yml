@@ -220,8 +220,19 @@ jobs:
             pm2_cmd list || true
 
             pm2_cmd delete "$APP_NAME" 2>/dev/null || true
-            fuser -k ${PORT}/tcp 2>/dev/null || true
-            sleep 2
+
+            # Libère le port : fuser si dispo, sinon ss + kill, jusqu'à libération
+            for i in $(seq 1 15); do
+              PIDS=$(ss -tlnp "sport = :$PORT" 2>/dev/null | grep -oP 'pid=\K[0-9]+' | sort -u || true)
+              if [ -z "$PIDS" ]; then
+                echo "✓ Port $PORT libre"
+                break
+              fi
+              echo "  Port $PORT occupé par PID(s) $PIDS — kill (tentative $i)"
+              fuser -k ${PORT}/tcp 2>/dev/null || true
+              kill -9 $PIDS 2>/dev/null || true
+              sleep 2
+            done
 
             PORT=$PORT pm2_cmd start npm --name "$APP_NAME" -- start
             pm2_cmd save
