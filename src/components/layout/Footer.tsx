@@ -67,7 +67,7 @@ export default function Footer() {
                 <div className="relative w-12 h-12 md:w-14 md:h-14 flex-shrink-0">
                   <img
                     src="/logo.png"
-                    alt="Loubna Abouz Manta"
+                    alt="Loubna Abouz Manta, Juriste en droit du travail"
                     className="w-full h-full object-contain rounded-full"
                   />
                 </div>

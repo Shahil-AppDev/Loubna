@@ -165,9 +165,16 @@ Le respect de la discrétion est essentiel dans l'accompagnement des situations 
     question: "Intervenez-vous uniquement à distance ?",
     answer: `J'interviens principalement à distance (visioconférence), un format souple, efficace et adapté aux contraintes actuelles, permettant des échanges rapides et confidentiels.
 
-Ce mode d'accompagnement offre également une grande flexibilité et permet de limiter les déplacements, dans une démarche plus responsable.
+Ce mode d'accompagnement offre également une grande flexibilité et permet de limiter les déplacements, dans une démarche mais plus responsable.
 
 Des modalités spécifiques peuvent être envisagées en fonction des besoins.`,
+    category: "general" as const,
+  },
+  {
+    question: "Proposez-vous un accompagnement pour le droit du travail en Suisse ?",
+    answer: `Oui, je propose un accompagnement rédactionnel pour la préparation, la reformulation et la mise en forme de vos courriers professionnels liés au travail en Suisse (demande d'explications à l'employeur, réponse à un avertissement, demande de paiement de salaire, etc.).
+
+Attention : n'exerçant pas comme avocate en Suisse, je ne fournis aucun conseil juridique suisse. Ce service s'adresse aux personnes ayant déjà des éléments clairs ou ayant consulté un professionnel compétent en Suisse, et ayant besoin d'un accompagnement rédactionnel rigoureux pour rédiger et structurer leurs courriers avec sérieux et méthode.`,
     category: "general" as const,
   },
 ];

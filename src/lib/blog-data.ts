@@ -49,6 +49,16 @@ export const BLOG_ARTICLES = {
     readTime: "8 min",
     image: "/images/blog/rse-obligations.jpg",
   },
+  "accident-travail-maladie-professionnelle-guide-complet": {
+    title: "Accident du travail et maladie professionnelle : le guide complet de vos démarches",
+    metaTitle: "Accident du travail & maladie professionnelle : guide complet 2026",
+    description:
+      "Comment déclarer un accident du travail ou faire reconnaître une maladie professionnelle ? Découvrez notre guide complet sur la santé sécurité au travail, le DUERP et la prévention des risques professionnels.",
+    date: "2026-05-20",
+    category: "RSE & Prévention",
+    readTime: "10 min",
+    image: "/images/blog/atmp-guide.jpg",
+  },
 };
 
 export type BlogArticleSlug = keyof typeof BLOG_ARTICLES;

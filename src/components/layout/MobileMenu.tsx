@@ -67,7 +67,7 @@ export default function MobileMenu() {
             <div className="w-12 h-12 flex-shrink-0">
               <img
                 src="/logo.png"
-                alt="Loubna Abouz Manta"
+                alt="Loubna Abouz Manta, Juriste en droit du travail"
                 className="w-full h-full object-contain rounded-full"
               />
             </div>

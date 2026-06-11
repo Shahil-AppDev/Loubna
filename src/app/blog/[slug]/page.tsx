@@ -89,6 +89,9 @@ export default function BlogArticlePage({ params }: Props) {
               <span>›</span>
               <span className="text-or-500">{article.category}</span>
             </nav>
+            <h1 className="font-serif text-[clamp(2rem,5vw,3rem)] font-semibold text-white leading-[1.12] mb-6 max-w-4xl">
+              {article.title}
+            </h1>
             <div className="flex items-center gap-3 text-xs text-white/65 mb-4">
               <span className="px-3 py-1 bg-or-500 text-encre-950 font-bold tracking-wider uppercase rounded-sm">
                 {article.category}
