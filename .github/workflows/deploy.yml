@@ -154,14 +154,18 @@ jobs:
             APP_NAME="nextjs-loubna"
             PORT=3000
 
+            echo "=== Free disk space: remove old backups before swap ==="
+            cd "$DEPLOY_PATH"
+            ls -dt backup-* 2>/dev/null | while IFS= read -r old_backup; do
+              echo "  Removing: $old_backup"
+              rm -rf "$old_backup" || echo "  Warning: could not remove $old_backup"
+            done
+
             echo "=== Atomic swap current → backup, new build → current ==="
             if [ -d "$DEPLOY_PATH/current" ]; then
               mv "$DEPLOY_PATH/current" "$DEPLOY_PATH/backup-$TIMESTAMP"
             fi
             mv "$TEMP" "$DEPLOY_PATH/current"
-
-            cd "$DEPLOY_PATH"
-            ls -dt backup-* 2>/dev/null | tail -n +4 | xargs -r rm -rf
 
             echo "=== Restart PM2 ==="
             setup_node
