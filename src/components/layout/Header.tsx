@@ -13,6 +13,7 @@ const NAV_LINKS = [
   { href: "/droit-travail-suisse", label: "Suisse" },
   { href: "/tarifs", label: "Modalités et Tarifs" },
   { href: "/formations", label: "Formations" },
+  { href: "/partenaires", label: "Partenaires" },
   { href: "/blog", label: "Blog" },
   { href: "/faq", label: "FAQ" },
 ];

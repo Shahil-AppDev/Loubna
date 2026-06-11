@@ -128,6 +128,60 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ═══════════════════════════════════════════════════ */}
+      {/* PARTENARIAT JURIDIQUE */}
+      {/* ═══════════════════════════════════════════════════ */}
+      <section className="section-pad bg-encre-950 border-y border-or-500/15">
+        <div className="container-main">
+          <div className="grid grid-cols-1 lg:grid-cols-[1.5fr_1fr] gap-12 items-center">
+            <div>
+              <span className="section-label">Partenariat juridique</span>
+              <h2 className="font-serif text-[clamp(1.6rem,5vw,2.8rem)] text-white leading-[1.2] mb-6">
+                Quand la situation nécessite
+                <br />
+                <span className="text-or-500 font-light">
+                  une représentation en justice
+                </span>
+              </h2>
+              <p className="text-white/60 text-[0.95rem] leading-[1.85] max-w-[560px] mb-8">
+                Mon rôle est d&apos;accompagner et de prévenir en amont des procédures.
+                Lorsqu&apos;une situation évolue vers le contentieux ou nécessite une
+                représentation devant les juridictions, je vous oriente vers mon
+                partenaire de confiance.
+              </p>
+              <div className="flex flex-wrap gap-4">
+                <Link href="/partenaires" className="btn btn-primary">
+                  Découvrir Maître Lahlouh →
+                </Link>
+                <Link href="/contact" className="btn btn-ghost-white">
+                  Prendre contact
+                </Link>
+              </div>
+            </div>
+            <Link
+              href="/partenaires"
+              className="group bg-encre-900 border border-or-500/20 rounded-sm p-8 hover:border-or-500/40 transition-colors block max-w-sm"
+            >
+              <span className="text-3xl block mb-4">⚖️</span>
+              <p className="font-serif text-white text-[1.35rem] font-semibold mb-1">
+                Maître Lahlouh
+              </p>
+              <p className="text-or-500 text-[0.68rem] tracking-[0.16em] uppercase font-bold mb-4">
+                Avocate · Paris
+              </p>
+              <p className="text-white/50 text-[0.84rem] leading-relaxed mb-5">
+                Avocate au Barreau de Paris, elle prend le relais pour les dossiers
+                nécessitant une procédure judiciaire ou une représentation devant
+                les juridictions.
+              </p>
+              <span className="text-[0.72rem] font-bold tracking-[0.08em] uppercase text-or-500 group-hover:tracking-[0.12em] transition-all">
+                En savoir plus →
+              </span>
+            </Link>
+          </div>
+        </div>
+      </section>
+
       <section className="section-pad bg-rouge-800">
         <div className="container-main text-center">
           <div className="flex flex-wrap gap-4 justify-center">

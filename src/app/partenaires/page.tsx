@@ -4,13 +4,20 @@ import Image from "next/image";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: `Maître Lahlouh, Avocate à Paris — Partenaire juridique | ${SITE_CONFIG.name}`,
+  title: "Partenaires juridiques | Loubna Abouz Manta",
   description:
-    "Maître Lahlouh, avocate au barreau de Paris depuis 2016, spécialisée en droit de la propriété intellectuelle, droit numérique et conseil aux entreprises. Partenaire de Loubna Abouz Manta pour les situations nécessitant une représentation en justice.",
+    "Orientation vers des partenaires compétents lorsque la situation nécessite une procédure judiciaire ou une représentation devant une juridiction.",
+  alternates: {
+    canonical: "https://juriste-droit-du-travail.com/partenaires",
+  },
   openGraph: {
-    title: "Maître Lahlouh — Avocate à Paris, partenaire juridique",
+    title: "Partenaires juridiques | Loubna Abouz Manta",
     description:
-      "Avocate spécialisée en droit de la propriété intellectuelle et droit numérique, partenaire de confiance pour les dossiers nécessitant une représentation en justice.",
+      "Orientation vers des partenaires compétents lorsque la situation nécessite une procédure judiciaire ou une représentation devant une juridiction.",
+    url: "https://juriste-droit-du-travail.com/partenaires",
+    siteName: SITE_CONFIG.name,
+    locale: "fr_FR",
+    type: "website",
   },
 };
 
@@ -61,9 +68,7 @@ export default function PartenairePage() {
           <nav className="text-[0.72rem] tracking-[0.14em] uppercase text-white/30 mb-5 flex gap-2">
             <Link href="/" className="hover:text-white/60 transition-colors">Accueil</Link>
             <span>›</span>
-            <Link href="/a-propos" className="hover:text-white/60 transition-colors">À propos</Link>
-            <span>›</span>
-            <span className="text-or-500">Partenaire juridique</span>
+            <span className="text-or-500">Partenaires</span>
           </nav>
           <div className="flex items-center gap-3 mb-4">
             <span className="text-[0.65rem] font-bold tracking-[0.16em] uppercase text-or-500 border border-or-500/40 px-3 py-1 rounded-full">
@@ -71,14 +76,16 @@ export default function PartenairePage() {
             </span>
           </div>
           <h1 className="font-serif text-[clamp(2.4rem,5vw,3.8rem)] font-semibold text-white leading-[1.12] max-w-2xl">
-            Maître Lahlouh
+            Partenaires juridiques
           </h1>
           <p className="text-or-400 font-serif text-[1.1rem] mt-2 mb-5">
-            Avocate au Barreau de Paris
+            Lorsque la situation nécessite une représentation en justice
           </p>
-          <p className="text-white/50 text-[1rem] max-w-[520px] leading-[1.8]">
-            Partenaire de confiance pour les situations nécessitant une représentation
-            en justice ou une procédure contentieuse.
+          <p className="text-white/50 text-[1rem] max-w-[560px] leading-[1.8]">
+            Mon rôle est d&apos;accompagner et de prévenir en amont des procédures.
+            Lorsqu&apos;une situation évolue vers le contentieux ou nécessite une
+            représentation devant les juridictions, je vous oriente vers un
+            partenaire de confiance : Maître Lahlouh, avocate au Barreau de Paris.
           </p>
         </div>
       </section>

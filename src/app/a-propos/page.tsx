@@ -368,7 +368,7 @@ Sécuriser les premières démarches administratives`}
               </div>
             </div>
             <div className="mt-8 flex flex-wrap gap-4 justify-center">
-              <Link href="/partenaire" className="btn btn-primary">
+              <Link href="/partenaires" className="btn btn-primary">
                 Découvrir Maître Lahlouh →
               </Link>
               <Link href="/contact" className="btn btn-ghost-white">

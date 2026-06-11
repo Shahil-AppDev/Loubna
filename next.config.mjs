@@ -12,6 +12,16 @@ const nextConfig = {
   // Trailing slash for better compatibility
   trailingSlash: true,
 
+  async redirects() {
+    return [
+      {
+        source: "/partenaire",
+        destination: "/partenaires",
+        permanent: true,
+      },
+    ];
+  },
+
   // Image optimization
   images: {
     unoptimized: true,

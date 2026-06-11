@@ -173,7 +173,7 @@ export default function ContactPage() {
                   directement après un premier échange sur votre situation.
                 </p>
                 <Link
-                  href="/partenaire"
+                  href="/partenaires"
                   className="inline-block text-[0.78rem] font-semibold text-or-400 hover:text-or-300 transition-colors"
                 >
                   En savoir plus sur Maître Lahlouh →
