@@ -3,13 +3,23 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Blog Droit du Travail & RSE | Loubna Abouz Manta",
-  description:
-    "Actualités juridiques en droit du travail, ressources humaines et obligations RSE pour salariés et employeurs.",
+  title: "Actualités & Blog Droit du Travail RSE | Loubna Abouz Manta",
+  description: "Découvrez nos articles sur la santé sécurité au travail, la prévention des risques, les accidents du travail, les maladies professionnelles et le DUERP.",
+  alternates: {
+    canonical: "https://juriste-droit-du-travail.com/blog",
+  },
   openGraph: {
-    title: "Blog Droit du Travail & RSE | Loubna Abouz Manta",
-    description:
-      "Actualités juridiques en droit du travail, ressources humaines et obligations RSE pour salariés et employeurs.",
+    title: "Actualités & Blog Droit du Travail RSE | Loubna Abouz Manta",
+    description: "Découvrez nos articles sur la santé sécurité au travail, la prévention des risques, les accidents du travail, les maladies professionnelles et le DUERP.",
+    url: "https://juriste-droit-du-travail.com/blog",
+    siteName: "Loubna Abouz Manta - Juriste en Droit du Travail",
+    locale: "fr_FR",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Actualités & Blog Droit du Travail RSE | Loubna Abouz Manta",
+    description: "Découvrez nos articles sur la santé sécurité au travail, la prévention des risques, les accidents du travail, les maladies professionnelles et le DUERP.",
   },
 };
 
@@ -101,6 +111,30 @@ export default function BlogPage() {
           </Link>
         </div>
       </section>
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Accueil",
+                "item": "https://juriste-droit-du-travail.com"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Blog",
+                "item": "https://juriste-droit-du-travail.com/blog"
+              }
+            ]
+          })
+        }}
+      />
     </>
   );
 }

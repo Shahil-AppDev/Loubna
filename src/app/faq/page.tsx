@@ -9,13 +9,23 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "FAQ — Loubna Abouz Manta, Juriste en Droit du Travail",
-  description:
-    "Questions fréquentes sur mon activité : accident du travail, maladie professionnelle, DUERP, prévention des risques, licenciement et plus.",
+  title: "FAQ Droit du Travail & Santé Sécurité | Loubna Abouz Manta",
+  description: "Réponses à vos questions fréquentes sur le droit du travail : DUERP, accident du travail, maladie professionnelle, RPS, rupture conventionnelle et droit suisse.",
+  alternates: {
+    canonical: "https://juriste-droit-du-travail.com/faq",
+  },
   openGraph: {
-    title: `FAQ – ${SITE_CONFIG.name}`,
-    description:
-      "Questions fréquentes en droit du travail et prévention des risques professionnels.",
+    title: "FAQ Droit du Travail & Santé Sécurité | Loubna Abouz Manta",
+    description: "Réponses à vos questions fréquentes sur le droit du travail : DUERP, accident du travail, maladie professionnelle, RPS, rupture conventionnelle et droit suisse.",
+    url: "https://juriste-droit-du-travail.com/faq",
+    siteName: "Loubna Abouz Manta - Juriste en Droit du Travail",
+    locale: "fr_FR",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "FAQ Droit du Travail & Santé Sécurité | Loubna Abouz Manta",
+    description: "Réponses à vos questions fréquentes sur le droit du travail : DUERP, accident du travail, maladie professionnelle, RPS, rupture conventionnelle et droit suisse.",
   },
 };
 
@@ -121,6 +131,30 @@ export default function FaqPage() {
               },
             })),
           }),
+        }}
+      />
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Accueil",
+                "item": "https://juriste-droit-du-travail.com"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "FAQ",
+                "item": "https://juriste-droit-du-travail.com/faq"
+              }
+            ]
+          })
         }}
       />
     </>

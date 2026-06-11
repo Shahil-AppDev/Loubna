@@ -4,13 +4,23 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Interventions — Loubna Abouz Manta, Juriste en Droit du Travail",
-  description:
-    "Découvrez mes domaines d'intervention : analyse de situation professionnelle, DUERP, prévention des risques, accompagnement des salariés et des entreprises.",
+  title: "Services & Interventions Juridiques | Loubna Abouz Manta",
+  description: "Accompagnement en droit du travail pour salariés et employeurs : rédaction de contrat, sanctions disciplinaires, DUERP, accidents du travail, RPS, rupture conventionnelle.",
+  alternates: {
+    canonical: "https://juriste-droit-du-travail.com/services",
+  },
   openGraph: {
-    title: `Interventions – ${SITE_CONFIG.name}`,
-    description:
-      "Accompagnement en droit du travail et prévention des risques professionnels pour salariés et entreprises.",
+    title: "Services & Interventions Juridiques | Loubna Abouz Manta",
+    description: "Accompagnement en droit du travail pour salariés et employeurs : rédaction de contrat, sanctions disciplinaires, DUERP, accidents du travail, RPS, rupture conventionnelle.",
+    url: "https://juriste-droit-du-travail.com/services",
+    siteName: "Loubna Abouz Manta - Juriste en Droit du Travail",
+    locale: "fr_FR",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Services & Interventions Juridiques | Loubna Abouz Manta",
+    description: "Accompagnement en droit du travail pour salariés et employeurs : rédaction de contrat, sanctions disciplinaires, DUERP, accidents du travail, RPS, rupture conventionnelle.",
   },
 };
 
@@ -127,6 +137,30 @@ export default function ServicesPage() {
           </div>
         </div>
       </section>
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Accueil",
+                "item": "https://juriste-droit-du-travail.com"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Interventions",
+                "item": "https://juriste-droit-du-travail.com/services"
+              }
+            ]
+          })
+        }}
+      />
     </>
   );
 }

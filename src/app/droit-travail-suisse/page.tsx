@@ -2,13 +2,23 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Droit du travail suisse | Accompagnement rédactionnel — Loubna Abouz Manta",
-  description:
-    "Accompagnement dans la rédaction, reformulation et mise en forme de courriers professionnels liés au travail en Suisse, sans conseil juridique suisse.",
+  title: "Droit du Travail Suisse & Rédaction de Courriers | Loubna Abouz Manta",
+  description: "Accompagnement en rédaction de courriers pour le droit du travail en Suisse (demande paiement salaire, réponse avertissement, courriers RH). Service rigoureux et rapide.",
+  alternates: {
+    canonical: "https://juriste-droit-du-travail.com/droit-travail-suisse",
+  },
   openGraph: {
-    title: "Droit du travail suisse — Accompagnement rédactionnel",
-    description:
-      "Accompagnement rédactionnel pour vos courriers liés au travail en Suisse.",
+    title: "Droit du Travail Suisse & Rédaction de Courriers | Loubna Abouz Manta",
+    description: "Accompagnement en rédaction de courriers pour le droit du travail en Suisse (demande paiement salaire, réponse avertissement, courriers RH). Service rigoureux et rapide.",
+    url: "https://juriste-droit-du-travail.com/droit-travail-suisse",
+    siteName: "Loubna Abouz Manta - Juriste en Droit du Travail",
+    locale: "fr_FR",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Droit du Travail Suisse & Rédaction de Courriers | Loubna Abouz Manta",
+    description: "Accompagnement en rédaction de courriers pour le droit du travail en Suisse (demande paiement salaire, réponse avertissement, courriers RH). Service rigoureux et rapide.",
   },
 };
 
@@ -292,6 +302,30 @@ Je vous accompagne dans la préparation, la reformulation et la mise en forme de
           </div>
         </div>
       </section>
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Accueil",
+                "item": "https://juriste-droit-du-travail.com"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Suisse",
+                "item": "https://juriste-droit-du-travail.com/droit-travail-suisse"
+              }
+            ]
+          })
+        }}
+      />
     </>
   );
 }

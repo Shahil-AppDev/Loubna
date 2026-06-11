@@ -4,11 +4,23 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Loubna Abouz Manta — Juriste en Droit du Travail · Prévention des Risques",
-  description: SITE_CONFIG.description,
+  title: "Juriste Droit du Travail & Prévention Risques | Loubna Abouz Manta",
+  description: "Juriste spécialisée en droit du travail et prévention des risques professionnels. Accompagnement sur le DUERP, les accidents du travail, maladies professionnelles et RPS.",
+  alternates: {
+    canonical: "https://juriste-droit-du-travail.com",
+  },
   openGraph: {
-    title: "Loubna Abouz Manta — Juriste en Droit du Travail · Prévention des Risques",
-    description: SITE_CONFIG.description,
+    title: "Juriste Droit du Travail & Prévention Risques | Loubna Abouz Manta",
+    description: "Juriste spécialisée en droit du travail et prévention des risques professionnels. Accompagnement sur le DUERP, les accidents du travail, maladies professionnelles et RPS.",
+    url: "https://juriste-droit-du-travail.com",
+    siteName: "Loubna Abouz Manta - Juriste en Droit du Travail",
+    locale: "fr_FR",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Juriste Droit du Travail & Prévention Risques | Loubna Abouz Manta",
+    description: "Juriste spécialisée en droit du travail et prévention des risques professionnels. Accompagnement sur le DUERP, les accidents du travail, maladies professionnelles et RPS.",
   },
 };
 

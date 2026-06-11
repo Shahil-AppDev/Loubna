@@ -5,13 +5,23 @@ import Image from "next/image";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "À propos — Loubna Abouz Manta, Juriste en Droit du Travail",
-  description:
-    "Découvrez mon parcours de juriste en droit du travail et prévention des risques professionnels. Master en droit et management, intervention en amont des procédures.",
+  title: "À propos de Loubna Abouz Manta | Juriste Droit du Travail",
+  description: "Découvrez mon parcours de juriste en droit du travail et ma spécialisation en prévention des risques professionnels, DUERP et risques psychosociaux (RPS).",
+  alternates: {
+    canonical: "https://juriste-droit-du-travail.com/a-propos",
+  },
   openGraph: {
-    title: `À propos – ${SITE_CONFIG.name}`,
-    description:
-      "Parcours et engagement d'une juriste spécialisée en droit du travail et prévention des risques professionnels.",
+    title: "À propos de Loubna Abouz Manta | Juriste Droit du Travail",
+    description: "Découvrez mon parcours de juriste en droit du travail et ma spécialisation en prévention des risques professionnels, DUERP et risques psychosociaux (RPS).",
+    url: "https://juriste-droit-du-travail.com/a-propos",
+    siteName: "Loubna Abouz Manta - Juriste en Droit du Travail",
+    locale: "fr_FR",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "À propos de Loubna Abouz Manta | Juriste Droit du Travail",
+    description: "Découvrez mon parcours de juriste en droit du travail et ma spécialisation en prévention des risques professionnels, DUERP et risques psychosociaux (RPS).",
   },
 };
 
@@ -388,6 +398,30 @@ Sécuriser les premières démarches administratives`}
           </div>
         </div>
       </section>
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Accueil",
+                "item": "https://juriste-droit-du-travail.com"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "À propos",
+                "item": "https://juriste-droit-du-travail.com/a-propos"
+              }
+            ]
+          })
+        }}
+      />
     </>
   );
 }

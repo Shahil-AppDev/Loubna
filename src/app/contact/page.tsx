@@ -4,12 +4,23 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Contact",
-  description:
-    "Contactez-moi pour un accompagnement en droit du travail. Formulaire sécurisé, réponse personnelle sous 48h. Fin de contrat, rupture conventionnelle, harcèlement.",
+  title: "Contact & Rendez-vous Juriste Droit du Travail | Loubna Abouz Manta",
+  description: "Prenez contact pour un accompagnement personnalisé en droit du travail et prévention des risques professionnels. Formulaire sécurisé, réponse sous 48h.",
+  alternates: {
+    canonical: "https://juriste-droit-du-travail.com/contact",
+  },
   openGraph: {
-    title: `Contact – ${SITE_CONFIG.name}`,
-    description: "Prenez contact avec moi, juriste en droit du travail. Réponse sous 48h.",
+    title: "Contact & Rendez-vous Juriste Droit du Travail | Loubna Abouz Manta",
+    description: "Prenez contact pour un accompagnement personnalisé en droit du travail et prévention des risques professionnels. Formulaire sécurisé, réponse sous 48h.",
+    url: "https://juriste-droit-du-travail.com/contact",
+    siteName: "Loubna Abouz Manta - Juriste en Droit du Travail",
+    locale: "fr_FR",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Contact & Rendez-vous Juriste Droit du Travail | Loubna Abouz Manta",
+    description: "Prenez contact pour un accompagnement personnalisé en droit du travail et prévention des risques professionnels. Formulaire sécurisé, réponse sous 48h.",
   },
 };
 
@@ -177,6 +188,30 @@ export default function ContactPage() {
           </div>
         </div>
       </section>
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Accueil",
+                "item": "https://juriste-droit-du-travail.com"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Contact",
+                "item": "https://juriste-droit-du-travail.com/contact"
+              }
+            ]
+          })
+        }}
+      />
     </>
   );
 }

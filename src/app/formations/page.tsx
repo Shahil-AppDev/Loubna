@@ -5,13 +5,23 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Formations — Loubna Abouz Manta, Juriste en Droit du Travail",
-  description:
-    "Formations en droit du travail et prévention des risques professionnels — accidents du travail et pouvoir disciplinaire.",
+  title: "Formations en Droit du Travail & Prévention | Loubna Abouz Manta",
+  description: "Formations professionnelles en droit du travail pour entreprises et RH : prévention des risques, accidents du travail, DUERP, et pouvoir disciplinaire.",
+  alternates: {
+    canonical: "https://juriste-droit-du-travail.com/formations",
+  },
   openGraph: {
-    title: `Formations – ${SITE_CONFIG.name}`,
-    description:
-      "Formations professionnelles en droit du travail et prévention des risques.",
+    title: "Formations en Droit du Travail & Prévention | Loubna Abouz Manta",
+    description: "Formations professionnelles en droit du travail pour entreprises et RH : prévention des risques, accidents du travail, DUERP, et pouvoir disciplinaire.",
+    url: "https://juriste-droit-du-travail.com/formations",
+    siteName: "Loubna Abouz Manta - Juriste en Droit du Travail",
+    locale: "fr_FR",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Formations en Droit du Travail & Prévention | Loubna Abouz Manta",
+    description: "Formations professionnelles en droit du travail pour entreprises et RH : prévention des risques, accidents du travail, DUERP, et pouvoir disciplinaire.",
   },
 };
 
@@ -87,6 +97,30 @@ export default function FormationsPage() {
           </div>
         </div>
       </section>
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Accueil",
+                "item": "https://juriste-droit-du-travail.com"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Formations",
+                "item": "https://juriste-droit-du-travail.com/formations"
+              }
+            ]
+          })
+        }}
+      />
     </>
   );
 }
