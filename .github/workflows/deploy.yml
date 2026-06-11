@@ -75,7 +75,6 @@ jobs:
 
       # ── Build + deploy on the VPS ──────────────────────────────────────────
       - name: Build and deploy on server
-        uses: appleboy/ssh-action@v1.0.3
         env:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           CONTACT_EMAIL_TO: ${{ secrets.CONTACT_EMAIL_TO }}
@@ -84,14 +83,20 @@ jobs:
           SUMUP_MERCHANT_CODE: ${{ secrets.SUMUP_MERCHANT_CODE }}
           SUMUP_WEBHOOK_SECRET: ${{ secrets.SUMUP_WEBHOOK_SECRET }}
           NEXT_PUBLIC_SUMUP_PUBLIC_KEY: ${{ secrets.NEXT_PUBLIC_SUMUP_PUBLIC_KEY }}
-        with:
-          host: ${{ secrets.VPS_HOST }}
-          username: ${{ secrets.VPS_USER }}
-          key: ${{ secrets.VPS_SSH_KEY }}
-          port: ${{ secrets.VPS_PORT }}
-          envs: RESEND_API_KEY,CONTACT_EMAIL_TO,CONTACT_EMAIL_FROM,SUMUP_API_KEY,SUMUP_MERCHANT_CODE,SUMUP_WEBHOOK_SECRET,NEXT_PUBLIC_SUMUP_PUBLIC_KEY
-          command_timeout: "20m"
-          script: |
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.VPS_SSH_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+
+          ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no -p "${{ secrets.VPS_PORT }}" "${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}" \
+            "RESEND_API_KEY='$RESEND_API_KEY' \
+             CONTACT_EMAIL_TO='$CONTACT_EMAIL_TO' \
+             CONTACT_EMAIL_FROM='$CONTACT_EMAIL_FROM' \
+             SUMUP_API_KEY='$SUMUP_API_KEY' \
+             SUMUP_MERCHANT_CODE='$SUMUP_MERCHANT_CODE' \
+             SUMUP_WEBHOOK_SECRET='$SUMUP_WEBHOOK_SECRET' \
+             NEXT_PUBLIC_SUMUP_PUBLIC_KEY='$NEXT_PUBLIC_SUMUP_PUBLIC_KEY' \
+             bash -s" << 'EOF'
             set -eo pipefail
 
             setup_node() {
@@ -200,9 +205,6 @@ jobs:
             echo "✓ Swap effectué"
 
             # ── Restart PM2 (delete + free port + fresh start) ─────────────
-            # pm2 restart reuses the ORIGINAL cwd recorded at first start;
-            # a stale process can also hold port 3000 (EADDRINUSE) and keep
-            # serving the OLD build while the new one crash-loops.
             echo "=== [5/5] Restart PM2 ==="
             setup_node
             cd "$DEPLOY_PATH/current"
@@ -211,7 +213,6 @@ jobs:
             pm2_cmd list || true
 
             pm2_cmd delete "$APP_NAME" 2>/dev/null || true
-            # Kill anything still holding the port (old orphaned process)
             fuser -k ${PORT}/tcp 2>/dev/null || true
             sleep 2
 
@@ -248,8 +249,6 @@ jobs:
               exit 1
             fi
 
-            # Strict check: the served HTML must reference THIS build's ID,
-            # otherwise an old process/cache is still serving the old build.
             BUILD_ID=$(cat "$DEPLOY_PATH/current/.next/BUILD_ID")
             echo "BUILD_ID attendu : $BUILD_ID"
             if curl -s "http://127.0.0.1:$PORT" | grep -q "$BUILD_ID"; then
@@ -264,6 +263,9 @@ jobs:
               exit 1
             fi
             echo "✅ Déploiement terminé"
+          EOF
+
+          rm -f ~/.ssh/deploy_key
 
       # ── Public HTTPS health check ──────────────────────────────────────────
       - name: Health check (public HTTPS)
