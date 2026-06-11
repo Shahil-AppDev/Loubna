@@ -220,19 +220,46 @@ jobs:
             pm2_cmd list || true
 
             pm2_cmd delete "$APP_NAME" 2>/dev/null || true
+            # Purge le dump pm2 pour qu'une résurrection ne ramène pas l'ancienne app
+            pm2_cmd save --force 2>/dev/null || true
 
-            # Libère le port : fuser si dispo, sinon ss + kill, jusqu'à libération
-            for i in $(seq 1 15); do
+            # Libère le port : kill du listener ET de son superviseur (un parent
+            # type pm2/npm relance le process en boucle sinon — cause EADDRINUSE)
+            PORT_FREE=0
+            for i in $(seq 1 12); do
               PIDS=$(ss -tlnp "sport = :$PORT" 2>/dev/null | grep -oP 'pid=\K[0-9]+' | sort -u || true)
               if [ -z "$PIDS" ]; then
                 echo "✓ Port $PORT libre"
+                PORT_FREE=1
                 break
               fi
-              echo "  Port $PORT occupé par PID(s) $PIDS — kill (tentative $i)"
-              fuser -k ${PORT}/tcp 2>/dev/null || true
-              kill -9 $PIDS 2>/dev/null || true
+              echo "— Port $PORT occupé (tentative $i) :"
+              for PID in $PIDS; do
+                ps -o pid=,ppid=,user=,cmd= -p "$PID" 2>/dev/null || true
+                PPID_=$(ps -o ppid= -p "$PID" 2>/dev/null | tr -d ' ' || true)
+                if [ -n "$PPID_" ] && [ "$PPID_" != "1" ] && [ "$PPID_" != "0" ]; then
+                  echo "  parent :"
+                  ps -o pid=,ppid=,user=,cmd= -p "$PPID_" 2>/dev/null || true
+                  kill -9 "$PPID_" 2>/dev/null || true
+                fi
+                kill -9 "$PID" 2>/dev/null || true
+              done
+              # Au bout de 6 essais : tue tous les démons PM2 (un autre démon résurrecte l'app)
+              if [ "$i" -ge 6 ]; then
+                echo "  ⚠ Fallback : pkill des démons PM2 parasites"
+                pkill -9 -f 'PM2 v' 2>/dev/null || true
+                pkill -9 -f 'pm2.*God Daemon' 2>/dev/null || true
+              fi
               sleep 2
             done
+
+            if [ "$PORT_FREE" -ne 1 ]; then
+              echo "❌ Impossible de libérer le port $PORT"
+              ss -tlnp "sport = :$PORT" 2>/dev/null || true
+              ps aux | grep -Ei 'pm2|next|node' | grep -v grep || true
+              systemctl list-units --type=service --state=running 2>/dev/null | grep -Ei 'pm2|node|next|loubna' || true
+              exit 1
+            fi
 
             PORT=$PORT pm2_cmd start npm --name "$APP_NAME" -- start
             pm2_cmd save
