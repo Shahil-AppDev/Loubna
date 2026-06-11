@@ -30,7 +30,10 @@ jobs:
       - name: Run linter
         run: npm run lint
 
-      - name: Build Next.js (CI gate)
+      # ── CI gate only: catches syntax/type errors before we touch the VPS ──
+      # The build output is NOT transferred; the server builds its own copy so
+      # that native modules (bcrypt, etc.) are compiled for the VPS OS/glibc.
+      - name: Build Next.js (CI gate — not deployed)
         run: npm run build
         env:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
@@ -41,31 +44,11 @@ jobs:
           SUMUP_WEBHOOK_SECRET: ${{ secrets.SUMUP_WEBHOOK_SECRET }}
           NEXT_PUBLIC_SUMUP_PUBLIC_KEY: ${{ secrets.NEXT_PUBLIC_SUMUP_PUBLIC_KEY }}
 
-      - name: Write .env.local from secrets
-        env:
-          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
-          CONTACT_EMAIL_TO: ${{ secrets.CONTACT_EMAIL_TO }}
-          CONTACT_EMAIL_FROM: ${{ secrets.CONTACT_EMAIL_FROM }}
-          SUMUP_API_KEY: ${{ secrets.SUMUP_API_KEY }}
-          SUMUP_MERCHANT_CODE: ${{ secrets.SUMUP_MERCHANT_CODE }}
-          SUMUP_WEBHOOK_SECRET: ${{ secrets.SUMUP_WEBHOOK_SECRET }}
-          NEXT_PUBLIC_SUMUP_PUBLIC_KEY: ${{ secrets.NEXT_PUBLIC_SUMUP_PUBLIC_KEY }}
-        run: |
-          cat > .env.local << 'ENVEOF'
-          ENVEOF
-          [ -n "$RESEND_API_KEY" ] && printf 'RESEND_API_KEY=%s\n' "$RESEND_API_KEY" >> .env.local || echo "⚠ RESEND_API_KEY not set"
-          [ -n "$CONTACT_EMAIL_TO" ] && printf 'CONTACT_EMAIL_TO=%s\n' "$CONTACT_EMAIL_TO" >> .env.local
-          [ -n "$CONTACT_EMAIL_FROM" ] && printf 'CONTACT_EMAIL_FROM=%s\n' "$CONTACT_EMAIL_FROM" >> .env.local
-          [ -n "$SUMUP_API_KEY" ] && printf 'SUMUP_API_KEY=%s\n' "$SUMUP_API_KEY" >> .env.local || echo "⚠ SUMUP_API_KEY not set"
-          [ -n "$SUMUP_MERCHANT_CODE" ] && printf 'SUMUP_MERCHANT_CODE=%s\n' "$SUMUP_MERCHANT_CODE" >> .env.local
-          [ -n "$SUMUP_WEBHOOK_SECRET" ] && printf 'SUMUP_WEBHOOK_SECRET=%s\n' "$SUMUP_WEBHOOK_SECRET" >> .env.local
-          printf 'SUMUP_BASE_URL=https://api.sumup.com\n' >> .env.local
-          printf 'SUMUP_CURRENCY=EUR\n' >> .env.local
-          printf 'NEXT_PUBLIC_PAYMENT_PROVIDER=sumup\n' >> .env.local
-          [ -n "$NEXT_PUBLIC_SUMUP_PUBLIC_KEY" ] && printf 'NEXT_PUBLIC_SUMUP_PUBLIC_KEY=%s\n' "$NEXT_PUBLIC_SUMUP_PUBLIC_KEY" >> .env.local
-          echo "✓ .env.local written ($(wc -l < .env.local) lines)"
-
-      - name: Transfer build artifact to VPS
+      # ── Transfer source ONLY (no node_modules, no .next) ──────────────────
+      # Server runs `npm ci` + `npm run build` so native modules are compiled
+      # against the VPS glibc — avoids 400 errors on _next/static caused by
+      # a crashed Next.js process due to incompatible pre-built binaries.
+      - name: Transfer source to VPS
         run: |
           sudo apt-get update -qq && sudo apt-get install -y -qq rsync
 
@@ -82,20 +65,32 @@ jobs:
           rsync -az --delete \
             -e "ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no -p $PORT" \
             --exclude '.git' \
+            --exclude 'node_modules' \
+            --exclude '.next' \
             --exclude '*.log' \
             . \
             "$REMOTE:$TEMP/"
 
           rm -f ~/.ssh/deploy_key
 
-      - name: Swap and restart on VPS
+      # ── Build + deploy on the VPS ──────────────────────────────────────────
+      - name: Build and deploy on server
         uses: appleboy/ssh-action@v1.0.3
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          CONTACT_EMAIL_TO: ${{ secrets.CONTACT_EMAIL_TO }}
+          CONTACT_EMAIL_FROM: ${{ secrets.CONTACT_EMAIL_FROM }}
+          SUMUP_API_KEY: ${{ secrets.SUMUP_API_KEY }}
+          SUMUP_MERCHANT_CODE: ${{ secrets.SUMUP_MERCHANT_CODE }}
+          SUMUP_WEBHOOK_SECRET: ${{ secrets.SUMUP_WEBHOOK_SECRET }}
+          NEXT_PUBLIC_SUMUP_PUBLIC_KEY: ${{ secrets.NEXT_PUBLIC_SUMUP_PUBLIC_KEY }}
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_SSH_KEY }}
           port: ${{ secrets.VPS_PORT }}
-          command_timeout: "10m"
+          envs: RESEND_API_KEY,CONTACT_EMAIL_TO,CONTACT_EMAIL_FROM,SUMUP_API_KEY,SUMUP_MERCHANT_CODE,SUMUP_WEBHOOK_SECRET,NEXT_PUBLIC_SUMUP_PUBLIC_KEY
+          command_timeout: "20m"
           script: |
             set -eo pipefail
 
@@ -106,17 +101,16 @@ jobs:
               fi
               export NVM_DIR="${NVM_DIR:-$HOME/.nvm}"
               if [ -s "$NVM_DIR/nvm.sh" ]; then
-                # shellcheck disable=SC1090
                 . "$NVM_DIR/nvm.sh"
               fi
               if command -v node >/dev/null 2>&1; then
-                echo "✓ Node $(node -v) — npm $(npm -v)"
+                echo "✓ Node $(node -v) via NVM — npm $(npm -v)"
                 return 0
               fi
               NODE_BIN=$(find "$HOME" /usr/local /opt -path '*/bin/node' -type f 2>/dev/null | head -1 || true)
               if [ -n "$NODE_BIN" ] && [ -x "$NODE_BIN" ]; then
                 export PATH="$(dirname "$NODE_BIN"):$PATH"
-                echo "✓ Node $(node -v) — npm $(npm -v)"
+                echo "✓ Node $(node -v) (found) — npm $(npm -v)"
                 return 0
               fi
               if bash -lc 'command -v node' >/dev/null 2>&1; then
@@ -125,17 +119,11 @@ jobs:
                 echo "✓ Node $(node -v) (login shell) — npm $(npm -v)"
                 return 0
               fi
-              if command -v sudo >/dev/null 2>&1; then
-                echo "⚠ Node absent — tentative installation Node.js 20 (nodesource)..."
-                curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
-                sudo apt-get install -y nodejs
-              fi
-              if command -v node >/dev/null 2>&1; then
-                echo "✓ Node $(node -v) installé — npm $(npm -v)"
-                return 0
-              fi
-              echo "❌ Node.js introuvable sur le serveur (PATH=$PATH)"
-              exit 1
+              echo "⚠ Node absent — installation via nodesource..."
+              curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
+              apt-get install -y nodejs
+              command -v node >/dev/null 2>&1 || { echo "❌ Échec installation Node"; exit 1; }
+              echo "✓ Node $(node -v) installé — npm $(npm -v)"
             }
 
             pm2_cmd() {
@@ -153,17 +141,63 @@ jobs:
             APP_NAME="nextjs-loubna"
             PORT=3000
 
-            echo "=== Free disk: remove all old backups and current ==="
+            # ── Inject .env.local ──────────────────────────────────────────
+            echo "=== [1/5] Injection .env.local ==="
+            if [ -f "$DEPLOY_PATH/current/.env.local" ]; then
+              cp "$DEPLOY_PATH/current/.env.local" "$TEMP/.env.local"
+              echo "✓ .env.local copié depuis current"
+            else
+              touch "$TEMP/.env.local"
+              echo "⚠ Aucun .env.local dans current — fichier vide créé"
+            fi
+
+            ENV_FILE="$TEMP/.env.local"
+
+            if [ -n "${RESEND_API_KEY:-}" ]; then
+              grep -v -E '^(RESEND_API_KEY|CONTACT_EMAIL_TO|CONTACT_EMAIL_FROM)=' "$ENV_FILE" > "${ENV_FILE}.tmp" || true
+              mv "${ENV_FILE}.tmp" "$ENV_FILE"
+              printf 'RESEND_API_KEY=%s\n' "$RESEND_API_KEY" >> "$ENV_FILE"
+              printf 'CONTACT_EMAIL_TO=%s\n' "${CONTACT_EMAIL_TO:-louamjuristeconseil@gmail.com}" >> "$ENV_FILE"
+              printf 'CONTACT_EMAIL_FROM=%s\n' "${CONTACT_EMAIL_FROM:-Loubna Abouz Manta <contact@juriste-droit-du-travail.com>}" >> "$ENV_FILE"
+              echo "✓ Variables Resend écrites"
+            else
+              echo "⚠ RESEND_API_KEY absent"
+            fi
+
+            if [ -n "${SUMUP_API_KEY:-}" ]; then
+              grep -v -E '^(SUMUP_API_KEY|SUMUP_MERCHANT_CODE|SUMUP_WEBHOOK_SECRET|NEXT_PUBLIC_PAYMENT_PROVIDER|NEXT_PUBLIC_SUMUP_PUBLIC_KEY)=' "$ENV_FILE" > "${ENV_FILE}.tmp" || true
+              mv "${ENV_FILE}.tmp" "$ENV_FILE"
+              printf 'SUMUP_API_KEY=%s\n' "$SUMUP_API_KEY" >> "$ENV_FILE"
+              printf 'SUMUP_MERCHANT_CODE=%s\n' "${SUMUP_MERCHANT_CODE:-}" >> "$ENV_FILE"
+              printf 'SUMUP_WEBHOOK_SECRET=%s\n' "${SUMUP_WEBHOOK_SECRET:-}" >> "$ENV_FILE"
+              printf 'SUMUP_BASE_URL=https://api.sumup.com\n' >> "$ENV_FILE"
+              printf 'SUMUP_CURRENCY=EUR\n' >> "$ENV_FILE"
+              printf 'NEXT_PUBLIC_PAYMENT_PROVIDER=sumup\n' >> "$ENV_FILE"
+              printf 'NEXT_PUBLIC_SUMUP_PUBLIC_KEY=%s\n' "${NEXT_PUBLIC_SUMUP_PUBLIC_KEY:-}" >> "$ENV_FILE"
+              echo "✓ Variables SumUp écrites"
+            else
+              echo "⚠ SUMUP_API_KEY absent"
+            fi
+
+            # ── Install deps on server (native modules compiled for VPS) ──
+            echo "=== [2/5] npm ci sur le serveur ==="
+            cd "$TEMP"
+            npm ci 2>&1 | tail -3
+
+            # ── Build on server ────────────────────────────────────────────
+            echo "=== [3/5] npm run build sur le serveur ==="
+            npm run build 2>&1 | tail -15
+
+            # ── Atomic swap (keep no backup to save disk) ──────────────────
+            echo "=== [4/5] Swap — suppression current + installation ==="
             mkdir -p "$DEPLOY_PATH"
             cd "$DEPLOY_PATH"
-            for old in backup-* current; do
-              [ -e "$old" ] && { echo "  Removing $old ..."; rm -rf "$old"; } || true
-            done
-
-            echo "=== Install new build ==="
+            rm -rf current
             mv "$TEMP" "$DEPLOY_PATH/current"
+            echo "✓ Swap effectué"
 
-            echo "=== Restart PM2 ==="
+            # ── Restart PM2 ────────────────────────────────────────────────
+            echo "=== [5/5] Restart PM2 ==="
             setup_node
             cd "$DEPLOY_PATH/current"
             if pm2_cmd list 2>/dev/null | grep -q "$APP_NAME"; then
@@ -173,43 +207,41 @@ jobs:
             fi
             pm2_cmd save
 
+            # ── Reload nginx (flush stale static-file config) ──────────────
+            echo "=== Reload nginx ==="
+            nginx -t 2>/dev/null && { systemctl reload nginx 2>/dev/null || service nginx reload 2>/dev/null || true; echo "✓ nginx rechargé"; } || echo "⚠ nginx -t a échoué"
+
             sleep 8
 
-            echo "=== Validation (localhost) ==="
+            # ── Local health check ─────────────────────────────────────────
+            echo "=== Validation localhost ==="
             HTTP=$(curl -so /dev/null -w "%{http_code}" "http://127.0.0.1:$PORT" || echo "000")
             if [ "$HTTP" = "200" ] || [ "$HTTP" = "307" ] || [ "$HTTP" = "301" ]; then
-              echo "✅ App responds HTTP $HTTP on port $PORT"
+              echo "✅ App répond HTTP $HTTP sur le port $PORT"
             else
-              echo "❌ App returned HTTP $HTTP — check pm2 logs $APP_NAME"
-              pm2_cmd logs "$APP_NAME" --lines 40 --nostream || true
+              echo "❌ App a retourné HTTP $HTTP"
+              pm2_cmd logs "$APP_NAME" --lines 50 --nostream || true
               exit 1
             fi
+            echo "✅ Déploiement terminé"
 
-            echo "✅ Deployment complete"
-
+      # ── Public HTTPS health check ──────────────────────────────────────────
       - name: Health check (public HTTPS)
         run: |
           set -euo pipefail
-          URLS=(
-            "https://juriste-droit-du-travail.com"
-            "https://www.juriste-droit-du-travail.com"
-          )
-          for URL in "${URLS[@]}"; do
-            echo "Checking $URL ..."
+          for URL in "https://juriste-droit-du-travail.com" "https://www.juriste-droit-du-travail.com"; do
+            echo "Vérification $URL ..."
             OK=0
             for attempt in 1 2 3 4 5 6; do
               CODE=$(curl -sS -o /dev/null -w "%{http_code}" -L --max-time 30 "$URL" || echo "000")
-              echo "  attempt $attempt: HTTP $CODE"
-              if [ "$CODE" = "200" ]; then
-                OK=1
-                break
-              fi
+              echo "  tentative $attempt : HTTP $CODE"
+              if [ "$CODE" = "200" ]; then OK=1; break; fi
               sleep 10
             done
             if [ "$OK" -ne 1 ]; then
-              echo "❌ Health check failed for $URL"
+              echo "❌ Health check échoué pour $URL"
               curl -sSI --max-time 30 "$URL" || true
               exit 1
             fi
-            echo "✅ $URL is live (HTTP 200)"
+            echo "✅ $URL est en ligne (HTTP 200)"
           done
