@@ -199,15 +199,16 @@ jobs:
             mv "$TEMP" "$DEPLOY_PATH/current"
             echo "✓ Swap effectué"
 
-            # ── Restart PM2 ────────────────────────────────────────────────
+            # ── Restart PM2 (delete + fresh start) ─────────────────────────
+            # pm2 restart reuses the ORIGINAL cwd recorded at first start;
+            # after a swap that cwd may point to a deleted/stale directory,
+            # causing 400s on _next/static. Delete + start guarantees the
+            # process runs from the new "current".
             echo "=== [5/5] Restart PM2 ==="
             setup_node
             cd "$DEPLOY_PATH/current"
-            if pm2_cmd list 2>/dev/null | grep -q "$APP_NAME"; then
-              pm2_cmd restart "$APP_NAME" --update-env
-            else
-              PORT=$PORT pm2_cmd start npm --name "$APP_NAME" -- start
-            fi
+            pm2_cmd delete "$APP_NAME" 2>/dev/null || true
+            PORT=$PORT pm2_cmd start npm --name "$APP_NAME" -- start
             pm2_cmd save
 
             # ── Reload nginx (flush stale static-file config) ──────────────
