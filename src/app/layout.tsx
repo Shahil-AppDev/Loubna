@@ -6,6 +6,7 @@ import Script from "next/script";
 import "./globals.css";
 
 const GTM_ID = "GTM-WCG3KTXK";
+const GA_ID = "G-716SGS1GN5";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -94,6 +95,18 @@ export default function RootLayout({
   return (
     <html lang="fr" className={`${playfair.variable} ${dmSans.variable}`} suppressHydrationWarning>
       <head>
+        {/* Google tag (gtag.js) — GA4 */}
+        <Script
+          id="gtag-src"
+          src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
+          strategy="afterInteractive"
+        />
+        <Script id="gtag-init" strategy="afterInteractive">
+          {`window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', '${GA_ID}');`}
+        </Script>
         <Script id="gtm" strategy="afterInteractive">
           {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
