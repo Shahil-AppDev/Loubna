@@ -1,3 +1,4 @@
+import PricingDisclaimer from "@/components/ui/PricingDisclaimer";
 import type { FormationData, FormationSection } from "@/content/client-formations-data";
 import Link from "next/link";
 import type { ComponentType } from "react";
@@ -141,6 +142,10 @@ export default function FormationBlock({ data, index }: { data: FormationData; i
                 );
               })}
             </div>
+          )}
+
+          {data.productMeta?.tarif && (
+            <PricingDisclaimer className="w-full mb-8" />
           )}
 
           <div className="w-full pt-2 border-t border-encre-100">

@@ -1,3 +1,4 @@
+import PricingDisclaimer from "@/components/ui/PricingDisclaimer";
 import type { Metadata } from "next";
 import Link from "next/link";
 
@@ -272,13 +273,7 @@ Je vous accompagne dans la préparation, la reformulation et la mise en forme de
               ))}
             </div>
 
-            {/* Note tarifs */}
-            <div className="mt-10 p-6 bg-encre-50 border border-encre-100 rounded-sm">
-              <h4 className="font-serif text-[1.05rem] text-encre-800 mb-3">Important</h4>
-              <p className="text-[0.92rem] text-encre-700 leading-[1.8]">
-                Chaque situation étant différente, un premier échange permet d'évaluer vos besoins et de vous orienter vers la formule la plus adaptée.
-              </p>
-            </div>
+            <PricingDisclaimer className="mt-10" />
           </div>
         </div>
       </section>

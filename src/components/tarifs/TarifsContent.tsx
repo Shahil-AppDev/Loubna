@@ -1,5 +1,6 @@
 "use client";
 
+import PricingDisclaimer from "@/components/ui/PricingDisclaimer";
 import Link from "next/link";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
@@ -393,6 +394,8 @@ export default function TarifsContent() {
               </div>
             ))}
           </div>
+
+          <PricingDisclaimer className="mt-14" />
 
           {/* Modalités */}
           <div className="mt-16 bg-encre-950 rounded-sm p-8 grid grid-cols-1 md:grid-cols-2 gap-8">

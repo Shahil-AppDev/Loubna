@@ -1,6 +1,7 @@
 'use client';
 
 import AttachmentField from '@/components/forms/AttachmentField';
+import PricingDisclaimer from '@/components/ui/PricingDisclaimer';
 import { validateContactFiles } from '@/lib/contact/attachments';
 import { formatFromPrice } from '@/lib/utils';
 import { ServiceRdv } from '@/types/database';
@@ -277,6 +278,7 @@ function RendezVousForm() {
                     )
                   ))}
                 </div>
+                <PricingDisclaimer className="mt-6" />
               </div>
             )}
 

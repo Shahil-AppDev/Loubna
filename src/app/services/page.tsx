@@ -1,4 +1,5 @@
 import { SERVICE_NOTE_IMPORTANTE } from "@/lib/client-service-note";
+import PricingDisclaimer from "@/components/ui/PricingDisclaimer";
 import { SERVICES, SITE_CONFIG } from "@/lib/constants";
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -115,6 +116,12 @@ export default function ServicesPage() {
               {SERVICE_NOTE_IMPORTANTE[6]}
             </div>
           </div>
+        </div>
+      </section>
+
+      <section className="bg-encre-50 border-t border-encre-200">
+        <div className="container-main py-10">
+          <PricingDisclaimer className="max-w-2xl mx-auto" />
         </div>
       </section>
 

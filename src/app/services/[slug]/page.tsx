@@ -1,3 +1,4 @@
+import PricingDisclaimer from "@/components/ui/PricingDisclaimer";
 import { SITE_CONFIG } from "@/lib/constants";
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -518,7 +519,9 @@ export default function ServicePage({ params }: Props) {
             )}
 
             {/* CTA block */}
-            <div className="mt-14 p-8 md:p-10 bg-encre-950 rounded-sm">
+            <PricingDisclaimer className="mt-14" />
+
+            <div className="mt-8 p-8 md:p-10 bg-encre-950 rounded-sm">
               <p className="text-[0.68rem] font-bold tracking-[0.18em] uppercase text-or-500 mb-4">
                 Prendre contact
               </p>
