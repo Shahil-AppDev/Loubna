@@ -1,0 +1,274 @@
+name: Deploy Production (Hetzner CPX52)
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-loubna-production
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+env:
+  NODE_VERSION: '20'
+  RELEASE_ID: ${{ github.sha }}-${{ github.run_number }}
+
+jobs:
+  ci:
+    name: CI — lint and build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Build
+        run: npm run build
+        env:
+          NEXT_PUBLIC_SITE_URL: https://juriste-droit-du-travail.com
+          NEXT_PUBLIC_PAYMENT_PROVIDER: sumup
+          NEXT_PUBLIC_SUMUP_PUBLIC_KEY: ci-build-placeholder
+          POSTGRES_HOST: 127.0.0.1
+          POSTGRES_PORT: '5432'
+          POSTGRES_DATABASE: loubna_ci
+          POSTGRES_USER: ci
+          POSTGRES_PASSWORD: ci
+          SESSION_SECRET: ci-build-placeholder-secret-minimum-32-chars
+          RESEND_API_KEY: re_ci_build_placeholder
+          CONTACT_EMAIL_TO: ci@example.com
+          CONTACT_EMAIL_FROM: CI <ci@example.com>
+          SUMUP_API_KEY: sup_sk_ci_build_placeholder
+          SUMUP_MERCHANT_CODE: M00000000
+
+      - name: Package release artifact
+        run: |
+          PKG_DIR="$(mktemp -d)"
+          rsync -a \
+            --exclude=node_modules \
+            --exclude=.git \
+            --exclude=.env \
+            --exclude=.env.local \
+            --exclude=.next/cache \
+            ./ "${PKG_DIR}/"
+          tar -czf release.tar.gz -C "${PKG_DIR}" .
+          rm -rf "${PKG_DIR}"
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: loubna-release
+          path: release.tar.gz
+          retention-days: 3
+
+  deploy:
+    name: Deploy — isolated production release
+    needs: ci
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: loubna-release
+
+      - name: Configure SSH
+        run: |
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          printf '%s\n' "${{ secrets.HETZNER_DEPLOY_SSH_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          printf '%s\n' "${{ secrets.HETZNER_KNOWN_HOSTS }}" > ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/known_hosts
+
+      - name: Verify SSH
+        run: |
+          ssh -p "${{ secrets.HETZNER_DEPLOY_PORT }}" \
+            "${{ secrets.HETZNER_DEPLOY_USER }}@${{ secrets.HETZNER_DEPLOY_HOST }}" \
+            "echo LOUBNA_SSH_OK"
+
+      - name: Merge runtime secrets into shared env
+        env:
+          DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          CONTACT_EMAIL_TO: ${{ secrets.CONTACT_EMAIL_TO }}
+          CONTACT_EMAIL_FROM: ${{ secrets.CONTACT_EMAIL_FROM }}
+          SUMUP_API_KEY: ${{ secrets.SUMUP_API_KEY }}
+          SUMUP_MERCHANT_CODE: ${{ secrets.SUMUP_MERCHANT_CODE }}
+          SUMUP_WEBHOOK_SECRET: ${{ secrets.SUMUP_WEBHOOK_SECRET }}
+          NEXT_PUBLIC_SUMUP_PUBLIC_KEY: ${{ secrets.NEXT_PUBLIC_SUMUP_PUBLIC_KEY }}
+        run: |
+          ssh -p "${{ secrets.HETZNER_DEPLOY_PORT }}" \
+            "${{ secrets.HETZNER_DEPLOY_USER }}@${{ secrets.HETZNER_DEPLOY_HOST }}" \
+            "DEPLOY_PATH='${DEPLOY_PATH}' \
+             RESEND_API_KEY='${RESEND_API_KEY}' \
+             CONTACT_EMAIL_TO='${CONTACT_EMAIL_TO}' \
+             CONTACT_EMAIL_FROM='${CONTACT_EMAIL_FROM}' \
+             SUMUP_API_KEY='${SUMUP_API_KEY}' \
+             SUMUP_MERCHANT_CODE='${SUMUP_MERCHANT_CODE}' \
+             SUMUP_WEBHOOK_SECRET='${SUMUP_WEBHOOK_SECRET}' \
+             NEXT_PUBLIC_SUMUP_PUBLIC_KEY='${NEXT_PUBLIC_SUMUP_PUBLIC_KEY}' \
+             bash -s" <<'REMOTE'
+          set -euo pipefail
+          SHARED="${DEPLOY_PATH}/shared/.env.local"
+          test -f "${SHARED}" || { echo "DEPLOYMENT BLOCKED — SHARED ENV MISSING"; exit 1; }
+
+          merge_kv() {
+            local key="$1" val="$2"
+            [ -n "${val}" ] || return 0
+            grep -v "^${key}=" "${SHARED}" > "${SHARED}.tmp" || true
+            mv "${SHARED}.tmp" "${SHARED}"
+            printf '%s=%s\n' "${key}" "${val}" >> "${SHARED}"
+          }
+
+          merge_kv RESEND_API_KEY "${RESEND_API_KEY}"
+          merge_kv CONTACT_EMAIL_TO "${CONTACT_EMAIL_TO:-louamjuristeconseil@gmail.com}"
+          merge_kv CONTACT_EMAIL_FROM "${CONTACT_EMAIL_FROM:-Loubna Abouz Manta <contact@juriste-droit-du-travail.com>}"
+          merge_kv SUMUP_API_KEY "${SUMUP_API_KEY}"
+          merge_kv SUMUP_MERCHANT_CODE "${SUMUP_MERCHANT_CODE}"
+          merge_kv SUMUP_WEBHOOK_SECRET "${SUMUP_WEBHOOK_SECRET}"
+          merge_kv NEXT_PUBLIC_SUMUP_PUBLIC_KEY "${NEXT_PUBLIC_SUMUP_PUBLIC_KEY}"
+          grep -q '^SUMUP_BASE_URL=' "${SHARED}" || echo 'SUMUP_BASE_URL=https://api.sumup.com' >> "${SHARED}"
+          grep -q '^SUMUP_CURRENCY=' "${SHARED}" || echo 'SUMUP_CURRENCY=EUR' >> "${SHARED}"
+          grep -q '^NEXT_PUBLIC_PAYMENT_PROVIDER=' "${SHARED}" || echo 'NEXT_PUBLIC_PAYMENT_PROVIDER=sumup' >> "${SHARED}"
+          grep -q '^NEXT_PUBLIC_SITE_URL=' "${SHARED}" || echo 'NEXT_PUBLIC_SITE_URL=https://juriste-droit-du-travail.com' >> "${SHARED}"
+          chmod 640 "${SHARED}"
+          echo "RUNTIME_SECRETS_MERGED"
+          REMOTE
+
+      - name: Deploy release
+        env:
+          DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
+          APP_PORT: ${{ secrets.APP_PORT }}
+          PM2_APP_NAME: ${{ secrets.PM2_APP_NAME }}
+          HEALTHCHECK_URL: ${{ secrets.HEALTHCHECK_URL }}
+          RELEASE_ID: ${{ env.RELEASE_ID }}
+        run: |
+          scp -P "${{ secrets.HETZNER_DEPLOY_PORT }}" release.tar.gz \
+            "${{ secrets.HETZNER_DEPLOY_USER }}@${{ secrets.HETZNER_DEPLOY_HOST }}:/tmp/loubna-${RELEASE_ID}.tar.gz"
+
+          ssh -p "${{ secrets.HETZNER_DEPLOY_PORT }}" \
+            "${{ secrets.HETZNER_DEPLOY_USER }}@${{ secrets.HETZNER_DEPLOY_HOST }}" \
+            "DEPLOY_PATH='${DEPLOY_PATH}' APP_PORT='${APP_PORT}' PM2_APP_NAME='${PM2_APP_NAME}' HEALTHCHECK_URL='${HEALTHCHECK_URL}' RELEASE_ID='${RELEASE_ID}' bash -s" <<'REMOTE'
+          set -euo pipefail
+
+          test -n "${DEPLOY_PATH}"
+          test "${DEPLOY_PATH}" = "/var/www/projects/juriste-droit-du-travail"
+          test "${APP_PORT}" = "5901"
+          test "${PM2_APP_NAME}" = "juriste-droit-du-travail-prod"
+          test -f "${DEPLOY_PATH}/shared/.env.local" || { echo "DEPLOYMENT BLOCKED — SHARED ENV MISSING"; exit 1; }
+
+          BACKUP_DIR="${DEPLOY_PATH}/shared/storage/backups"
+          mkdir -p "${BACKUP_DIR}" "${DEPLOY_PATH}/shared/logs"
+
+          set -a && source "${DEPLOY_PATH}/shared/.env.local" && set +a
+          export PGPASSWORD="${POSTGRES_PASSWORD}"
+          if psql -h "${POSTGRES_HOST}" -U "${POSTGRES_USER}" -d "${POSTGRES_DATABASE}" -tAc "SELECT 1" >/dev/null 2>&1; then
+            TABLE_COUNT=$(psql -h "${POSTGRES_HOST}" -U "${POSTGRES_USER}" -d "${POSTGRES_DATABASE}" -tAc \
+              "SELECT COUNT(*) FROM information_schema.tables WHERE table_schema='public' AND table_type='BASE TABLE'")
+            if [ "${TABLE_COUNT}" != "0" ]; then
+              BACKUP_FILE="${BACKUP_DIR}/pre-deploy-${RELEASE_ID}.sql"
+              pg_dump -h "${POSTGRES_HOST}" -U "${POSTGRES_USER}" -d "${POSTGRES_DATABASE}" --no-owner --no-acl -f "${BACKUP_FILE}"
+              sha256sum "${BACKUP_FILE}" > "${BACKUP_FILE}.sha256"
+              echo "PG_BACKUP_OK"
+            else
+              echo "EMPTY_DB — no pre-deploy dump required"
+            fi
+          else
+            echo "DB_NOT_REACHABLE"
+            exit 1
+          fi
+
+          TMP_DIR="${DEPLOY_PATH}/releases/${RELEASE_ID}.tmp"
+          RELEASE_DIR="${DEPLOY_PATH}/releases/${RELEASE_ID}"
+          PREVIOUS_RELEASE="$(readlink -f "${DEPLOY_PATH}/current" 2>/dev/null || true)"
+
+          rm -rf "${TMP_DIR}"
+          mkdir -p "${TMP_DIR}"
+          tar -xzf "/tmp/loubna-${RELEASE_ID}.tar.gz" -C "${TMP_DIR}"
+          rm -f "/tmp/loubna-${RELEASE_ID}.tar.gz"
+
+          ln -sfn "${DEPLOY_PATH}/shared/.env.local" "${TMP_DIR}/.env.local"
+          ln -sfn "${DEPLOY_PATH}/shared/.env.local" "${TMP_DIR}/.env.production.local" 2>/dev/null || true
+
+          cd "${TMP_DIR}"
+          npm ci
+          set -a && source "${DEPLOY_PATH}/shared/.env.local" && set +a
+          if [[ ! -f .next/BUILD_ID ]]; then
+            npm run build
+          fi
+          npm prune --omit=dev
+
+          mv "${TMP_DIR}" "${RELEASE_DIR}"
+          ln -sfn "${RELEASE_DIR}" "${DEPLOY_PATH}/current"
+
+          cd "${DEPLOY_PATH}/current"
+          if pm2 describe "${PM2_APP_NAME}" >/dev/null 2>&1; then
+            pm2 reload ecosystem.production.config.cjs --only "${PM2_APP_NAME}" --update-env
+          else
+            pm2 start ecosystem.production.config.cjs --only "${PM2_APP_NAME}"
+          fi
+          pm2 save
+
+          rollback() {
+            if [[ -n "${PREVIOUS_RELEASE}" && -d "${PREVIOUS_RELEASE}" ]]; then
+              ln -sfn "${PREVIOUS_RELEASE}" "${DEPLOY_PATH}/current"
+              cd "${DEPLOY_PATH}/current"
+              pm2 reload ecosystem.production.config.cjs --only "${PM2_APP_NAME}" --update-env || true
+            else
+              pm2 delete "${PM2_APP_NAME}" 2>/dev/null || true
+              echo "INITIAL DEPLOYMENT FAILED — NO PREVIOUS RELEASE"
+            fi
+          }
+
+          for i in $(seq 1 12); do
+            HTTP=$(curl -so /dev/null -w "%{http_code}" "${HEALTHCHECK_URL}/" || echo "000")
+            if [[ "$HTTP" = "200" || "$HTTP" = "301" || "$HTTP" = "307" ]]; then
+              break
+            fi
+            if [[ "$i" -eq 12 ]]; then
+              rollback
+              exit 1
+            fi
+            sleep 5
+          done
+
+          POST_BACKUP="${BACKUP_DIR}/post-deploy-${RELEASE_ID}.sql"
+          pg_dump -h "${POSTGRES_HOST}" -U "${POSTGRES_USER}" -d "${POSTGRES_DATABASE}" --no-owner --no-acl -f "${POST_BACKUP}"
+          sha256sum "${POST_BACKUP}" > "${POST_BACKUP}.sha256"
+
+          ls -dt "${DEPLOY_PATH}/releases"/* 2>/dev/null | grep -v '\.tmp$' | tail -n +4 | xargs -r rm -rf
+          echo "DEPLOY_OK release=${RELEASE_ID}"
+          REMOTE
+
+      - name: Health check (workflow)
+        run: |
+          ssh -p "${{ secrets.HETZNER_DEPLOY_PORT }}" \
+            "${{ secrets.HETZNER_DEPLOY_USER }}@${{ secrets.HETZNER_DEPLOY_HOST }}" \
+            "curl -fsS --max-time 30 '${{ secrets.HEALTHCHECK_URL }}/' >/dev/null"
+
+      - name: Rollback on failure
+        if: failure()
+        run: |
+          ssh -p "${{ secrets.HETZNER_DEPLOY_PORT }}" \
+            "${{ secrets.HETZNER_DEPLOY_USER }}@${{ secrets.HETZNER_DEPLOY_HOST }}" \
+            "DEPLOY_PATH='${{ secrets.DEPLOY_PATH }}' PM2_APP_NAME='${{ secrets.PM2_APP_NAME }}' bash -s" <<'REMOTE' || true
+          set -euo pipefail
+          DEPLOY_PATH="${DEPLOY_PATH}"
+          PM2_APP_NAME="${PM2_APP_NAME}"
+          PREV=$(ls -dt "${DEPLOY_PATH}/releases"/* 2>/dev/null | grep -v '\.tmp$' | sed -n '2p')
+          if [[ -n "$PREV" ]]; then
+            ln -sfn "$PREV" "${DEPLOY_PATH}/current"
+            cd "${DEPLOY_PATH}/current"
+            pm2 reload ecosystem.production.config.cjs --only "${PM2_APP_NAME}" --update-env || true
+            echo ROLLBACK_OK
+          fi
+          REMOTE
