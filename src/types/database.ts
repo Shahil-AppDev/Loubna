@@ -1,7 +1,14 @@
 // Types TypeScript pour la base de données
 
-export type AppointmentStatus = 'pending' | 'confirmed' | 'paid' | 'cancelled' | 'completed';
-export type PaymentStatus = 'unpaid' | 'paid' | 'refunded';
+export type AppointmentStatus =
+  | 'pending_payment'
+  | 'paid'
+  | 'confirmed'
+  | 'cancelled'
+  | 'expired'
+  | 'failed'
+  | 'completed';
+export type PaymentStatus = 'pending' | 'paid' | 'failed' | 'cancelled' | 'refunded';
 export type PaymentStatusType = 'pending' | 'succeeded' | 'failed' | 'refunded';
 export type PaymentProvider = 'sumup' | 'stripe';
 export type AdminRole = 'admin' | 'super_admin';
@@ -39,6 +46,8 @@ export interface Appointment {
   stripe_session_id: string | null;
   notes: string | null;
   admin_notes: string | null;
+  expires_at: string | null;
+  confirmed_at: string | null;
   created_at: string;
   updated_at: string;
 }

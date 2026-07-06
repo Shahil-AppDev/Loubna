@@ -4,6 +4,7 @@ import {
   mapSumUpStatusToPaymentStatus,
   mapSumUpStatusToAppointmentStatus,
 } from "@/lib/sumup";
+import { sendConfirmedEmail, sendFailedPaymentEmail } from "@/lib/email/send-appointment-emails";
 import { query } from "@/lib/db/postgres";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -54,10 +55,23 @@ export async function GET(request: NextRequest) {
       const transactionId =
         checkout.transactions?.[0]?.transaction_code || null;
 
+      // Récupérer l'état précédent pour idempotence email
+      const prevResult = await query(
+        `SELECT a.status, a.client_name, a.client_email, a.appointment_date,
+                s.name as service_name, s.price_cents
+         FROM appointments a
+         LEFT JOIN services_rdv s ON a.service_id = s.id
+         WHERE ${appointmentId ? 'a.id = $1' : 'a.sumup_checkout_reference = $1'}`,
+        [appointmentId || checkoutReference]
+      );
+      const prev = prevResult.rows[0];
+      const wasConfirmed = prev?.status === 'confirmed' || prev?.status === 'paid';
+
       if (appointmentId) {
         await query(
           `UPDATE appointments
-           SET status = $1, payment_status = $2, sumup_transaction_id = $3
+           SET status = $1, payment_status = $2, sumup_transaction_id = $3,
+               confirmed_at = CASE WHEN $1 = 'confirmed' THEN COALESCE(confirmed_at, NOW()) ELSE confirmed_at END
            WHERE id = $4`,
           [appointmentStatus, paymentStatus, transactionId, appointmentId]
         );
@@ -81,13 +95,59 @@ export async function GET(request: NextRequest) {
       } else if (checkoutReference) {
         await query(
           `UPDATE appointments
-           SET status = $1, payment_status = $2, sumup_transaction_id = $3
+           SET status = $1, payment_status = $2, sumup_transaction_id = $3,
+               confirmed_at = CASE WHEN $1 = 'confirmed' THEN COALESCE(confirmed_at, NOW()) ELSE confirmed_at END
            WHERE sumup_checkout_reference = $4`,
           [appointmentStatus, paymentStatus, transactionId, checkoutReference]
         );
       }
+
+      // Email client — confirmation (idempotent)
+      if (!wasConfirmed && prev) {
+        try {
+          await sendConfirmedEmail({
+            clientName: prev.client_name,
+            clientEmail: prev.client_email,
+            serviceName: prev.service_name || "Prestation",
+            appointmentDate: prev.appointment_date,
+            priceLabel: prev.price_cents
+              ? `${(prev.price_cents / 100).toFixed(2)} €`
+              : "Non renseigné",
+          });
+        } catch (emailErr) {
+          console.error("SumUp status — confirmation email (non bloquant):", emailErr);
+        }
+      }
     } catch (dbErr) {
       console.error("SumUp status — DB update (non bloquant):", dbErr);
+    }
+  } else if ((checkout.status === "FAILED" || checkout.status === "EXPIRED") && (appointmentId || checkoutReference)) {
+    // Email client — paiement échoué
+    try {
+      const prevResult = await query(
+        `SELECT a.status, a.client_name, a.client_email, a.appointment_date,
+                s.name as service_name, s.price_cents
+         FROM appointments a
+         LEFT JOIN services_rdv s ON a.service_id = s.id
+         WHERE ${appointmentId ? 'a.id = $1' : 'a.sumup_checkout_reference = $1'}`,
+        [appointmentId || checkoutReference]
+      );
+      const prev = prevResult.rows[0];
+      const wasConfirmed = prev?.status === 'confirmed' || prev?.status === 'paid';
+
+      if (!wasConfirmed && prev) {
+        await sendFailedPaymentEmail({
+          clientName: prev.client_name,
+          clientEmail: prev.client_email,
+          serviceName: prev.service_name || "Prestation",
+          appointmentDate: prev.appointment_date,
+          priceLabel: prev.price_cents
+            ? `${(prev.price_cents / 100).toFixed(2)} €`
+            : "Non renseigné",
+        });
+      }
+    } catch (emailErr) {
+      console.error("SumUp status — failed email (non bloquant):", emailErr);
     }
   }
 

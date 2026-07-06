@@ -9,6 +9,7 @@ import {
   mapSumUpStatusToPaymentStatus,
   mapSumUpStatusToAppointmentStatus,
 } from "@/lib/sumup";
+import { sendConfirmedEmail, sendFailedPaymentEmail } from "@/lib/email/send-appointment-emails";
 import { query } from "@/lib/db/postgres";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -63,9 +64,21 @@ export async function POST(request: NextRequest) {
     const transactionId = checkout.transactions?.[0]?.transaction_code || null;
 
     // Mettre à jour le rendez-vous
+    const prevResult = await query(
+      `SELECT status, payment_status, client_name, client_email, appointment_date,
+              s.name as service_name, s.price_cents
+       FROM appointments a
+       LEFT JOIN services_rdv s ON a.service_id = s.id
+       WHERE a.sumup_checkout_reference = $1`,
+      [checkout_reference]
+    );
+    const prev = prevResult.rows[0];
+    const wasConfirmed = prev?.status === 'confirmed' || prev?.status === 'paid';
+
     await query(
       `UPDATE appointments
-       SET status = $1, payment_status = $2, sumup_transaction_id = $3
+       SET status = $1, payment_status = $2, sumup_transaction_id = $3,
+           confirmed_at = CASE WHEN $1 = 'confirmed' THEN COALESCE(confirmed_at, NOW()) ELSE confirmed_at END
        WHERE sumup_checkout_reference = $4`,
       [appointmentStatus, paymentStatus, transactionId, checkout_reference]
     );
@@ -94,6 +107,40 @@ export async function POST(request: NextRequest) {
             JSON.stringify({ event_type, sumup_status: checkout.status }),
           ]
         );
+      }
+
+      // Email client — confirmation (idempotent: seulement si pas déjà confirmé)
+      if (!wasConfirmed && prev) {
+        try {
+          await sendConfirmedEmail({
+            clientName: prev.client_name,
+            clientEmail: prev.client_email,
+            serviceName: prev.service_name || "Prestation",
+            appointmentDate: prev.appointment_date,
+            priceLabel: prev.price_cents
+              ? `${(prev.price_cents / 100).toFixed(2)} €`
+              : "Non renseigné",
+          });
+        } catch (emailErr) {
+          console.error("SumUp webhook — confirmation email (non bloquant):", emailErr);
+        }
+      }
+    } else if ((checkout.status === "FAILED" || checkout.status === "EXPIRED") && prev) {
+      // Email client — paiement échoué (idempotent: seulement si pas déjà confirmé)
+      if (!wasConfirmed) {
+        try {
+          await sendFailedPaymentEmail({
+            clientName: prev.client_name,
+            clientEmail: prev.client_email,
+            serviceName: prev.service_name || "Prestation",
+            appointmentDate: prev.appointment_date,
+            priceLabel: prev.price_cents
+              ? `${(prev.price_cents / 100).toFixed(2)} €`
+              : "Non renseigné",
+          });
+        } catch (emailErr) {
+          console.error("SumUp webhook — failed email (non bloquant):", emailErr);
+        }
       }
     }
 

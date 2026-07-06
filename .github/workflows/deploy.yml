@@ -36,6 +36,7 @@ jobs:
       - name: Build Next.js (CI gate — not deployed)
         run: npm run build
         env:
+          NEXT_PUBLIC_SITE_URL: https://juriste-droit-du-travail.com
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           CONTACT_EMAIL_TO: ${{ secrets.CONTACT_EMAIL_TO }}
           CONTACT_EMAIL_FROM: ${{ secrets.CONTACT_EMAIL_FROM }}
@@ -43,6 +44,12 @@ jobs:
           SUMUP_MERCHANT_CODE: ${{ secrets.SUMUP_MERCHANT_CODE }}
           SUMUP_WEBHOOK_SECRET: ${{ secrets.SUMUP_WEBHOOK_SECRET }}
           NEXT_PUBLIC_SUMUP_PUBLIC_KEY: ${{ secrets.NEXT_PUBLIC_SUMUP_PUBLIC_KEY }}
+          POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
+          POSTGRES_PORT: ${{ secrets.POSTGRES_PORT }}
+          POSTGRES_DATABASE: ${{ secrets.POSTGRES_DATABASE }}
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
 
       # ── Transfer source ONLY (no node_modules, no .next) ──────────────────
       # Server runs `npm ci` + `npm run build` so native modules are compiled
@@ -80,6 +87,7 @@ jobs:
       # ── Build + deploy on the VPS ──────────────────────────────────────────
       - name: Build and deploy on server
         env:
+          NEXT_PUBLIC_SITE_URL: https://juriste-droit-du-travail.com
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           CONTACT_EMAIL_TO: ${{ secrets.CONTACT_EMAIL_TO }}
           CONTACT_EMAIL_FROM: ${{ secrets.CONTACT_EMAIL_FROM }}
@@ -87,6 +95,12 @@ jobs:
           SUMUP_MERCHANT_CODE: ${{ secrets.SUMUP_MERCHANT_CODE }}
           SUMUP_WEBHOOK_SECRET: ${{ secrets.SUMUP_WEBHOOK_SECRET }}
           NEXT_PUBLIC_SUMUP_PUBLIC_KEY: ${{ secrets.NEXT_PUBLIC_SUMUP_PUBLIC_KEY }}
+          POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
+          POSTGRES_PORT: ${{ secrets.POSTGRES_PORT }}
+          POSTGRES_DATABASE: ${{ secrets.POSTGRES_DATABASE }}
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
         run: |
           set -euo pipefail
           mkdir -p ~/.ssh
@@ -96,13 +110,20 @@ jobs:
           ssh-keyscan -p "${{ secrets.VPS_PORT }}" -H "${{ secrets.VPS_HOST }}" >> ~/.ssh/known_hosts 2>/dev/null
 
           ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=accept-new -p "${{ secrets.VPS_PORT }}" "${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}" \
-            "RESEND_API_KEY='$RESEND_API_KEY' \
+            "NEXT_PUBLIC_SITE_URL='$NEXT_PUBLIC_SITE_URL' \
+             RESEND_API_KEY='$RESEND_API_KEY' \
              CONTACT_EMAIL_TO='$CONTACT_EMAIL_TO' \
              CONTACT_EMAIL_FROM='$CONTACT_EMAIL_FROM' \
              SUMUP_API_KEY='$SUMUP_API_KEY' \
              SUMUP_MERCHANT_CODE='$SUMUP_MERCHANT_CODE' \
              SUMUP_WEBHOOK_SECRET='$SUMUP_WEBHOOK_SECRET' \
              NEXT_PUBLIC_SUMUP_PUBLIC_KEY='$NEXT_PUBLIC_SUMUP_PUBLIC_KEY' \
+             POSTGRES_HOST='$POSTGRES_HOST' \
+             POSTGRES_PORT='$POSTGRES_PORT' \
+             POSTGRES_DATABASE='$POSTGRES_DATABASE' \
+             POSTGRES_USER='$POSTGRES_USER' \
+             POSTGRES_PASSWORD='$POSTGRES_PASSWORD' \
+             SESSION_SECRET='$SESSION_SECRET' \
              bash -s" << 'EOF'
             set -eo pipefail
 
@@ -177,7 +198,7 @@ jobs:
             fi
 
             if [ -n "${SUMUP_API_KEY:-}" ]; then
-              grep -v -E '^(SUMUP_API_KEY|SUMUP_MERCHANT_CODE|SUMUP_WEBHOOK_SECRET|NEXT_PUBLIC_PAYMENT_PROVIDER|NEXT_PUBLIC_SUMUP_PUBLIC_KEY)=' "$ENV_FILE" > "${ENV_FILE}.tmp" || true
+              grep -v -E '^(SUMUP_API_KEY|SUMUP_MERCHANT_CODE|SUMUP_WEBHOOK_SECRET|NEXT_PUBLIC_PAYMENT_PROVIDER|NEXT_PUBLIC_SUMUP_PUBLIC_KEY|SUMUP_BASE_URL|SUMUP_CURRENCY)=' "$ENV_FILE" > "${ENV_FILE}.tmp" || true
               mv "${ENV_FILE}.tmp" "$ENV_FILE"
               printf 'SUMUP_API_KEY=%s\n' "$SUMUP_API_KEY" >> "$ENV_FILE"
               printf 'SUMUP_MERCHANT_CODE=%s\n' "${SUMUP_MERCHANT_CODE:-}" >> "$ENV_FILE"
@@ -189,6 +210,29 @@ jobs:
               echo "✓ Variables SumUp écrites"
             else
               echo "⚠ SUMUP_API_KEY absent"
+            fi
+
+            # ── Inject NEXT_PUBLIC_SITE_URL ────────────────────────────────
+            if [ -n "${NEXT_PUBLIC_SITE_URL:-}" ]; then
+              grep -v -E '^NEXT_PUBLIC_SITE_URL=' "$ENV_FILE" > "${ENV_FILE}.tmp" || true
+              mv "${ENV_FILE}.tmp" "$ENV_FILE"
+              printf 'NEXT_PUBLIC_SITE_URL=%s\n' "$NEXT_PUBLIC_SITE_URL" >> "$ENV_FILE"
+              echo "✓ NEXT_PUBLIC_SITE_URL écrit"
+            fi
+
+            # ── Inject PostgreSQL + Session ────────────────────────────────
+            if [ -n "${POSTGRES_PASSWORD:-}" ]; then
+              grep -v -E '^(POSTGRES_HOST|POSTGRES_PORT|POSTGRES_DATABASE|POSTGRES_USER|POSTGRES_PASSWORD|SESSION_SECRET)=' "$ENV_FILE" > "${ENV_FILE}.tmp" || true
+              mv "${ENV_FILE}.tmp" "$ENV_FILE"
+              printf 'POSTGRES_HOST=%s\n' "${POSTGRES_HOST:-localhost}" >> "$ENV_FILE"
+              printf 'POSTGRES_PORT=%s\n' "${POSTGRES_PORT:-5432}" >> "$ENV_FILE"
+              printf 'POSTGRES_DATABASE=%s\n' "${POSTGRES_DATABASE:-loubna_db}" >> "$ENV_FILE"
+              printf 'POSTGRES_USER=%s\n' "${POSTGRES_USER:-postgres}" >> "$ENV_FILE"
+              printf 'POSTGRES_PASSWORD=%s\n' "$POSTGRES_PASSWORD" >> "$ENV_FILE"
+              printf 'SESSION_SECRET=%s\n' "${SESSION_SECRET:-}" >> "$ENV_FILE"
+              echo "✓ Variables PostgreSQL + Session écrites"
+            else
+              echo "⚠ POSTGRES_PASSWORD absent"
             fi
 
             # ── Install deps on server (native modules compiled for VPS) ──

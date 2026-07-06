@@ -44,7 +44,7 @@ export default function AdminDashboard() {
         ).length;
 
         const pendingCount = appointments.filter((apt: AppointmentWithService) => 
-          apt.status === 'pending'
+          apt.status === 'pending_payment'
         ).length;
 
         const paidCount = appointments.filter((apt: AppointmentWithService) => 

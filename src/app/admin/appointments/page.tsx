@@ -34,19 +34,58 @@ export default function AppointmentsPage() {
     }
   }
 
-  async function updateAppointmentStatus(id: string, status: string) {
+  async function updateAppointmentStatus(id: string, status: string, paymentStatus?: string) {
     try {
       const response = await fetch(`/api/appointments/${id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ status }),
+        body: JSON.stringify({ status, payment_status: paymentStatus }),
       });
 
       if (response.ok) {
         loadAppointments();
+      } else {
+        const data = await response.json();
+        alert(data.error || 'Erreur lors de la mise à jour');
       }
     } catch (error) {
       console.error('Error updating appointment:', error);
+    }
+  }
+
+  async function resendPaymentLink(appointment: AppointmentWithService) {
+    if (!appointment.sumup_checkout_id) {
+      alert('Aucun checkout SumUp associé à ce rendez-vous.');
+      return;
+    }
+
+    const confirmed = confirm(
+      `Renvoyer le lien de paiement à ${appointment.client_email} ?`
+    );
+    if (!confirmed) return;
+
+    try {
+      const response = await fetch('/api/payments/sumup/create-checkout/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          appointment_id: appointment.id,
+          service_id: appointment.service?.id,
+        }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        if (data.url) {
+          window.open(data.url, '_blank');
+        }
+      } else {
+        const data = await response.json();
+        alert(data.error || 'Erreur lors de la création du lien');
+      }
+    } catch (error) {
+      console.error('Error resending payment link:', error);
+      alert('Une erreur est survenue');
     }
   }
 
@@ -82,10 +121,11 @@ export default function AppointmentsPage() {
               title="Filtrer par statut"
             >
               <option value="">Tous</option>
-              <option value="pending">En attente</option>
+              <option value="pending_payment">Paiement en attente</option>
               <option value="confirmed">Confirmé</option>
-              <option value="paid">Payé</option>
               <option value="cancelled">Annulé</option>
+              <option value="expired">Expiré</option>
+              <option value="failed">Échec</option>
               <option value="completed">Terminé</option>
             </select>
           </div>
@@ -98,8 +138,10 @@ export default function AppointmentsPage() {
               title="Filtrer par statut de paiement"
             >
               <option value="">Tous</option>
-              <option value="unpaid">Non payé</option>
+              <option value="pending">En attente</option>
               <option value="paid">Payé</option>
+              <option value="failed">Échec</option>
+              <option value="cancelled">Annulé</option>
               <option value="refunded">Remboursé</option>
             </select>
           </div>
@@ -158,14 +200,28 @@ export default function AppointmentsPage() {
                     <td className="px-6 py-4">
                       <select
                         value={appointment.status}
-                        onChange={(e) => updateAppointmentStatus(appointment.id, e.target.value)}
+                        onChange={(e) => {
+                          const newStatus = e.target.value;
+                          if (newStatus === 'confirmed' && appointment.payment_status !== 'paid') {
+                            const force = confirm(
+                              '⚠ ATTENTION: Un rendez-vous ne doit pas être validé sans paiement confirmé.\n\n' +
+                              'Voulez-vous vraiment forcer la confirmation ET marquer le paiement comme payé ?'
+                            );
+                            if (force) {
+                              updateAppointmentStatus(appointment.id, newStatus, 'paid');
+                            }
+                          } else {
+                            updateAppointmentStatus(appointment.id, newStatus);
+                          }
+                        }}
                         className="admin-input py-1 text-xs"
                         title="Modifier le statut du rendez-vous"
                       >
-                        <option value="pending">En attente</option>
+                        <option value="pending_payment">Paiement en attente</option>
                         <option value="confirmed">Confirmé</option>
-                        <option value="paid">Payé</option>
                         <option value="cancelled">Annulé</option>
+                        <option value="expired">Expiré</option>
+                        <option value="failed">Échec</option>
                         <option value="completed">Terminé</option>
                       </select>
                     </td>
@@ -175,10 +231,15 @@ export default function AppointmentsPage() {
                           ? 'admin-badge-paid'
                           : appointment.payment_status === 'refunded'
                           ? 'admin-badge-refunded'
-                          : 'admin-badge-unpaid'
+                          : appointment.payment_status === 'failed'
+                          ? 'admin-badge-unpaid'
+                          : 'admin-badge-pending'
                       }`}>
                         {appointment.payment_status === 'paid' ? 'Payé' :
-                          appointment.payment_status === 'refunded' ? 'Remboursé' : 'Non payé'}
+                          appointment.payment_status === 'refunded' ? 'Remboursé' :
+                          appointment.payment_status === 'failed' ? 'Échec' :
+                          appointment.payment_status === 'cancelled' ? 'Annulé' :
+                          'En attente'}
                       </span>
                       {appointment.service && (
                         <div className="text-xs text-encre-600 mt-1">
@@ -188,6 +249,15 @@ export default function AppointmentsPage() {
                     </td>
                     <td className="px-6 py-4">
                       <div className="flex gap-2">
+                        {appointment.status === 'pending_payment' && (
+                          <button
+                            className="text-xs px-3 py-1 bg-or-500 text-white rounded hover:bg-or-600 transition-colors"
+                            onClick={() => resendPaymentLink(appointment)}
+                            title="Renvoyer le lien de paiement au client"
+                          >
+                            Renvoyer paiement
+                          </button>
+                        )}
                         <button
                           className="text-xs px-3 py-1 bg-encre-900 text-white rounded hover:bg-encre-800 transition-colors"
                           onClick={() => {

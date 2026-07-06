@@ -157,14 +157,18 @@ export async function getSumUpCheckoutById(
  */
 export function mapSumUpStatusToPaymentStatus(
   sumupStatus: SumUpCheckoutStatus | string
-): "paid" | "unpaid" | "refunded" {
+): "pending" | "paid" | "failed" | "cancelled" | "refunded" {
   switch (sumupStatus) {
     case "PAID":
       return "paid";
     case "REFUNDED":
       return "refunded";
+    case "FAILED":
+      return "failed";
+    case "EXPIRED":
+      return "cancelled";
     default:
-      return "unpaid";
+      return "pending";
   }
 }
 
@@ -173,15 +177,16 @@ export function mapSumUpStatusToPaymentStatus(
  */
 export function mapSumUpStatusToAppointmentStatus(
   sumupStatus: SumUpCheckoutStatus | string
-): "paid" | "pending" | "cancelled" {
+): "pending_payment" | "confirmed" | "cancelled" | "failed" {
   switch (sumupStatus) {
     case "PAID":
-      return "paid";
+      return "confirmed";
     case "FAILED":
+      return "failed";
     case "EXPIRED":
       return "cancelled";
     default:
-      return "pending";
+      return "pending_payment";
   }
 }
 

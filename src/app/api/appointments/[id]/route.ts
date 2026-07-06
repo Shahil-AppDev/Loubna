@@ -43,12 +43,44 @@ export async function PATCH(
 
     const body = await request.json();
     const allowedFields = ['status', 'payment_status', 'admin_notes', 'notes'];
-    
+
+    // Sécurité : empêcher la confirmation sans paiement
+    if (body.status === 'confirmed' || body.status === 'paid') {
+      // Vérifier le payment_status actuel
+      const currentResult = await query(
+        'SELECT payment_status FROM appointments WHERE id = $1',
+        [params.id]
+      );
+      const current = currentResult.rows[0];
+
+      if (!current) {
+        return NextResponse.json({ error: 'Appointment not found' }, { status: 404 });
+      }
+
+      // Si payment_status n'est pas 'paid' et l'admin ne le change pas simultanément
+      const newPaymentStatus = body.payment_status || current.payment_status;
+      if (newPaymentStatus !== 'paid') {
+        return NextResponse.json(
+          {
+            error:
+              "Un rendez-vous ne peut pas être confirmé sans paiement confirmé. " +
+              "Pour forcer la confirmation, définissez payment_status sur 'paid' simultanément.",
+          },
+          { status: 422 }
+        );
+      }
+    }
+
     const updates: any = {};
     for (const field of allowedFields) {
       if (body[field] !== undefined) {
         updates[field] = body[field];
       }
+    }
+
+    // Si on confirme, mettre confirmed_at si pas déjà fait
+    if (updates.status === 'confirmed' || updates.status === 'paid') {
+      updates.confirmed_at = new Date().toISOString();
     }
 
     if (Object.keys(updates).length === 0) {

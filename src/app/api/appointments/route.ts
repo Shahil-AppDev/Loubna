@@ -1,5 +1,6 @@
 import { parseContactAttachments } from "@/lib/contact/attachments";
 import { sendAppointmentEmail } from "@/lib/email/send-appointment-email";
+import { sendPendingPaymentEmail } from "@/lib/email/send-appointment-emails";
 import { query } from "@/lib/db/postgres";
 import { requireAdmin } from "@/lib/auth/require-admin";
 import { NextRequest, NextResponse } from "next/server";
@@ -156,8 +157,8 @@ export async function POST(request: NextRequest) {
     }
 
     const checkResult = await query(
-      `SELECT * FROM appointments 
-       WHERE appointment_date = $1 AND status != 'cancelled'`,
+      `SELECT * FROM appointments
+       WHERE appointment_date = $1 AND status IN ('confirmed', 'paid', 'completed')`,
       [appointment_date]
     );
 
@@ -183,10 +184,12 @@ export async function POST(request: NextRequest) {
       notesToStore = notesToStore ? `${notesToStore}\n\n${suffix}` : suffix;
     }
 
+    const expiresAt = new Date(Date.now() + 20 * 60 * 1000).toISOString();
+
     const insertResult = await query(
-      `INSERT INTO appointments 
-       (client_name, client_email, client_phone, service_id, appointment_date, duration_minutes, notes, status, payment_status)
-       VALUES ($1, $2, $3, $4, $5, $6, $7, 'pending', 'unpaid')
+      `INSERT INTO appointments
+       (client_name, client_email, client_phone, service_id, appointment_date, duration_minutes, notes, status, payment_status, expires_at)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, 'pending_payment', 'pending', $8)
        RETURNING *`,
       [
         client_name,
@@ -196,11 +199,16 @@ export async function POST(request: NextRequest) {
         appointment_date,
         duration_minutes,
         notesToStore,
+        expiresAt,
       ]
     );
 
     const appointment = insertResult.rows[0];
+    const priceLabel = service
+      ? `${(service.price_cents / 100).toFixed(2)} €`
+      : "Non renseigné";
 
+    // Email admin (non bloquant)
     try {
       await sendAppointmentEmail({
         clientName: client_name,
@@ -209,14 +217,25 @@ export async function POST(request: NextRequest) {
         serviceName: service?.name || "Prestation",
         appointmentDate: appointment_date,
         durationMinutes: duration_minutes,
-        priceLabel: service
-          ? `${(service.price_cents / 100).toFixed(2)} €`
-          : "Non renseigné",
+        priceLabel,
         notes: notesToStore,
         attachments: parsed.attachments,
       });
     } catch (emailError) {
-      console.error("Appointment API — email (non bloquant):", emailError);
+      console.error("Appointment API — admin email (non bloquant):", emailError);
+    }
+
+    // Email client — paiement en attente (non bloquant)
+    try {
+      await sendPendingPaymentEmail({
+        clientName: client_name,
+        clientEmail: client_email,
+        serviceName: service?.name || "Prestation",
+        appointmentDate: appointment_date,
+        priceLabel,
+      });
+    } catch (emailError) {
+      console.error("Appointment API — client email (non bloquant):", emailError);
     }
 
     return NextResponse.json({ appointment }, { status: 201 });
