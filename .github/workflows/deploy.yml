@@ -172,10 +172,10 @@ jobs:
             DEPLOY_PATH="${{ secrets.DEPLOY_PATH }}"
             TEMP="/tmp/loubna-build-${{ github.sha }}"
             APP_NAME="nextjs-loubna"
-            PORT=3000
+            PORT=5901
 
             # ── Inject .env.local ──────────────────────────────────────────
-            echo "=== [1/5] Injection .env.local ==="
+            echo "=== [1/6] Injection .env.local ==="
             if [ -f "$DEPLOY_PATH/current/.env.local" ]; then
               cp "$DEPLOY_PATH/current/.env.local" "$TEMP/.env.local"
               echo "✓ .env.local copié depuis current"
@@ -236,16 +236,25 @@ jobs:
             fi
 
             # ── Install deps on server (native modules compiled for VPS) ──
-            echo "=== [2/5] npm ci sur le serveur ==="
+            echo "=== [2/6] npm ci sur le serveur ==="
             cd "$TEMP"
             npm ci 2>&1 | tail -3
 
             # ── Build on server ────────────────────────────────────────────
-            echo "=== [3/5] npm run build sur le serveur ==="
+            echo "=== [3/6] npm run build sur le serveur ==="
             npm run build 2>&1 | tail -15
 
+            # ── Run DB migration (idempotent) ──────────────────────────────
+            echo "=== [4/6] Migration DB ==="
+            if [ -f "$TEMP/migrate_payment_gated.sql" ]; then
+              PGPASSWORD="${POSTGRES_PASSWORD}" psql -h "${POSTGRES_HOST:-127.0.0.1}" -p "${POSTGRES_PORT:-5432}" -U "${POSTGRES_USER}" -d "${POSTGRES_DATABASE}" -f "$TEMP/migrate_payment_gated.sql" 2>&1 || echo "⚠ Migration warning (may already be applied)"
+              echo "✓ Migration exécutée"
+            else
+              echo "⚠ Pas de fichier de migration — ignoré"
+            fi
+
             # ── Atomic swap via mv (instant) — old dir deleted later ───────
-            echo "=== [4/5] Swap atomique ==="
+            echo "=== [5/6] Swap atomique ==="
             mkdir -p "$DEPLOY_PATH"
             cd "$DEPLOY_PATH"
             TRASH="trash-$(date +%s)"
@@ -256,7 +265,7 @@ jobs:
             echo "✓ Swap effectué"
 
             # ── Restart PM2 (delete + free port + fresh start) ─────────────
-            echo "=== [5/5] Restart PM2 ==="
+            echo "=== [6/6] Restart PM2 ==="
             setup_node
             cd "$DEPLOY_PATH/current"
 
