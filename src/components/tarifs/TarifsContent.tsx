@@ -71,14 +71,14 @@ const SALARIES: Section[] = [
         title: "Entretien d'analyse AT/MP",
         description:
           "Analyse initiale de votre situation AT/MP : identification des difficultés liées au dossier, étude des premiers éléments médicaux et administratifs, compréhension de l'état d'avancement de la procédure et détermination des démarches adaptées.",
-        price: "À partir de 70 €",
+        price: "À partir de 80 €",
         serviceKey: "atmp_entretien",
       },
       {
         title: "Analyse et accompagnement démarches AT/MP",
         description:
           "Accompagnement dans la préparation et la structuration du dossier : analyse des documents, étude des réserves employeur, aide à la préparation du questionnaire CPAM, analyse des éléments d'exposition (MP), clarification et structuration du dossier.",
-        price: "À partir de 120 €",
+        price: "À partir de 140 €",
         featured: true,
         serviceKey: "atmp_accompagnement",
       },
@@ -92,14 +92,14 @@ const SALARIES: Section[] = [
         title: "Analyse de situation",
         description:
           "Échange permettant d'analyser votre situation professionnelle, d'identifier les difficultés rencontrées et de déterminer les actions ou orientations adaptées.",
-        price: "À partir de 59 €",
+        price: "À partir de 80 €",
         serviceKey: "harcelement_analyse",
       },
       {
         title: "Analyse approfondie & accompagnement",
         description:
           "Accompagnement dans la structuration des éléments, l'analyse des échanges et la préparation des démarches liées à la situation rencontrée.",
-        price: "À partir de 129 €",
+        price: "À partir de 140 €",
         serviceKey: "harcelement_accompagnement",
         contactLabel: "Demander un devis",
       },
@@ -113,14 +113,14 @@ const SALARIES: Section[] = [
         title: "Analyse de situation disciplinaire",
         description:
           "Analyse de la situation et compréhension de la procédure engagée par l'employeur : avertissement, mise à pied, convocation à entretien préalable.",
-        price: "À partir de 59 €",
+        price: "À partir de 80 €",
         serviceKey: "disciplinaire_analyse",
       },
       {
         title: "Analyse et accompagnement procédure disciplinaire",
         description:
           "Accompagnement dans la préparation des éléments, des écrits et des démarches liés à la procédure disciplinaire.",
-        price: "À partir de 130 €",
+        price: "À partir de 140 €",
         bullets: [
           "Étude des documents transmis",
           "Analyse des éléments administratifs et procéduraux",
