@@ -331,7 +331,7 @@ function RendezVousForm() {
                             {service.description && (
                               <p className="text-sm text-encre-700 mb-3">{service.description}</p>
                             )}
-                            <span className="text-sm text-encre-700">💰 {formatFromPrice(`${(service.price_cents / 100).toFixed(2)} €`)}</span>
+                            <span className="text-sm text-encre-700">💰 {formatFromPrice(service.price_label ?? `${(service.price_cents / 100).toFixed(2)} €`)}</span>
                           </div>
                         </div>
                       </div>
