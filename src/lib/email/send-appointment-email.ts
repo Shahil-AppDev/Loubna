@@ -1,8 +1,20 @@
-import { SITE_CONFIG } from "@/lib/constants";
 import type { ContactAttachment } from "@/lib/contact/attachments";
 import { Resend } from "resend";
+import {
+  EMAIL_COLORS,
+  EMAIL_SITE_URL,
+  EmailButton,
+  EmailCard,
+  EmailInfoTable,
+  EmailLayout,
+  escapeHtml,
+  formatAppointmentDate,
+  formatAppointmentDateOnly,
+  formatAppointmentTimeOnly,
+  readEnv,
+} from "./template";
 
-export const APPOINTMENT_EMAIL_SUBJECT = "Nouveau rendez-vous via site";
+export const APPOINTMENT_EMAIL_SUBJECT = "Nouvelle demande de rendez-vous";
 
 export type AppointmentEmailPayload = {
   clientName: string;
@@ -13,40 +25,9 @@ export type AppointmentEmailPayload = {
   durationMinutes: number;
   priceLabel: string;
   notes?: string | null;
+  paymentStatus?: string;
   attachments?: ContactAttachment[];
 };
-
-function escapeHtml(value: string): string {
-  return value
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;");
-}
-
-function readEnv(name: string): string | undefined {
-  const raw = process.env[name];
-  if (!raw) return undefined;
-  const trimmed = raw.trim();
-  if (
-    (trimmed.startsWith('"') && trimmed.endsWith('"')) ||
-    (trimmed.startsWith("'") && trimmed.endsWith("'"))
-  ) {
-    return trimmed.slice(1, -1).trim();
-  }
-  return trimmed;
-}
-
-function formatAppointmentDate(iso: string): string {
-  try {
-    return new Date(iso).toLocaleString("fr-FR", {
-      dateStyle: "full",
-      timeStyle: "short",
-    });
-  } catch {
-    return iso;
-  }
-}
 
 export async function sendAppointmentEmail(
   data: AppointmentEmailPayload
@@ -56,57 +37,78 @@ export async function sendAppointmentEmail(
     throw new Error("RESEND_API_KEY");
   }
 
-  const to = readEnv("CONTACT_EMAIL_TO") || SITE_CONFIG.email;
+  const to = readEnv("CONTACT_EMAIL_TO") || "contact@juriste-droit-du-travail.com";
   const from =
     readEnv("CONTACT_EMAIL_FROM") ||
-    `${SITE_CONFIG.name} <contact@juriste-droit-du-travail.com>`;
+    `Loubna Abouz Manta <contact@juriste-droit-du-travail.com>`;
 
   const tel = data.clientPhone?.trim() || "Non renseigné";
   const notes = data.notes?.trim() || "Aucun message";
+  const paymentStatus = data.paymentStatus || "pending";
 
-  const html = `
-    <div style="font-family: Georgia, serif; max-width: 600px; margin: 0 auto; color: #1a1a1a;">
-      <div style="background: #8B1A1A; padding: 24px; text-align: center;">
-        <h1 style="color: #ffffff; margin: 0; font-size: 1.35rem;">Nouveau rendez-vous</h1>
-      </div>
-      <div style="padding: 28px 32px; background: #ffffff; border: 1px solid #e8e5e0; font-size: 0.95rem; line-height: 1.7;">
-        <p><strong>Client :</strong> ${escapeHtml(data.clientName)}</p>
-        <p><strong>Email :</strong> <a href="mailto:${escapeHtml(data.clientEmail)}">${escapeHtml(data.clientEmail)}</a></p>
-        <p><strong>Téléphone :</strong> ${escapeHtml(tel)}</p>
-        <p><strong>Prestation :</strong> ${escapeHtml(data.serviceName)}</p>
-        <p><strong>Date :</strong> ${escapeHtml(formatAppointmentDate(data.appointmentDate))}</p>
-        <p><strong>Durée :</strong> ${data.durationMinutes} min</p>
-        <p><strong>Tarif :</strong> ${escapeHtml(data.priceLabel)}</p>
-        <p><strong>Message :</strong></p>
-        <p style="white-space: pre-wrap; margin: 0 0 12px;">${escapeHtml(notes)}</p>
-        ${
-          data.attachments?.length
-            ? `<p><strong>Pièces jointes :</strong> ${data.attachments.map((a) => escapeHtml(a.filename)).join(", ")}</p>`
-            : ""
-        }
-      </div>
-      <p style="text-align: center; color: #918a7f; font-size: 0.75rem; margin: 16px 0 0;">
-        ${escapeHtml(SITE_CONFIG.name)} — ${escapeHtml(SITE_CONFIG.url)}
-      </p>
-    </div>
-  `.trim();
+  const parts = data.clientName.split(" ");
+  const prenom = parts[0] || data.clientName;
+  const nom = parts.slice(1).join(" ") || "—";
+
+  const recapTable = EmailInfoTable([
+    { label: "Nom", value: nom },
+    { label: "Prénom", value: prenom },
+    { label: "Email", value: data.clientEmail },
+    { label: "Téléphone", value: tel },
+    { label: "Prestation", value: data.serviceName },
+    { label: "Date souhaitée", value: formatAppointmentDateOnly(data.appointmentDate) },
+    { label: "Heure souhaitée", value: formatAppointmentTimeOnly(data.appointmentDate) },
+    { label: "Durée", value: `${data.durationMinutes} min` },
+    { label: "Montant", value: data.priceLabel },
+    { label: "Statut du paiement", value: paymentStatus },
+  ]);
+
+  const adminButton = EmailButton(`${EMAIL_SITE_URL}/admin/appointments`, "Ouvrir le backoffice");
+
+  const body = `
+    <p style="margin:0 0 16px;font-size:16px;font-weight:600;">Nouvelle demande de rendez-vous</p>
+    ${EmailCard(recapTable)}
+    <p style="margin:0 0 12px;"><strong>Message :</strong></p>
+    <p style="margin:0 0 16px;white-space:pre-wrap;font-size:14px;line-height:1.7;color:${EMAIL_COLORS.text};">${escapeHtml(notes)}</p>
+    ${
+      data.attachments?.length
+        ? `<p style="margin:0 0 16px;font-size:14px;color:${EMAIL_COLORS.textMuted};"><strong>Pièces jointes :</strong> ${data.attachments.map((a) => escapeHtml(a.filename)).join(", ")}</p>`
+        : ""
+    }
+    ${adminButton}
+    <p style="margin:16px 0 0;padding:12px 16px;background:#FFF3CD;border:1px solid #FFE69C;border-radius:6px;font-size:13px;color:#856404;">Le rendez-vous ne doit pas être considéré comme confirmé tant que le statut du paiement n'est pas “paid”.</p>
+  `;
+
+  const html = EmailLayout(
+    "Une nouvelle demande vient d'être enregistrée sur le site.",
+    body,
+    { headerTitle: "Nouvelle demande de rendez-vous" }
+  );
 
   const text = [
-    "Nouveau rendez-vous via le site",
+    "Nouvelle demande de rendez-vous",
     "",
-    `Client : ${data.clientName}`,
-    `Email : ${data.clientEmail}`,
-    `Téléphone : ${tel}`,
-    `Prestation : ${data.serviceName}`,
-    `Date : ${formatAppointmentDate(data.appointmentDate)}`,
-    `Durée : ${data.durationMinutes} min`,
-    `Tarif : ${data.priceLabel}`,
+    "Informations client :",
+    `- Nom : ${nom}`,
+    `- Prénom : ${prenom}`,
+    `- Email : ${data.clientEmail}`,
+    `- Téléphone : ${tel}`,
+    `- Prestation : ${data.serviceName}`,
+    `- Date souhaitée : ${formatAppointmentDateOnly(data.appointmentDate)}`,
+    `- Heure souhaitée : ${formatAppointmentTimeOnly(data.appointmentDate)}`,
+    `- Durée : ${data.durationMinutes} min`,
+    `- Montant : ${data.priceLabel}`,
+    `- Statut du paiement : ${paymentStatus}`,
     "",
     "Message :",
     notes,
     ...(data.attachments?.length
       ? ["", `Pièces jointes : ${data.attachments.map((a) => a.filename).join(", ")}`]
       : []),
+    "",
+    `Backoffice : ${EMAIL_SITE_URL}/admin/appointments`,
+    "",
+    "Le rendez-vous ne doit pas être considéré comme confirmé tant que le statut du paiement n'est pas \"paid\".",
   ].join("\n");
 
   const resend = new Resend(apiKey);

@@ -1,37 +1,18 @@
-import { SITE_CONFIG } from "@/lib/constants";
 import { Resend } from "resend";
-
-function escapeHtml(value: string): string {
-  return value
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;");
-}
-
-function readEnv(name: string): string | undefined {
-  const raw = process.env[name];
-  if (!raw) return undefined;
-  const trimmed = raw.trim();
-  if (
-    (trimmed.startsWith('"') && trimmed.endsWith('"')) ||
-    (trimmed.startsWith("'") && trimmed.endsWith("'"))
-  ) {
-    return trimmed.slice(1, -1).trim();
-  }
-  return trimmed;
-}
-
-function formatAppointmentDate(iso: string): string {
-  try {
-    return new Date(iso).toLocaleString("fr-FR", {
-      dateStyle: "full",
-      timeStyle: "short",
-    });
-  } catch {
-    return iso;
-  }
-}
+import {
+  EMAIL_COLORS,
+  EMAIL_SITE_URL,
+  EmailButton,
+  EmailCard,
+  EmailInfoTable,
+  EmailLayout,
+  buildTextVersion,
+  escapeHtml,
+  formatAppointmentDateOnly,
+  formatAppointmentTimeOnly,
+  getFirstName,
+  readEnv,
+} from "./template";
 
 export type ClientEmailPayload = {
   clientName: string;
@@ -40,6 +21,7 @@ export type ClientEmailPayload = {
   appointmentDate: string;
   priceLabel: string;
   paymentLink?: string | null;
+  recapLink?: string | null;
 };
 
 async function sendEmail(
@@ -56,7 +38,7 @@ async function sendEmail(
 
   const from =
     readEnv("CONTACT_EMAIL_FROM") ||
-    `${SITE_CONFIG.name} <contact@juriste-droit-du-travail.com>`;
+    `Loubna Abouz Manta <contact@juriste-droit-du-travail.com>`;
 
   const resend = new Resend(apiKey);
   const { error } = await resend.emails.send({
@@ -72,167 +54,332 @@ async function sendEmail(
   }
 }
 
-/**
- * Email A — Demande reçue, paiement en attente
- */
 export async function sendPendingPaymentEmail(
   data: ClientEmailPayload
 ): Promise<void> {
-  const firstName = data.clientName.split(" ")[0] || data.clientName;
-  const paymentLinkHtml = data.paymentLink
-    ? `<p style="text-align:center;margin:24px 0;">
-         <a href="${escapeHtml(data.paymentLink)}"
-            style="display:inline-block;background:#8B1A1A;color:#fff;padding:14px 32px;border-radius:6px;text-decoration:none;font-weight:bold;">
-           Finaliser mon paiement
-         </a>
-       </p>`
+  const firstName = getFirstName(data.clientName);
+
+  const recapTable = EmailInfoTable([
+    { label: "Prestation", value: data.serviceName },
+    { label: "Date", value: formatAppointmentDateOnly(data.appointmentDate) },
+    { label: "Heure", value: formatAppointmentTimeOnly(data.appointmentDate) },
+    { label: "Montant", value: data.priceLabel },
+  ]);
+
+  const paymentButton = data.paymentLink
+    ? EmailButton(data.paymentLink, "Finaliser mon paiement")
     : "";
 
-  const paymentLinkText = data.paymentLink
-    ? `\nFinalisez votre règlement via ce lien :\n${data.paymentLink}\n`
-    : "";
+  const body = `
+    <p style="margin:0 0 16px;">Bonjour ${escapeHtml(firstName)},</p>
+    <p style="margin:0 0 16px;">Je vous remercie pour votre confiance.</p>
+    <p style="margin:0 0 16px;">Votre demande de rendez-vous a bien été enregistrée.</p>
+    <p style="margin:0 0 16px;">Afin de confirmer définitivement votre créneau, il reste une dernière étape : la validation de votre règlement.</p>
+    <p style="margin:0 0 16px;">Dès réception de votre paiement, vous recevrez automatiquement un e-mail confirmant votre rendez-vous ainsi qu'un récapitulatif complet.</p>
+    <p style="margin:0 0 8px;"><strong>Tant que le paiement n'est pas confirmé, votre rendez-vous reste en attente et n'est pas définitivement réservé.</strong></p>
+    ${recapTable}
+    ${paymentButton}
+    <p style="margin:16px 0 0;font-size:14px;color:${EMAIL_COLORS.textMuted};">Si vous rencontrez la moindre difficulté lors du paiement, vous pouvez me contacter directement.</p>
+  `;
 
-  const html = `
-    <div style="font-family:Georgia,serif;max-width:600px;margin:0 auto;color:#1a1a1a;">
-      <div style="background:#8B1A1A;padding:24px;text-align:center;">
-        <h1 style="color:#fff;margin:0;font-size:1.35rem;">Demande de rendez-vous reçue</h1>
-      </div>
-      <div style="padding:28px 32px;background:#fff;border:1px solid #e8e5e0;font-size:0.95rem;line-height:1.7;">
-        <p>Bonjour ${escapeHtml(firstName)},</p>
-        <p>Votre demande de rendez-vous a bien été reçue.</p>
-        <p><strong>Votre créneau ne sera confirmé qu'après validation du paiement.</strong></p>
-        <p><strong>Prestation :</strong> ${escapeHtml(data.serviceName)}<br/>
-           <strong>Date :</strong> ${escapeHtml(formatAppointmentDate(data.appointmentDate))}<br/>
-           <strong>Tarif :</strong> ${escapeHtml(data.priceLabel)}</p>
-        ${paymentLinkHtml}
-        <p>À bientôt,<br/>Loubna Abouz Manta</p>
-      </div>
-      <p style="text-align:center;color:#918a7f;font-size:0.75rem;margin:16px 0 0;">
-        ${escapeHtml(SITE_CONFIG.name)} — ${escapeHtml(SITE_CONFIG.url)}
-      </p>
-    </div>
-  `.trim();
+  const html = EmailLayout(
+    "Votre demande est enregistrée, le rendez-vous sera confirmé après validation du paiement.",
+    body,
+    { headerTitle: "Votre demande de rendez-vous" }
+  );
 
-  const text = [
-    `Demande de rendez-vous reçue — paiement en attente`,
+  const text = buildTextVersion([
+    "Votre demande de rendez-vous a bien été enregistrée",
     "",
     `Bonjour ${firstName},`,
     "",
-    "Votre demande de rendez-vous a bien été reçue.",
-    "Votre créneau ne sera confirmé qu'après validation du paiement.",
+    "Je vous remercie pour votre confiance.",
+    "Votre demande de rendez-vous a bien été enregistrée.",
+    "",
+    "Afin de confirmer définitivement votre créneau, il reste une dernière étape : la validation de votre règlement.",
+    "Dès réception de votre paiement, vous recevrez automatiquement un e-mail confirmant votre rendez-vous ainsi qu'un récapitulatif complet.",
+    "",
+    "Tant que le paiement n'est pas confirmé, votre rendez-vous reste en attente et n'est pas définitivement réservé.",
     "",
     `Prestation : ${data.serviceName}`,
-    `Date : ${formatAppointmentDate(data.appointmentDate)}`,
-    `Tarif : ${data.priceLabel}`,
-    paymentLinkText,
-    "À bientôt,",
-    "Loubna Abouz Manta",
-  ].join("\n");
+    `Date : ${formatAppointmentDateOnly(data.appointmentDate)}`,
+    `Heure : ${formatAppointmentTimeOnly(data.appointmentDate)}`,
+    `Montant : ${data.priceLabel}`,
+    "",
+    data.paymentLink ? `Finalisez votre règlement : ${data.paymentLink}` : "",
+    "",
+    "Si vous rencontrez la moindre difficulté lors du paiement, vous pouvez me contacter directement.",
+  ].filter(Boolean));
 
   await sendEmail(
     data.clientEmail,
-    "Demande de rendez-vous reçue — paiement en attente",
+    "Votre demande de rendez-vous a bien été enregistrée",
     html,
     text
   );
 }
 
-/**
- * Email B — Rendez-vous confirmé (après paiement)
- */
 export async function sendConfirmedEmail(
   data: ClientEmailPayload
 ): Promise<void> {
-  const firstName = data.clientName.split(" ")[0] || data.clientName;
+  const firstName = getFirstName(data.clientName);
 
-  const html = `
-    <div style="font-family:Georgia,serif;max-width:600px;margin:0 auto;color:#1a1a1a;">
-      <div style="background:#2d7a3e;padding:24px;text-align:center;">
-        <h1 style="color:#fff;margin:0;font-size:1.35rem;">Rendez-vous confirmé</h1>
-      </div>
-      <div style="padding:28px 32px;background:#fff;border:1px solid #e8e5e0;font-size:0.95rem;line-height:1.7;">
-        <p>Bonjour ${escapeHtml(firstName)},</p>
-        <p>Votre rendez-vous est confirmé.</p>
-        <div style="background:#f8f7f5;border-radius:8px;padding:20px;margin:20px 0;">
-          <p style="margin:4px 0;"><strong>Prestation :</strong> ${escapeHtml(data.serviceName)}</p>
-          <p style="margin:4px 0;"><strong>Date / créneau :</strong> ${escapeHtml(formatAppointmentDate(data.appointmentDate))}</p>
-          <p style="margin:4px 0;"><strong>Montant réglé :</strong> ${escapeHtml(data.priceLabel)}</p>
-        </div>
-        <p>Merci de préparer les éléments utiles à l'échange.</p>
-        <p>À bientôt,<br/>Loubna Abouz Manta</p>
-      </div>
-      <p style="text-align:center;color:#918a7f;font-size:0.75rem;margin:16px 0 0;">
-        ${escapeHtml(SITE_CONFIG.name)} — ${escapeHtml(SITE_CONFIG.url)}
-      </p>
-    </div>
-  `.trim();
+  const recapTable = EmailInfoTable([
+    { label: "Nom", value: data.clientName },
+    { label: "Date", value: formatAppointmentDateOnly(data.appointmentDate) },
+    { label: "Heure", value: formatAppointmentTimeOnly(data.appointmentDate) },
+    { label: "Prestation", value: data.serviceName },
+    { label: "Montant réglé", value: data.priceLabel },
+  ]);
 
-  const text = [
-    "Rendez-vous confirmé",
+  const recapButton = data.recapLink
+    ? EmailButton(data.recapLink, "Accéder au récapitulatif", "outline")
+    : "";
+
+  const body = `
+    <p style="margin:0 0 16px;">Bonjour ${escapeHtml(firstName)},</p>
+    <p style="margin:0 0 16px;">Je vous remercie.</p>
+    <p style="margin:0 0 16px;">Votre paiement a bien été confirmé.</p>
+    <p style="margin:0 0 16px;"><strong>Votre rendez-vous est désormais définitivement réservé.</strong></p>
+    ${EmailCard(`
+      <p style="margin:0 0 12px;font-size:13px;font-weight:600;color:${EMAIL_COLORS.bordeaux};text-transform:uppercase;letter-spacing:1px;">Récapitulatif</p>
+      ${recapTable}
+    `)}
+    <p style="margin:0 0 16px;">Avant notre échange, je vous invite à préparer tous les documents utiles à la compréhension de votre situation : courriers, contrats, échanges, décisions, justificatifs ou tout autre élément lié à votre demande.</p>
+    <p style="margin:0 0 8px;">Cela me permettra de disposer d'une vision claire de votre situation dès notre premier entretien.</p>
+    ${recapButton}
+    <p style="margin:16px 0 0;">Je vous remercie pour votre confiance.</p>
+  `;
+
+  const html = EmailLayout(
+    "Votre paiement a bien été confirmé et votre rendez-vous est désormais réservé.",
+    body,
+    { headerTitle: "Votre rendez-vous est confirmé", headerColor: EMAIL_COLORS.success }
+  );
+
+  const text = buildTextVersion([
+    "Votre rendez-vous est confirmé",
     "",
     `Bonjour ${firstName},`,
     "",
-    "Votre rendez-vous est confirmé.",
+    "Je vous remercie.",
+    "Votre paiement a bien été confirmé.",
+    "Votre rendez-vous est désormais définitivement réservé.",
     "",
     "Récapitulatif :",
+    `- Nom : ${data.clientName}`,
+    `- Date : ${formatAppointmentDateOnly(data.appointmentDate)}`,
+    `- Heure : ${formatAppointmentTimeOnly(data.appointmentDate)}`,
     `- Prestation : ${data.serviceName}`,
-    `- Date / créneau : ${formatAppointmentDate(data.appointmentDate)}`,
     `- Montant réglé : ${data.priceLabel}`,
     "",
-    "Merci de préparer les éléments utiles à l'échange.",
+    "Avant notre échange, je vous invite à préparer tous les documents utiles à la compréhension de votre situation : courriers, contrats, échanges, décisions, justificatifs ou tout autre élément lié à votre demande.",
     "",
-    "À bientôt,",
-    "Loubna Abouz Manta",
-  ].join("\n");
+    "Cela me permettra de disposer d'une vision claire de votre situation dès notre premier entretien.",
+    "",
+    data.recapLink ? `Accéder au récapitulatif : ${data.recapLink}` : "",
+    "",
+    "Je vous remercie pour votre confiance.",
+  ].filter(Boolean));
 
   await sendEmail(
     data.clientEmail,
-    "Rendez-vous confirmé",
+    "Votre rendez-vous est confirmé",
     html,
     text
   );
 }
 
-/**
- * Email C — Paiement échoué ou expiré
- */
 export async function sendFailedPaymentEmail(
   data: ClientEmailPayload
 ): Promise<void> {
-  const firstName = data.clientName.split(" ")[0] || data.clientName;
+  const firstName = getFirstName(data.clientName);
 
-  const html = `
-    <div style="font-family:Georgia,serif;max-width:600px;margin:0 auto;color:#1a1a1a;">
-      <div style="background:#8B1A1A;padding:24px;text-align:center;">
-        <h1 style="color:#fff;margin:0;font-size:1.35rem;">Paiement non confirmé</h1>
-      </div>
-      <div style="padding:28px 32px;background:#fff;border:1px solid #e8e5e0;font-size:0.95rem;line-height:1.7;">
-        <p>Bonjour ${escapeHtml(firstName)},</p>
-        <p>Votre demande de rendez-vous n'a pas encore pu être confirmée, car le paiement n'a pas été validé.</p>
-        <p>Vous pouvez reprendre votre demande ou nous contacter si besoin.</p>
-        <p>À bientôt,<br/>Loubna Abouz Manta</p>
-      </div>
-      <p style="text-align:center;color:#918a7f;font-size:0.75rem;margin:16px 0 0;">
-        ${escapeHtml(SITE_CONFIG.name)} — ${escapeHtml(SITE_CONFIG.url)}
-      </p>
-    </div>
-  `.trim();
+  const retryButton = data.paymentLink
+    ? EmailButton(data.paymentLink, "Reprendre le paiement")
+    : "";
 
-  const text = [
-    "Paiement non confirmé",
+  const body = `
+    <p style="margin:0 0 16px;">Bonjour ${escapeHtml(firstName)},</p>
+    <p style="margin:0 0 16px;">Votre demande de rendez-vous a bien été enregistrée.</p>
+    <p style="margin:0 0 16px;">En revanche, le paiement n'a pas encore pu être validé.</p>
+    <p style="margin:0 0 16px;"><strong>Aucun créneau n'a donc été définitivement réservé à ce stade.</strong></p>
+    <p style="margin:0 0 8px;">Vous pouvez reprendre votre règlement en cliquant sur le bouton ci-dessous.</p>
+    ${retryButton}
+    <p style="margin:16px 0 0;font-size:14px;color:${EMAIL_COLORS.textMuted};">Si le problème persiste, vous pouvez me contacter afin de vérifier la situation.</p>
+  `;
+
+  const html = EmailLayout(
+    "Le paiement n'a pas été confirmé, votre rendez-vous n'est pas encore réservé.",
+    body,
+    { headerTitle: "Votre rendez-vous est toujours en attente", headerColor: EMAIL_COLORS.bordeaux }
+  );
+
+  const text = buildTextVersion([
+    "Votre rendez-vous est toujours en attente",
     "",
     `Bonjour ${firstName},`,
     "",
-    "Votre demande de rendez-vous n'a pas encore pu être confirmée, car le paiement n'a pas été validé.",
-    "Vous pouvez reprendre votre demande ou nous contacter si besoin.",
+    "Votre demande de rendez-vous a bien été enregistrée.",
+    "En revanche, le paiement n'a pas encore pu être validé.",
+    "Aucun créneau n'a donc été définitivement réservé à ce stade.",
     "",
-    "À bientôt,",
-    "Loubna Abouz Manta",
-  ].join("\n");
+    "Vous pouvez reprendre votre règlement en cliquant sur le lien ci-dessous.",
+    "",
+    data.paymentLink ? `Reprendre le paiement : ${data.paymentLink}` : "",
+    "",
+    "Si le problème persiste, vous pouvez me contacter afin de vérifier la situation.",
+  ].filter(Boolean));
 
   await sendEmail(
     data.clientEmail,
-    "Paiement non confirmé",
+    "Votre rendez-vous est toujours en attente",
+    html,
+    text
+  );
+}
+
+export async function sendCancelledEmail(
+  data: ClientEmailPayload
+): Promise<void> {
+  const firstName = getFirstName(data.clientName);
+
+  const newAppointmentButton = EmailButton(
+    `${EMAIL_SITE_URL}/rendez-vous`,
+    "Prendre un nouveau rendez-vous",
+    "outline"
+  );
+
+  const body = `
+    <p style="margin:0 0 16px;">Bonjour ${escapeHtml(firstName)},</p>
+    <p style="margin:0 0 16px;">Votre rendez-vous a été annulé.</p>
+    <p style="margin:0 0 8px;">Si cette annulation est involontaire ou si vous souhaitez convenir d'un nouveau créneau, je vous invite à effectuer une nouvelle demande directement depuis le site.</p>
+    ${newAppointmentButton}
+  `;
+
+  const html = EmailLayout(
+    "Votre rendez-vous n'est plus programmé.",
+    body,
+    { headerTitle: "Votre rendez-vous a été annulé", headerColor: EMAIL_COLORS.bordeaux }
+  );
+
+  const text = buildTextVersion([
+    "Votre rendez-vous a été annulé",
+    "",
+    `Bonjour ${firstName},`,
+    "",
+    "Votre rendez-vous a été annulé.",
+    "",
+    "Si cette annulation est involontaire ou si vous souhaitez convenir d'un nouveau créneau, je vous invite à effectuer une nouvelle demande directement depuis le site.",
+    "",
+    `Prendre un nouveau rendez-vous : ${EMAIL_SITE_URL}/rendez-vous`,
+  ]);
+
+  await sendEmail(
+    data.clientEmail,
+    "Votre rendez-vous a été annulé",
+    html,
+    text
+  );
+}
+
+export async function sendReminderEmail(
+  data: ClientEmailPayload
+): Promise<void> {
+  const firstName = getFirstName(data.clientName);
+
+  const recapTable = EmailInfoTable([
+    { label: "Date", value: formatAppointmentDateOnly(data.appointmentDate) },
+    { label: "Heure", value: formatAppointmentTimeOnly(data.appointmentDate) },
+    { label: "Prestation", value: data.serviceName },
+  ]);
+
+  const body = `
+    <p style="margin:0 0 16px;">Bonjour ${escapeHtml(firstName)},</p>
+    <p style="margin:0 0 16px;">Je vous rappelle que notre rendez-vous aura lieu demain.</p>
+    ${EmailCard(`
+      <p style="margin:0 0 12px;font-size:13px;font-weight:600;color:${EMAIL_COLORS.bordeaux};text-transform:uppercase;letter-spacing:1px;">Récapitulatif</p>
+      ${recapTable}
+    `)}
+    <p style="margin:0 0 8px;">Afin d'optimiser notre échange, pensez à préparer les documents utiles à la compréhension de votre situation.</p>
+    <p style="margin:16px 0 0;">Au plaisir d'échanger avec vous.</p>
+  `;
+
+  const html = EmailLayout(
+    "Votre rendez-vous aura lieu demain.",
+    body,
+    { headerTitle: "Rappel de votre rendez-vous de demain" }
+  );
+
+  const text = buildTextVersion([
+    "Rappel de votre rendez-vous de demain",
+    "",
+    `Bonjour ${firstName},`,
+    "",
+    "Je vous rappelle que notre rendez-vous aura lieu demain.",
+    "",
+    "Récapitulatif :",
+    `- Date : ${formatAppointmentDateOnly(data.appointmentDate)}`,
+    `- Heure : ${formatAppointmentTimeOnly(data.appointmentDate)}`,
+    `- Prestation : ${data.serviceName}`,
+    "",
+    "Afin d'optimiser notre échange, pensez à préparer les documents utiles à la compréhension de votre situation.",
+    "",
+    "Au plaisir d'échanger avec vous.",
+  ]);
+
+  await sendEmail(
+    data.clientEmail,
+    "Rappel de votre rendez-vous de demain",
+    html,
+    text
+  );
+}
+
+export async function sendPostAppointmentEmail(
+  data: ClientEmailPayload
+): Promise<void> {
+  const firstName = getFirstName(data.clientName);
+
+  const newRequestButton = EmailButton(
+    `${EMAIL_SITE_URL}/rendez-vous`,
+    "Effectuer une nouvelle demande",
+    "outline"
+  );
+
+  const body = `
+    <p style="margin:0 0 16px;">Bonjour ${escapeHtml(firstName)},</p>
+    <p style="margin:0 0 16px;">Je vous remercie pour votre confiance.</p>
+    <p style="margin:0 0 16px;">J'espère que notre échange vous aura permis de mieux comprendre votre situation et de structurer les prochaines étapes.</p>
+    <p style="margin:0 0 8px;">Si vous avez besoin d'un accompagnement complémentaire, notamment pour la rédaction de courriers ou l'analyse de nouveaux éléments, vous pouvez effectuer une nouvelle demande directement depuis le site.</p>
+    ${newRequestButton}
+    <p style="margin:16px 0 0;">Je vous souhaite une excellente continuation.</p>
+  `;
+
+  const html = EmailLayout(
+    "Merci pour votre confiance.",
+    body,
+    { headerTitle: "Merci pour notre échange" }
+  );
+
+  const text = buildTextVersion([
+    "Merci pour notre échange",
+    "",
+    `Bonjour ${firstName},`,
+    "",
+    "Je vous remercie pour votre confiance.",
+    "J'espère que notre échange vous aura permis de mieux comprendre votre situation et de structurer les prochaines étapes.",
+    "",
+    "Si vous avez besoin d'un accompagnement complémentaire, notamment pour la rédaction de courriers ou l'analyse de nouveaux éléments, vous pouvez effectuer une nouvelle demande directement depuis le site.",
+    "",
+    `Effectuer une nouvelle demande : ${EMAIL_SITE_URL}/rendez-vous`,
+    "",
+    "Je vous souhaite une excellente continuation.",
+  ]);
+
+  await sendEmail(
+    data.clientEmail,
+    "Merci pour notre échange",
     html,
     text
   );

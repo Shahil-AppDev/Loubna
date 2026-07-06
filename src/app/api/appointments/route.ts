@@ -219,6 +219,7 @@ export async function POST(request: NextRequest) {
         durationMinutes: duration_minutes,
         priceLabel,
         notes: notesToStore,
+        paymentStatus: "pending",
         attachments: parsed.attachments,
       });
     } catch (emailError) {

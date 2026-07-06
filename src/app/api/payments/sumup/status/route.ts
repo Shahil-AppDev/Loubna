@@ -113,6 +113,7 @@ export async function GET(request: NextRequest) {
             priceLabel: prev.price_cents
               ? `${(prev.price_cents / 100).toFixed(2)} €`
               : "Non renseigné",
+            recapLink: `${process.env.NEXT_PUBLIC_SITE_URL || ""}/rendez-vous/confirmation?checkout_reference=${checkoutReference}`,
           });
         } catch (emailErr) {
           console.error("SumUp status — confirmation email (non bloquant):", emailErr);

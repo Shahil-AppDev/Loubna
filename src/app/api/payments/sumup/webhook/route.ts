@@ -120,6 +120,7 @@ export async function POST(request: NextRequest) {
             priceLabel: prev.price_cents
               ? `${(prev.price_cents / 100).toFixed(2)} €`
               : "Non renseigné",
+            recapLink: `${process.env.NEXT_PUBLIC_SITE_URL || ""}/rendez-vous/confirmation?checkout_reference=${prev.sumup_checkout_reference || ""}`,
           });
         } catch (emailErr) {
           console.error("SumUp webhook — confirmation email (non bloquant):", emailErr);

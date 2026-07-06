@@ -1,3 +1,4 @@
+import { sendCancelledEmail } from '@/lib/email/send-appointment-emails';
 import { query } from '@/lib/db/postgres';
 import { requireAdmin } from '@/lib/auth/require-admin';
 import { NextRequest, NextResponse } from 'next/server';
@@ -97,6 +98,27 @@ export async function PATCH(
 
     if (result.rows.length === 0) {
       return NextResponse.json({ error: 'Appointment not found' }, { status: 404 });
+    }
+
+    // Email client si annulation
+    if (updates.status === 'cancelled') {
+      const apt = result.rows[0] as any;
+      try {
+        const serviceResult = await query(
+          `SELECT name, price_cents FROM services_rdv WHERE id = $1`,
+          [apt.service_id]
+        );
+        const service = serviceResult.rows[0] as { name: string; price_cents: number } | undefined;
+        await sendCancelledEmail({
+          clientName: apt.client_name,
+          clientEmail: apt.client_email,
+          serviceName: service?.name || 'Prestation',
+          appointmentDate: apt.appointment_date,
+          priceLabel: service ? `${(service.price_cents / 100).toFixed(2)} €` : 'Non renseigné',
+        });
+      } catch (emailErr) {
+        console.error('Appointment PATCH — cancelled email (non bloquant):', emailErr);
+      }
     }
 
     return NextResponse.json({ appointment: result.rows[0] });
