@@ -16,6 +16,9 @@ CREATE TABLE IF NOT EXISTS services_rdv (
   description TEXT,
   duration_minutes INTEGER NOT NULL DEFAULT 30,
   price_cents INTEGER NOT NULL,
+  price_label TEXT,
+  is_quote_only BOOLEAN NOT NULL DEFAULT false,
+  sort_order INTEGER NOT NULL DEFAULT 0,
   active BOOLEAN DEFAULT true,
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
@@ -152,11 +155,13 @@ CREATE TRIGGER update_payments_updated_at
 -- =============================================
 
 -- Services par défaut
-INSERT INTO services_rdv (name, description, duration_minutes, price_cents, active) VALUES
-  ('Consultation initiale - 30 min', 'Première consultation pour analyser votre situation et définir les actions à mener.', 30, 8000, true),
-  ('Consultation approfondie - 1h', 'Analyse détaillée de votre dossier avec recommandations personnalisées.', 60, 15000, true),
-  ('Accompagnement DUERP', 'Accompagnement pour la création ou mise à jour du Document Unique d''Évaluation des Risques.', 90, 20000, true),
-  ('Analyse dossier AT/MP', 'Analyse complète d''un dossier d''accident du travail ou maladie professionnelle.', 60, 12000, true);
+INSERT INTO services_rdv (id, name, description, duration_minutes, price_cents, price_label, is_quote_only, sort_order, active) VALUES
+  ('a1000001-0000-0000-0000-000000000000', 'Dépôt et analyse de dossier', 'Déposez vos documents et obtenez une analyse écrite personnalisée de votre situation, avec les orientations adaptées.', 60, 8000, 'À partir de 80,00 €', false, 1, true),
+  ('4c717f21-0184-4623-b7f6-e4177455d11b', 'Consultation initiale - 30 min', 'Première consultation pour analyser votre situation et définir les actions à mener.', 30, 8000, 'À partir de 80,00 €', false, 2, true),
+  ('aa9772ce-486e-4f3b-ac2d-f91467d0a91c', 'Consultation approfondie - 1h', 'Analyse détaillée de votre dossier avec recommandations personnalisées.', 60, 15000, 'À partir de 150,00 €', false, 3, true),
+  ('9e2740c3-224f-4725-b136-16e33a6df919', 'Accompagnement DUERP', 'Accompagnement pour la création ou mise à jour du Document Unique d''Évaluation des Risques Professionnels.', 90, 20000, 'À partir de 200,00 €', false, 4, true),
+  ('0c85ff36-fd03-4dc3-a202-cb09967a5f7a', 'Analyse dossier AT/MP', 'Analyse complète d''un dossier d''accident du travail ou maladie professionnelle.', 60, 12000, 'À partir de 120,00 €', false, 5, true)
+ON CONFLICT (id) DO NOTHING;
 
 -- Disponibilités par défaut (Lundi à Vendredi, 9h-17h)
 INSERT INTO availability_settings (day_of_week, start_time, end_time, active) VALUES

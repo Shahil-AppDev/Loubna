@@ -28,6 +28,9 @@ function RendezVousForm() {
   const [step, setStep] = useState(1);
   const [attachments, setAttachments] = useState<File[]>([]);
   const [attachError, setAttachError] = useState('');
+  const [servicesLoading, setServicesLoading] = useState(true);
+  const [servicesError, setServicesError] = useState(false);
+  const [serviceNotFound, setServiceNotFound] = useState(false);
 
   useEffect(() => {
     loadServices();
@@ -41,6 +44,7 @@ function RendezVousForm() {
     const found = services.find(s => s.id === preselectedServiceId);
     if (found) {
       setSelectedService(found);
+      setServiceNotFound(false);
       // "Dépôt et analyse de dossier" : pas de créneau — passer directement à l'étape 3
       if (found.id === DEPOT_DOSSIER_ID) {
         const tomorrow = new Date();
@@ -51,18 +55,28 @@ function RendezVousForm() {
       } else {
         setStep(2);
       }
+    } else {
+      setServiceNotFound(true);
     }
   }, [preselectedServiceId, services]);
 
   async function loadServices() {
+    setServicesLoading(true);
+    setServicesError(false);
     try {
       const response = await fetch('/api/services?active=true');
+      if (!response.ok) throw new Error('API error');
       const data = await response.json();
-      if (data.services) {
+      if (data.services && Array.isArray(data.services)) {
         setServices(data.services);
+      } else {
+        setServices([]);
       }
     } catch (error) {
       console.error('Error loading services:', error);
+      setServicesError(true);
+    } finally {
+      setServicesLoading(false);
     }
   }
 
@@ -179,6 +193,52 @@ function RendezVousForm() {
                 <h2 className="font-serif text-2xl font-semibold text-encre-900 mb-6">
                   Choisissez votre prestation
                 </h2>
+
+                {servicesLoading && (
+                  <div className="grid gap-4">
+                    {[1, 2, 3].map(i => (
+                      <div key={i} className="border-2 border-encre-200 rounded-lg p-6 animate-pulse">
+                        <div className="h-5 bg-encre-100 rounded w-1/3 mb-3" />
+                        <div className="h-4 bg-encre-100 rounded w-2/3 mb-2" />
+                        <div className="h-4 bg-encre-100 rounded w-1/4" />
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {servicesError && (
+                  <div className="border-2 border-red-200 bg-red-50 rounded-lg p-6 text-center">
+                    <p className="text-encre-800 font-medium mb-2">Impossible de charger les prestations</p>
+                    <p className="text-sm text-encre-600 mb-4">Une erreur technique est survenue. Vous pouvez réessayer ou nous contacter directement.</p>
+                    <button
+                      type="button"
+                      onClick={loadServices}
+                      className="inline-flex items-center gap-2 px-5 py-2.5 bg-rouge-800 text-white rounded-sm text-sm font-medium hover:bg-rouge-700 transition-colors"
+                    >
+                      Réessayer
+                    </button>
+                  </div>
+                )}
+
+                {!servicesLoading && !servicesError && services.length === 0 && (
+                  <div className="border-2 border-encre-200 bg-encre-50 rounded-lg p-6 text-center">
+                    <p className="text-encre-800 font-medium mb-2">Aucune prestation disponible actuellement</p>
+                    <p className="text-sm text-encre-600">N'hésitez pas à nous contacter directement pour toute demande.</p>
+                    <a href="/contact/" className="inline-block mt-4 px-5 py-2.5 bg-rouge-800 text-white rounded-sm text-sm font-medium hover:bg-rouge-700 transition-colors">
+                      Nous contacter
+                    </a>
+                  </div>
+                )}
+
+                {serviceNotFound && (
+                  <div className="mb-4 p-4 bg-or-50 border border-or-300 rounded-lg">
+                    <p className="text-sm text-encre-700">
+                      Le service demandé n'a pas été trouvé. Vous pouvez choisir une prestation ci-dessous.
+                    </p>
+                  </div>
+                )}
+
+                {!servicesLoading && !servicesError && services.length > 0 && (
                 <div className="grid gap-4">
                   {services.map(service => (
                     service.id === 'a1000001-0000-0000-0000-000000000000' ? (
@@ -278,6 +338,7 @@ function RendezVousForm() {
                     )
                   ))}
                 </div>
+                )}
                 <PricingDisclaimer className="mt-6" />
               </div>
             )}
