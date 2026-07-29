@@ -39,3 +39,7 @@ next-env.d.ts
 private-products/
 *.pdf
 !DUERP en ligne.pdf
+
+# PDF documents
+*.pdf
+

@@ -4,6 +4,11 @@ import { NextRequest, NextResponse } from "next/server";
 export const runtime = "nodejs";
 
 export async function GET(request: NextRequest) {
+  const storeEnabled = process.env.DOCUMENT_STORE_ENABLED === "true";
+  if (!storeEnabled) {
+    return NextResponse.json({ documents: [], disabled: true });
+  }
+
   const { searchParams } = new URL(request.url);
   const category = searchParams.get("category") || "";
   const audience = searchParams.get("audience") || "";

@@ -31,6 +31,7 @@ export default function DocumentsClient() {
   const [filterAudience, setFilterAudience] = useState('');
   const [filterCategory, setFilterCategory] = useState('');
   const [showDisclaimer, setShowDisclaimer] = useState(false);
+  const [storeDisabled, setStoreDisabled] = useState(false);
 
   const loadCatalog = useCallback(async () => {
     try {
@@ -39,6 +40,12 @@ export default function DocumentsClient() {
       if (filterCategory) params.set('category', filterCategory);
       const res = await fetch(`/api/documents/catalog?${params.toString()}`);
       const data = await res.json();
+      if (data.disabled) {
+        setStoreDisabled(true);
+        setDocuments([]);
+        return;
+      }
+      setStoreDisabled(false);
       setDocuments(data.documents || []);
     } catch {
       setDocuments([]);
@@ -78,6 +85,24 @@ export default function DocumentsClient() {
   const displayed = searchResults !== null ? searchResults : documents;
   const popularDocs = documents.filter((d) => d.is_popular || d.is_featured);
   const featuredDocs = documents.filter((d) => d.is_featured);
+
+  if (storeDisabled) {
+    return (
+      <div className="min-h-screen bg-encre-950 flex items-center justify-center px-4">
+        <div className="max-w-lg text-center">
+          <h1 className="font-serif text-2xl md:text-3xl font-bold text-white mb-4">
+            Documents en droit du travail
+          </h1>
+          <p className="text-encre-300 leading-relaxed mb-6">
+            La boutique de documents est actuellement en préparation. Elle sera bientôt disponible.
+          </p>
+          <Link href="/" className="inline-block bg-or-500 hover:bg-or-600 text-white font-semibold px-6 py-3 rounded-lg transition-colors">
+            Retour à l'accueil
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-encre-950">

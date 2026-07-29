@@ -364,6 +364,25 @@ WHERE dp.category_id IS NULL
   AND dp.slug = 'courrier-professionnel-suisse' AND dc.slug = 'suisse';
 
 -- ─── Seed FAQ for DUERP ─────────────────────────────────────
+-- Add unique constraint to prevent duplicate FAQs
+DO $$
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1 FROM information_schema.table_constraints
+    WHERE constraint_name = 'uq_doc_faqs_document_question'
+  ) THEN
+    ALTER TABLE document_faqs
+      ADD CONSTRAINT uq_doc_faqs_document_question UNIQUE (document_id, question);
+  END IF;
+END $$;
+
+-- Remove existing duplicates (keep lowest created_at)
+DELETE FROM document_faqs
+WHERE id NOT IN (
+  SELECT MIN(id) FROM document_faqs
+  GROUP BY document_id, question
+);
+
 INSERT INTO document_faqs (document_id, question, answer, sort_order)
 SELECT dp.id, q.question, q.answer, q.sort_order
 FROM digital_products dp,
@@ -373,4 +392,6 @@ LATERAL (VALUES
   ('À quelle fréquence doit-on mettre à jour le DUERP ?', 'Le DUERP doit être mis à jour au moins une fois par an, et à chaque modification des conditions de travail.', 3)
 ) AS q(question, answer, sort_order)
 WHERE dp.slug = 'modele-duerp'
-ON CONFLICT DO NOTHING;
+ON CONFLICT (document_id, question) DO UPDATE SET
+  answer = EXCLUDED.answer,
+  sort_order = EXCLUDED.sort_order;

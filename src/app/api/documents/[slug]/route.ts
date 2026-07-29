@@ -7,6 +7,11 @@ export async function GET(
   request: NextRequest,
   { params }: { params: { slug: string } }
 ) {
+  const storeEnabled = process.env.DOCUMENT_STORE_ENABLED === "true";
+  if (!storeEnabled) {
+    return NextResponse.json({ error: "Boutique de documents désactivée", disabled: true }, { status: 503 });
+  }
+
   const { slug } = params;
 
   try {

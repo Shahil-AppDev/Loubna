@@ -53,6 +53,13 @@ export default function DocumentDetailClient({ slug }: { slug: string }) {
       try {
         const res = await fetch(`/api/documents/${slug}`);
         if (!res.ok) {
+          if (res.status === 503) {
+            const data = await res.json();
+            if (data.disabled) {
+              setError('La boutique de documents est actuellement en préparation. Elle sera bientôt disponible.');
+              return;
+            }
+          }
           if (res.status === 404) {
             setError('Document introuvable ou non publié.');
           } else {
