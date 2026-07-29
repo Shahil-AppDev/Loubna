@@ -84,7 +84,7 @@ export async function sendDigitalPendingEmail(
     data.paymentLink ? `Finaliser le paiement : ${data.paymentLink}` : "",
   ].filter(Boolean));
 
-  await sendEmail(data.customerEmail, "Votre commande du modèle DUERP est en attente de paiement", html, text);
+  await sendEmail(data.customerEmail, `Votre commande « ${data.productName} » est en attente de paiement`, html, text);
 }
 
 // ─── EMAIL 2: Payment confirmed + delivery ─────────────────
@@ -99,7 +99,7 @@ export async function sendDigitalDeliveryEmail(
   const remaining = data.downloadsRemaining ?? 3;
 
   const downloadButton = data.downloadLink
-    ? EmailButton(data.downloadLink, "Télécharger mon modèle DUERP")
+    ? EmailButton(data.downloadLink, `Télécharger « ${data.productName} »`)
     : "";
 
   const body = `
@@ -119,13 +119,13 @@ export async function sendDigitalDeliveryEmail(
   `;
 
   const html = EmailLayout(
-    "Votre modèle DUERP est prêt à être téléchargé.",
+    `Votre ${escapeHtml(data.productName)} est prêt à être téléchargé.`,
     body,
     { headerTitle: "Votre document est prêt", headerColor: EMAIL_COLORS.success }
   );
 
   const text = buildTextVersion([
-    "Votre modèle DUERP est prêt à être téléchargé",
+    `Votre ${data.productName} est prêt à être téléchargé`,
     "",
     `Bonjour ${firstName},`,
     "",
@@ -140,7 +140,7 @@ export async function sendDigitalDeliveryEmail(
     "Conservez cet e-mail précieusement. Le modèle doit être adapté à l'activité réelle de votre entreprise.",
   ].filter(Boolean));
 
-  await sendEmail(data.customerEmail, "Votre modèle DUERP est prêt à être téléchargé", html, text);
+  await sendEmail(data.customerEmail, `Votre ${data.productName} est prêt à être téléchargé`, html, text);
 }
 
 // ─── EMAIL 3: Payment failed ───────────────────────────────
@@ -168,7 +168,7 @@ export async function sendDigitalFailedEmail(
   );
 
   const text = buildTextVersion([
-    "Votre modèle DUERP n'a pas encore été délivré",
+    `Votre commande « ${data.productName} » n'a pas encore été délivrée`,
     "",
     `Bonjour ${firstName},`,
     "",
@@ -178,7 +178,7 @@ export async function sendDigitalFailedEmail(
     data.paymentLink ? `Reprendre le paiement : ${data.paymentLink}` : "",
   ].filter(Boolean));
 
-  await sendEmail(data.customerEmail, "Votre modèle DUERP n'a pas encore été délivré", html, text);
+  await sendEmail(data.customerEmail, `Votre commande « ${data.productName} » n'a pas encore été délivrée`, html, text);
 }
 
 // ─── EMAIL ADMIN: New sale ─────────────────────────────────
@@ -207,11 +207,11 @@ export async function sendDigitalAdminEmail(
   const html = EmailLayout(
     "Nouvelle vente de document numérique.",
     body,
-    { headerTitle: "Nouvelle vente — DUERP", headerColor: EMAIL_COLORS.bordeaux }
+    { headerTitle: "Nouvelle vente document", headerColor: EMAIL_COLORS.bordeaux }
   );
 
   const text = buildTextVersion([
-    "Nouvelle vente du modèle DUERP",
+    `Nouvelle vente — ${data.productName}`,
     "",
     `Commande : ${data.orderId}`,
     `Produit : ${data.productName}`,
@@ -223,5 +223,5 @@ export async function sendDigitalAdminEmail(
     `Transaction : ${data.transactionId || "N/A"}`,
   ]);
 
-  await sendEmail(adminEmail, "Nouvelle vente du modèle DUERP", html, text);
+  await sendEmail(adminEmail, `Nouvelle vente — ${data.productName}`, html, text);
 }

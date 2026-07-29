@@ -52,6 +52,7 @@ jobs:
           SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
           DUERP_PDF_PRIVATE_PATH: ${{ secrets.DUERP_PDF_PRIVATE_PATH }}
           DIGITAL_DUERP_SALES_ENABLED: ${{ secrets.DIGITAL_DUERP_SALES_ENABLED }}
+          DOCUMENT_STORE_ENABLED: ${{ secrets.DOCUMENT_STORE_ENABLED }}
 
       # ── Transfer source ONLY (no node_modules, no .next) ──────────────────
       # Server runs `npm ci` + `npm run build` so native modules are compiled
@@ -105,6 +106,7 @@ jobs:
           SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
           DUERP_PDF_PRIVATE_PATH: ${{ secrets.DUERP_PDF_PRIVATE_PATH }}
           DIGITAL_DUERP_SALES_ENABLED: ${{ secrets.DIGITAL_DUERP_SALES_ENABLED }}
+          DOCUMENT_STORE_ENABLED: ${{ secrets.DOCUMENT_STORE_ENABLED }}
         run: |
           set -euo pipefail
           mkdir -p ~/.ssh
@@ -130,6 +132,7 @@ jobs:
              SESSION_SECRET='$SESSION_SECRET' \
              DUERP_PDF_PRIVATE_PATH='$DUERP_PDF_PRIVATE_PATH' \
              DIGITAL_DUERP_SALES_ENABLED='$DIGITAL_DUERP_SALES_ENABLED' \
+             DOCUMENT_STORE_ENABLED='$DOCUMENT_STORE_ENABLED' \
              bash -s" << 'EOF'
             set -eo pipefail
 
@@ -227,10 +230,11 @@ jobs:
             fi
 
             # ── Inject Digital Products env ────────────────────────────────
-            grep -v -E '^(DUERP_PDF_PRIVATE_PATH|DIGITAL_DUERP_SALES_ENABLED)=' "$ENV_FILE" > "${ENV_FILE}.tmp" || true
+            grep -v -E '^(DUERP_PDF_PRIVATE_PATH|DIGITAL_DUERP_SALES_ENABLED|DOCUMENT_STORE_ENABLED)=' "$ENV_FILE" > "${ENV_FILE}.tmp" || true
             mv "${ENV_FILE}.tmp" "$ENV_FILE"
             printf 'DUERP_PDF_PRIVATE_PATH=%s\n' "${DUERP_PDF_PRIVATE_PATH:-/var/www/projects/juriste-droit-du-travail/private-products/duerp-modele.pdf}" >> "$ENV_FILE"
             printf 'DIGITAL_DUERP_SALES_ENABLED=%s\n' "${DIGITAL_DUERP_SALES_ENABLED:-false}" >> "$ENV_FILE"
+            printf 'DOCUMENT_STORE_ENABLED=%s\n' "${DOCUMENT_STORE_ENABLED:-false}" >> "$ENV_FILE"
             echo "✓ Variables Digital Products écrites"
 
             # ── Inject PostgreSQL + Session ────────────────────────────────
@@ -268,6 +272,12 @@ jobs:
               echo "✓ Migration digital products exécutée"
             else
               echo "⚠ Pas de fichier migration digital — ignoré"
+            fi
+            if [ -f "$TEMP/supabase/migration-document-marketplace.sql" ]; then
+              PGPASSWORD="${POSTGRES_PASSWORD}" psql -h "${POSTGRES_HOST:-127.0.0.1}" -p "${POSTGRES_PORT:-5432}" -U "${POSTGRES_USER}" -d "${POSTGRES_DATABASE}" -f "$TEMP/supabase/migration-document-marketplace.sql" 2>&1 || echo "⚠ Migration marketplace warning (may already be applied)"
+              echo "✓ Migration document marketplace exécutée"
+            else
+              echo "⚠ Pas de fichier migration marketplace — ignoré"
             fi
 
             # ── Atomic swap via mv (instant) — old dir deleted later ───────

@@ -1,8 +1,9 @@
 import { getAllArticles } from "@/lib/blog-data";
 import { SITE_CONFIG } from "@/lib/constants";
+import { query } from "@/lib/db/postgres";
 import type { MetadataRoute } from "next";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = SITE_CONFIG.url;
 
   const servicesSlugs = [
@@ -73,10 +74,22 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.8,
     },
     {
+      url: `${baseUrl}/documents`,
+      lastModified: new Date(),
+      changeFrequency: "weekly" as const,
+      priority: 0.95,
+    },
+    {
       url: `${baseUrl}/documents/modele-duerp`,
       lastModified: new Date(),
       changeFrequency: "monthly" as const,
       priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/cgv-numerique`,
+      lastModified: new Date(),
+      changeFrequency: "yearly" as const,
+      priority: 0.3,
     },
     {
       url: `${baseUrl}/mentions-legales`,
@@ -106,5 +119,22 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.8,
   }));
 
-  return [...staticPages, ...servicesPages, ...blogPages];
+  // Dynamic document pages from DB
+  let documentPages: MetadataRoute.Sitemap = [];
+  try {
+    const result = await query(
+      `SELECT slug, updated_at FROM digital_products
+       WHERE status = 'published' AND is_active = true AND slug != 'modele-duerp'`
+    );
+    documentPages = result.rows.map((row) => ({
+      url: `${baseUrl}/documents/${row.slug}`,
+      lastModified: new Date(row.updated_at as string),
+      changeFrequency: "monthly" as const,
+      priority: 0.85,
+    }));
+  } catch {
+    // Non-blocking if DB not available
+  }
+
+  return [...staticPages, ...servicesPages, ...blogPages, ...documentPages];
 }

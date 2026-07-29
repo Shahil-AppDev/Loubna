@@ -151,8 +151,8 @@ export async function POST(request: NextRequest) {
       `SumUp webhook processed: ${checkout_reference} → ${checkout.status}`
     );
 
-    // ─── Digital product orders (DUERP- prefix) ───────────────
-    if (checkout_reference.startsWith("DUERP-")) {
+    // ─── Digital product orders (DUERP- or DOC- prefix) ───────
+    if (checkout_reference.startsWith("DUERP-") || checkout_reference.startsWith("DOC-")) {
       await handleDigitalOrderWebhook(checkout, event_type);
     }
   } catch (err) {

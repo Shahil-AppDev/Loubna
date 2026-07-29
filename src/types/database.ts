@@ -111,19 +111,77 @@ export type DigitalOrderStatus =
   | 'refunded'
   | 'expired';
 
+export type DocumentStatus = 'draft' | 'published' | 'archived';
+export type TargetAudience = 'salarie' | 'employeur' | 'all';
+export type ProductType = 'template' | 'pack' | 'guide';
+
+export interface DocumentCategory {
+  id: string;
+  name: string;
+  slug: string;
+  description: string | null;
+  target_audience: TargetAudience;
+  seo_title: string | null;
+  seo_description: string | null;
+  is_active: boolean;
+  sort_order: number;
+  created_at: string;
+  updated_at: string;
+}
+
 export interface DigitalProduct {
   id: string;
   slug: string;
   name: string;
+  subtitle: string | null;
   description: string | null;
+  usage_description: string | null;
+  target_audience: TargetAudience;
+  category_id: string | null;
+  subcategory: string | null;
+  synonyms: string[];
+  tags: string[];
+  format: string;
+  page_count: number | null;
   price_amount: number;
   currency: string;
+  product_type: ProductType;
   file_key: string | null;
   private_file_path: string | null;
   file_sha256: string | null;
+  preview_key: string | null;
+  version: string;
+  status: DocumentStatus;
   is_active: boolean;
+  is_featured: boolean;
+  is_popular: boolean;
+  published_at: string | null;
+  last_reviewed_at: string | null;
+  author: string | null;
+  reviewer: string | null;
+  legal_sources: string | null;
+  disclaimer: string | null;
+  seo_title: string | null;
+  seo_description: string | null;
   created_at: string;
   updated_at: string;
+}
+
+export interface DocumentFaq {
+  id: string;
+  document_id: string;
+  question: string;
+  answer: string;
+  sort_order: number;
+  created_at: string;
+}
+
+export interface SearchLog {
+  id: string;
+  query: string;
+  filters: Record<string, unknown> | null;
+  result_count: number;
+  created_at: string;
 }
 
 export interface DigitalOrder {
