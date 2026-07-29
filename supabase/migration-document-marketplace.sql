@@ -49,9 +49,17 @@ CREATE INDEX IF NOT EXISTS idx_doc_categories_slug ON document_categories(slug);
 CREATE INDEX IF NOT EXISTS idx_doc_categories_active ON document_categories(is_active);
 
 -- Link digital_products to categories
-ALTER TABLE digital_products
-  ADD CONSTRAINT IF NOT EXISTS fk_digital_products_category
-  FOREIGN KEY (category_id) REFERENCES document_categories(id) ON DELETE SET NULL;
+DO $$
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1 FROM information_schema.table_constraints
+    WHERE constraint_name = 'fk_digital_products_category'
+  ) THEN
+    ALTER TABLE digital_products
+      ADD CONSTRAINT fk_digital_products_category
+      FOREIGN KEY (category_id) REFERENCES document_categories(id) ON DELETE SET NULL;
+  END IF;
+END $$;
 
 -- ─── document_faqs ──────────────────────────────────────────
 CREATE TABLE IF NOT EXISTS document_faqs (
@@ -137,7 +145,7 @@ SELECT * FROM (VALUES
    'Grille d''analyse des risques par poste',
    'Tableau structuré pour identifier, évaluer et hiérarchiser les risques professionnels par poste de travail.',
    'Pour compléter le DUERP ou mener une évaluation des risques dans le cadre d''une démarche de prévention.',
-   'employeur', NULL, 'Évaluation des risques',
+   'employeur', NULL::uuid, 'Évaluation des risques',
    ARRAY['grille risques', 'matrice risques', 'évaluation risques'],
    ARRAY['DUERP', 'évaluation', 'risques', 'prévention'],
    'PDF', 5, 9.90, 'EUR', 'template', 'draft', false,
@@ -151,7 +159,7 @@ SELECT * FROM (VALUES
    'Plan d''actions suite à l''évaluation des risques',
    'Modèle de plan d''actions de prévention des risques professionnels, structuré par priorité et échéance.',
    'Après l''évaluation des risques (DUERP), pour formaliser les actions de prévention.',
-   'employeur', NULL, 'Prévention',
+   'employeur', NULL::uuid, 'Prévention',
    ARRAY['plan prévention', 'actions préventives', 'plan d''action'],
    ARRAY['prévention', 'DUERP', 'actions', 'plan'],
    'PDF', 4, 9.90, 'EUR', 'template', 'draft', false,
@@ -165,7 +173,7 @@ SELECT * FROM (VALUES
    'Étapes à suivre en cas d''accident du travail',
    'Checklist complète des démarches à effectuer en cas d''accident du travail : déclaration, soins, suivi.',
    'Dès la survenue d''un accident du travail, pour ne rien oublier.',
-   'salarie', NULL, 'Accidents du travail',
+   'salarie', NULL::uuid, 'Accidents du travail',
    ARRAY['checklist AT', 'démarches accident', 'accident travail'],
    ARRAY['accident du travail', 'AT', 'checklist', 'démarches'],
    'PDF', 3, 4.99, 'EUR', 'template', 'draft', false,
@@ -179,7 +187,7 @@ SELECT * FROM (VALUES
    'Modèle pour formuler des réserves',
    'Trame pour formuler des réserves suite à un avertissement, une sanction ou une décision de l''employeur.',
    'Pour répondre formellement à une décision de l''employeur.',
-   'salarie', NULL, 'Procédures disciplinaires',
+   'salarie', NULL::uuid, 'Procédures disciplinaires',
    ARRAY['réserves', 'contestation', 'réponse sanction'],
    ARRAY['réserves', 'employeur', 'sanction', 'contestation'],
    'PDF', 2, 4.99, 'EUR', 'template', 'draft', false,
@@ -193,7 +201,7 @@ SELECT * FROM (VALUES
    'Modèle de réponse écrite à un avertissement',
    'Modèle de courrier pour répondre à un avertissement disciplinaire, formuler des réserves et demander un entretien.',
    'Après réception d''un avertissement disciplinaire.',
-   'salarie', NULL, 'Procédures disciplinaires',
+   'salarie', NULL::uuid, 'Procédures disciplinaires',
    ARRAY['réponse avertissement', 'contestation avertissement', 'lettre avertissement'],
    ARRAY['avertissement', 'sanction', 'réponse', 'réserves'],
    'PDF', 2, 4.99, 'EUR', 'template', 'draft', false,
@@ -207,7 +215,7 @@ SELECT * FROM (VALUES
    'Modèle de demande de communication de pièces',
    'Courrier pour demander la communication de documents professionnels (contrat, fiches de paie, etc.).',
    'Pour exercer son droit à la communication de documents professionnels.',
-   'salarie', NULL, 'Courriers professionnels',
+   'salarie', NULL::uuid, 'Courriers professionnels',
    ARRAY['communication documents', 'demande pièces', 'communication pièces'],
    ARRAY['communication', 'documents', 'contrat', 'fiches de paie'],
    'PDF', 2, 4.99, 'EUR', 'template', 'draft', false,
@@ -221,7 +229,7 @@ SELECT * FROM (VALUES
    'Courrier de réclamation de salaire',
    'Modèle de courrier pour réclamer le paiement d''un salaire ou d''arriérés de salaire.',
    'En cas de non-paiement ou de retard de paiement du salaire.',
-   'salarie', NULL, 'Courriers professionnels',
+   'salarie', NULL::uuid, 'Courriers professionnels',
    ARRAY['réclamation salaire', 'paiement salaire', 'arriérés salaire'],
    ARRAY['salaire', 'paiement', 'réclamation', 'courrier'],
    'PDF', 2, 4.99, 'EUR', 'template', 'draft', false,
@@ -235,7 +243,7 @@ SELECT * FROM (VALUES
    'Trame pour reconstituer une chronologie',
    'Trame structurée pour reconstituer la chronologie des faits d''une situation professionnelle (dates, événements, témoins).',
    'Pour préparer un dossier, un entretien ou une procédure en reconstituant les faits.',
-   'all', NULL, 'Outils',
+   'all', NULL::uuid, 'Outils',
    ARRAY['chronologie', 'frise chronologique', 'reconstitution faits'],
    ARRAY['chronologie', 'faits', 'dossier', 'préparation'],
    'PDF', 3, 4.99, 'EUR', 'template', 'draft', false,
@@ -249,7 +257,7 @@ SELECT * FROM (VALUES
    'Formulaire de signalement de risques psychosociaux',
    'Fiche structurée pour signaler des faits de harcèlement ou de risques psychosociaux (RPS) en milieu professionnel.',
    'Pour formaliser un signalement de RPS ou de harcèlement.',
-   'salarie', NULL, 'Harcèlement et RPS',
+   'salarie', NULL::uuid, 'Harcèlement et RPS',
    ARRAY['signalement RPS', 'fiche harcèlement', 'signalement harcèlement'],
    ARRAY['RPS', 'harcèlement', 'signalement', 'risques psychosociaux'],
    'PDF', 3, 4.99, 'EUR', 'template', 'draft', false,
@@ -263,7 +271,7 @@ SELECT * FROM (VALUES
    'Modèle de courrier aux ressources humaines',
    'Modèle de courrier professionnel à destination des ressources humaines pour diverses demandes formelles.',
    'Pour toute communication formelle avec les RH.',
-   'all', NULL, 'Courriers professionnels',
+   'all', NULL::uuid, 'Courriers professionnels',
    ARRAY['courrier RH', 'lettre RH', 'demande RH'],
    ARRAY['RH', 'courrier', 'ressources humaines', 'demande'],
    'PDF', 2, 4.99, 'EUR', 'template', 'draft', false,
@@ -277,7 +285,7 @@ SELECT * FROM (VALUES
    'Modèle de courrier pour la Suisse — rédaction uniquement',
    'Modèle de courrier professionnel adapté au contexte suisse, dans le cadre d''un accompagnement rédactionnel. Ne constitue pas un conseil juridique suisse.',
    'Pour rédiger un courrier professionnel dans le contexte suisse.',
-   'all', NULL, 'Suisse — rédaction uniquement',
+   'all', NULL::uuid, 'Suisse — rédaction uniquement',
    ARRAY['courrier suisse', 'lettre suisse', 'courrier professionnel suisse'],
    ARRAY['Suisse', 'courrier', 'rédaction', 'professionnel'],
    'PDF', 2, 4.99, 'EUR', 'template', 'draft', false,
