@@ -103,6 +103,36 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "yearly" as const,
       priority: 0.3,
     },
+    {
+      url: `${baseUrl}/guides`,
+      lastModified: new Date(),
+      changeFrequency: "monthly" as const,
+      priority: 0.85,
+    },
+    {
+      url: `${baseUrl}/guides/completer-duerp`,
+      lastModified: new Date(),
+      changeFrequency: "monthly" as const,
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/guides/accident-travail-premieres-etapes`,
+      lastModified: new Date(),
+      changeFrequency: "monthly" as const,
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/guides/repondre-avertissement`,
+      lastModified: new Date(),
+      changeFrequency: "monthly" as const,
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/positionnement-legal`,
+      lastModified: new Date(),
+      changeFrequency: "yearly" as const,
+      priority: 0.5,
+    },
   ];
 
   const servicesPages = servicesSlugs.map((slug) => ({
