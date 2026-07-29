@@ -5,7 +5,7 @@ import ModeleDuerpClient from "./ModeleDuerpClient";
 export const metadata: Metadata = {
   title: "Modèle DUERP à compléter — Document unique d'évaluation des risques",
   description:
-    "Téléchargez un modèle de DUERP (Document Unique d'Évaluation des Risques Professionnels) à compléter et adapter à votre activité. Format PDF, 20 pages. 4,99 € seulement.",
+    "Téléchargez un modèle de DUERP (Document Unique d'Évaluation des Risques Professionnels) à compléter et adapter à votre activité. Format PDF, 20 pages. 18,99 € seulement.",
   keywords: [
     "DUERP",
     "modèle DUERP",
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Modèle DUERP à compléter — Document unique d'évaluation des risques",
     description:
-      "Téléchargez un modèle de DUERP à compléter et adapter à votre activité. Format PDF, 20 pages. 4,99 € seulement.",
+      "Téléchargez un modèle de DUERP à compléter et adapter à votre activité. Format PDF, 20 pages. 18,99 € seulement.",
     url: "https://juriste-droit-du-travail.com/documents/modele-duerp",
     siteName: "Loubna Abouz Manta",
     locale: "fr_FR",
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Modèle DUERP à compléter",
     description:
-      "Document unique d'évaluation des risques professionnels à compléter. PDF, 20 pages. 4,99 €.",
+      "Document unique d'évaluation des risques professionnels à compléter. PDF, 20 pages. 18,99 €.",
   },
   alternates: {
     canonical: "https://juriste-droit-du-travail.com/documents/modele-duerp",

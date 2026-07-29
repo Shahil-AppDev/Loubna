@@ -6,7 +6,7 @@ import { NextRequest, NextResponse } from "next/server";
 export const runtime = "nodejs";
 
 const DUERP_SLUG = "modele-duerp";
-const DUERP_PRICE = 4.99;
+const DUERP_PRICE = 18.99;
 
 export async function POST(request: NextRequest) {
   const salesEnabled = process.env.DIGITAL_DUERP_SALES_ENABLED === "true";

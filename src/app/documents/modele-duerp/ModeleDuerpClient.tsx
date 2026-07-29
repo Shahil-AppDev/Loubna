@@ -68,7 +68,7 @@ export default function ModeleDuerpClient() {
             Document Unique d'Évaluation des Risques Professionnels — trame professionnelle à compléter et adapter à l'activité réelle de votre entreprise.
           </p>
           <div className="mt-6 flex flex-wrap items-center gap-4">
-            <span className="text-3xl font-bold text-white">4,99 €</span>
+            <span className="text-3xl font-bold text-white">18,99 €</span>
             <span className="text-sm text-encre-400">Téléchargement immédiat après paiement</span>
             <span className="text-sm bg-or-500 text-white px-3 py-1 rounded-full font-medium">PDF · 20 pages</span>
           </div>
@@ -213,7 +213,7 @@ export default function ModeleDuerpClient() {
                   disabled={loading || !acceptTerms}
                   className="w-full bg-or-500 hover:bg-or-600 disabled:bg-encre-300 text-white font-semibold py-3.5 rounded-lg transition-colors text-lg"
                 >
-                  {loading ? 'Redirection...' : 'Acheter — 4,99 €'}
+                  {loading ? 'Redirection...' : 'Acheter — 18,99 €'}
                 </button>
               </form>
 
@@ -240,7 +240,7 @@ export default function ModeleDuerpClient() {
             brand: { "@type": "Brand", name: "Loubna Abouz Manta" },
             offers: {
               "@type": "Offer",
-              price: "4.99",
+              price: "18.99",
               priceCurrency: "EUR",
               availability: "https://schema.org/InStock",
               url: "https://juriste-droit-du-travail.com/documents/modele-duerp",
