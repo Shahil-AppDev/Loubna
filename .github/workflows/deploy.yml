@@ -50,6 +50,8 @@ jobs:
           POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
           SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
+          DUERP_PDF_PRIVATE_PATH: ${{ secrets.DUERP_PDF_PRIVATE_PATH }}
+          DIGITAL_DUERP_SALES_ENABLED: ${{ secrets.DIGITAL_DUERP_SALES_ENABLED }}
 
       # ── Transfer source ONLY (no node_modules, no .next) ──────────────────
       # Server runs `npm ci` + `npm run build` so native modules are compiled
@@ -101,6 +103,8 @@ jobs:
           POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
           SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
+          DUERP_PDF_PRIVATE_PATH: ${{ secrets.DUERP_PDF_PRIVATE_PATH }}
+          DIGITAL_DUERP_SALES_ENABLED: ${{ secrets.DIGITAL_DUERP_SALES_ENABLED }}
         run: |
           set -euo pipefail
           mkdir -p ~/.ssh
@@ -124,6 +128,8 @@ jobs:
              POSTGRES_USER='$POSTGRES_USER' \
              POSTGRES_PASSWORD='$POSTGRES_PASSWORD' \
              SESSION_SECRET='$SESSION_SECRET' \
+             DUERP_PDF_PRIVATE_PATH='$DUERP_PDF_PRIVATE_PATH' \
+             DIGITAL_DUERP_SALES_ENABLED='$DIGITAL_DUERP_SALES_ENABLED' \
              bash -s" << 'EOF'
             set -eo pipefail
 
@@ -220,6 +226,13 @@ jobs:
               echo "✓ NEXT_PUBLIC_SITE_URL écrit"
             fi
 
+            # ── Inject Digital Products env ────────────────────────────────
+            grep -v -E '^(DUERP_PDF_PRIVATE_PATH|DIGITAL_DUERP_SALES_ENABLED)=' "$ENV_FILE" > "${ENV_FILE}.tmp" || true
+            mv "${ENV_FILE}.tmp" "$ENV_FILE"
+            printf 'DUERP_PDF_PRIVATE_PATH=%s\n' "${DUERP_PDF_PRIVATE_PATH:-/var/www/projects/juriste-droit-du-travail/private-products/duerp-modele.pdf}" >> "$ENV_FILE"
+            printf 'DIGITAL_DUERP_SALES_ENABLED=%s\n' "${DIGITAL_DUERP_SALES_ENABLED:-false}" >> "$ENV_FILE"
+            echo "✓ Variables Digital Products écrites"
+
             # ── Inject PostgreSQL + Session ────────────────────────────────
             if [ -n "${POSTGRES_PASSWORD:-}" ]; then
               grep -v -E '^(POSTGRES_HOST|POSTGRES_PORT|POSTGRES_DATABASE|POSTGRES_USER|POSTGRES_PASSWORD|SESSION_SECRET)=' "$ENV_FILE" > "${ENV_FILE}.tmp" || true
@@ -244,13 +257,17 @@ jobs:
             echo "=== [3/6] npm run build sur le serveur ==="
             npm run build 2>&1 | tail -15
 
-            # ── Run DB migration (idempotent) ──────────────────────────────
+            # ── Run DB migrations (idempotent) ─────────────────────────────
             echo "=== [4/6] Migration DB ==="
             if [ -f "$TEMP/migrate_payment_gated.sql" ]; then
               PGPASSWORD="${POSTGRES_PASSWORD}" psql -h "${POSTGRES_HOST:-127.0.0.1}" -p "${POSTGRES_PORT:-5432}" -U "${POSTGRES_USER}" -d "${POSTGRES_DATABASE}" -f "$TEMP/migrate_payment_gated.sql" 2>&1 || echo "⚠ Migration warning (may already be applied)"
-              echo "✓ Migration exécutée"
+              echo "✓ Migration payment exécutée"
+            fi
+            if [ -f "$TEMP/supabase/migration-digital-products.sql" ]; then
+              PGPASSWORD="${POSTGRES_PASSWORD}" psql -h "${POSTGRES_HOST:-127.0.0.1}" -p "${POSTGRES_PORT:-5432}" -U "${POSTGRES_USER}" -d "${POSTGRES_DATABASE}" -f "$TEMP/supabase/migration-digital-products.sql" 2>&1 || echo "⚠ Migration digital warning (may already be applied)"
+              echo "✓ Migration digital products exécutée"
             else
-              echo "⚠ Pas de fichier de migration — ignoré"
+              echo "⚠ Pas de fichier migration digital — ignoré"
             fi
 
             # ── Atomic swap via mv (instant) — old dir deleted later ───────

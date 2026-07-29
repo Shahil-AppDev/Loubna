@@ -10,8 +10,10 @@ import {
   mapSumUpStatusToAppointmentStatus,
 } from "@/lib/sumup";
 import { sendConfirmedEmail, sendFailedPaymentEmail } from "@/lib/email/send-appointment-emails";
+import { sendDigitalFailedEmail, sendDigitalAdminEmail } from "@/lib/email/send-digital-emails";
 import { query } from "@/lib/db/postgres";
 import { NextRequest, NextResponse } from "next/server";
+import { fulfillOrder } from "@/app/api/digital-orders/[orderId]/status/route";
 
 export const runtime = "nodejs";
 
@@ -148,10 +150,80 @@ export async function POST(request: NextRequest) {
     console.log(
       `SumUp webhook processed: ${checkout_reference} → ${checkout.status}`
     );
+
+    // ─── Digital product orders (DUERP- prefix) ───────────────
+    if (checkout_reference.startsWith("DUERP-")) {
+      await handleDigitalOrderWebhook(checkout, event_type);
+    }
   } catch (err) {
     console.error("SumUp webhook — processing error:", err);
     // On répond 200 pour éviter que SumUp retente indéfiniment
   }
 
   return NextResponse.json({ received: true });
+}
+
+// ─── Handle digital order webhook ──────────────────────────
+async function handleDigitalOrderWebhook(
+  checkout: { checkout_reference: string; status: string; amount: number; currency: string; transactions?: Array<{ transaction_code: string }> },
+  eventType: string
+): Promise<void> {
+  const checkoutReference = checkout.checkout_reference;
+
+  // Find the digital order by provider_reference
+  const orderResult = await query(
+    `SELECT o.*, p.name as product_name
+     FROM digital_orders o
+     LEFT JOIN digital_products p ON o.product_id = p.id
+     WHERE o.provider_reference = $1`,
+    [checkoutReference]
+  );
+  const order = orderResult.rows[0];
+
+  if (!order) {
+    console.warn("Digital webhook — order not found:", checkoutReference);
+    return;
+  }
+
+  // Idempotency: skip if already fulfilled
+  if (order.status === "fulfilled" || order.status === "paid") {
+    console.log("Digital webhook — already fulfilled:", order.id);
+    return;
+  }
+
+  if (checkout.status === "PAID") {
+    // Verify amount and currency
+    if (Math.abs(checkout.amount - order.amount) > 0.01) {
+      console.error("Digital webhook — amount mismatch:", checkout.amount, order.amount);
+      return;
+    }
+    if (checkout.currency !== order.currency) {
+      console.error("Digital webhook — currency mismatch:", checkout.currency, order.currency);
+      return;
+    }
+
+    const transactionId = checkout.transactions?.[0]?.transaction_code || null;
+    await fulfillOrder(order, transactionId);
+    console.log("Digital webhook — order fulfilled:", order.id);
+  } else if (checkout.status === "FAILED" || checkout.status === "EXPIRED") {
+    // Update order status
+    await query(
+      `UPDATE digital_orders SET status = $1, updated_at = NOW() WHERE id = $2`,
+      [checkout.status === "FAILED" ? "failed" : "expired", order.id]
+    );
+
+    try {
+      await sendDigitalFailedEmail({
+        orderId: order.id,
+        customerName: `${order.customer_first_name} ${order.customer_last_name}`,
+        customerEmail: order.customer_email,
+        productName: order.product_name,
+        amount: order.amount,
+        currency: order.currency,
+        checkoutReference,
+      });
+    } catch (emailErr) {
+      console.error("Digital webhook — failed email (non bloquant):", emailErr);
+    }
+  }
 }

@@ -63,6 +63,7 @@ export default function AdminLayout({
             { href: '/admin/calendar',     label: 'Calendrier',   icon: '🗓️' },
             { href: '/admin/services',     label: 'Services',     icon: '💼' },
             { href: '/admin/leads',        label: 'Leads',        icon: '📥' },
+            { href: '/admin/documents',    label: 'Documents',    icon: '📄' },
             { href: '/admin/cms',          label: 'CMS',          icon: '📝' },
             { href: '/admin/settings',     label: 'Paramètres',   icon: '⚙️' },
           ].map(({ href, label, icon }) => (
@@ -109,8 +110,9 @@ export default function AdminLayout({
               { href: '/admin',              label: 'Dashboard' },
               { href: '/admin/appointments', label: 'RDV' },
               { href: '/admin/services',     label: 'Services' },
-              { href: '/admin/cms',          label: 'CMS' },
               { href: '/admin/leads',        label: 'Leads' },
+              { href: '/admin/documents',    label: 'Docs' },
+              { href: '/admin/cms',          label: 'CMS' },
               { href: '/admin/settings',     label: 'Paramètres' },
             ].map(({ href, label }) => (
               <Link

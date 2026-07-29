@@ -100,3 +100,71 @@ export interface AppointmentWithService extends Appointment {
 export interface PaymentWithAppointment extends Payment {
   appointment: Appointment | null;
 }
+
+// ─── Digital Products ──────────────────────────────────────
+export type DigitalOrderStatus =
+  | 'pending_payment'
+  | 'paid'
+  | 'fulfilled'
+  | 'failed'
+  | 'cancelled'
+  | 'refunded'
+  | 'expired';
+
+export interface DigitalProduct {
+  id: string;
+  slug: string;
+  name: string;
+  description: string | null;
+  price_amount: number;
+  currency: string;
+  file_key: string | null;
+  private_file_path: string | null;
+  file_sha256: string | null;
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface DigitalOrder {
+  id: string;
+  product_id: string;
+  customer_first_name: string;
+  customer_last_name: string;
+  customer_email: string;
+  amount: number;
+  currency: string;
+  status: DigitalOrderStatus;
+  payment_provider: string;
+  provider_checkout_id: string | null;
+  provider_reference: string | null;
+  provider_transaction_id: string | null;
+  paid_at: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface DownloadToken {
+  id: string;
+  order_id: string;
+  token_hash: string;
+  expires_at: string;
+  max_downloads: number;
+  download_count: number;
+  last_downloaded_at: string | null;
+  revoked_at: string | null;
+  created_at: string;
+}
+
+export interface DigitalAuditLog {
+  id: string;
+  order_id: string | null;
+  action: string;
+  performed_by: string | null;
+  details: Record<string, unknown> | null;
+  created_at: string;
+}
+
+export interface DigitalOrderWithProduct extends DigitalOrder {
+  product: DigitalProduct | null;
+}
