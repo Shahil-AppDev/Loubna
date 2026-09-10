@@ -129,6 +129,51 @@ export default function HomePage() {
       </section>
 
       {/* ═══════════════════════════════════════════════════ */}
+      {/* DOCUMENT — MODÈLE DUERP À TÉLÉCHARGER */}
+      {/* ═══════════════════════════════════════════════════ */}
+      <section className="section-pad bg-white border-y border-encre-100">
+        <div className="container-main">
+          <div className="grid grid-cols-1 lg:grid-cols-[auto_1fr_auto] gap-8 items-center bg-encre-50 border border-encre-200 rounded-sm p-8 md:p-10">
+            <div className="hidden md:flex w-16 h-16 rounded-full bg-rouge-800/10 items-center justify-center text-3xl flex-shrink-0">
+              📋
+            </div>
+            <div>
+              <span className="text-[0.65rem] font-bold tracking-[0.16em] uppercase text-rouge-800 mb-2 block">
+                Document à télécharger
+              </span>
+              <h2 className="font-serif text-[1.5rem] md:text-[1.9rem] text-encre-800 leading-[1.25] mb-2">
+                Le modèle DUERP à compléter,
+                <br className="hidden sm:block" />
+                <span className="text-rouge-800 font-light"> prêt en quelques minutes.</span>
+              </h2>
+              <p className="text-[0.9rem] text-encre-600 leading-[1.7] max-w-xl">
+                Trame professionnelle au format PDF (20 pages) pour établir ou mettre
+                à jour votre Document Unique d&apos;Évaluation des Risques Professionnels
+                — téléchargement immédiat après paiement sécurisé.
+              </p>
+            </div>
+            <div className="flex flex-col items-start lg:items-end gap-3 flex-shrink-0">
+              <span className="font-serif text-[2rem] font-bold text-encre-800 leading-none">
+                4,99 €
+              </span>
+              <Link
+                href="/documents/modele-duerp"
+                className="btn btn-primary whitespace-nowrap"
+              >
+                Acheter le modèle DUERP →
+              </Link>
+              <Link
+                href="/documents"
+                className="text-[0.78rem] font-semibold text-rouge-800 hover:text-rouge-900 transition-colors"
+              >
+                Voir tous les documents →
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════════════════════════════════════════════════ */}
       {/* PARTENARIAT JURIDIQUE */}
       {/* ═══════════════════════════════════════════════════ */}
       <section className="section-pad bg-encre-950 border-y border-or-500/15">

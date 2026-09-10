@@ -10,6 +10,7 @@ export const MAIN_NAV_LINKS = [
   { href: "/droit-travail-suisse", label: "Suisse" },
   { href: "/tarifs", label: "Modalités et Tarifs" },
   { href: "/formations", label: "Formations" },
+  { href: "/documents", label: "Documents" },
   { href: "/blog", label: "Blog" },
   { href: "/faq", label: "FAQ" },
 ] as const;
@@ -27,6 +28,7 @@ export const FOOTER_NAV_LINKS = [
   { href: "/services", label: "Interventions" },
   { href: "/droit-travail-suisse", label: "Suisse" },
   { href: "/formations", label: "Formations" },
+  { href: "/documents", label: "Documents" },
   { href: "/faq", label: "FAQ" },
   { href: "/contact", label: "Contact" },
 ] as const;
