@@ -263,18 +263,21 @@ jobs:
 
             # ── Run DB migrations (idempotent) ─────────────────────────────
             echo "=== [4/6] Migration DB ==="
+            # Migrations idempotentes (IF NOT EXISTS / ON CONFLICT DO UPDATE) —
+            # une vraie erreur SQL doit stopper le déploiement (set -eo pipefail
+            # en tête de script), donc aucun `|| echo` ne doit masquer un échec ici.
             if [ -f "$TEMP/migrate_payment_gated.sql" ]; then
-              PGPASSWORD="${POSTGRES_PASSWORD}" psql -h "${POSTGRES_HOST:-127.0.0.1}" -p "${POSTGRES_PORT:-5432}" -U "${POSTGRES_USER}" -d "${POSTGRES_DATABASE}" -f "$TEMP/migrate_payment_gated.sql" 2>&1 || echo "⚠ Migration warning (may already be applied)"
+              PGPASSWORD="${POSTGRES_PASSWORD}" psql -v ON_ERROR_STOP=1 -h "${POSTGRES_HOST:-127.0.0.1}" -p "${POSTGRES_PORT:-5432}" -U "${POSTGRES_USER}" -d "${POSTGRES_DATABASE}" -f "$TEMP/migrate_payment_gated.sql"
               echo "✓ Migration payment exécutée"
             fi
             if [ -f "$TEMP/supabase/migration-digital-products.sql" ]; then
-              PGPASSWORD="${POSTGRES_PASSWORD}" psql -h "${POSTGRES_HOST:-127.0.0.1}" -p "${POSTGRES_PORT:-5432}" -U "${POSTGRES_USER}" -d "${POSTGRES_DATABASE}" -f "$TEMP/supabase/migration-digital-products.sql" 2>&1 || echo "⚠ Migration digital warning (may already be applied)"
+              PGPASSWORD="${POSTGRES_PASSWORD}" psql -v ON_ERROR_STOP=1 -h "${POSTGRES_HOST:-127.0.0.1}" -p "${POSTGRES_PORT:-5432}" -U "${POSTGRES_USER}" -d "${POSTGRES_DATABASE}" -f "$TEMP/supabase/migration-digital-products.sql"
               echo "✓ Migration digital products exécutée"
             else
               echo "⚠ Pas de fichier migration digital — ignoré"
             fi
             if [ -f "$TEMP/supabase/migration-document-marketplace.sql" ]; then
-              PGPASSWORD="${POSTGRES_PASSWORD}" psql -h "${POSTGRES_HOST:-127.0.0.1}" -p "${POSTGRES_PORT:-5432}" -U "${POSTGRES_USER}" -d "${POSTGRES_DATABASE}" -f "$TEMP/supabase/migration-document-marketplace.sql" 2>&1 || echo "⚠ Migration marketplace warning (may already be applied)"
+              PGPASSWORD="${POSTGRES_PASSWORD}" psql -v ON_ERROR_STOP=1 -h "${POSTGRES_HOST:-127.0.0.1}" -p "${POSTGRES_PORT:-5432}" -U "${POSTGRES_USER}" -d "${POSTGRES_DATABASE}" -f "$TEMP/supabase/migration-document-marketplace.sql"
               echo "✓ Migration document marketplace exécutée"
             else
               echo "⚠ Pas de fichier migration marketplace — ignoré"
