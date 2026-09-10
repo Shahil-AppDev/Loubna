@@ -154,7 +154,7 @@ export default function HomePage() {
             </div>
             <div className="flex flex-col items-start lg:items-end gap-3 flex-shrink-0">
               <span className="font-serif text-[2rem] font-bold text-encre-800 leading-none">
-                4,99 €
+                18,99 €
               </span>
               <Link
                 href="/documents/modele-duerp"

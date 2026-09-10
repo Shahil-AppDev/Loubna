@@ -41,7 +41,7 @@ export default function ConfirmationClient() {
         }
 
         setProductName(data.productName || 'Modèle DUERP');
-        setAmount(data.amount || 4.99);
+        setAmount(data.amount || 18.99);
         setStatus(data.status as OrderStatus);
         setHasDownloadToken(data.hasDownloadToken || false);
         setTokenExpiresAt(data.tokenExpiresAt || null);

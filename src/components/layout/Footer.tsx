@@ -23,7 +23,7 @@ const SERVICE_LINKS = [
   { href: "/services", label: "Accompagnement – fin de contrat" },
   { href: "/services", label: "Information en droit du travail" },
   { href: "/droit-travail-suisse", label: "Droit du travail suisse" },
-  { href: "/documents/modele-duerp", label: "Modèle DUERP à télécharger — 4,99 €" },
+  { href: "/documents/modele-duerp", label: "Modèle DUERP à télécharger — 18,99 €" },
 ];
 
 const WHATSAPP_URL = `https://wa.me/33${SITE_CONFIG.phone.replace(/\D/g, "").replace(/^0/, "")}?text=${encodeURIComponent(
