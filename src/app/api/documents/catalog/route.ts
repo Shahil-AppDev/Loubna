@@ -1,10 +1,11 @@
 import { query } from "@/lib/db/postgres";
+import { isFeatureEnabled } from "@/lib/feature-flags";
 import { NextRequest, NextResponse } from "next/server";
 
 export const runtime = "nodejs";
 
 export async function GET(request: NextRequest) {
-  const storeEnabled = process.env.DOCUMENT_STORE_ENABLED === "true";
+  const storeEnabled = isFeatureEnabled(process.env.DOCUMENT_STORE_ENABLED);
   if (!storeEnabled) {
     return NextResponse.json({ documents: [], disabled: true });
   }

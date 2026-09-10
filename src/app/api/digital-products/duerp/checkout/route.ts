@@ -2,6 +2,7 @@ import { createSumUpCheckout, getSumUpHostedCheckoutUrl } from "@/lib/sumup";
 import { query } from "@/lib/db/postgres";
 import { sendDigitalPendingEmail } from "@/lib/email/send-digital-emails";
 import { checkRateLimit } from "@/lib/security/rate-limit";
+import { isFeatureEnabled } from "@/lib/feature-flags";
 import { NextRequest, NextResponse } from "next/server";
 
 export const runtime = "nodejs";
@@ -9,7 +10,7 @@ export const runtime = "nodejs";
 const DUERP_SLUG = "modele-duerp";
 
 export async function POST(request: NextRequest) {
-  const salesEnabled = process.env.DIGITAL_DUERP_SALES_ENABLED === "true";
+  const salesEnabled = isFeatureEnabled(process.env.DIGITAL_DUERP_SALES_ENABLED);
   if (!salesEnabled) {
     return NextResponse.json(
       { error: "La vente de documents numériques n'est pas encore disponible." },
