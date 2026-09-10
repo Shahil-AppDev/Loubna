@@ -77,7 +77,7 @@ VALUES (
   'modele-duerp',
   'Modèle DUERP à compléter',
   'Document unique d''évaluation des risques professionnels pour commerces, artisans et petites entreprises. Format PDF, 20 pages. Trame à compléter et à adapter à l''activité réelle de l''entreprise.',
-  4.99,
+  18.99,
   'EUR',
   'duerp-modele.pdf',
   '/var/www/projects/juriste-droit-du-travail/private-products/duerp-modele.pdf',
