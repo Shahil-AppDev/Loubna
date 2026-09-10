@@ -45,6 +45,7 @@ export default function DocumentDetailClient({ slug }: { slug: string }) {
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [acceptTerms, setAcceptTerms] = useState(false);
+  const [acceptWithdrawalWaiver, setAcceptWithdrawalWaiver] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [checkoutError, setCheckoutError] = useState<string | null>(null);
 
@@ -94,6 +95,10 @@ export default function DocumentDetailClient({ slug }: { slug: string }) {
       setCheckoutError('Vous devez accepter les conditions de vente.');
       return;
     }
+    if (!acceptWithdrawalWaiver) {
+      setCheckoutError('Vous devez confirmer la livraison immédiate et la renonciation au droit de rétractation.');
+      return;
+    }
 
     setSubmitting(true);
     try {
@@ -105,7 +110,7 @@ export default function DocumentDetailClient({ slug }: { slug: string }) {
       const res = await fetch(endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ slug, firstName, lastName, email, acceptTerms }),
+        body: JSON.stringify({ slug, firstName, lastName, email, acceptTerms, acceptWithdrawalWaiver }),
       });
 
       const data = await res.json();
@@ -345,13 +350,32 @@ export default function DocumentDetailClient({ slug }: { slug: string }) {
                         </span>
                       </label>
 
+                      {/*
+                        TODO (bloquant avant lancement commercial complet) : formulation standard
+                        de renonciation au droit de rétractation pour contenu numérique livré
+                        immédiatement (Code de la consommation, art. L.221-28 13° et L.221-18) —
+                        à faire relire/valider par un professionnel du droit avant mise en vente
+                        à grande échelle.
+                      */}
+                      <label className="flex items-start gap-2 text-xs text-encre-400 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={acceptWithdrawalWaiver}
+                          onChange={(e) => setAcceptWithdrawalWaiver(e.target.checked)}
+                          className="mt-0.5"
+                        />
+                        <span>
+                          Je demande la fourniture immédiate du document dès la confirmation du paiement et je reconnais renoncer ainsi à mon droit de rétractation.
+                        </span>
+                      </label>
+
                       {checkoutError && (
                         <p className="text-sm text-red-400">{checkoutError}</p>
                       )}
 
                       <button
                         type="submit"
-                        disabled={submitting}
+                        disabled={submitting || !acceptTerms || !acceptWithdrawalWaiver}
                         className="w-full bg-or-500 hover:bg-or-600 disabled:opacity-50 text-white font-semibold py-3 rounded-lg transition-colors"
                       >
                         {submitting ? 'Redirection...' : `Payer ${priceLabel}`}

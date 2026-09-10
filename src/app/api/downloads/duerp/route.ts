@@ -1,4 +1,5 @@
 import { query, getClient } from "@/lib/db/postgres";
+import { checkRateLimit } from "@/lib/security/rate-limit";
 import { NextRequest, NextResponse } from "next/server";
 import crypto from "crypto";
 import { readFile } from "fs/promises";
@@ -6,6 +7,12 @@ import { readFile } from "fs/promises";
 export const runtime = "nodejs";
 
 export async function GET(request: NextRequest) {
+  const ip = request.headers.get("x-forwarded-for") || "unknown";
+  const rate = checkRateLimit(`duerp-download:${ip}`, 20, 15 * 60 * 1000);
+  if (!rate.allowed) {
+    return NextResponse.json({ error: "Trop de requêtes." }, { status: 429 });
+  }
+
   const { searchParams } = new URL(request.url);
   const token = searchParams.get("token");
 
