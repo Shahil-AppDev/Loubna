@@ -8,6 +8,7 @@ export default function ModeleDuerpClient() {
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [acceptTerms, setAcceptTerms] = useState(false);
+  const [acceptWithdrawalWaiver, setAcceptWithdrawalWaiver] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -21,6 +22,10 @@ export default function ModeleDuerpClient() {
       setError('Vous devez accepter les conditions de vente.');
       return;
     }
+    if (!acceptWithdrawalWaiver) {
+      setError('Vous devez confirmer la livraison immédiate et la renonciation au droit de rétractation.');
+      return;
+    }
 
     setLoading(true);
     setError('');
@@ -29,7 +34,7 @@ export default function ModeleDuerpClient() {
       const response = await fetch('/api/digital-products/duerp/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ firstName, lastName, email, acceptTerms }),
+        body: JSON.stringify({ firstName, lastName, email, acceptTerms, acceptWithdrawalWaiver }),
       });
 
       const data = await response.json();
@@ -68,7 +73,7 @@ export default function ModeleDuerpClient() {
             Document Unique d'Évaluation des Risques Professionnels — trame professionnelle à compléter et adapter à l'activité réelle de votre entreprise.
           </p>
           <div className="mt-6 flex flex-wrap items-center gap-4">
-            <span className="text-3xl font-bold text-white">18,99 €</span>
+            <span className="text-3xl font-bold text-white">4,99 €</span>
             <span className="text-sm text-encre-400">Téléchargement immédiat après paiement</span>
             <span className="text-sm bg-or-500 text-white px-3 py-1 rounded-full font-medium">PDF · 20 pages</span>
           </div>
@@ -198,7 +203,27 @@ export default function ModeleDuerpClient() {
                     className="mt-1 w-4 h-4 accent-or-500"
                   />
                   <span className="text-sm text-encre-700">
-                    J'accepte les <Link href="/cgv-numerique" className="text-or-600 hover:underline">conditions générales de vente numériques</Link> et comprends qu'aucun remboursement n'est possible après téléchargement.
+                    J'accepte les <Link href="/cgv-numerique" className="text-or-600 hover:underline">conditions générales de vente numériques</Link>.
+                  </span>
+                </label>
+
+                {/*
+                  TODO (bloquant avant lancement commercial complet) : la formulation ci-dessous
+                  reprend le principe standard de renonciation au droit de rétractation pour un
+                  contenu numérique livré immédiatement (Code de la consommation, art. L.221-28 13°
+                  et art. L.221-18). Elle doit être relue/validée par un professionnel du droit
+                  avant une mise en vente à grande échelle, pour s'assurer qu'elle recueille
+                  valablement le consentement exprès exigé par la loi.
+                */}
+                <label className="flex items-start gap-3 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={acceptWithdrawalWaiver}
+                    onChange={(e) => setAcceptWithdrawalWaiver(e.target.checked)}
+                    className="mt-1 w-4 h-4 accent-or-500"
+                  />
+                  <span className="text-sm text-encre-700">
+                    Je demande la fourniture immédiate du document numérique dès la confirmation du paiement et je reconnais renoncer ainsi à mon droit de rétractation. Je comprends qu'aucun remboursement n'est possible après téléchargement.
                   </span>
                 </label>
 
@@ -210,10 +235,10 @@ export default function ModeleDuerpClient() {
 
                 <button
                   type="submit"
-                  disabled={loading || !acceptTerms}
+                  disabled={loading || !acceptTerms || !acceptWithdrawalWaiver}
                   className="w-full bg-or-500 hover:bg-or-600 disabled:bg-encre-300 text-white font-semibold py-3.5 rounded-lg transition-colors text-lg"
                 >
-                  {loading ? 'Redirection...' : 'Acheter — 18,99 €'}
+                  {loading ? 'Redirection...' : 'Acheter — 4,99 €'}
                 </button>
               </form>
 
@@ -240,7 +265,7 @@ export default function ModeleDuerpClient() {
             brand: { "@type": "Brand", name: "Loubna Abouz Manta" },
             offers: {
               "@type": "Offer",
-              price: "18.99",
+              price: "4.99",
               priceCurrency: "EUR",
               availability: "https://schema.org/InStock",
               url: "https://juriste-droit-du-travail.com/documents/modele-duerp",

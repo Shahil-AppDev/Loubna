@@ -1,12 +1,12 @@
 import { createSumUpCheckout, getSumUpHostedCheckoutUrl } from "@/lib/sumup";
 import { query } from "@/lib/db/postgres";
 import { sendDigitalPendingEmail } from "@/lib/email/send-digital-emails";
+import { checkRateLimit } from "@/lib/security/rate-limit";
 import { NextRequest, NextResponse } from "next/server";
 
 export const runtime = "nodejs";
 
 const DUERP_SLUG = "modele-duerp";
-const DUERP_PRICE = 18.99;
 
 export async function POST(request: NextRequest) {
   const salesEnabled = process.env.DIGITAL_DUERP_SALES_ENABLED === "true";
@@ -14,6 +14,15 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       { error: "La vente de documents numériques n'est pas encore disponible." },
       { status: 503 }
+    );
+  }
+
+  const ip = request.headers.get("x-forwarded-for") || "unknown";
+  const rate = checkRateLimit(`duerp-checkout:${ip}`, 5, 15 * 60 * 1000);
+  if (!rate.allowed) {
+    return NextResponse.json(
+      { error: "Trop de tentatives. Réessayez plus tard." },
+      { status: 429 }
     );
   }
 
@@ -28,6 +37,7 @@ export async function POST(request: NextRequest) {
   const lastName = String(body.lastName ?? "").trim();
   const email = String(body.email ?? "").trim().toLowerCase();
   const acceptTerms = Boolean(body.acceptTerms);
+  const acceptWithdrawalWaiver = Boolean(body.acceptWithdrawalWaiver);
 
   if (!firstName || !lastName || !email) {
     return NextResponse.json(
@@ -46,6 +56,13 @@ export async function POST(request: NextRequest) {
   if (!acceptTerms) {
     return NextResponse.json(
       { error: "Vous devez accepter les conditions de vente." },
+      { status: 400 }
+    );
+  }
+
+  if (!acceptWithdrawalWaiver) {
+    return NextResponse.json(
+      { error: "Vous devez confirmer la livraison immédiate et la renonciation au droit de rétractation." },
       { status: 400 }
     );
   }
@@ -70,9 +87,14 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  // ─── Use server-side price (never trust frontend) ─────────
-  const amount = DUERP_PRICE;
+  // ─── Use server-side price from DB (never trust frontend) ─
+  const amount = Number(product.price_amount);
   const currency = product.currency || "EUR";
+
+  if (!Number.isFinite(amount) || amount <= 0) {
+    console.error("Digital checkout — invalid price_amount for product", product.id);
+    return NextResponse.json({ error: "Erreur serveur." }, { status: 500 });
+  }
 
   // ─── Create order in DB ───────────────────────────────────
   let orderId: string;

@@ -132,7 +132,7 @@ UPDATE digital_products SET
   author = 'Loubna Abouz Manta',
   disclaimer = 'Ce document constitue un modèle général à compléter et à adapter à la situation réelle. Il ne remplace pas une analyse personnalisée par un professionnel compétent lorsque celle-ci est nécessaire.',
   seo_title = 'Modèle DUERP à compléter — Document unique d''évaluation des risques',
-  seo_description = 'Téléchargez un modèle de DUERP à compléter et adapter à votre activité. Format PDF, 20 pages. 18,99 € seulement.',
+  seo_description = 'Téléchargez un modèle de DUERP à compléter et adapter à votre activité. Format PDF, 20 pages. 4,99 € seulement.',
   published_at = NOW(),
   last_reviewed_at = NOW()
 WHERE slug = 'modele-duerp';
