@@ -364,7 +364,26 @@ WHERE dp.category_id IS NULL
   AND dp.slug = 'courrier-professionnel-suisse' AND dc.slug = 'suisse';
 
 -- ─── Seed FAQ for DUERP ─────────────────────────────────────
--- Add unique constraint to prevent duplicate FAQs
+-- Remove existing duplicates FIRST (keep earliest row) — must run before
+-- the constraint below, otherwise ADD CONSTRAINT fails on any duplicate
+-- left over from a run predating this dedup step. Uses ROW_NUMBER(), not
+-- MIN(id): id is a UUID column and Postgres has no MIN()/MAX() aggregate
+-- for uuid (only ordering operators), so MIN(id) errors with
+-- "function min(uuid) does not exist".
+DELETE FROM document_faqs
+WHERE id IN (
+  SELECT id FROM (
+    SELECT id,
+           ROW_NUMBER() OVER (
+             PARTITION BY document_id, question
+             ORDER BY created_at ASC, id ASC
+           ) AS rn
+    FROM document_faqs
+  ) ranked
+  WHERE rn > 1
+);
+
+-- Add unique constraint to prevent future duplicate FAQs
 DO $$
 BEGIN
   IF NOT EXISTS (
@@ -375,13 +394,6 @@ BEGIN
       ADD CONSTRAINT uq_doc_faqs_document_question UNIQUE (document_id, question);
   END IF;
 END $$;
-
--- Remove existing duplicates (keep lowest created_at)
-DELETE FROM document_faqs
-WHERE id NOT IN (
-  SELECT MIN(id) FROM document_faqs
-  GROUP BY document_id, question
-);
 
 INSERT INTO document_faqs (document_id, question, answer, sort_order)
 SELECT dp.id, q.question, q.answer, q.sort_order
