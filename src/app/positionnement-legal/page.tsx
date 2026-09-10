@@ -31,7 +31,7 @@ export default function PositionnementLegalPage() {
               Loubna Abouz Manta est juriste en droit du travail. Les services proposés consistent en :
             </p>
             <ul className="list-disc pl-6 space-y-2">
-              <li>Accompagnement et conseil en droit du travail (consultations, analyse de situation)</li>
+              <li>Accompagnement en droit du travail, analyse de situation, prévention et aide à la structuration des démarches</li>
               <li>Rédaction de courriers et documents professionnels</li>
               <li>Modèles et documents téléchargeables (DUERP, courriers, checklists)</li>
               <li>Guides pratiques d'information générale</li>
