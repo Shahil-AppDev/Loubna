@@ -35,11 +35,7 @@ Thumbs.db
 *.tsbuildinfo
 next-env.d.ts
 
-# Private digital products (never commit)
+# Private digital products (never commit — includes all PDF documents)
 private-products/
-*.pdf
-!DUERP en ligne.pdf
-
-# PDF documents
 *.pdf
 
