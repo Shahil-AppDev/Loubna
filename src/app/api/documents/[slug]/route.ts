@@ -16,7 +16,11 @@ export async function GET(
 
   try {
     const result = await query(
-      `SELECT dp.*, dc.name as category_name, dc.slug as category_slug
+      `SELECT dp.id, dp.slug, dp.name, dp.subtitle, dp.description, dp.usage_description,
+              dp.target_audience, dp.format, dp.page_count, dp.price_amount, dp.currency,
+              dp.product_type, dp.version, dp.tags, dp.synonyms, dp.disclaimer,
+              dp.last_reviewed_at, dp.author,
+              dc.name as category_name, dc.slug as category_slug
        FROM digital_products dp
        LEFT JOIN document_categories dc ON dp.category_id = dc.id
        WHERE dp.slug = $1 AND dp.status = 'published' AND dp.is_active = true`,
