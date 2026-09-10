@@ -54,9 +54,9 @@
 | `ADMIN_USERNAME` | Nom d'utilisateur admin |
 | `ADMIN_PASSWORD_HASH` | Hash bcrypt admin |
 | `NEXT_PUBLIC_SITE_URL` | URL publique du site |
-| `DOCUMENT_STORE_ENABLED` | Feature flag boutique (`false`) |
-| `DIGITAL_DUERP_SALES_ENABLED` | Feature flag DUERP (`false`) |
-| `DUERP_PDF_PRIVATE_PATH` | Chemin fichier DUERP privé |
+| `DOCUMENT_STORE_ENABLED` | Feature flag boutique — passer à `true` pour que le DUERP apparaisse dans `/documents` |
+| `DIGITAL_DUERP_SALES_ENABLED` | Feature flag DUERP — passer à `true` pour activer l'achat |
+| `DUERP_PDF_PRIVATE_PATH` | Chemin fichier DUERP privé — voir `docs/PRIVATE_PRODUCT_DEPLOYMENT.md` |
 
 ## Configuration serveur
 

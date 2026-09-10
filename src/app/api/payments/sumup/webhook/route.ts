@@ -36,8 +36,12 @@ export async function POST(request: NextRequest) {
 
   console.log("SumUp webhook received:", payload.event_type, payload.checkout_reference);
 
-  // Optionnel : vérifier le secret webhook si configuré
+  // Vérifier le secret webhook — obligatoire en production.
   const webhookSecret = process.env.SUMUP_WEBHOOK_SECRET;
+  if (process.env.NODE_ENV === "production" && !webhookSecret) {
+    console.error("SumUp webhook — SUMUP_WEBHOOK_SECRET absent en production, requête refusée");
+    return NextResponse.json({ error: "Webhook not configured." }, { status: 503 });
+  }
   if (webhookSecret) {
     const providedSecret = request.headers.get("x-sumup-webhook-secret") ||
       request.headers.get("x-webhook-secret");

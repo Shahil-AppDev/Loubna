@@ -1,6 +1,7 @@
 import { createSumUpCheckout, getSumUpHostedCheckoutUrl } from "@/lib/sumup";
 import { query } from "@/lib/db/postgres";
 import { sendDigitalPendingEmail } from "@/lib/email/send-digital-emails";
+import { checkRateLimit } from "@/lib/security/rate-limit";
 import { NextRequest, NextResponse } from "next/server";
 
 export const runtime = "nodejs";
@@ -12,6 +13,15 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       { error: "La vente de documents numériques n'est pas encore disponible." },
       { status: 503 }
+    );
+  }
+
+  const ip = request.headers.get("x-forwarded-for") || "unknown";
+  const rate = checkRateLimit(`document-checkout:${ip}`, 5, 15 * 60 * 1000);
+  if (!rate.allowed) {
+    return NextResponse.json(
+      { error: "Trop de tentatives. Réessayez plus tard." },
+      { status: 429 }
     );
   }
 
@@ -27,6 +37,7 @@ export async function POST(request: NextRequest) {
   const lastName = String(body.lastName ?? "").trim();
   const email = String(body.email ?? "").trim().toLowerCase();
   const acceptTerms = Boolean(body.acceptTerms);
+  const acceptWithdrawalWaiver = Boolean(body.acceptWithdrawalWaiver);
 
   if (!slug) {
     return NextResponse.json({ error: "Document requis." }, { status: 400 });
@@ -46,6 +57,12 @@ export async function POST(request: NextRequest) {
   if (!acceptTerms) {
     return NextResponse.json(
       { error: "Vous devez accepter les conditions de vente." },
+      { status: 400 }
+    );
+  }
+  if (!acceptWithdrawalWaiver) {
+    return NextResponse.json(
+      { error: "Vous devez confirmer la livraison immédiate et la renonciation au droit de rétractation." },
       { status: 400 }
     );
   }

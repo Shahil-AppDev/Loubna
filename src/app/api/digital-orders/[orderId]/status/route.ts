@@ -7,6 +7,7 @@ import {
   sendDigitalFailedEmail,
   sendDigitalAdminEmail,
 } from "@/lib/email/send-digital-emails";
+import { checkRateLimit } from "@/lib/security/rate-limit";
 import { NextRequest, NextResponse } from "next/server";
 import crypto from "crypto";
 
@@ -23,6 +24,12 @@ export async function GET(
 
   if (!orderId) {
     return NextResponse.json({ error: "orderId requis." }, { status: 400 });
+  }
+
+  const ip = request.headers.get("x-forwarded-for") || "unknown";
+  const rate = checkRateLimit(`order-status:${ip}`, 100, 10 * 60 * 1000);
+  if (!rate.allowed) {
+    return NextResponse.json({ error: "Trop de requêtes." }, { status: 429 });
   }
 
   // ─── Load order from DB ───────────────────────────────────
@@ -63,7 +70,6 @@ export async function GET(
       productName: order.product_name,
       amount: order.amount,
       currency: order.currency,
-      customerEmail: order.customer_email,
       hasDownloadToken: !!token && new Date(token.expires_at) > new Date(),
       tokenExpiresAt: token?.expires_at || null,
       downloadsRemaining: token
@@ -137,7 +143,6 @@ export async function GET(
           productName: updatedOrder.product_name,
           amount: updatedOrder.amount,
           currency: updatedOrder.currency,
-          customerEmail: updatedOrder.customer_email,
           hasDownloadToken: !!token && new Date(token.expires_at) > new Date(),
           tokenExpiresAt: token?.expires_at || null,
           downloadsRemaining: token
